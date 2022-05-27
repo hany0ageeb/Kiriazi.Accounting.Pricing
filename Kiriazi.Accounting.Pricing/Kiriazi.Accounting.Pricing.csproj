@@ -193,10 +193,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\CurrencyController.cs" />
     <Compile Include="DAL\CompanyRepository.cs" />
     <Compile Include="DAL\CurrencyRepository.cs" />
     <Compile Include="DAL\GroupRepository.cs" />
+    <Compile Include="DAL\IAccountingPeriodRepository.cs" />
     <Compile Include="DAL\ICompanyRepository.cs" />
     <Compile Include="DAL\ICurrencyRepository.cs" />
     <Compile Include="DAL\IGroupRepository.cs" />
@@ -230,7 +232,11 @@
     <Compile Include="Models\Uom.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validation\CompanyValidator.cs" />
     <Compile Include="Validation\CurrencyValidator.cs" />
+    <Compile Include="Validation\IValidator.cs" />
+    <Compile Include="ViewModels\CompanyAccountingPeriodEditViewModel.cs" />
+    <Compile Include="ViewModels\CompanyEditViewModel.cs" />
     <Compile Include="ViewModels\CurrencyEditViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\CompaniesView.cs">
@@ -238,6 +244,12 @@
     </Compile>
     <Compile Include="Views\CompaniesView.Designer.cs">
       <DependentUpon>CompaniesView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CompanyAccountingPeriodsView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\CompanyAccountingPeriodsView.Designer.cs">
+      <DependentUpon>CompanyAccountingPeriodsView.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\CompanyEditView.cs">
       <SubType>Form</SubType>
@@ -280,6 +292,9 @@
     </Compile>
     <EmbeddedResource Include="Views\CompaniesView.resx">
       <DependentUpon>CompaniesView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\CompanyAccountingPeriodsView.resx">
+      <DependentUpon>CompanyAccountingPeriodsView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\CompanyEditView.resx">
       <DependentUpon>CompanyEditView.cs</DependentUpon>

@@ -72,7 +72,7 @@ namespace Kiriazi.Accounting.Pricing.Views
                 DataGridView gridView = o as DataGridView;
                 if(e.ColumnIndex == gridView.Columns["Edit"].Index)
                 {
-                    Company company = _controller.Find(_companies[e.RowIndex].Id);
+                    var company = _controller.Edit(_companies[e.RowIndex].Id);
                     if (company != null)
                     {
                         using (CompanyEditView companyEditView = new CompanyEditView(_controller, company))
@@ -114,6 +114,23 @@ namespace Kiriazi.Accounting.Pricing.Views
         private void btnClose_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void btnNew_Click(object sender, EventArgs e)
+        {
+            using (CompanyEditView companyEditView = new CompanyEditView(_controller, _controller.Add()))
+            {
+                companyEditView.ShowDialog(this);
+                Search();
+            }
+        }
+
+        private void btnAccountingPeriods_Click(object sender, EventArgs e)
+        {
+            using(CompanyAccountingPeriodsView companyAccountingPeriodsView = new CompanyAccountingPeriodsView(_companies[companiesGrid.CurrentRow.Index], _controller))
+            {
+                companyAccountingPeriodsView.ShowDialog(this);
+            }
         }
     }
 }

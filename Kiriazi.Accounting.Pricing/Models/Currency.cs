@@ -89,16 +89,10 @@ namespace Kiriazi.Accounting.Pricing.Models
         public virtual ICollection<ConversionRate> ConversionRatesFromCurrency { get; set; } = new HashSet<ConversionRate>();
 
         [NotMapped]
+        public Currency Self => this;
 
-        public ChangeState ChangeState { get; set; } = ChangeState.New;
 
     }
 
-    public enum ChangeState
-    {
-        UnChanged,
-        Updated,
-        Deleted,
-        New
-    }
+   
 }

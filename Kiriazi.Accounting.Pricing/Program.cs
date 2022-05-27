@@ -49,6 +49,7 @@ namespace Kiriazi.Accounting.Pricing
             services.AddTransient(typeof(Views.CurrencyEditView));
             services.AddTransient(typeof(Controllers.CurrencyController));
             services.AddTransient<IValidator<Currency>, CurrencyValidator>();
+            services.AddTransient<IValidator<Company>,CompanyValidator>();
         }
         public static IServiceProvider ServiceProvider { get; private set; }
 

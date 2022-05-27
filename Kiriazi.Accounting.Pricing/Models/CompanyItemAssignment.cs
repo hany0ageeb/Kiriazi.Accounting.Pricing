@@ -24,6 +24,9 @@ namespace Kiriazi.Accounting.Pricing.Models
 
         public virtual Group Group { get; set; }
 
+        [MaxLength(500)]
+        public string NameAlice { get; set; } 
+
         [ForeignKey("Item")]
         public Guid ItemId { get; set; }
 

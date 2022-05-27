@@ -1,8 +1,8 @@
 ﻿namespace Kiriazi.Accounting.Pricing.Models
 {
-    public enum AccountingPeriodState
+    public static class AccountingPeriodStates
     {
-        Opened,
-        Closed
+        public const string Opened = "Opened";
+        public  const string Closed = "Closed";
     }
 }

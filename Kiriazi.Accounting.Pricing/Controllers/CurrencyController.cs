@@ -10,41 +10,6 @@ using System.Threading.Tasks;
 
 namespace Kiriazi.Accounting.Pricing.Controllers
 {
-    public class CompanyController
-    {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public CompanyController(IUnitOfWork unitOfWork)
-        {
-            _unitOfWork = unitOfWork;
-        }
-        public IList<Company> Find()
-        {
-            return _unitOfWork.CompanyRepository.Find().ToList();
-        }
-        public Company Find(Guid id)
-        {
-            return _unitOfWork.CompanyRepository.Find(id);
-        }
-        public string Delete(Guid id)
-        {
-            var comp = _unitOfWork.CompanyRepository.Find(id);
-            if (comp != null)
-            {
-                if(comp.ItemAssignments.Count == 0 && comp.CompanyAccountingPeriods.Count == 0)
-                {
-                    _unitOfWork.CompanyRepository.Remove(comp);
-                    _unitOfWork.Complete();
-                    return string.Empty;
-                }
-                else
-                {
-                    return $"Cannot Delete Company: {comp.Name} as there are Related Transactions.";
-                }
-            }
-            return string.Empty;
-        }
-    }
     public class CurrencyController
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -125,6 +90,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                 old.Code = model.Code;
                 old.Name = model.Name;
                 old.IsEnabled = model.IsEnabled;
+                _unitOfWork.Complete();
             }
             return modelState;
         }

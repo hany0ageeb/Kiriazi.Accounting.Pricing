@@ -1,0 +1,131 @@
+﻿using Kiriazi.Accounting.Pricing.DAL;
+using Kiriazi.Accounting.Pricing.Models;
+using Kiriazi.Accounting.Pricing.Validation;
+using Kiriazi.Accounting.Pricing.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Kiriazi.Accounting.Pricing.Controllers
+{
+    public class CompanyController
+    {
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IValidator<Company> _validator;
+        public CompanyController(IUnitOfWork unitOfWork,IValidator<Company> validator)
+        {
+            _unitOfWork = unitOfWork;
+            _validator = validator;
+        }
+        public IList<Company> Find()
+        {
+            return _unitOfWork.CompanyRepository.Find().ToList();
+        }
+        public Company Find(Guid id)
+        {
+            return _unitOfWork.CompanyRepository.Find(id);
+        }
+        public CompanyEditViewModel Edit(Guid id)
+        {
+            return new CompanyEditViewModel(_unitOfWork.CompanyRepository.Find(id),_unitOfWork.CurrencyRepository.Find(c => c.IsEnabled).ToList());
+        }
+        public CompanyEditViewModel Add()
+        {
+            return new CompanyEditViewModel(_unitOfWork.CurrencyRepository.Find(c=>c.IsEnabled).ToList());
+        }
+        public ModelState Add(CompanyEditViewModel model)
+        {
+            Company company = model.Company;
+            var modelState = _validator.Validate(company);
+            if (modelState.HasErrors)
+                return modelState;
+            if (_unitOfWork.CompanyRepository.Find(c => c.Name.Equals(model.Name, StringComparison.InvariantCultureIgnoreCase)).Count() > 0)
+            {
+                modelState.AddErrors(nameof(model.Name), "Company Name Already Exist.");
+                return modelState;
+            }
+            _unitOfWork.CompanyRepository.Add(company);
+            _unitOfWork.Complete();
+            return modelState;
+        }
+        public ModelState Edit(CompanyEditViewModel model)
+        {
+            Company company = model.Company;
+            var modelState = _validator.Validate(company);
+            if (modelState.HasErrors)
+                return modelState;
+            if(_unitOfWork.CompanyRepository.Find(c=>c.Id != company.Id && c.Name.Equals(company.Name, StringComparison.CurrentCultureIgnoreCase)).Count() > 0)
+            {
+                modelState.AddErrors(nameof(company.Name), "Company Name Already Exist");
+                return modelState;
+            }
+            Company old = _unitOfWork.CompanyRepository.Find(company.Id);
+            if (old != null)
+            {
+                old.IsEnabled = company.IsEnabled;
+                old.Name = company.Name;
+                old.Currency = company.Currency;
+                old.Description = company.Description;
+                _unitOfWork.Complete();
+            }
+            _unitOfWork.Complete();
+            return modelState;
+        }
+        public ModelState AddOrUpdate(CompanyEditViewModel model)
+        {
+            if (_unitOfWork.CompanyRepository.Find(model.Id) != null)
+            {
+                return Edit(model);
+            }
+            else
+            {
+                return Add(model);
+            }
+        }
+        public string Delete(Guid id)
+        {
+            var comp = _unitOfWork.CompanyRepository.Find(id);
+            if (comp != null)
+            {
+                if(comp.ItemAssignments.Count == 0 && comp.CompanyAccountingPeriods.Count == 0)
+                {
+                    _unitOfWork.CompanyRepository.Remove(comp);
+                    _unitOfWork.Complete();
+                    return string.Empty;
+                }
+                else
+                {
+                    return $"Cannot Delete Company: {comp.Name} as there are Related Transactions.";
+                }
+            }
+            return string.Empty;
+        }
+        public IList<CompanyAccountingPeriodEditViewModel> EditAccountingPeriods(Guid companyId)
+        {
+            IList<CompanyAccountingPeriodEditViewModel> model = new List<CompanyAccountingPeriodEditViewModel>();
+            var allPeriods = _unitOfWork.AccountingPeriodRepository.Find();
+            var company = _unitOfWork.CompanyRepository.Find(companyId);
+            var companyPeriods = company.CompanyAccountingPeriods.Select(x => x.AccountingPeriod);
+            foreach (var p in allPeriods)
+            {
+                var temp = new CompanyAccountingPeriodEditViewModel(p);
+                
+                temp.Company = company;
+                if (companyPeriods.Contains(p))
+                {
+                    temp.IsPeriodAssigned = true;
+                    temp.Name = company.CompanyAccountingPeriods.Where(cp => cp.AccountingPeriodId == p.Id).Select(cp => cp.Name).FirstOrDefault();
+                    temp.State = company.CompanyAccountingPeriods.Where(cp => cp.AccountingPeriodId == p.Id).Select(cp => cp.State).FirstOrDefault();
+                }
+                else
+                {
+                    temp.IsPeriodAssigned = false;
+                    temp.Name = "";
+                    temp.State = AccountingPeriodStates.Opened;
+                }
+                model.Add(temp);
+            }
+            return model;
+        }
+    }
+}

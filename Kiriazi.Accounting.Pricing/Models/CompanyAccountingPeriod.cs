@@ -26,8 +26,9 @@ namespace Kiriazi.Accounting.Pricing.Models
         [Required]
         public virtual AccountingPeriod AccountingPeriod { get; set; }
 
-        [Required]
-        public AccountingPeriodState State { get; set; } = AccountingPeriodState.Opened;
+        [Required(AllowEmptyStrings = false)]
+        [MaxLength(50)]
+        public string State { get; set; } = AccountingPeriodStates.Opened;
 
         public ICollection<PriceList> PriceLists { get; set; } = new HashSet<PriceList>();
 

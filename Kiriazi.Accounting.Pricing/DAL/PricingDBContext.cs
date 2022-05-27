@@ -5,7 +5,7 @@ using System.Diagnostics;
 namespace Kiriazi.Accounting.Pricing.DAL
 {
    
-    public class PricingDBInitializer : DropCreateDatabaseIfModelChanges<PricingDBContext>
+    public class PricingDBInitializer : CreateDatabaseIfNotExists<PricingDBContext>
     {
         protected override void Seed(PricingDBContext context)
         {
@@ -155,6 +155,25 @@ namespace Kiriazi.Accounting.Pricing.DAL
                         Currency = currencies[0]
                     }
             };
+            AccountingPeriod[] accountingPeriods = new AccountingPeriod[]
+            {
+                new AccountingPeriod()
+                {
+                    Name = "JAN-2022 To MAR-2022",
+                    Description = "Period from 01/01/2022 to 31/03/2022",
+                    FromDate = new System.DateTime(2022,01,01),
+                    ToDate = new System.DateTime(2022,03,31)
+                },
+                new AccountingPeriod()
+                {
+                    Name = "APR-2022 To JUN-2022",
+                    Description = "Period from 01/04/2022 to 30/06/2022",
+                    FromDate = new System.DateTime(2022,04,01),
+                    ToDate = new System.DateTime(2022,06,30)
+                }
+            };
+
+            context.AccountingPeriods.AddRange(accountingPeriods);
             context.Uoms.AddRange(uoms);
             context.ItemTypes.AddRange(itemTypes);
             context.Groups.AddRange(groups);

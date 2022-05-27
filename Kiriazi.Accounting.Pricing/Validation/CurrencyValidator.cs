@@ -1,5 +1,4 @@
 ﻿using Kiriazi.Accounting.Pricing.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,29 +6,6 @@ using System.Threading.Tasks;
 
 namespace Kiriazi.Accounting.Pricing.Validation
 {
-    public interface IValidator<TEntity>
-        where TEntity : class
-    {
-        ModelState Validate(TEntity entity);
-        IDictionary<string, IList<string>> Validate(TEntity entity, string propertyName);
-    }
-    public class CompanyValidator : IValidator<Company>
-    {
-        public ModelState Validate(Company entity)
-        {
-            ModelState modelState = new ModelState();
-            if (string.IsNullOrEmpty(entity.Name))
-            {
-                modelState.AddErrors(nameof(entity.Name), "Pleas Enete Company Name (No More Than 250 Letters).");
-            }
-            return modelState;
-        }
-
-        public IDictionary<string, IList<string>> Validate(Company entity, string propertyName)
-        {
-            throw new NotImplementedException();
-        }
-    }
     public class CurrencyValidator : IValidator<Currency>
     {
         public ModelState Validate(Currency entity)

@@ -79,8 +79,5 @@ namespace Kiriazi.Accounting.Pricing.Models
                 }
             }
         }
-
-       
-
     }
 }

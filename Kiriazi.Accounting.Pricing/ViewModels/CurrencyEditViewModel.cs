@@ -3,7 +3,6 @@ using Kiriazi.Accounting.Pricing.Models;
 using Kiriazi.Accounting.Pricing.Validation;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -68,7 +67,7 @@ namespace Kiriazi.Accounting.Pricing.ViewModels
             get => _currency.Id;
             set => _currency.Id = value;
         }
-
+       
         public CurrencyEditViewModel()
         {
             _currency = new Currency();

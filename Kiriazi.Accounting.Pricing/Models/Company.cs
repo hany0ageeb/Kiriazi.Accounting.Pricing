@@ -11,10 +11,11 @@ namespace Kiriazi.Accounting.Pricing.Models
         private string _name = "";
         private string _description = "";
         private bool _isEnabled = true;
+        private bool _currency;
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public Guid Id { get; private set; } = Guid.NewGuid();
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         # region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
@@ -55,7 +56,18 @@ namespace Kiriazi.Accounting.Pricing.Models
             }
         }
 
-        public bool IsEnabled { get; set; } = true;
+        public bool IsEnabled 
+        { 
+            get => _isEnabled;
+            set
+            {
+                if (_isEnabled != value)
+                {
+                    _isEnabled = value;
+                    OnPropertyChanged(nameof(IsEnabled));
+                }
+            }
+        }
         
         [Required]
         public virtual Currency Currency { get; set; }

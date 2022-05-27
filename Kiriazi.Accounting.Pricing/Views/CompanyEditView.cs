@@ -1,5 +1,6 @@
 ﻿using Kiriazi.Accounting.Pricing.Controllers;
 using Kiriazi.Accounting.Pricing.Models;
+using Kiriazi.Accounting.Pricing.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,12 +16,13 @@ namespace Kiriazi.Accounting.Pricing.Views
     public partial class CompanyEditView : Form
     {
         private readonly CompanyController _companyController;
-        private Company _model;
+        private CompanyEditViewModel _model;
+        private bool _hasChanged = false;
 
-        public CompanyEditView(CompanyController companyController,Company company)
+        public CompanyEditView(CompanyController companyController,CompanyEditViewModel model)
         {
             _companyController = companyController;
-            _model = company;
+            _model = model;
             InitializeComponent();
             Initialize();
         }
@@ -49,11 +51,90 @@ namespace Kiriazi.Accounting.Pricing.Views
             //
             chkIsEnabled.DataBindings.Clear();
             chkIsEnabled.DataBindings.Add(new Binding(nameof(chkIsEnabled.Checked),_model,nameof(_model.IsEnabled)) { DataSourceUpdateMode = DataSourceUpdateMode.OnPropertyChanged});
+            //
+            cboCurrencies.DataSource = _model.Currencies;
+            cboCurrencies.DisplayMember = "Name";
+            cboCurrencies.ValueMember = "Self";
+            cboCurrencies.DataBindings.Clear();
+            cboCurrencies.DataBindings.Add(new Binding(nameof(cboCurrencies.SelectedItem),_model,nameof(_model.Currency)) { });
+            cboCurrencies.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            cboCurrencies.AutoCompleteSource = AutoCompleteSource.ListItems;
+            //
+            _model.PropertyChanged += (o, e) =>
+            {
+                _hasChanged = true;
+                btnSave.Enabled = true;
+            };
         }
-
+        private bool SaveChanges()
+        {
+            if (_hasChanged)
+            {
+                var modelState = _companyController.AddOrUpdate(_model);
+                if (modelState.HasErrors)
+                {
+                    var errors = modelState.GetErrors(nameof(_model.Name));
+                    if(errors.Count > 0)
+                    {
+                        errorProvider1.SetError(txtName, errors[0]);
+                    }
+                    System.Media.SystemSounds.Hand.Play();
+                    return false;
+                }
+                else
+                {
+                    errorProvider1.SetError(txtName, "");
+                    errorProvider1.SetError(cboCurrencies, "");
+                    System.Media.SystemSounds.Beep.Play();
+                    return true;
+                }
+            }
+            return true;
+        }
         private void Control_Validated(object sender, EventArgs e)
         {
             errorProvider1.SetError(sender as Control, "");
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            if (SaveChanges())
+            {
+                _model.Id = Guid.NewGuid();
+                _model.Name = "";
+                _model.Description = "";
+                _model.IsEnabled = true;
+                _model.Currency = _model.Currencies[0];
+                _hasChanged = false;
+                btnSave.Enabled = false;
+            }
+            else
+            {
+
+            }
+        }
+
+        private void CompanyEditView_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (_hasChanged)
+            {
+                if(e.CloseReason == CloseReason.UserClosing)
+                {
+                    DialogResult result = MessageBox.Show(this, "Do you want to save changes?", "Question", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                    if(result == DialogResult.Yes)
+                    {
+                        e.Cancel = !SaveChanges();
+                    }
+                    else if(result == DialogResult.No)
+                    {
+
+                    }
+                    else
+                    {
+                        e.Cancel = true;
+                    }
+                }
+            }
         }
     }
 }

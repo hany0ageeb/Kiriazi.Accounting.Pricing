@@ -82,6 +82,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.btnNew.TabIndex = 0;
             this.btnNew.Text = "New Company...";
             this.btnNew.UseVisualStyleBackColor = true;
+            this.btnNew.Click += new System.EventHandler(this.btnNew_Click);
             // 
             // btnItems
             // 
@@ -102,6 +103,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.btnAccountingPeriods.TabIndex = 2;
             this.btnAccountingPeriods.Text = "Accounting Periods...";
             this.btnAccountingPeriods.UseVisualStyleBackColor = true;
+            this.btnAccountingPeriods.Click += new System.EventHandler(this.btnAccountingPeriods_Click);
             // 
             // flowLayoutPanel3
             // 
