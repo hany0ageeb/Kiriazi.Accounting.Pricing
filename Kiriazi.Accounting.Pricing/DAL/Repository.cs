@@ -10,7 +10,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
     public class Repository<TEntity> : IRepository<TEntity>
         where TEntity : class
     {
-        private readonly DbContext _context;
+        protected readonly DbContext _context;
 
         public Repository(DbContext context)
         {
@@ -50,5 +50,22 @@ namespace Kiriazi.Accounting.Pricing.DAL
         {
             _context.Set<TEntity>().RemoveRange(entities);
         }
+
+        public IEnumerable<TEntity> Find(Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy)
+        {
+            return orderBy(_context.Set<TEntity>()).AsEnumerable();
+        }
+
+        public IEnumerable<TEntity> Find(Func<IQueryable<TEntity>, IQueryable<TEntity>> include)
+        {
+            return include(_context.Set<TEntity>()).AsEnumerable();
+        }
+        
+        public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TEntity>> select)
+        {
+            return _context.Set<TEntity>().Where(predicate).Select(select).AsEnumerable();
+        }
+
+        
     }
 }

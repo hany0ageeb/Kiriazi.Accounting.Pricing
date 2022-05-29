@@ -11,7 +11,7 @@ namespace Kiriazi.Accounting.Pricing.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public Guid Id { get; private set; } = Guid.NewGuid();
+        public Guid Id { get; set; } = Guid.NewGuid();
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
         #endregion INotifyPropertyChanged
@@ -55,6 +55,18 @@ namespace Kiriazi.Accounting.Pricing.Models
         public virtual ICollection<ItemRelation> Parents { get; set; } = new HashSet<ItemRelation>();
 
         public virtual ICollection<CompanyItemAssignment> CompanyAssignments { get; set; } = new HashSet<CompanyItemAssignment>();
+
+        [NotMapped]
+        public string UomName => Uom?.Name;
+
+        [NotMapped]
+        public string ItemTypeName => ItemType?.Name;
+
+        [NotMapped]
+        public string TarrifCode => Tarrif?.Code;
+
+        [NotMapped]
+        public decimal? TarrifPercentage => Tarrif?.PercentageAmount;
 
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Kiriazi.Accounting.Pricing.Models;
+using System;
 
 namespace Kiriazi.Accounting.Pricing.ViewModels
 {
@@ -9,6 +10,16 @@ namespace Kiriazi.Accounting.Pricing.ViewModels
         private bool _isAssigned = false;
         private string _name = "";
         private string _state = AccountingPeriodStates.Opened;
+        public Guid Id { get; set; } = Guid.NewGuid();
+        public CompanyAccountingPeriodEditViewModel(CompanyAccountingPeriod companyAccountingPeriod)
+        {
+            Id = companyAccountingPeriod.Id;
+            _accountingPeriod = companyAccountingPeriod.AccountingPeriod;
+            _company = companyAccountingPeriod.Company;
+            _isAssigned = true;
+            _name = companyAccountingPeriod.Name;
+            _state = companyAccountingPeriod.State;
+        }
         public CompanyAccountingPeriodEditViewModel(AccountingPeriod accountingPeriod)
         {
             _accountingPeriod = accountingPeriod;

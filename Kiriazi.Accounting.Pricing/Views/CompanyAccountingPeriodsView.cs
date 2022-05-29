@@ -16,6 +16,8 @@ namespace Kiriazi.Accounting.Pricing.Views
     {
         private readonly CompanyController _controller;
         private BindingList<ViewModels.CompanyAccountingPeriodEditViewModel> _model;
+        private bool _hasChanged = false;
+
         public CompanyAccountingPeriodsView(Company company,CompanyController companyController)
         {
             InitializeComponent();
@@ -97,7 +99,16 @@ namespace Kiriazi.Accounting.Pricing.Views
                     }
                 }
             };
+            btnSave.Enabled = false;
             _model = new BindingList<ViewModels.CompanyAccountingPeriodEditViewModel>(_controller.EditAccountingPeriods(company.Id));
+            _model.ListChanged += (o, e) =>
+            {
+                if (e.ListChangedType == ListChangedType.ItemChanged)
+                {
+                    _hasChanged = true;
+                    btnSave.Enabled = true;
+                }
+            };
             dataGridView1.DataSource = _model;
             dataGridView1.RowValidating += (o, e) =>
             {
@@ -119,9 +130,15 @@ namespace Kiriazi.Accounting.Pricing.Views
                                 grid.Rows[e.RowIndex].ErrorText = "State Field is mandatory";
                             }
                         }
+                        else
+                        {
+                            e.Cancel = !_controller.CanAccountingPeriodAssigmentChange(_model[e.RowIndex]);
+                            grid.Rows[e.RowIndex].ErrorText = "Cannot Modify as there is a price list related to this item.";
+                        }
                     }
                 }
             };
+            
             dataGridView1.RowValidated += (o, e) =>
             {
                 DataGridView grid = o as DataGridView;
@@ -133,6 +150,68 @@ namespace Kiriazi.Accounting.Pricing.Views
                     }
                 }
             };
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            if (_hasChanged)
+            {
+                DialogResult result = MessageBox.Show(
+                    owner: this, 
+                    text: "Do you want to Save Changes?", 
+                    caption: "Question", 
+                    MessageBoxButtons.YesNoCancel, 
+                    MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    _controller.SaveOrUpdateCompanyAccountingPeriods(_model);
+                    System.Media.SystemSounds.Beep.Play();
+                    Close();
+                }
+                else if (result == DialogResult.No)
+                {
+                    Close();
+                }
+
+            }
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            if (_hasChanged)
+            {
+                _controller.SaveOrUpdateCompanyAccountingPeriods(_model);
+                System.Media.SystemSounds.Beep.Play();
+                _hasChanged = false;
+                btnSave.Enabled = false;
+                Close();
+            }
+        }
+
+        private void CompanyAccountingPeriodsView_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if(_hasChanged && e.CloseReason == CloseReason.UserClosing)
+            {
+                DialogResult result = MessageBox.Show(
+                   owner: this,
+                   text: "Do you want to Save Changes?",
+                   caption: "Question",
+                   MessageBoxButtons.YesNoCancel,
+                   MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    _controller.SaveOrUpdateCompanyAccountingPeriods(_model);
+                    System.Media.SystemSounds.Beep.Play();
+                }
+                else if (result == DialogResult.Cancel)
+                {
+                    e.Cancel = true;
+                }
+                else
+                {
+
+                }
+            }
         }
     }
 }

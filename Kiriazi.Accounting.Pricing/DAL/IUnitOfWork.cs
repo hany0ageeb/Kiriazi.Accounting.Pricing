@@ -11,6 +11,10 @@ namespace Kiriazi.Accounting.Pricing.DAL
         ITarrifRepository TarrifRepository { get; }
         IItemRepository ItemRepository { get; }
         IAccountingPeriodRepository AccountingPeriodRepository { get; }
+        ICompanyAccountingPeriodRepository CompanyAccountingPeriodRepository { get; }
+        ICustomerRepository CustomerRepository { get; }
+        IItemTypeRepository ItemTypeRepository { get; }
+        ICompanyItemAssignmentRepository CompanyItemAssignmentRepository { get; }
         int Complete();
     }
 }

@@ -25,7 +25,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             {
                 new UserCommand()
                 {
-                    DisplayName = "عملة",
+                    DisplayName = "Currecny",
                    Action = () =>
                    {
                        CurrenciesView currenciesView = Program.ServiceProvider.GetRequiredService<CurrenciesView>();
@@ -35,7 +35,7 @@ namespace Kiriazi.Accounting.Pricing.Views
                 },
                 new UserCommand()
                 {
-                    DisplayName = "شركة",
+                    DisplayName = "Company",
                     Action = () =>
                     {
                         CompaniesView companiesView = Program.ServiceProvider.GetRequiredService<CompaniesView>();
@@ -45,7 +45,43 @@ namespace Kiriazi.Accounting.Pricing.Views
                 },
                 new UserCommand()
                 {
-                    DisplayName = "وحدة"
+                    DisplayName = "Unit Of Measure",
+                    Action = () =>
+                    {
+                        UomsView uomsView = Program.ServiceProvider.GetRequiredService<UomsView>();
+                        uomsView.MdiParent = this.MdiParent;
+                        uomsView.Show();
+                    }
+                },
+                new UserCommand()
+                {
+                    DisplayName = "Item Groups",
+                    Action = () =>
+                    {
+                        GroupsView groupsView = Program.ServiceProvider.GetRequiredService<GroupsView>();
+                        groupsView.MdiParent = this.MdiParent;
+                        groupsView.Show();
+                    }
+                },
+                new UserCommand()
+                {
+                    DisplayName = "Tarrif",
+                    Action = () =>
+                    {
+                        TarrifsView tarrifsView = Program.ServiceProvider.GetRequiredService<TarrifsView>();
+                        tarrifsView.MdiParent = this.MdiParent;
+                        tarrifsView.Show();
+                    }
+                },
+                new UserCommand()
+                {
+                    DisplayName = "Item",
+                    Action = () =>
+                    {
+                        ItemsView itemsView = Program.ServiceProvider.GetRequiredService<ItemsView>();
+                        itemsView.MdiParent = this.MdiParent;
+                        itemsView.Show();
+                    }
                 }
             };
             lstOptions.DataSource = commands;

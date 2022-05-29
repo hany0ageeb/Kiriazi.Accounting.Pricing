@@ -78,5 +78,8 @@ namespace Kiriazi.Accounting.Pricing.Models
 
         [ForeignKey("Currency")]
         public Guid CurrencyId { get; set; }
+
+        [NotMapped]
+        public Company Self => this;
     }
 }

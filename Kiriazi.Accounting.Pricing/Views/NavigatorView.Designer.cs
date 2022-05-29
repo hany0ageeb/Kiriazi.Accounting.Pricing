@@ -42,7 +42,6 @@ namespace Kiriazi.Accounting.Pricing.Views
             "عملة"});
             this.lstOptions.Location = new System.Drawing.Point(12, 12);
             this.lstOptions.Name = "lstOptions";
-            this.lstOptions.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.lstOptions.Size = new System.Drawing.Size(424, 531);
             this.lstOptions.TabIndex = 0;
             this.lstOptions.DoubleClick += new System.EventHandler(this.lstOptions_DoubleClick);
@@ -50,11 +49,11 @@ namespace Kiriazi.Accounting.Pricing.Views
             // 
             // btnOpen
             // 
-            this.btnOpen.Location = new System.Drawing.Point(332, 562);
+            this.btnOpen.Location = new System.Drawing.Point(333, 555);
             this.btnOpen.Name = "btnOpen";
             this.btnOpen.Size = new System.Drawing.Size(103, 37);
             this.btnOpen.TabIndex = 1;
-            this.btnOpen.Text = "فتح";
+            this.btnOpen.Text = "Open";
             this.btnOpen.UseVisualStyleBackColor = true;
             this.btnOpen.Click += new System.EventHandler(this.btnOpen_Click);
             // 

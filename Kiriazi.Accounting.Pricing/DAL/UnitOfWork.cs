@@ -13,6 +13,10 @@
             TarrifRepository = new TarrifRepository(_context);
             ItemRepository = new ItemRepository(_context);
             AccountingPeriodRepository = new AccountingPeriodRepository(_context);
+            CompanyAccountingPeriodRepository = new CompanyAccountingPeriodRepository(_context);
+            CustomerRepository = new CustomerRepository(_context);
+            ItemTypeRepository = new ItemTypeRepository(_context);
+            CompanyItemAssignmentRepository = new CompanyItemAssignmentRepository(_context);
         }
         public IUomRepository UomRepository { get; private set; }
 
@@ -27,6 +31,14 @@
         public IItemRepository ItemRepository { get; private set; }
 
         public IAccountingPeriodRepository AccountingPeriodRepository { get; private set; }
+
+        public ICompanyAccountingPeriodRepository CompanyAccountingPeriodRepository { get; private set; }
+
+        public ICustomerRepository CustomerRepository { get; private set; }
+
+        public IItemTypeRepository ItemTypeRepository { get; private set; }
+
+        public ICompanyItemAssignmentRepository CompanyItemAssignmentRepository { get; private set; }
 
         public int Complete()
         {

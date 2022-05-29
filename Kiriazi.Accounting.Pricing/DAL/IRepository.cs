@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -12,7 +13,12 @@ namespace Kiriazi.Accounting.Pricing.DAL
     {
         TEntity Find(object Id);
         IEnumerable<TEntity> Find();
+        
+        IEnumerable<TEntity> Find(Func<IQueryable<TEntity>,IQueryable<TEntity>> include);
+        IEnumerable<TEntity> Find(Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy);
+        
         IEnumerable<TEntity> Find(Expression<Func<TEntity,bool>> predicate);
+       
         IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy);
 
         void Add(TEntity entity);

@@ -10,7 +10,7 @@ namespace Kiriazi.Accounting.Pricing.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public Guid Id { get; private set; } = Guid.NewGuid();
+        public Guid Id { get;  set; } = Guid.NewGuid();
 
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
@@ -26,5 +26,8 @@ namespace Kiriazi.Accounting.Pricing.Models
         public string Description { get; set; }
 
         public virtual ICollection<Item> Items { get; set; } = new HashSet<Item>();
+
+        [NotMapped]
+        public ItemType Self => this;
     }
 }

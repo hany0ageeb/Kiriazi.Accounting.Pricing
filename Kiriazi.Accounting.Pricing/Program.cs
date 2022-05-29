@@ -39,17 +39,34 @@ namespace Kiriazi.Accounting.Pricing
         private static void ConfigureServices(IServiceCollection services)
         {
             // ...
-            services.AddTransient(typeof(Controllers.CompanyController));
-            services.AddTransient(typeof(Views.CompaniesView));
-            services.AddTransient(typeof(Views.MainView));
+            
             services.AddTransient(typeof(DAL.PricingDBContext));
             services.AddTransient<DAL.IUnitOfWork, DAL.UnitOfWork>();
             services.AddTransient(typeof(ViewModels.CurrencyEditViewModel));
+            services.AddTransient(typeof(ViewModels.ItemSearchViewModel));
+
             services.AddTransient(typeof(Views.CurrenciesView));
             services.AddTransient(typeof(Views.CurrencyEditView));
+            services.AddTransient(typeof(Views.CompaniesView));
+            services.AddTransient(typeof(Views.MainView));
+            services.AddTransient(typeof(Views.UomsView));
+            services.AddTransient(typeof(Views.GroupsView));
+            services.AddTransient(typeof(Views.ItemsView));
+            services.AddTransient(typeof(Views.TarrifsView));
+
             services.AddTransient(typeof(Controllers.CurrencyController));
+            services.AddTransient(typeof(Controllers.GroupController));
+            services.AddTransient(typeof(Controllers.TarrifController));
+            services.AddTransient(typeof(Controllers.ItemController));
+            services.AddTransient(typeof(Controllers.UomController));
+            services.AddTransient(typeof(Controllers.CompanyController));
+
             services.AddTransient<IValidator<Currency>, CurrencyValidator>();
             services.AddTransient<IValidator<Company>,CompanyValidator>();
+            services.AddTransient<IValidator<Uom>, UomValidaor>();
+            services.AddTransient<IValidator<Group>, GroupValidator>();
+            services.AddTransient<IValidator<Tarrif>,TarrifValidator>();
+            services.AddTransient<IValidator<Item>,ItemValidator>();
         }
         public static IServiceProvider ServiceProvider { get; private set; }
 

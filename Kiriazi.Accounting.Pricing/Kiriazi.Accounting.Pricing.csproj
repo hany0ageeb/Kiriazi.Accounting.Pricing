@@ -195,17 +195,28 @@
   <ItemGroup>
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\CurrencyController.cs" />
+    <Compile Include="Controllers\GroupController.cs" />
+    <Compile Include="Controllers\ItemController.cs" />
+    <Compile Include="Controllers\UomController.cs" />
+    <Compile Include="DAL\CompanyAccountingPeriodRepository.cs" />
+    <Compile Include="DAL\CompanyItemAssignmentRepository.cs" />
     <Compile Include="DAL\CompanyRepository.cs" />
     <Compile Include="DAL\CurrencyRepository.cs" />
+    <Compile Include="DAL\CustomerRepository.cs" />
     <Compile Include="DAL\GroupRepository.cs" />
     <Compile Include="DAL\IAccountingPeriodRepository.cs" />
+    <Compile Include="DAL\ICompanyAccountingPeriodRepository.cs" />
+    <Compile Include="DAL\ICompanyItemAssignmentRepository.cs" />
     <Compile Include="DAL\ICompanyRepository.cs" />
     <Compile Include="DAL\ICurrencyRepository.cs" />
+    <Compile Include="DAL\ICustomerRepository.cs" />
     <Compile Include="DAL\IGroupRepository.cs" />
     <Compile Include="DAL\IItemRepository.cs" />
+    <Compile Include="DAL\IItemTypeRepository.cs" />
     <Compile Include="DAL\IRepository.cs" />
     <Compile Include="DAL\ITarrifRepository.cs" />
     <Compile Include="DAL\ItemRepository.cs" />
+    <Compile Include="DAL\ItemTypeRepository.cs" />
     <Compile Include="DAL\IUnitOfWork.cs" />
     <Compile Include="DAL\IUomRepository.cs" />
     <Compile Include="DAL\PricingDBContext.cs" />
@@ -232,12 +243,18 @@
     <Compile Include="Models\Uom.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validation\ComapnyAccountingPeriodValidator.cs" />
     <Compile Include="Validation\CompanyValidator.cs" />
     <Compile Include="Validation\CurrencyValidator.cs" />
+    <Compile Include="Validation\GroupValidator.cs" />
+    <Compile Include="Validation\ItemValidator.cs" />
     <Compile Include="Validation\IValidator.cs" />
+    <Compile Include="Validation\TarrifValidator.cs" />
+    <Compile Include="Validation\UomValidaor.cs" />
     <Compile Include="ViewModels\CompanyAccountingPeriodEditViewModel.cs" />
     <Compile Include="ViewModels\CompanyEditViewModel.cs" />
     <Compile Include="ViewModels\CurrencyEditViewModel.cs" />
+    <Compile Include="ViewModels\ItemSearchViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\CompaniesView.cs">
       <SubType>Form</SubType>
@@ -269,6 +286,30 @@
     <Compile Include="Views\CurrencyEditView.Designer.cs">
       <DependentUpon>CurrencyEditView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\GroupEditView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\GroupEditView.Designer.cs">
+      <DependentUpon>GroupEditView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\GroupsView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\GroupsView.Designer.cs">
+      <DependentUpon>GroupsView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ItemEditView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ItemEditView.Designer.cs">
+      <DependentUpon>ItemEditView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ItemsView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ItemsView.Designer.cs">
+      <DependentUpon>ItemsView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -280,6 +321,30 @@
     </Compile>
     <Compile Include="Views\NavigatorView.Designer.cs">
       <DependentUpon>NavigatorView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TarrifEditView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\TarrifEditView.Designer.cs">
+      <DependentUpon>TarrifEditView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TarrifsView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\TarrifsView.Designer.cs">
+      <DependentUpon>TarrifsView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UomEditView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\UomEditView.Designer.cs">
+      <DependentUpon>UomEditView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UomsView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\UomsView.Designer.cs">
+      <DependentUpon>UomsView.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -305,11 +370,35 @@
     <EmbeddedResource Include="Views\CurrencyEditView.resx">
       <DependentUpon>CurrencyEditView.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\GroupEditView.resx">
+      <DependentUpon>GroupEditView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\GroupsView.resx">
+      <DependentUpon>GroupsView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ItemEditView.resx">
+      <DependentUpon>ItemEditView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ItemsView.resx">
+      <DependentUpon>ItemsView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\MainView.resx">
       <DependentUpon>MainView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\NavigatorView.resx">
       <DependentUpon>NavigatorView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\TarrifEditView.resx">
+      <DependentUpon>TarrifEditView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\TarrifsView.resx">
+      <DependentUpon>TarrifsView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\UomEditView.resx">
+      <DependentUpon>UomEditView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\UomsView.resx">
+      <DependentUpon>UomsView.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

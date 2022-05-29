@@ -109,10 +109,10 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             foreach (var p in allPeriods)
             {
                 var temp = new CompanyAccountingPeriodEditViewModel(p);
-                
                 temp.Company = company;
                 if (companyPeriods.Contains(p))
                 {
+                    temp.Id = company.CompanyAccountingPeriods.Where(cp => cp.AccountingPeriodId == p.Id).Select(cp => cp.Id).FirstOrDefault();
                     temp.IsPeriodAssigned = true;
                     temp.Name = company.CompanyAccountingPeriods.Where(cp => cp.AccountingPeriodId == p.Id).Select(cp => cp.Name).FirstOrDefault();
                     temp.State = company.CompanyAccountingPeriods.Where(cp => cp.AccountingPeriodId == p.Id).Select(cp => cp.State).FirstOrDefault();
@@ -126,6 +126,54 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                 model.Add(temp);
             }
             return model;
+        }
+        public bool CanAccountingPeriodAssigmentChange(CompanyAccountingPeriodEditViewModel model)
+        {
+            var temp = _unitOfWork.CompanyAccountingPeriodRepository.Find(model.Id);
+            if (temp == null)
+            {
+                return true;
+            }
+            else
+            {
+                if (temp.PriceLists.Count > 0)
+                    return false;
+                else
+                    return true;
+            }
+        }
+        public void SaveOrUpdateCompanyAccountingPeriods(IList<CompanyAccountingPeriodEditViewModel> periods)
+        {
+            foreach(CompanyAccountingPeriodEditViewModel model in periods)
+            {
+                var temp = _unitOfWork.CompanyAccountingPeriodRepository.Find(model.Id);
+                if (model.IsPeriodAssigned)
+                {
+                    if (temp == null)
+                    {
+                        _unitOfWork.CompanyAccountingPeriodRepository.Add(new CompanyAccountingPeriod()
+                        {
+                            Company = model.Company,
+                            AccountingPeriod = model.AccountingPeriod,
+                            Name = model.Name,
+                            State = model.State
+                        });
+                    }
+                    else
+                    {
+                        temp.Name = model.Name;
+                        temp.State = model.State;
+                    }
+                }
+                else
+                {
+                    if (temp != null && temp.PriceLists.Count == 0)
+                    {
+                        _unitOfWork.CompanyAccountingPeriodRepository.Remove(temp);
+                    }
+                }
+            }
+            _unitOfWork.Complete();
         }
     }
 }
