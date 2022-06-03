@@ -17,7 +17,7 @@ namespace Kiriazi.Accounting.Pricing.Models
         [Timestamp]
         public byte[] Timestamp { get; set; }
 
-        [Required(AllowEmptyStrings = false), MaxLength(250)]
+        [MaxLength(250)]
         public string Name { get; set; }
 
         [Required]

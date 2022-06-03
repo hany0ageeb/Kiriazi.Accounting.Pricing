@@ -56,29 +56,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
                     Description = ""
                 }
            };
-            Item[] items = new Item[]
-           {
-                new Item()
-                {
-                    Code = "3/4K",
-                    EnglishName = "",
-                    ArabicName = "سلك شعر 3/4مم اسود",
-                    UomId = uoms[2].Id,
-                    Uom = uoms[2],
-                    ItemTypeId = itemTypes[0].Id,
-                    ItemType = itemTypes[0]
-                },
-                new Item()
-                {
-                     Code = "3*53C",
-                    EnglishName = "",
-                    ArabicName = "غطاء شعله صغيره اسود سوبر",
-                    UomId = uoms[1].Id,
-                    Uom = uoms[2],
-                    ItemTypeId = itemTypes[0].Id,
-                    ItemType = itemTypes[0]
-                }
-           };
+            
             Currency[] currencies = new Currency[]
            {
                 new Currency()
@@ -155,24 +133,82 @@ namespace Kiriazi.Accounting.Pricing.DAL
                         Currency = currencies[0]
                     }
             };
+            Item[] items = new Item[]
+           {
+                new Item()
+                {
+                    Code = "3/4K",
+                    EnglishName = "",
+                    ArabicName = "سلك شعر 3/4مم اسود",
+                    UomId = uoms[2].Id,
+                    Uom = uoms[2],
+                    ItemTypeId = itemTypes[0].Id,
+                    ItemType = itemTypes[0]
+                },
+                new Item()
+                {
+                     Code = "3*53C",
+                    EnglishName = "",
+                    ArabicName = "غطاء شعله صغيره اسود سوبر",
+                    UomId = uoms[1].Id,
+                    Uom = uoms[2],
+                    ItemTypeId = itemTypes[0].Id,
+                    ItemType = itemTypes[0]
+                }
+           };
+            CompanyItemAssignment[] companyItemAssignments = new CompanyItemAssignment[]
+            {
+                new CompanyItemAssignment()
+                {
+                    Item = items[0],
+                    Company = companies[0],
+                    Group = groups[0],
+                    NameAlias = "Fuck"
+                }
+            };
+            int month = System.DateTime.Now.Month;
+            int year = System.DateTime.Now.Year;
+            System.DateTime fromDate = new System.DateTime(year, month, 1);
+            System.DateTime toDate = fromDate.AddMonths(3).AddHours(23).AddMinutes(59).AddSeconds(59);
             AccountingPeriod[] accountingPeriods = new AccountingPeriod[]
             {
                 new AccountingPeriod()
                 {
-                    Name = "JAN-2022 To MAR-2022",
-                    Description = "Period from 01/01/2022 to 31/03/2022",
-                    FromDate = new System.DateTime(2022,01,01),
-                    ToDate = new System.DateTime(2022,03,31)
-                },
-                new AccountingPeriod()
-                {
-                    Name = "APR-2022 To JUN-2022",
-                    Description = "Period from 01/04/2022 to 30/06/2022",
-                    FromDate = new System.DateTime(2022,04,01),
-                    ToDate = new System.DateTime(2022,06,30)
+                    Name = $"{month}/{year} To {toDate.Month}/{toDate.Year}",
+                    Description = "",
+                    FromDate = fromDate,
+                    ToDate = toDate
                 }
             };
-
+            CompanyAccountingPeriod[] companyAccountingPeriods = new CompanyAccountingPeriod[]
+            {
+                new CompanyAccountingPeriod()
+                {
+                    AccountingPeriod = accountingPeriods[0],
+                    Company = companies[0],
+                    State = AccountingPeriodStates.Opened
+                }
+            };
+            PriceList[] priceLists = new PriceList[]
+            {
+                new PriceList()
+                {
+                    Name = "Eng Initial",
+                    CompanyAccountingPeriod = companyAccountingPeriods[0],
+                    PriceListLines = new System.Collections.Generic.List<PriceListLine>()
+                    {
+                        new PriceListLine()
+                        {
+                            Item = items[0],
+                            UnitPrice = 1.0M,
+                            Currency = currencies[0],
+                            CurrencyExchangeRate = null,
+                            TarrrifPercentage = null
+                            
+                        }
+                    }
+                }
+            };
             context.AccountingPeriods.AddRange(accountingPeriods);
             context.Uoms.AddRange(uoms);
             context.ItemTypes.AddRange(itemTypes);
@@ -181,6 +217,9 @@ namespace Kiriazi.Accounting.Pricing.DAL
             context.Currencies.AddRange(currencies);
             context.Tarrifs.AddRange(tarrifs);
             context.Companies.AddRange(companies);
+            context.CompanyAccountingPeriods.AddRange(companyAccountingPeriods);
+            context.CompanyItemAssignments.AddRange(companyItemAssignments);
+            context.PriceLists.AddRange(priceLists);
             context.SaveChanges();
         }
        
@@ -196,7 +235,10 @@ namespace Kiriazi.Accounting.Pricing.DAL
         public DbSet<ItemType> ItemTypes { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<Currency> Currencies { get; set; }
-        public DbSet<ConversionRate> ConversionRates { get; set; }
+        public DbSet<CurrencyExchangeRate> CurrenciesExchangeRates { get; set; }
+        public DbSet<PriceList> PriceLists { get; set; }
+        public DbSet<CompanyAccountingPeriod> CompanyAccountingPeriods { get; set; }
+        public DbSet<CompanyItemAssignment> CompanyItemAssignments { get; set; }
 
         public PricingDBContext()
             : base("PricingDBLocalConnection")
@@ -220,11 +262,13 @@ namespace Kiriazi.Accounting.Pricing.DAL
                  .HasIndex(e => new { e.ParentId, e.ChildId, e.CompanyId })
                  .IsUnique(true)
                  .HasName("Idx_Parent_child_comp_Id_UNQ");
+
             modelBuilder.Entity<ItemRelation>()
                 .HasRequired(e => e.Child)
                 .WithMany(e => e.Children)
                 .HasForeignKey(e => e.ChildId)
                 .WillCascadeOnDelete(false);
+
             modelBuilder.Entity<ItemRelation>()
                  .HasRequired(e => e.Parent)
                  .WithMany(e => e.Parents)
@@ -239,13 +283,13 @@ namespace Kiriazi.Accounting.Pricing.DAL
 
             //
             modelBuilder
-                    .Entity<ConversionRate>()
+                    .Entity<CurrencyExchangeRate>()
                     .HasRequired(e => e.ToCurrency)
                     .WithMany(e => e.ConversionRatesToCurrency)
                     .HasForeignKey(e => e.ToCurrencyId)
                     .WillCascadeOnDelete(false);
             modelBuilder
-                .Entity<ConversionRate>()
+                .Entity<CurrencyExchangeRate>()
                 .HasRequired(e => e.FromCurrency)
                 .WithMany(e => e.ConversionRatesFromCurrency)
                 .HasForeignKey(e => e.FromCurrencyId)
@@ -304,7 +348,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
                 .HasName("IDX_UNQ_NAME_PRICELIST");
             
             modelBuilder
-                .Entity<ConversionRate>()
+                .Entity<CurrencyExchangeRate>()
                 .HasIndex(e => new { e.FromCurrencyId, e.ToCurrencyId, e.ConversionDate })
                 .HasName("Idx_Rate_from_to_date_unq")
                 .IsUnique(true);

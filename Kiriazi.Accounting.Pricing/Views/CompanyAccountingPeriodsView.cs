@@ -60,6 +60,16 @@ namespace Kiriazi.Accounting.Pricing.Views
                     HeaderText = "Period State",
                     DataSource = new string[] {AccountingPeriodStates.Opened,AccountingPeriodStates.Closed}
                 });
+            _model = new BindingList<ViewModels.CompanyAccountingPeriodEditViewModel>(_controller.EditAccountingPeriods(company.Id));
+            _model.ListChanged += (o, e) =>
+            {
+                if (e.ListChangedType == ListChangedType.ItemChanged)
+                {
+                    _hasChanged = true;
+                    btnSave.Enabled = true;
+                }
+            };
+            dataGridView1.DataSource = _model;
             dataGridView1.SelectionMode = DataGridViewSelectionMode.CellSelect;
             dataGridView1.MultiSelect = false;
             dataGridView1.SelectionChanged += (o, e) =>
@@ -100,16 +110,7 @@ namespace Kiriazi.Accounting.Pricing.Views
                 }
             };
             btnSave.Enabled = false;
-            _model = new BindingList<ViewModels.CompanyAccountingPeriodEditViewModel>(_controller.EditAccountingPeriods(company.Id));
-            _model.ListChanged += (o, e) =>
-            {
-                if (e.ListChangedType == ListChangedType.ItemChanged)
-                {
-                    _hasChanged = true;
-                    btnSave.Enabled = true;
-                }
-            };
-            dataGridView1.DataSource = _model;
+            
             dataGridView1.RowValidating += (o, e) =>
             {
                 DataGridView grid = o as DataGridView;
@@ -119,11 +120,6 @@ namespace Kiriazi.Accounting.Pricing.Views
                     {
                         if (_model[e.RowIndex].IsPeriodAssigned)
                         {
-                            if (string.IsNullOrEmpty(_model[e.RowIndex].Name))
-                            {
-                                e.Cancel = true;
-                                grid.Rows[e.RowIndex].ErrorText = "Name Field is mandatory";
-                            }
                             if (string.IsNullOrEmpty(_model[e.RowIndex].State))
                             {
                                 e.Cancel = true;
@@ -133,12 +129,29 @@ namespace Kiriazi.Accounting.Pricing.Views
                         else
                         {
                             e.Cancel = !_controller.CanAccountingPeriodAssigmentChange(_model[e.RowIndex]);
-                            grid.Rows[e.RowIndex].ErrorText = "Cannot Modify as there is a price list related to this item.";
+                            if(e.Cancel)
+                                grid.Rows[e.RowIndex].ErrorText = "Cannot Modify as there is a price list related to this item.";
                         }
                     }
                 }
             };
-            
+            dataGridView1.CellBeginEdit += (o, e) =>
+            {
+                DataGridView grid = o as DataGridView;
+                if (grid != null)
+                {
+                    if (e.RowIndex >= 0 && e.RowIndex < _model.Count)
+                    {
+                        if(e.ColumnIndex == grid.Columns["IsPeriodAssigned"].Index)
+                        {
+                            if (!_controller.CanAccountingPeriodAssigmentChange(_model[e.RowIndex]))
+                            {
+                                e.Cancel = true;
+                            }
+                        }
+                    }
+                }
+            };
             dataGridView1.RowValidated += (o, e) =>
             {
                 DataGridView grid = o as DataGridView;

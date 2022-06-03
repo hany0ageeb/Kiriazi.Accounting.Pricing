@@ -65,7 +65,7 @@ namespace Kiriazi.Accounting.Pricing.Validation
             if (_propertyErrors.ContainsKey(propertyName))
                 return _propertyErrors[propertyName];
             else
-                return null;
+                return new List<string>();
         }
 
         public void AddErrors(string propertyName,params string[] errors)

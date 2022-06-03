@@ -84,9 +84,9 @@ namespace Kiriazi.Accounting.Pricing.Models
 
         public virtual ICollection<PriceListLine> PriceListLines { get; set; } = new HashSet<PriceListLine>();
 
-        public virtual ICollection<ConversionRate> ConversionRatesToCurrency { get; set; } = new HashSet<ConversionRate>();
+        public virtual ICollection<CurrencyExchangeRate> ConversionRatesToCurrency { get; set; } = new HashSet<CurrencyExchangeRate>();
 
-        public virtual ICollection<ConversionRate> ConversionRatesFromCurrency { get; set; } = new HashSet<ConversionRate>();
+        public virtual ICollection<CurrencyExchangeRate> ConversionRatesFromCurrency { get; set; } = new HashSet<CurrencyExchangeRate>();
 
         [NotMapped]
         public Currency Self => this;

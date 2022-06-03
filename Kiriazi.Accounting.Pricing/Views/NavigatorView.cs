@@ -82,6 +82,26 @@ namespace Kiriazi.Accounting.Pricing.Views
                         itemsView.MdiParent = this.MdiParent;
                         itemsView.Show();
                     }
+                },
+                new UserCommand()
+                {
+                    DisplayName = "Accounting Period",
+                    Action = () =>
+                    {
+                        AccountingPeriodsView accountingPeriodsView= Program.ServiceProvider.GetRequiredService<AccountingPeriodsView>();
+                        accountingPeriodsView.MdiParent = this.MdiParent;
+                        accountingPeriodsView.Show();
+                    }
+                },
+                new UserCommand()
+                {
+                    DisplayName = "Raw Material Price List",
+                    Action = () =>
+                    {
+                        PriceListsView priceListsView = Program.ServiceProvider.GetRequiredService<PriceListsView>();
+                        priceListsView.MdiParent = this.MdiParent;
+                        priceListsView.Show();
+                    }
                 }
             };
             lstOptions.DataSource = commands;

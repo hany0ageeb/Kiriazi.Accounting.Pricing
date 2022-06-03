@@ -137,6 +137,81 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             //model.Tarrif = model.Tarrifs[0];
             return model;
         }
+        public IList<ItemCompanyAssignmentViewModel> EditItemCompanyAssignment(Guid itemId)
+        {
+            //Better use a view in the database . . .
+            Item item = _unitOfWork.ItemRepository.Find(itm=>itm.Id==itemId,q=>q.Include(itm=>itm.CompanyAssignments)).FirstOrDefault();
+            if (item == null)
+                throw new ArgumentException($"Item With Id = {itemId} does not exist.", "id");
+            IList<ItemCompanyAssignmentViewModel> model = new List<ItemCompanyAssignmentViewModel>();
+            var allCompanies = _unitOfWork.CompanyRepository.Find().ToList();
+            var allGroups = _unitOfWork.GroupRepository.Find().ToList();
+            allGroups.Insert(0, new Group() { Name = "" });
+            foreach(Company company in allCompanies)
+            {
+                ItemCompanyAssignmentViewModel temp = new ItemCompanyAssignmentViewModel(company);
+                temp.Groups = allGroups;
+                var assigned = item.CompanyAssignments.Where(ca => ca.CompanyId == company.Id).FirstOrDefault();
+                if (assigned != null)
+                {
+                    temp.IsAssigned = true;
+                    temp.Alise = assigned.NameAlias;
+                    temp.Group = assigned.Group??allGroups[0];
+                    temp.Id = assigned.Id;
+                }
+                else
+                {
+                    temp.IsAssigned = false;
+                    temp.Alise = "";
+                    temp.Group = allGroups[0];
+                }
+                model.Add(temp);
+            }
+            return model;
+        }
+        public void EditItemCompanyAssignment(IList<ItemCompanyAssignmentViewModel> assignments,Guid itemId)
+        {
+            Item item = _unitOfWork.ItemRepository.Find(itemId);
+            if (item == null)
+                throw new ArgumentException("Invalid Item Id");
+            foreach(ItemCompanyAssignmentViewModel assignment in assignments)
+            {
+                var ass = _unitOfWork.CompanyItemAssignmentRepository.Find(assignment.Id);
+                if (assignment.IsAssigned)
+                {
+                    //add if new
+                    
+                    if (ass == null)
+                    {
+                        //add
+                        _unitOfWork.CompanyItemAssignmentRepository.Add(new CompanyItemAssignment()
+                        {
+                            Id = assignment.Id,
+                            Company = assignment.Company,
+                            Group = _unitOfWork.GroupRepository.Find(assignment.Group.Id),
+                            Item = item,
+                            NameAlias = assignment.Alise
+                        });
+                    }
+                    else
+                    {
+                        //update
+                        ass.NameAlias = assignment.Alise;
+                        ass.Group = _unitOfWork.GroupRepository.Find(assignment.Group.Id);
+                    }
+                }
+                else
+                {
+                    //remove if exist
+                    if (ass != null) 
+                    {
+                        _unitOfWork.CompanyItemAssignmentRepository.Remove(ass);
+                    }
+
+                }
+            }
+            _unitOfWork.Complete();
+        }
         public string Delete(Guid id)
         {
             Item item = _unitOfWork.ItemRepository.Find(id);

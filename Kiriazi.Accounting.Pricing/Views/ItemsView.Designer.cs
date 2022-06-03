@@ -31,6 +31,7 @@ namespace Kiriazi.Accounting.Pricing.Views
         {
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnSearch = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.txtAlias = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -42,7 +43,6 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.txtArabicName = new System.Windows.Forms.TextBox();
             this.cboItemTypes = new System.Windows.Forms.ComboBox();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
-            this.btnSearch = new System.Windows.Forms.Button();
             this.itemsGrid = new System.Windows.Forms.DataGridView();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.btnNew = new System.Windows.Forms.Button();
@@ -74,7 +74,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.57604F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 74.42397F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 121F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 347F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 349F));
             this.tableLayoutPanel1.Controls.Add(this.btnSearch, 3, 2);
             this.tableLayoutPanel1.Controls.Add(this.label5, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.txtAlias, 3, 1);
@@ -95,6 +95,17 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.tableLayoutPanel1.Size = new System.Drawing.Size(990, 89);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
+            // btnSearch
+            // 
+            this.btnSearch.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnSearch.Location = new System.Drawing.Point(892, 62);
+            this.btnSearch.Name = "btnSearch";
+            this.btnSearch.Size = new System.Drawing.Size(95, 24);
+            this.btnSearch.TabIndex = 0;
+            this.btnSearch.Text = "Search";
+            this.btnSearch.UseVisualStyleBackColor = true;
+            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            // 
             // label5
             // 
             this.label5.AutoSize = true;
@@ -106,7 +117,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             // 
             // txtAlias
             // 
-            this.txtAlias.Location = new System.Drawing.Point(645, 35);
+            this.txtAlias.Location = new System.Drawing.Point(643, 35);
             this.txtAlias.Name = "txtAlias";
             this.txtAlias.Size = new System.Drawing.Size(326, 23);
             this.txtAlias.TabIndex = 7;
@@ -114,7 +125,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(524, 32);
+            this.label4.Location = new System.Drawing.Point(522, 32);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(67, 15);
             this.label4.TabIndex = 6;
@@ -122,7 +133,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             // 
             // txtEnglishName
             // 
-            this.txtEnglishName.Location = new System.Drawing.Point(645, 3);
+            this.txtEnglishName.Location = new System.Drawing.Point(643, 3);
             this.txtEnglishName.Name = "txtEnglishName";
             this.txtEnglishName.Size = new System.Drawing.Size(326, 23);
             this.txtEnglishName.TabIndex = 5;
@@ -130,7 +141,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(524, 0);
+            this.label3.Location = new System.Drawing.Point(522, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(80, 15);
             this.label3.TabIndex = 4;
@@ -147,7 +158,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             // 
             // txtCode
             // 
-            this.txtCode.Location = new System.Drawing.Point(136, 3);
+            this.txtCode.Location = new System.Drawing.Point(135, 3);
             this.txtCode.Name = "txtCode";
             this.txtCode.Size = new System.Drawing.Size(324, 23);
             this.txtCode.TabIndex = 1;
@@ -163,7 +174,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             // 
             // txtArabicName
             // 
-            this.txtArabicName.Location = new System.Drawing.Point(136, 35);
+            this.txtArabicName.Location = new System.Drawing.Point(135, 35);
             this.txtArabicName.Name = "txtArabicName";
             this.txtArabicName.Size = new System.Drawing.Size(324, 23);
             this.txtArabicName.TabIndex = 3;
@@ -172,7 +183,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             // 
             this.cboItemTypes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboItemTypes.FormattingEnabled = true;
-            this.cboItemTypes.Location = new System.Drawing.Point(136, 62);
+            this.cboItemTypes.Location = new System.Drawing.Point(135, 62);
             this.cboItemTypes.Name = "cboItemTypes";
             this.cboItemTypes.Size = new System.Drawing.Size(324, 23);
             this.cboItemTypes.TabIndex = 9;
@@ -184,17 +195,6 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             this.flowLayoutPanel2.Size = new System.Drawing.Size(987, 33);
             this.flowLayoutPanel2.TabIndex = 1;
-            // 
-            // btnSearch
-            // 
-            this.btnSearch.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnSearch.Location = new System.Drawing.Point(892, 62);
-            this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(95, 24);
-            this.btnSearch.TabIndex = 0;
-            this.btnSearch.Text = "Search";
-            this.btnSearch.UseVisualStyleBackColor = true;
-            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             // 
             // itemsGrid
             // 
@@ -240,6 +240,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.btnCompanies.TabIndex = 1;
             this.btnCompanies.Text = "Companies ...";
             this.btnCompanies.UseVisualStyleBackColor = true;
+            this.btnCompanies.Click += new System.EventHandler(this.btnCompanies_Click);
             // 
             // flowLayoutPanel4
             // 

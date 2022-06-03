@@ -1,8 +1,8 @@
 ﻿namespace Kiriazi.Accounting.Pricing.Models
 {
-    public enum ExchangeRateType
+    public static class ExchangeRateTypes
     {
-        User,
-        System
+        public const string System = "System";
+        public const string Manual = "Manual";
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Kiriazi.Accounting.Pricing.DAL
+﻿using System;
+
+namespace Kiriazi.Accounting.Pricing.DAL
 {
     public class UnitOfWork : IUnitOfWork
     {
@@ -17,6 +19,7 @@
             CustomerRepository = new CustomerRepository(_context);
             ItemTypeRepository = new ItemTypeRepository(_context);
             CompanyItemAssignmentRepository = new CompanyItemAssignmentRepository(_context);
+            PriceListRepository = new PriceListRepository(_context);
         }
         public IUomRepository UomRepository { get; private set; }
 
@@ -40,11 +43,26 @@
 
         public ICompanyItemAssignmentRepository CompanyItemAssignmentRepository { get; private set; }
 
+        public IPriceListRepository PriceListRepository { get; private set; }
+
+        public ICurrencyExchangeRateRepository CurrencyExchangeRateRepository { get; private set; }
+
         public int Complete()
         {
             return _context.SaveChanges();
         }
-
+        public DateTime Now 
+        {
+            get
+            {
+                var sqlQuery = _context.Database.SqlQuery<DateTime>("select SYSDATETIME();");
+                foreach(var rslt in sqlQuery)
+                {
+                    return rslt;
+                }
+                return DateTime.Now;
+            }
+        }
         public void Dispose()
         {
             _context.Dispose();

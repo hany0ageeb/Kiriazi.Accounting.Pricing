@@ -56,7 +56,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             {
                 Name = "AliasName",
                 HeaderText = "Alias",
-                DataPropertyName = "AliasName",
+                DataPropertyName = "Alias",
                 ReadOnly = true
             },
             new DataGridViewTextBoxColumn()
@@ -184,6 +184,20 @@ namespace Kiriazi.Accounting.Pricing.Views
             {
                 itemEditView.ShowDialog(this);
                 Search();
+            }
+        }
+
+        private void btnCompanies_Click(object sender, EventArgs e)
+        {
+            if (itemsGrid.CurrentRow != null)
+            {
+                if(itemsGrid.CurrentRow.Index>=0 && itemsGrid.CurrentRow.Index < _items.Count)
+                {
+                    using(ItemCompaniesAssignmentView companiesAssignmentView = new ItemCompaniesAssignmentView(_itemController, _items[itemsGrid.CurrentRow.Index]))
+                    {
+                        companiesAssignmentView.ShowDialog(this);
+                    }
+                }
             }
         }
     }

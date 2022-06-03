@@ -53,5 +53,9 @@ namespace Kiriazi.Accounting.Pricing.Models
         }
 
         public virtual ICollection<CompanyItemAssignment> ItemAssignments { get; set; } = new HashSet<CompanyItemAssignment>();
+
+        [NotMapped]
+
+        public Group Self => this;
     }
 }

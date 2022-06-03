@@ -1,6 +1,7 @@
-﻿namespace Kiriazi.Accounting.Pricing.DAL
+﻿using Kiriazi.Accounting.Pricing.Models;
+namespace Kiriazi.Accounting.Pricing.DAL
 {
-    public interface ICompanyAccountingPeriodRepository : IRepository<Models.CompanyAccountingPeriod>
+    public interface ICompanyAccountingPeriodRepository : IRepository<CompanyAccountingPeriod>
     {
 
     }

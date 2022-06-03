@@ -193,10 +193,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\AccountingPeriodController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\CurrencyController.cs" />
     <Compile Include="Controllers\GroupController.cs" />
     <Compile Include="Controllers\ItemController.cs" />
+    <Compile Include="Controllers\PriceListController.cs" />
     <Compile Include="Controllers\UomController.cs" />
     <Compile Include="DAL\CompanyAccountingPeriodRepository.cs" />
     <Compile Include="DAL\CompanyItemAssignmentRepository.cs" />
@@ -213,12 +215,14 @@
     <Compile Include="DAL\IGroupRepository.cs" />
     <Compile Include="DAL\IItemRepository.cs" />
     <Compile Include="DAL\IItemTypeRepository.cs" />
+    <Compile Include="DAL\IPriceListRepository.cs" />
     <Compile Include="DAL\IRepository.cs" />
     <Compile Include="DAL\ITarrifRepository.cs" />
     <Compile Include="DAL\ItemRepository.cs" />
     <Compile Include="DAL\ItemTypeRepository.cs" />
     <Compile Include="DAL\IUnitOfWork.cs" />
     <Compile Include="DAL\IUomRepository.cs" />
+    <Compile Include="DAL\PriceListRepository.cs" />
     <Compile Include="DAL\PricingDBContext.cs" />
     <Compile Include="DAL\Repository.cs" />
     <Compile Include="DAL\TarrifRepository.cs" />
@@ -229,7 +233,7 @@
     <Compile Include="Models\Company.cs" />
     <Compile Include="Models\CompanyAccountingPeriod.cs" />
     <Compile Include="Models\CompanyItemAssignment.cs" />
-    <Compile Include="Models\ConversionRate.cs" />
+    <Compile Include="Models\CurrencyExchangeRate.cs" />
     <Compile Include="Models\Currency.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\ExchangeRateType.cs" />
@@ -243,19 +247,38 @@
     <Compile Include="Models\Uom.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validation\AccountingPeriodValidator.cs" />
     <Compile Include="Validation\ComapnyAccountingPeriodValidator.cs" />
     <Compile Include="Validation\CompanyValidator.cs" />
     <Compile Include="Validation\CurrencyValidator.cs" />
     <Compile Include="Validation\GroupValidator.cs" />
     <Compile Include="Validation\ItemValidator.cs" />
     <Compile Include="Validation\IValidator.cs" />
+    <Compile Include="Validation\PriceListLineValidator.cs" />
     <Compile Include="Validation\TarrifValidator.cs" />
     <Compile Include="Validation\UomValidaor.cs" />
+    <Compile Include="ViewModels\AccountingPeriodEditViewModel.cs" />
     <Compile Include="ViewModels\CompanyAccountingPeriodEditViewModel.cs" />
     <Compile Include="ViewModels\CompanyEditViewModel.cs" />
     <Compile Include="ViewModels\CurrencyEditViewModel.cs" />
+    <Compile Include="ViewModels\ItemCompanyAssignmentViewModel.cs" />
+    <Compile Include="ViewModels\ItemEditViewModel.cs" />
     <Compile Include="ViewModels\ItemSearchViewModel.cs" />
+    <Compile Include="ViewModels\PriceListSearchViewModel.cs" />
+    <Compile Include="ViewModels\PriceListViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="Views\AccountingPeriodsView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\AccountingPeriodsView.Designer.cs">
+      <DependentUpon>AccountingPeriodsView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AccountingPeriodView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\AccountingPeriodView.Designer.cs">
+      <DependentUpon>AccountingPeriodView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\CompaniesView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -298,6 +321,12 @@
     <Compile Include="Views\GroupsView.Designer.cs">
       <DependentUpon>GroupsView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\ItemCompaniesAssignmentView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ItemCompaniesAssignmentView.Designer.cs">
+      <DependentUpon>ItemCompaniesAssignmentView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\ItemEditView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -321,6 +350,18 @@
     </Compile>
     <Compile Include="Views\NavigatorView.Designer.cs">
       <DependentUpon>NavigatorView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PriceListEditView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\PriceListEditView.Designer.cs">
+      <DependentUpon>PriceListEditView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PriceListsView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\PriceListsView.Designer.cs">
+      <DependentUpon>PriceListsView.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\TarrifEditView.cs">
       <SubType>Form</SubType>
@@ -355,6 +396,12 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Views\AccountingPeriodsView.resx">
+      <DependentUpon>AccountingPeriodsView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\AccountingPeriodView.resx">
+      <DependentUpon>AccountingPeriodView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\CompaniesView.resx">
       <DependentUpon>CompaniesView.cs</DependentUpon>
     </EmbeddedResource>
@@ -376,6 +423,9 @@
     <EmbeddedResource Include="Views\GroupsView.resx">
       <DependentUpon>GroupsView.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\ItemCompaniesAssignmentView.resx">
+      <DependentUpon>ItemCompaniesAssignmentView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\ItemEditView.resx">
       <DependentUpon>ItemEditView.cs</DependentUpon>
     </EmbeddedResource>
@@ -387,6 +437,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\NavigatorView.resx">
       <DependentUpon>NavigatorView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\PriceListEditView.resx">
+      <DependentUpon>PriceListEditView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\PriceListsView.resx">
+      <DependentUpon>PriceListsView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\TarrifEditView.resx">
       <DependentUpon>TarrifEditView.cs</DependentUpon>

@@ -17,10 +17,7 @@ namespace Kiriazi.Accounting.Pricing.Validation
             {
                 modelState.AddErrors(nameof(entity.AccountingPeriod), "Please Select an Accounting Period");
             }
-            if (string.IsNullOrEmpty(entity.Name))
-            {
-                modelState.AddErrors(nameof(entity.Name), "Pleas Enete a name.");
-            }
+            
             if(string.IsNullOrEmpty(entity.State)|| (entity.State != AccountingPeriodStates.Opened && entity.State != AccountingPeriodStates.Closed))
             {
                 modelState.AddErrors(nameof(entity.State), "Invalid State.");

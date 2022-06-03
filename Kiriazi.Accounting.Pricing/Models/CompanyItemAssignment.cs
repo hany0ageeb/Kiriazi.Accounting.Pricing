@@ -9,7 +9,7 @@ namespace Kiriazi.Accounting.Pricing.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public Guid Id { get; private set; } = Guid.NewGuid();
+        public Guid Id { get;  set; } = Guid.NewGuid();
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
         #endregion INotifyPropertyChanged

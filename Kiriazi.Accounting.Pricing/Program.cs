@@ -31,16 +31,17 @@ namespace Kiriazi.Accounting.Pricing
                 new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+            Configuration = builder.Build();
             var serviceCollection = new ServiceCollection();
             ConfigureServices(serviceCollection);
             ServiceProvider = serviceCollection.BuildServiceProvider();
-            Configuration = builder.Build();
+            
         }
         private static void ConfigureServices(IServiceCollection services)
         {
             // ...
             
-            services.AddTransient(typeof(DAL.PricingDBContext));
+            services.AddTransient(typeof(DAL.PricingDBContext),(sp)=> { return new DAL.PricingDBContext(Configuration.GetConnectionString("PricingDBLocalConnection")); });
             services.AddTransient<DAL.IUnitOfWork, DAL.UnitOfWork>();
             services.AddTransient(typeof(ViewModels.CurrencyEditViewModel));
             services.AddTransient(typeof(ViewModels.ItemSearchViewModel));
@@ -53,6 +54,8 @@ namespace Kiriazi.Accounting.Pricing
             services.AddTransient(typeof(Views.GroupsView));
             services.AddTransient(typeof(Views.ItemsView));
             services.AddTransient(typeof(Views.TarrifsView));
+            services.AddTransient(typeof(Views.AccountingPeriodsView));
+            services.AddTransient(typeof(Views.PriceListsView));
 
             services.AddTransient(typeof(Controllers.CurrencyController));
             services.AddTransient(typeof(Controllers.GroupController));
@@ -60,6 +63,8 @@ namespace Kiriazi.Accounting.Pricing
             services.AddTransient(typeof(Controllers.ItemController));
             services.AddTransient(typeof(Controllers.UomController));
             services.AddTransient(typeof(Controllers.CompanyController));
+            services.AddTransient(typeof(Controllers.AccountingPeriodController));
+            services.AddTransient(typeof(Controllers.PriceListController));
 
             services.AddTransient<IValidator<Currency>, CurrencyValidator>();
             services.AddTransient<IValidator<Company>,CompanyValidator>();
@@ -67,6 +72,7 @@ namespace Kiriazi.Accounting.Pricing
             services.AddTransient<IValidator<Group>, GroupValidator>();
             services.AddTransient<IValidator<Tarrif>,TarrifValidator>();
             services.AddTransient<IValidator<Item>,ItemValidator>();
+            services.AddTransient<IValidator<AccountingPeriod>, AccountingPeriodValidator>();
         }
         public static IServiceProvider ServiceProvider { get; private set; }
 

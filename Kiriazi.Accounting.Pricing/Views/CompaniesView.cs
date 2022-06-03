@@ -72,14 +72,17 @@ namespace Kiriazi.Accounting.Pricing.Views
                 DataGridView gridView = o as DataGridView;
                 if(e.ColumnIndex == gridView.Columns["Edit"].Index)
                 {
-                    var company = _controller.Edit(_companies[e.RowIndex].Id);
-                    if (company != null)
+                    if (e.RowIndex >= 0 && e.RowIndex < _companies.Count)
                     {
-                        using (CompanyEditView companyEditView = new CompanyEditView(_controller, company))
+                        var company = _controller.Edit(_companies[e.RowIndex].Id);
+                        if (company != null)
                         {
-                            companyEditView.ShowDialog(this);
+                            using (CompanyEditView companyEditView = new CompanyEditView(_controller, company))
+                            {
+                                companyEditView.ShowDialog(this);
+                            }
+                            Search();
                         }
-                        Search();
                     }
                 }
                 else if(e.ColumnIndex == gridView.Columns["Delete"].Index)

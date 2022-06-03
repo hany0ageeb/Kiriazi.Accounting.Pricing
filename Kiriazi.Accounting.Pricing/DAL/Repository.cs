@@ -7,6 +7,7 @@ using System.Linq.Expressions;
 
 namespace Kiriazi.Accounting.Pricing.DAL
 {
+   
     public class Repository<TEntity> : IRepository<TEntity>
         where TEntity : class
     {
@@ -66,6 +67,13 @@ namespace Kiriazi.Accounting.Pricing.DAL
             return _context.Set<TEntity>().Where(predicate).Select(select).AsEnumerable();
         }
 
-        
+        public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IQueryable<TEntity>> include)
+        {
+            return include(_context.Set<TEntity>().Where(predicate)).AsEnumerable();
+        }
+        public IEnumerable<TResult> Find<TResult>(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TResult>> selector)
+        {
+            return _context.Set<TEntity>().Where(predicate).Select(selector);
+        }
     }
 }

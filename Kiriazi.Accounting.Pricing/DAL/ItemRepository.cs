@@ -60,5 +60,10 @@ namespace Kiriazi.Accounting.Pricing.DAL
             }
             return query.AsEnumerable();
         }
+
+        public IEnumerable<string> FindItemsCodes()
+        {
+            return _context.Set<Item>().Select(itm => itm.Code).AsEnumerable();
+        }
     }
 }

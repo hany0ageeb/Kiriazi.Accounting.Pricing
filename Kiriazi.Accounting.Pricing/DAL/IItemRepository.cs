@@ -17,5 +17,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
             Guid? itemTypeId=null,
             Func<IQueryable<Item>, IOrderedQueryable<Item>> orderBy = null,
             Func<IQueryable<Item>, IQueryable<Item>> include = null);
+
+        IEnumerable<string> FindItemsCodes();
     }
 }

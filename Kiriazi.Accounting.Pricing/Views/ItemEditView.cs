@@ -143,7 +143,26 @@ namespace Kiriazi.Accounting.Pricing.Views
         }
         private void btnClose_Click(object sender, EventArgs e)
         {
-
+            if (_hasChanged)
+            {
+                DialogResult result = MessageBox.Show(this, "Do you want to save changes?", "Confirm Saving", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    if (SaveChanges())
+                    {
+                        _hasChanged = false;
+                        btnSave.Enabled = false;
+                        Close();
+                    }
+                }
+                else if (result == DialogResult.No)
+                {
+                    _hasChanged = false;
+                    btnSave.Enabled = false;
+                    Close();
+                }
+            }
+            Close();
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -159,7 +178,27 @@ namespace Kiriazi.Accounting.Pricing.Views
 
         private void ItemEditView_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (_hasChanged && e.CloseReason == CloseReason.UserClosing)
+            {
+                DialogResult result = MessageBox.Show(
+                    this, 
+                    "Do you want to save changes?", 
+                    "Confirm Saving", 
+                    MessageBoxButtons.YesNoCancel, 
+                    MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    e.Cancel = !SaveChanges();
+                }
+                else if(result == DialogResult.No)
+                {
 
+                }
+                else
+                {
+                    e.Cancel = true;
+                }
+            }
         }
     }
 }

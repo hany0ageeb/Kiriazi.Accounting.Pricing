@@ -15,6 +15,11 @@ namespace Kiriazi.Accounting.Pricing.DAL
         ICustomerRepository CustomerRepository { get; }
         IItemTypeRepository ItemTypeRepository { get; }
         ICompanyItemAssignmentRepository CompanyItemAssignmentRepository { get; }
+        IPriceListRepository PriceListRepository { get; }
+        ICurrencyExchangeRateRepository CurrencyExchangeRateRepository { get; }
+
+        DateTime Now { get; }
+
         int Complete();
     }
 }

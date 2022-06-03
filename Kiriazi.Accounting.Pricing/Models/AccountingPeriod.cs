@@ -11,7 +11,7 @@ namespace Kiriazi.Accounting.Pricing.Models
         private string _description;
         private DateTime _fromDate = DateTime.Now;
         private DateTime? _toDate;
-
+        private bool _assignToAllCompanies = false;
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid Id { get; private set; } = Guid.NewGuid();
@@ -79,5 +79,7 @@ namespace Kiriazi.Accounting.Pricing.Models
                 }
             }
         }
+        [NotMapped]
+        public AccountingPeriod Self => this;
     }
 }
