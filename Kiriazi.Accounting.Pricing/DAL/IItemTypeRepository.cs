@@ -4,6 +4,6 @@ namespace Kiriazi.Accounting.Pricing.DAL
 {
     public interface IItemTypeRepository : IRepository<ItemType>
     {
-
+        
     }
 }

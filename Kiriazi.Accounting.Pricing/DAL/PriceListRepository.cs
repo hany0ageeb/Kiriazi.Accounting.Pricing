@@ -1,5 +1,6 @@
 ﻿using Kiriazi.Accounting.Pricing.Models;
 using System;
+using System.Data.Entity;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,7 +11,17 @@ namespace Kiriazi.Accounting.Pricing.DAL
         public PriceListRepository(PricingDBContext context)
             : base(context)
         {
-           
+            
+        }
+        public PriceList FindById(
+            Guid Id,
+            params string[] includeProperties
+            )
+        {
+            var query = _context.Set<PriceList>().AsQueryable();
+            foreach (string includeProperty in includeProperties)
+                query = query.Include(includeProperty);
+            return query.Where(l => l.Id == Id).FirstOrDefault();
         }
         public PricingDBContext PricingDBContext => _context as PricingDBContext;
         public IEnumerable<PriceList> Find(

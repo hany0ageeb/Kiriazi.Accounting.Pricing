@@ -71,9 +71,15 @@ namespace Kiriazi.Accounting.Pricing.DAL
         {
             return include(_context.Set<TEntity>().Where(predicate)).AsEnumerable();
         }
-        public IEnumerable<TResult> Find<TResult>(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TResult>> selector)
+        public IEnumerable<TResult> Find<TResult>(
+            Expression<Func<TEntity, bool>> predicate, 
+            Expression<Func<TEntity, TResult>> selector,
+            Func<IQueryable<TResult>, IOrderedQueryable<TResult>> orderBy = null)
         {
-            return _context.Set<TEntity>().Where(predicate).Select(selector);
+            if (orderBy == null)
+                return _context.Set<TEntity>().Where(predicate).Select(selector);
+            else
+                return orderBy(_context.Set<TEntity>().Where(predicate).Select(selector));
         }
     }
 }

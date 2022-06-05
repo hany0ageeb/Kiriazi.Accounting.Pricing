@@ -56,6 +56,7 @@ namespace Kiriazi.Accounting.Pricing
             services.AddTransient(typeof(Views.TarrifsView));
             services.AddTransient(typeof(Views.AccountingPeriodsView));
             services.AddTransient(typeof(Views.PriceListsView));
+            services.AddTransient(typeof(Views.ItemTreesView));
 
             services.AddTransient(typeof(Controllers.CurrencyController));
             services.AddTransient(typeof(Controllers.GroupController));
@@ -65,6 +66,7 @@ namespace Kiriazi.Accounting.Pricing
             services.AddTransient(typeof(Controllers.CompanyController));
             services.AddTransient(typeof(Controllers.AccountingPeriodController));
             services.AddTransient(typeof(Controllers.PriceListController));
+            services.AddTransient(typeof(Controllers.ItemRelationController));
 
             services.AddTransient<IValidator<Currency>, CurrencyValidator>();
             services.AddTransient<IValidator<Company>,CompanyValidator>();
@@ -73,6 +75,9 @@ namespace Kiriazi.Accounting.Pricing
             services.AddTransient<IValidator<Tarrif>,TarrifValidator>();
             services.AddTransient<IValidator<Item>,ItemValidator>();
             services.AddTransient<IValidator<AccountingPeriod>, AccountingPeriodValidator>();
+            services.AddTransient<IValidator<PriceList>, PriceListValidator>();
+            services.AddTransient<IValidator<PriceListLine>,PriceListLineValidator>();
+
         }
         public static IServiceProvider ServiceProvider { get; private set; }
 

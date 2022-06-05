@@ -68,5 +68,19 @@ namespace Kiriazi.Accounting.Pricing.Models
         [NotMapped]
         public decimal? TarrifPercentage => Tarrif?.PercentageAmount;
 
+        [NotMapped]
+        public Item Self => this;
+
+        public bool IsChild(Guid itemId,Guid companyId)
+        {
+            foreach(var relaion in Children)
+            {
+                if (relaion.ChildId == itemId && relaion.CompanyId == companyId)
+                    return true;
+                return relaion.IsChild(itemId, companyId);
+            }
+            return false;
+        }
+
     }
 }

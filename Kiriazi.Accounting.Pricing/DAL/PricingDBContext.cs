@@ -135,27 +135,60 @@ namespace Kiriazi.Accounting.Pricing.DAL
             };
             Item[] items = new Item[]
            {
+               //0
                 new Item()
                 {
                     Code = "3/4K",
                     EnglishName = "",
                     ArabicName = "سلك شعر 3/4مم اسود",
-                    UomId = uoms[2].Id,
+                    UomId = uoms[3].Id,
                     Uom = uoms[2],
                     ItemTypeId = itemTypes[0].Id,
                     ItemType = itemTypes[0]
                 },
+                //1
                 new Item()
                 {
-                     Code = "3*53C",
+                    Code = "3*53C",
                     EnglishName = "",
                     ArabicName = "غطاء شعله صغيره اسود سوبر",
-                    UomId = uoms[1].Id,
-                    Uom = uoms[2],
+                    UomId = uoms[3].Id,
+                    Uom = uoms[3],
                     ItemTypeId = itemTypes[0].Id,
                     ItemType = itemTypes[0]
+                },
+                //2
+                new Item()
+                {
+                    Code = "SAN330I",
+                    EnglishName = "",
+                    ArabicName="كريستال SAN",
+                    Uom = uoms[1],
+                    ItemTypeId = itemTypes[0].Id,
+                    ItemType = itemTypes[0]
+                },
+                //3
+                new Item()
+                {
+                    Code = "PLSRAFB000500000",
+                    ArabicName = "رف اعلى الاداج  K460/2",
+                    EnglishName = "",
+                    UomId = uoms[0].Id,
+                    Uom = uoms[0],
+                    ItemTypeId = itemTypes[1].Id,
+                    ItemType = itemTypes[1]
                 }
            };
+            ItemRelation[] relations = new ItemRelation[]
+            {
+                new ItemRelation()
+                {
+                    Parent = items[3],
+                    Child = items[2],
+                    Quantity = 1.12M,
+                    Company = companies[0]
+                }
+            };
             CompanyItemAssignment[] companyItemAssignments = new CompanyItemAssignment[]
             {
                 new CompanyItemAssignment()
@@ -209,6 +242,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
                     }
                 }
             };
+            
             context.AccountingPeriods.AddRange(accountingPeriods);
             context.Uoms.AddRange(uoms);
             context.ItemTypes.AddRange(itemTypes);
@@ -218,8 +252,12 @@ namespace Kiriazi.Accounting.Pricing.DAL
             context.Tarrifs.AddRange(tarrifs);
             context.Companies.AddRange(companies);
             context.CompanyAccountingPeriods.AddRange(companyAccountingPeriods);
+            context.SaveChanges();
+            companyAccountingPeriods[0].PriceListId = priceLists[0].Id;
+            companyAccountingPeriods[0].PriceList = priceLists[0];
             context.CompanyItemAssignments.AddRange(companyItemAssignments);
             context.PriceLists.AddRange(priceLists);
+            context.ItemRelations.AddRange(relations);
             context.SaveChanges();
         }
        
@@ -239,6 +277,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
         public DbSet<PriceList> PriceLists { get; set; }
         public DbSet<CompanyAccountingPeriod> CompanyAccountingPeriods { get; set; }
         public DbSet<CompanyItemAssignment> CompanyItemAssignments { get; set; }
+        public DbSet<ItemRelation> ItemRelations { get; set; }
 
         public PricingDBContext()
             : base("PricingDBLocalConnection")
@@ -265,13 +304,13 @@ namespace Kiriazi.Accounting.Pricing.DAL
 
             modelBuilder.Entity<ItemRelation>()
                 .HasRequired(e => e.Child)
-                .WithMany(e => e.Children)
+                .WithMany(e => e.Parents)
                 .HasForeignKey(e => e.ChildId)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<ItemRelation>()
                  .HasRequired(e => e.Parent)
-                 .WithMany(e => e.Parents)
+                 .WithMany(e => e.Children)
                  .HasForeignKey(e => e.ParentId)
                  .WillCascadeOnDelete(false);
             //
@@ -281,6 +320,22 @@ namespace Kiriazi.Accounting.Pricing.DAL
                 .HasForeignKey(e => e.CompanyId)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<CompanyAccountingPeriod>()
+                .HasIndex(e => new { e.AccountingPeriodId, e.CompanyId })
+                .IsUnique(true)
+                .HasName("IDX_COMP_PERIOD_ID_UNQ");
+
+            modelBuilder
+                .Entity<CompanyAccountingPeriod>()
+                .HasOptional(e => e.PriceList)
+                .WithRequired(e => e.CompanyAccountingPeriod)
+                ;
+
+            modelBuilder
+                .Entity<PriceList>()
+                .HasRequired(e => e.CompanyAccountingPeriod)
+                .WithOptional(e => e.PriceList);
+            
             //
             modelBuilder
                     .Entity<CurrencyExchangeRate>()
@@ -346,6 +401,12 @@ namespace Kiriazi.Accounting.Pricing.DAL
                 .HasIndex(e => e.Name)
                 .IsUnique(true)
                 .HasName("IDX_UNQ_NAME_PRICELIST");
+
+            modelBuilder
+                .Entity<PriceList>()
+                .HasIndex(e => e.Id)
+                .IsUnique(true)
+                .HasName("Idx_Unq_comp_accPeriod_Id");
             
             modelBuilder
                 .Entity<CurrencyExchangeRate>()
@@ -358,8 +419,12 @@ namespace Kiriazi.Accounting.Pricing.DAL
                 .HasIndex(e => e.Name)
                 .IsUnique()
                 .HasName("IDX_ITEMTYPE_NAME_UNQ");
-            
 
+            modelBuilder
+                 .Entity<PriceListLine>()
+                 .HasIndex(e => new { ItemId = e.ItemId, PriceListId = e.PriceListId })
+                 .IsUnique()
+                 .HasName("Idx_Unq_Item_PriceList_Id");
         }
         
     }

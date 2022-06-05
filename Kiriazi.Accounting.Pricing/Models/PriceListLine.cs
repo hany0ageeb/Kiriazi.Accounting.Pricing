@@ -13,12 +13,12 @@ namespace Kiriazi.Accounting.Pricing.Models
         private Currency _currency;
         private decimal? _currencyExchangeRate = null;
         private decimal? _tarrifPercentage = null;
-        private string _exchangeRateType = ExchangeRateTypes.System;
-        private string _tarrifType = ExchangeRateTypes.System;
+        private string _exchangeRateType = "";
+        private string _tarrifType = "";
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public Guid Id { get; private set; } = Guid.NewGuid();
+        public Guid Id { get; set; } = Guid.NewGuid();
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged(string propertyName = "")
@@ -112,9 +112,9 @@ namespace Kiriazi.Accounting.Pricing.Models
         }
 
         [MaxLength(50)]
-        public string ExchangeRateType 
-        { 
-            get=> _exchangeRateType;
+        public string ExchangeRateType
+        {
+            get => _exchangeRateType;
             set
             {
                 if (_exchangeRateType != value)

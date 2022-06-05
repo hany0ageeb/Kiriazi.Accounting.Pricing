@@ -129,7 +129,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
         }
         public bool CanAccountingPeriodAssigmentChange(CompanyAccountingPeriodEditViewModel model)
         {
-            return _unitOfWork.PriceListRepository.Find(p => p.CompanyAccountingPeriodId == model.Id).Count() == 0;
+            return _unitOfWork.PriceListRepository.Find(p => p.Id == model.Id).Count() == 0;
         }
         public void SaveOrUpdateCompanyAccountingPeriods(IList<CompanyAccountingPeriodEditViewModel> periods)
         {
@@ -156,7 +156,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                 }
                 else
                 {
-                    if (temp != null && temp.PriceLists.Count == 0)
+                    if (temp != null && temp.PriceList == null)
                     {
                         _unitOfWork.CompanyAccountingPeriodRepository.Remove(temp);
                     }

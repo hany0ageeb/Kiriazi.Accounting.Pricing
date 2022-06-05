@@ -30,12 +30,14 @@ namespace Kiriazi.Accounting.Pricing.Models
         [MaxLength(50)]
         public string State { get; set; } = AccountingPeriodStates.Opened;
 
-        public ICollection<PriceList> PriceLists { get; set; } = new HashSet<PriceList>();
+        public virtual PriceList PriceList { get; set; }
 
         [ForeignKey("Company")]
         public Guid CompanyId { get; set; }
 
         [ForeignKey("AccountingPeriod")]
         public Guid AccountingPeriodId { get; set; }
+
+        public Guid? PriceListId { get; set; }
     }
 }

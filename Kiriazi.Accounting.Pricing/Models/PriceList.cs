@@ -8,10 +8,7 @@ namespace Kiriazi.Accounting.Pricing.Models
 {
     public class PriceList : INotifyPropertyChanged
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public Guid Id { get; private set; } = Guid.NewGuid();
-
+       
         public event PropertyChangedEventHandler PropertyChanged;
 
         [Timestamp]
@@ -23,8 +20,9 @@ namespace Kiriazi.Accounting.Pricing.Models
         [Required]
         public virtual CompanyAccountingPeriod CompanyAccountingPeriod { get; set; }
 
+        [Key]
         [ForeignKey("CompanyAccountingPeriod")]
-        public Guid CompanyAccountingPeriodId { get; set; }
+        public Guid Id { get; set; }
 
         public virtual IList<PriceListLine> PriceListLines { get; set; } = new List<PriceListLine>();
     }

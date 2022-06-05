@@ -198,11 +198,13 @@
     <Compile Include="Controllers\CurrencyController.cs" />
     <Compile Include="Controllers\GroupController.cs" />
     <Compile Include="Controllers\ItemController.cs" />
+    <Compile Include="Controllers\ItemRelationController.cs" />
     <Compile Include="Controllers\PriceListController.cs" />
     <Compile Include="Controllers\UomController.cs" />
     <Compile Include="DAL\CompanyAccountingPeriodRepository.cs" />
     <Compile Include="DAL\CompanyItemAssignmentRepository.cs" />
     <Compile Include="DAL\CompanyRepository.cs" />
+    <Compile Include="DAL\CurrencyExchangeRateRepository.cs" />
     <Compile Include="DAL\CurrencyRepository.cs" />
     <Compile Include="DAL\CustomerRepository.cs" />
     <Compile Include="DAL\GroupRepository.cs" />
@@ -210,18 +212,23 @@
     <Compile Include="DAL\ICompanyAccountingPeriodRepository.cs" />
     <Compile Include="DAL\ICompanyItemAssignmentRepository.cs" />
     <Compile Include="DAL\ICompanyRepository.cs" />
+    <Compile Include="DAL\ICurrencyExchangeRateRepository.cs" />
     <Compile Include="DAL\ICurrencyRepository.cs" />
     <Compile Include="DAL\ICustomerRepository.cs" />
     <Compile Include="DAL\IGroupRepository.cs" />
+    <Compile Include="DAL\IItemRelationRepository.cs" />
     <Compile Include="DAL\IItemRepository.cs" />
     <Compile Include="DAL\IItemTypeRepository.cs" />
+    <Compile Include="DAL\IPriceListLineRepository.cs" />
     <Compile Include="DAL\IPriceListRepository.cs" />
     <Compile Include="DAL\IRepository.cs" />
     <Compile Include="DAL\ITarrifRepository.cs" />
+    <Compile Include="DAL\ItemRelationRepository.cs" />
     <Compile Include="DAL\ItemRepository.cs" />
     <Compile Include="DAL\ItemTypeRepository.cs" />
     <Compile Include="DAL\IUnitOfWork.cs" />
     <Compile Include="DAL\IUomRepository.cs" />
+    <Compile Include="DAL\PriceListLineRepository.cs" />
     <Compile Include="DAL\PriceListRepository.cs" />
     <Compile Include="DAL\PricingDBContext.cs" />
     <Compile Include="DAL\Repository.cs" />
@@ -254,16 +261,21 @@
     <Compile Include="Validation\GroupValidator.cs" />
     <Compile Include="Validation\ItemValidator.cs" />
     <Compile Include="Validation\IValidator.cs" />
+    <Compile Include="Validation\ModelState.cs" />
     <Compile Include="Validation\PriceListLineValidator.cs" />
+    <Compile Include="Validation\PriceListValidator.cs" />
     <Compile Include="Validation\TarrifValidator.cs" />
     <Compile Include="Validation\UomValidaor.cs" />
     <Compile Include="ViewModels\AccountingPeriodEditViewModel.cs" />
     <Compile Include="ViewModels\CompanyAccountingPeriodEditViewModel.cs" />
     <Compile Include="ViewModels\CompanyEditViewModel.cs" />
+    <Compile Include="ViewModels\CompanySelectionViewModel.cs" />
     <Compile Include="ViewModels\CurrencyEditViewModel.cs" />
     <Compile Include="ViewModels\ItemCompanyAssignmentViewModel.cs" />
     <Compile Include="ViewModels\ItemEditViewModel.cs" />
     <Compile Include="ViewModels\ItemSearchViewModel.cs" />
+    <Compile Include="ViewModels\ItemTreeSearchViewModel.cs" />
+    <Compile Include="ViewModels\PriceListEditViewModel.cs" />
     <Compile Include="ViewModels\PriceListSearchViewModel.cs" />
     <Compile Include="ViewModels\PriceListViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
@@ -296,6 +308,18 @@
     </Compile>
     <Compile Include="Views\CompanyEditView.Designer.cs">
       <DependentUpon>CompanyEditView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CompanyItemRelationSelectorView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\CompanyItemRelationSelectorView.Designer.cs">
+      <DependentUpon>CompanyItemRelationSelectorView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CompanySelectorView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\CompanySelectorView.Designer.cs">
+      <DependentUpon>CompanySelectorView.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\CurrenciesView.cs">
       <SubType>Form</SubType>
@@ -333,11 +357,23 @@
     <Compile Include="Views\ItemEditView.Designer.cs">
       <DependentUpon>ItemEditView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\ItemRelationEditView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ItemRelationEditView.Designer.cs">
+      <DependentUpon>ItemRelationEditView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\ItemsView.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Views\ItemsView.Designer.cs">
       <DependentUpon>ItemsView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ItemTreesView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ItemTreesView.Designer.cs">
+      <DependentUpon>ItemTreesView.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\MainView.cs">
       <SubType>Form</SubType>
@@ -350,6 +386,12 @@
     </Compile>
     <Compile Include="Views\NavigatorView.Designer.cs">
       <DependentUpon>NavigatorView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PriceListView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\PriceListView.Designer.cs">
+      <DependentUpon>PriceListView.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\PriceListEditView.cs">
       <SubType>Form</SubType>
@@ -411,6 +453,12 @@
     <EmbeddedResource Include="Views\CompanyEditView.resx">
       <DependentUpon>CompanyEditView.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\CompanyItemRelationSelectorView.resx">
+      <DependentUpon>CompanyItemRelationSelectorView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\CompanySelectorView.resx">
+      <DependentUpon>CompanySelectorView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\CurrenciesView.resx">
       <DependentUpon>CurrenciesView.cs</DependentUpon>
     </EmbeddedResource>
@@ -429,14 +477,23 @@
     <EmbeddedResource Include="Views\ItemEditView.resx">
       <DependentUpon>ItemEditView.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\ItemRelationEditView.resx">
+      <DependentUpon>ItemRelationEditView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\ItemsView.resx">
       <DependentUpon>ItemsView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ItemTreesView.resx">
+      <DependentUpon>ItemTreesView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\MainView.resx">
       <DependentUpon>MainView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\NavigatorView.resx">
       <DependentUpon>NavigatorView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\PriceListView.resx">
+      <DependentUpon>PriceListView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\PriceListEditView.resx">
       <DependentUpon>PriceListEditView.cs</DependentUpon>

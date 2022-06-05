@@ -17,6 +17,8 @@ namespace Kiriazi.Accounting.Pricing.DAL
         ICompanyItemAssignmentRepository CompanyItemAssignmentRepository { get; }
         IPriceListRepository PriceListRepository { get; }
         ICurrencyExchangeRateRepository CurrencyExchangeRateRepository { get; }
+        IPriceListLineRepository PriceListLineRepository{ get;}
+        IItemRelationRepository ItemRelationRepository { get; }
 
         DateTime Now { get; }
 

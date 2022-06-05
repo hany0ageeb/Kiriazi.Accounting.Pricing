@@ -18,7 +18,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
         IEnumerable<TEntity> Find(Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy);
         
         IEnumerable<TEntity> Find(Expression<Func<TEntity,bool>> predicate);
-        IEnumerable<TResult> Find<TResult>(Expression<Func<TEntity, bool>> predicate,Expression<Func<TEntity,TResult>> selector);
+        IEnumerable<TResult> Find<TResult>(Expression<Func<TEntity, bool>> predicate,Expression<Func<TEntity,TResult>> selector,Func<IQueryable<TResult>,IOrderedQueryable<TResult>> orderBy = null);
         IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IQueryable<TEntity>> include);
         IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy);
 
@@ -27,17 +27,5 @@ namespace Kiriazi.Accounting.Pricing.DAL
 
         void Remove(TEntity entity);
         void Remove(IEnumerable<TEntity> entities);
-    }
-    public interface ICurrencyExchangeRateRepository : IRepository<Models.CurrencyExchangeRate>
-    {
-
-    }
-    public class CurrencyExchangeRateRepository : Repository<Models.CurrencyExchangeRate>, ICurrencyExchangeRateRepository
-    {
-        public CurrencyExchangeRateRepository(PricingDBContext context)
-            : base(context)
-        {
-
-        }
     }
 }

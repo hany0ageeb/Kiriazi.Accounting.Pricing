@@ -36,5 +36,10 @@ namespace Kiriazi.Accounting.Pricing.Models
 
         [ForeignKey("Company")]
         public Guid CompanyId { get; set; }
+
+        public bool IsChild(Guid childId,Guid companyId)
+        {
+            return Child.IsChild(childId, companyId);
+        }
     }
 }

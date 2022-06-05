@@ -14,6 +14,7 @@ namespace Kiriazi.Accounting.Pricing.Views
     public partial class NavigatorView : Form
     {
         private UserCommand[] commands;
+        private IList<Form> children = new List<Form>();
         public NavigatorView()
         {
             InitializeComponent();
@@ -101,6 +102,16 @@ namespace Kiriazi.Accounting.Pricing.Views
                         PriceListsView priceListsView = Program.ServiceProvider.GetRequiredService<PriceListsView>();
                         priceListsView.MdiParent = this.MdiParent;
                         priceListsView.Show();
+                    }
+                },
+                new UserCommand()
+                {
+                    DisplayName = "Production Trees",
+                    Action = () =>
+                    {
+                        ItemTreesView itemTreesView = Program.ServiceProvider.GetRequiredService<ItemTreesView>();
+                        itemTreesView.MdiParent = this.MdiParent;
+                        itemTreesView.Show();
                     }
                 }
             };

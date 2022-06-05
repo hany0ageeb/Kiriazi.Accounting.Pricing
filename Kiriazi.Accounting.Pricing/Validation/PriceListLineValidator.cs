@@ -16,13 +16,21 @@ namespace Kiriazi.Accounting.Pricing.Validation
             {
                 modelState.AddErrors(nameof(entity.UnitPrice), "Please Enter Item Unit Price (Value >= 0)");
             }
-            if (string.IsNullOrEmpty(entity.ExchangeRateType))
+            if(entity.CurrencyExchangeRate !=null && entity.CurrencyExchangeRate <= 0)
             {
-                modelState.AddErrors(nameof(entity.UnitPrice), "Invalid Currency Exchange Rate Type");
+                modelState.AddErrors(nameof(entity.CurrencyExchangeRate), "Invalid Currency Exchange Rate.");
             }
-            if (string.IsNullOrEmpty(entity.TarrifType))
+            if(entity.TarrrifPercentage !=null && entity.TarrrifPercentage < 0)
             {
-                modelState.AddErrors(nameof(entity.UnitPrice), "Invalid Tarrif Type");
+                modelState.AddErrors(nameof(entity.TarrrifPercentage), "Invalid Tarrif Percentage.");
+            }
+            if(entity.Item.TarrifId == null && !string.IsNullOrEmpty(entity.TarrifType))
+            {
+                modelState.AddErrors(nameof(entity.TarrifType), $"Item {entity.Item.Code} has no Tarrif Assigned to it.");
+            }
+            if(entity.Item.TarrifId!=null && string.IsNullOrEmpty(entity.TarrifType))
+            {
+                modelState.AddErrors(nameof(entity.TarrifType), $"Invalid Tarrif Type.");
             }
             return modelState;
         }

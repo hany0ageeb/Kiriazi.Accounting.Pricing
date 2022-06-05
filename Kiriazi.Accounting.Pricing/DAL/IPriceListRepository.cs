@@ -12,5 +12,10 @@ namespace Kiriazi.Accounting.Pricing.DAL
             Guid? periodId = null,
             Func<IQueryable<PriceList>,IOrderedQueryable<PriceList>> orderBy = null,
             Func<IQueryable<PriceList>,IQueryable<PriceList>> include = null);
+
+        PriceList FindById(
+            Guid Id,
+            params string[] includeProperties
+            );
     }
 }
