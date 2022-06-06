@@ -113,6 +113,26 @@ namespace Kiriazi.Accounting.Pricing.Views
                         itemTreesView.MdiParent = this.MdiParent;
                         itemTreesView.Show();
                     }
+                },
+                new UserCommand()
+                {
+                    DisplayName = "Daily Currency Exchange Rates",
+                    Action = () =>
+                    {
+                        DailyCurrencyExchangeRatesView dailyCurrencyExchangeRatesView = Program.ServiceProvider.GetRequiredService<DailyCurrencyExchangeRatesView>();
+                        dailyCurrencyExchangeRatesView.MdiParent = this.MdiParent;
+                        dailyCurrencyExchangeRatesView.Show();
+                    }
+                },
+                new UserCommand()
+                {
+                    DisplayName = "Customers",
+                    Action = () =>
+                    {
+                        CustomersView customersView = Program.ServiceProvider.GetRequiredService<CustomersView>();
+                        customersView.MdiParent = this.MdiParent;
+                        customersView.Show();
+                    }
                 }
             };
             lstOptions.DataSource = commands;

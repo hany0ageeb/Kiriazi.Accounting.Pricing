@@ -196,6 +196,7 @@
     <Compile Include="Controllers\AccountingPeriodController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\CurrencyController.cs" />
+    <Compile Include="Controllers\CurrencyExchangeRateController.cs" />
     <Compile Include="Controllers\GroupController.cs" />
     <Compile Include="Controllers\ItemController.cs" />
     <Compile Include="Controllers\ItemRelationController.cs" />
@@ -333,6 +334,24 @@
     <Compile Include="Views\CurrencyEditView.Designer.cs">
       <DependentUpon>CurrencyEditView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\CustomersView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\CustomersView.Designer.cs">
+      <DependentUpon>CustomersView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DailyCurrencyExchangeRateEditView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\DailyCurrencyExchangeRateEditView.Designer.cs">
+      <DependentUpon>DailyCurrencyExchangeRateEditView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DailyCurrencyExchangeRatesView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\DailyCurrencyExchangeRatesView.Designer.cs">
+      <DependentUpon>DailyCurrencyExchangeRatesView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\GroupEditView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -464,6 +483,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\CurrencyEditView.resx">
       <DependentUpon>CurrencyEditView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\CustomersView.resx">
+      <DependentUpon>CustomersView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\DailyCurrencyExchangeRateEditView.resx">
+      <DependentUpon>DailyCurrencyExchangeRateEditView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\DailyCurrencyExchangeRatesView.resx">
+      <DependentUpon>DailyCurrencyExchangeRatesView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\GroupEditView.resx">
       <DependentUpon>GroupEditView.cs</DependentUpon>

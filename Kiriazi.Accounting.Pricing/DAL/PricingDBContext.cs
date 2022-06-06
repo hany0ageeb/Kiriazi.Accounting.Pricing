@@ -79,8 +79,60 @@ namespace Kiriazi.Accounting.Pricing.DAL
                     Name = "يورو",
                     Description = "Euro",
                     IsEnabled = true
+                },
+                new Currency()
+                {
+                    Code = "CNY",
+                    Name = "يوان صينى",
+                    Description = "يوان صينى",
+                    IsEnabled = true
                 }
            };
+            CurrencyExchangeRate[] exchangeRates = new CurrencyExchangeRate[]
+            {
+                new CurrencyExchangeRate()
+                {
+                    ConversionDate = new System.DateTime(System.DateTime.Now.Year,System.DateTime.Now.Month,System.DateTime.Now.Day,0,0,0),
+                    FromCurrency = currencies[1],
+                    ToCurrency = currencies[0],
+                    Rate =  16.0M
+                },
+                new CurrencyExchangeRate()
+                {
+                    ConversionDate = new System.DateTime(System.DateTime.Now.Year,System.DateTime.Now.Month,System.DateTime.Now.Day,0,0,0),
+                    FromCurrency = currencies[2],
+                    ToCurrency = currencies[0],
+                    Rate = 17.8448M
+                },
+                new CurrencyExchangeRate()
+                {
+                    ConversionDate = new System.DateTime(System.DateTime.Now.Year,System.DateTime.Now.Month,System.DateTime.Now.Day,0,0,0),
+                    FromCurrency = currencies[3],
+                    ToCurrency = currencies[0],
+                    Rate = 2.3251M
+                },
+                new CurrencyExchangeRate()
+                {
+                    ConversionDate = new System.DateTime(System.DateTime.Now.Year,System.DateTime.Now.Month,System.DateTime.Now.Day-1,0,0,0),
+                    FromCurrency = currencies[1],
+                    ToCurrency = currencies[0],
+                    Rate = 16.0M
+                },
+                new CurrencyExchangeRate()
+                {
+                    ConversionDate = new System.DateTime(System.DateTime.Now.Year,System.DateTime.Now.Month,System.DateTime.Now.Day-1,0,0,0),
+                    FromCurrency = currencies[2],
+                    ToCurrency = currencies[0],
+                    Rate = 17.8448M
+                },
+                new CurrencyExchangeRate()
+                {
+                    ConversionDate = new System.DateTime(System.DateTime.Now.Year,System.DateTime.Now.Month,System.DateTime.Now.Day-1,0,0,0),
+                    FromCurrency = currencies[3],
+                    ToCurrency = currencies[0],
+                    Rate = 2.3251M
+                }
+            };
             Tarrif[] tarrifs = new Tarrif[]
             {
                 new Tarrif()
@@ -242,7 +294,86 @@ namespace Kiriazi.Accounting.Pricing.DAL
                     }
                 }
             };
-            
+            Customer[] customers = new Customer[]
+            {
+                new Customer()
+                {
+                    Name = "مراكز الصيانة",
+                    Description = "مراكز الصيانة",
+                    Rules = new System.Collections.Generic.HashSet<CustomerPricingRule>()
+                    {
+                        new CustomerPricingRule()
+                        {
+                            IncrementDecrement = IncrementDecrementTypes.Increment,
+                            Amount = 35M,
+                            RuleAmountType = RuleAmountTypes.Percentage,
+                            RuleType = CustomerPricingRuleTypes.ItemType,
+                            ItemType = itemTypes[0]
+                        },
+                        new CustomerPricingRule()
+                        {
+                            IncrementDecrement = IncrementDecrementTypes.Increment,
+                            Amount = 10M,
+                            RuleAmountType = RuleAmountTypes.Percentage,
+                            RuleType = CustomerPricingRuleTypes.ItemType,
+                            ItemType = itemTypes[1]
+                        }
+                    }
+                },
+                new Customer()
+                {
+                    Name = "فولكان",
+                    Description = "فولكان",
+                    Rules = new System.Collections.Generic.HashSet<CustomerPricingRule>()
+                    {
+                        new CustomerPricingRule()
+                        {
+                            IncrementDecrement = IncrementDecrementTypes.Increment,
+                            Amount = 25M,
+                            RuleAmountType = RuleAmountTypes.Percentage,
+                            RuleType = CustomerPricingRuleTypes.ItemType,
+                            ItemType = itemTypes[0]
+                        },
+                        new CustomerPricingRule()
+                        {
+                            IncrementDecrement = IncrementDecrementTypes.Increment,
+                            Amount = 10M,
+                            RuleAmountType = RuleAmountTypes.Percentage,
+                            RuleType = CustomerPricingRuleTypes.ItemType,
+                            ItemType = itemTypes[1]
+                        }
+                    }
+                },
+                new Customer()
+                {
+                    Name = "التصدير",
+                    Description = "التصدير",
+                     Rules = new System.Collections.Generic.HashSet<CustomerPricingRule>()
+                    {
+                        new CustomerPricingRule()
+                        {
+                            IncrementDecrement = IncrementDecrementTypes.Increment,
+                            Amount = 25M,
+                            RuleAmountType = RuleAmountTypes.Percentage,
+                            RuleType = CustomerPricingRuleTypes.ItemType,
+                            ItemType = itemTypes[0]
+                        },
+                        new CustomerPricingRule()
+                        {
+                            IncrementDecrement = IncrementDecrementTypes.Increment,
+                            Amount = 11M,
+                            RuleAmountType = RuleAmountTypes.Percentage,
+                            RuleType = CustomerPricingRuleTypes.ItemType,
+                            ItemType = itemTypes[1]
+                        }
+                    }
+                },
+                new Customer()
+                {
+                    Name = "تحت التشغيل",
+                    Description = "تحت التشغيل"
+                }
+            };
             context.AccountingPeriods.AddRange(accountingPeriods);
             context.Uoms.AddRange(uoms);
             context.ItemTypes.AddRange(itemTypes);
@@ -258,6 +389,8 @@ namespace Kiriazi.Accounting.Pricing.DAL
             context.CompanyItemAssignments.AddRange(companyItemAssignments);
             context.PriceLists.AddRange(priceLists);
             context.ItemRelations.AddRange(relations);
+            context.CurrenciesExchangeRates.AddRange(exchangeRates);
+            context.Customers.AddRange(customers);
             context.SaveChanges();
         }
        
@@ -343,12 +476,18 @@ namespace Kiriazi.Accounting.Pricing.DAL
                     .WithMany(e => e.ConversionRatesToCurrency)
                     .HasForeignKey(e => e.ToCurrencyId)
                     .WillCascadeOnDelete(false);
+
             modelBuilder
                 .Entity<CurrencyExchangeRate>()
                 .HasRequired(e => e.FromCurrency)
                 .WithMany(e => e.ConversionRatesFromCurrency)
                 .HasForeignKey(e => e.FromCurrencyId)
                 .WillCascadeOnDelete(false);
+
+            modelBuilder
+                .Entity<CurrencyExchangeRate>()
+                .Property(e => e.Rate)
+                .HasPrecision(18, 4);
 
             modelBuilder.Entity<Uom>()
                .HasIndex(e => e.Code)

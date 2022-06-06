@@ -195,12 +195,52 @@ namespace Kiriazi.Accounting.Pricing.Views
             }
             return true;
         }
+        private bool CloseForm()
+        {
+            if (_hasChanged)
+            {
+                DialogResult result = MessageBox.Show(
+                    owner: this, 
+                    text: "Do you want to save changes?", 
+                    caption: "Confirm Save", 
+                    buttons: MessageBoxButtons.YesNoCancel, 
+                    icon: MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    if (SaveChanges())
+                    {
+                        _hasChanged = false;
+                        return true;
+                    }
+                }
+                else if(result == DialogResult.No)
+                {
+                    _hasChanged = false;
+                    return true;
+                }
+            }
+            return true;
+        }
         private void btnSave_Click(object sender, EventArgs e)
         {
             if (SaveChanges())
             {
                 btnSave.Enabled = false;
                 Close();
+            }
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            if (CloseForm())
+                Close();
+        }
+
+        private void ItemRelationEditView_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if(_hasChanged && (e.CloseReason == CloseReason.UserClosing || e.CloseReason == CloseReason.MdiFormClosing))
+            {
+                e.Cancel = !CloseForm();
             }
         }
     }

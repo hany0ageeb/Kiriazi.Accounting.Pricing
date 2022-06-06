@@ -57,6 +57,9 @@ namespace Kiriazi.Accounting.Pricing
             services.AddTransient(typeof(Views.AccountingPeriodsView));
             services.AddTransient(typeof(Views.PriceListsView));
             services.AddTransient(typeof(Views.ItemTreesView));
+            services.AddTransient(typeof(Views.DailyCurrencyExchangeRatesView));
+            services.AddTransient(typeof(Views.DailyCurrencyExchangeRateEditView));
+            services.AddTransient(typeof(Views.CustomersView));
 
             services.AddTransient(typeof(Controllers.CurrencyController));
             services.AddTransient(typeof(Controllers.GroupController));
@@ -67,6 +70,8 @@ namespace Kiriazi.Accounting.Pricing
             services.AddTransient(typeof(Controllers.AccountingPeriodController));
             services.AddTransient(typeof(Controllers.PriceListController));
             services.AddTransient(typeof(Controllers.ItemRelationController));
+            services.AddTransient(typeof(Controllers.CurrencyExchangeRateController));
+            services.AddTransient(typeof(Controllers.CustomerController));
 
             services.AddTransient<IValidator<Currency>, CurrencyValidator>();
             services.AddTransient<IValidator<Company>,CompanyValidator>();

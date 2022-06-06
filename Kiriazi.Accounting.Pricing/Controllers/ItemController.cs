@@ -9,6 +9,23 @@ using System.Linq;
 
 namespace Kiriazi.Accounting.Pricing.Controllers
 {
+    public class CustomerController
+    {
+        private readonly IUnitOfWork _unitOfWork;
+
+        public CustomerController(IUnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
+        public IList<Customer> Find(string customerName = "")
+        {
+            return 
+                _unitOfWork
+                .CustomerRepository
+                .Find(customerName, orderBy: q => q.OrderBy(e => e.Name))
+                .ToList();
+        }
+    }
     public class ItemController
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -188,7 +205,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                         {
                             Id = assignment.Id,
                             Company = assignment.Company,
-                            Group = _unitOfWork.GroupRepository.Find(assignment.Group.Id),
+                            Group = _unitOfWork.GroupRepository.Find(assignment.Group?.Id),
                             Item = item,
                             NameAlias = assignment.Alise
                         });

@@ -1,4 +1,5 @@
 ﻿using Kiriazi.Accounting.Pricing.Models;
+using System;
 using System.Collections.Generic;
 
 namespace Kiriazi.Accounting.Pricing.ViewModels
@@ -43,11 +44,14 @@ namespace Kiriazi.Accounting.Pricing.ViewModels
             ItemArabicName = relation.Parent.ArabicName;
             ItemUomCode = relation.Parent.Uom.Code;
             CompanyName = relation.Company.Name;
+            RootId = relation.ParentId;
+            CompanyId = relation.CompanyId;
         }
+        public Guid RootId { get; set; }
         public string ItemCode { get; set; }
         public string ItemArabicName { get; set; }
         public string ItemUomCode { get; set; }
-
+        public Guid CompanyId { get; set; }
         public string CompanyName { get; set; }
     }
 }

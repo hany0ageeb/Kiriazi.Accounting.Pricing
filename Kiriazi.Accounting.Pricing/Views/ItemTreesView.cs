@@ -82,15 +82,63 @@ namespace Kiriazi.Accounting.Pricing.Views
                 {
                     Text = "Edit",
                     UseColumnTextForButtonValue = true,
-                    HeaderText = ""
+                    HeaderText = "",
+                    Name = "Edit"
                 },
                 new DataGridViewButtonColumn()
                 {
                     HeaderText = "",
                     UseColumnTextForButtonValue = true,
-                    Text = "Delete"
+                    Text = "Delete",
+                    Name = "Delete"
                 });
             dataGridView1.DataSource = _trees;
+            dataGridView1.CellContentClick += (o, e) =>
+            {
+                if(e.ColumnIndex == dataGridView1.Columns["Delete"].Index)
+                {
+                    //Delete ...
+                    if (e.RowIndex >= 0 && e.RowIndex < _trees.Count)
+                    {
+                        RemoveTree(e.RowIndex);
+                    }
+
+                }
+                if(e.ColumnIndex == dataGridView1.Columns["Edit"].Index)
+                {
+                    //Edit ...
+                    if (e.RowIndex >= 0 && e.RowIndex < _trees.Count)
+                    {
+                        var model = _controller.Edit(_trees[e.RowIndex].RootId, _trees[e.RowIndex].CompanyId);
+                        using (ItemRelationEditView relationEditView = new ItemRelationEditView(model, _controller))
+                        {
+                            relationEditView.ShowDialog(this);
+                        }
+                    }
+                }
+            };
+        }
+        private void RemoveTree(int rowIndex)
+        {
+            DialogResult result = 
+                MessageBox.Show(
+                    owner: this,
+                    text: "Are you sure you want to delete?",
+                    caption: "Confirm Delete",
+                    buttons: MessageBoxButtons.YesNo,
+                    icon: MessageBoxIcon.Question);
+            if (result == DialogResult.Yes)
+            {
+                try
+                {
+                    _controller.Remove(_trees[rowIndex].RootId, _trees[rowIndex].CompanyId);
+                    Search();
+                }
+                catch (Exception ex)
+                {
+                    _ = MessageBox.Show(this, ex.Message, "error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
         private void btnSearch_Click(object sender, EventArgs e)
         {
@@ -134,7 +182,35 @@ namespace Kiriazi.Accounting.Pricing.Views
             }
             else
             {
-                _ = MessageBox.Show(this, "Define at least one company before creating any production tree.","Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                _ = MessageBox.Show(this, "Define at least one company before creating any Product tree.","Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnNewFromExisting_Click(object sender, EventArgs e)
+        {
+            int? index = dataGridView1.CurrentRow?.Index;
+            if (index >= 0 && index < _trees.Count) 
+            {
+                var companies = _controller.GetCompanies();
+                if (companies.Count > 0)
+                {
+                    using (CompanyItemRelationSelectorView companySelectorView = new CompanyItemRelationSelectorView(companies))
+                    {
+                        companySelectorView.ShowDialog(this);
+                        if (companySelectorView.DialogResult == DialogResult.OK)
+                        {
+                            var model = _controller.AddFomExisting(companySelectorView.SelectedCompanies.Select(sc => sc.CompanyId).ToList(), _trees[index.Value]);
+                            using (ItemRelationEditView relationEditView = new ItemRelationEditView(model, _controller))
+                            {
+                                relationEditView.ShowDialog(this);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    _ = MessageBox.Show(this, "Define at least one company before creating product tree.", "Error", MessageBoxButtons.OK);
+                }
             }
         }
     }

@@ -36,18 +36,18 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.txtItemName = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
-            this.btnSave = new System.Windows.Forms.Button();
-            this.btnClose = new System.Windows.Forms.Button();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.txtComonentName = new System.Windows.Forms.TextBox();
             this.txtComponentUom = new System.Windows.Forms.TextBox();
+            this.txtComonentName = new System.Windows.Forms.TextBox();
+            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.btnClose = new System.Windows.Forms.Button();
+            this.btnSave = new System.Windows.Forms.Button();
             this.flowLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            this.flowLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
+            this.flowLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // flowLayoutPanel1
@@ -67,7 +67,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.63748F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 83.36252F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 484F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 485F));
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.cboItems, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.txtItemName, 2, 0);
@@ -93,12 +93,12 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.cboItems.FormattingEnabled = true;
             this.cboItems.Location = new System.Drawing.Point(59, 3);
             this.cboItems.Name = "cboItems";
-            this.cboItems.Size = new System.Drawing.Size(276, 23);
+            this.cboItems.Size = new System.Drawing.Size(275, 23);
             this.cboItems.TabIndex = 1;
             // 
             // txtItemName
             // 
-            this.txtItemName.Location = new System.Drawing.Point(341, 3);
+            this.txtItemName.Location = new System.Drawing.Point(340, 3);
             this.txtItemName.Name = "txtItemName";
             this.txtItemName.ReadOnly = true;
             this.txtItemName.Size = new System.Drawing.Size(472, 23);
@@ -122,36 +122,6 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.dataGridView1.Size = new System.Drawing.Size(814, 412);
             this.dataGridView1.TabIndex = 2;
             // 
-            // flowLayoutPanel2
-            // 
-            this.flowLayoutPanel2.Controls.Add(this.btnClose);
-            this.flowLayoutPanel2.Controls.Add(this.btnSave);
-            this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 536);
-            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(829, 47);
-            this.flowLayoutPanel2.TabIndex = 2;
-            // 
-            // btnSave
-            // 
-            this.btnSave.Enabled = false;
-            this.btnSave.Location = new System.Drawing.Point(606, 3);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(107, 33);
-            this.btnSave.TabIndex = 0;
-            this.btnSave.Text = "Save";
-            this.btnSave.UseVisualStyleBackColor = true;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-            // 
-            // btnClose
-            // 
-            this.btnClose.Location = new System.Drawing.Point(719, 3);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(107, 33);
-            this.btnClose.TabIndex = 1;
-            this.btnClose.Text = "Close";
-            this.btnClose.UseVisualStyleBackColor = true;
-            // 
             // tableLayoutPanel2
             // 
             this.tableLayoutPanel2.ColumnCount = 2;
@@ -166,6 +136,14 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.tableLayoutPanel2.Size = new System.Drawing.Size(823, 33);
             this.tableLayoutPanel2.TabIndex = 3;
             // 
+            // txtComponentUom
+            // 
+            this.txtComponentUom.Location = new System.Drawing.Point(532, 3);
+            this.txtComponentUom.Name = "txtComponentUom";
+            this.txtComponentUom.ReadOnly = true;
+            this.txtComponentUom.Size = new System.Drawing.Size(143, 23);
+            this.txtComponentUom.TabIndex = 4;
+            // 
             // txtComonentName
             // 
             this.txtComonentName.Location = new System.Drawing.Point(3, 3);
@@ -174,13 +152,36 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.txtComonentName.Size = new System.Drawing.Size(472, 23);
             this.txtComonentName.TabIndex = 3;
             // 
-            // txtComponentUom
+            // flowLayoutPanel2
             // 
-            this.txtComponentUom.Location = new System.Drawing.Point(533, 3);
-            this.txtComponentUom.Name = "txtComponentUom";
-            this.txtComponentUom.ReadOnly = true;
-            this.txtComponentUom.Size = new System.Drawing.Size(143, 23);
-            this.txtComponentUom.TabIndex = 4;
+            this.flowLayoutPanel2.Controls.Add(this.btnClose);
+            this.flowLayoutPanel2.Controls.Add(this.btnSave);
+            this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 536);
+            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(829, 47);
+            this.flowLayoutPanel2.TabIndex = 2;
+            // 
+            // btnClose
+            // 
+            this.btnClose.Location = new System.Drawing.Point(719, 3);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(107, 33);
+            this.btnClose.TabIndex = 1;
+            this.btnClose.Text = "Close";
+            this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            // 
+            // btnSave
+            // 
+            this.btnSave.Enabled = false;
+            this.btnSave.Location = new System.Drawing.Point(606, 3);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(107, 33);
+            this.btnSave.TabIndex = 0;
+            this.btnSave.Text = "Save";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // ItemRelationEditView
             // 
@@ -189,16 +190,19 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.ClientSize = new System.Drawing.Size(832, 593);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MinimizeBox = false;
             this.Name = "ItemRelationEditView";
             this.Text = "Item Tree";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ItemRelationEditView_FormClosing);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            this.flowLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
+            this.flowLayoutPanel2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

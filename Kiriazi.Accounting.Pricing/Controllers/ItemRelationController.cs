@@ -111,6 +111,68 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                 throw new ArgumentException("You Should Select One Or More Companies before creating Production Tree.");
             }
         }
+        public ItemRelationEditViewModel AddFomExisting(IList<Guid> selectedCompanies,ItemTreeViewModel existingTree)
+        {
+            if (selectedCompanies.Count > 0)
+            {
+                ItemRelationEditViewModel model = new ItemRelationEditViewModel();
+                model.CompaniesIds.AddRange(selectedCompanies);
+                model.Items = _unitOfWork
+                        .ItemRepository
+                        .Find(
+                            predicate: itm => itm.ItemTypeId == ItemTypeRepository.ManufacturedItemType.Id,
+                            orderBy: q => q.OrderBy(s => s.Code))
+                        .ToList();
+                if (model.Items.Count > 0)
+                    model.ParentItem = model.Items[0];
+                model.ItemCodes =
+                    FindItemsCodes(selectedCompanies, model.ParentItem.Id);
+                var relations = _unitOfWork.ItemRelationRepository.Find(predicate: r => r.ParentId == existingTree.RootId && r.CompanyId == existingTree.CompanyId,orderBy:q=>q.OrderBy(r=>r.Child.Code));
+                foreach(var r in relations)
+                {
+                    model.Components.Add(new ComponentViewModel()
+                    {
+                        ChildItem = r.Child,
+                        ItemCode = r.Child.Code,
+                        Quantity = r.Quantity
+                    });
+                }
+                return model;
+            }
+            else
+            {
+                throw new ArgumentException("Select at least one company to create product tree");
+            }
+        }
+        public ItemRelationEditViewModel Edit(Guid rootId,Guid companyId)
+        {
+            var relations = _unitOfWork.ItemRelationRepository.Find(predicate:r => r.ParentId == rootId && r.CompanyId == companyId,orderBy:q=>q.OrderBy(r=>r.Child.Code));
+            if (relations.Count() > 0)
+            {
+                ItemRelationEditViewModel model = new ItemRelationEditViewModel();
+                model.CompaniesIds.Add(companyId);
+                model.Items = new List<Item>();
+                model.Items.Add(_unitOfWork.ItemRepository.Find(Id: rootId));
+                if (model.Items.Count > 0)
+                    model.ParentItem = model.Items[0];
+                model.ItemCodes =
+                    FindItemsCodes(model.CompaniesIds, model.ParentItem.Id);
+                foreach (var r in relations)
+                {
+                    model.Components.Add(new ComponentViewModel()
+                    {
+                        ChildItem = r.Child,
+                        ItemCode = r.Child.Code,
+                        Quantity = r.Quantity
+                    });
+                }
+                return model;
+            }
+            else
+            {
+                throw new ArgumentException("Invalid Parent Id / Company Id");
+            }
+        }
         public ModelState Add(ItemRelationEditViewModel model)
         {
             ModelState modelState = Validate(model);
@@ -133,6 +195,16 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             }
             _unitOfWork.Complete();
             return modelState;
+        }
+        public void Remove(Guid rootItemId,Guid companyId)
+        {
+            var children = 
+                _unitOfWork
+                .ItemRepository
+                .Find(predicate: e => e.Id == rootItemId)
+                .SelectMany(e=>e.Children.Where(c=>c.CompanyId == companyId));
+            _unitOfWork.ItemRelationRepository.Remove(children);
+            _unitOfWork.Complete();
         }
         public ModelState Validate(ItemRelationEditViewModel model)
         {
