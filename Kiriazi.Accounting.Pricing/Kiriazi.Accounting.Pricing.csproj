@@ -197,6 +197,7 @@
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\CurrencyController.cs" />
     <Compile Include="Controllers\CurrencyExchangeRateController.cs" />
+    <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\GroupController.cs" />
     <Compile Include="Controllers\ItemController.cs" />
     <Compile Include="Controllers\ItemRelationController.cs" />
@@ -244,6 +245,7 @@
     <Compile Include="Models\CurrencyExchangeRate.cs" />
     <Compile Include="Models\Currency.cs" />
     <Compile Include="Models\Customer.cs" />
+    <Compile Include="Models\CustomerPricingRule.cs" />
     <Compile Include="Models\ExchangeRateType.cs" />
     <Compile Include="Models\Group.cs" />
     <Compile Include="Models\Item.cs" />
@@ -333,6 +335,18 @@
     </Compile>
     <Compile Include="Views\CurrencyEditView.Designer.cs">
       <DependentUpon>CurrencyEditView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CustomerEditView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\CustomerEditView.Designer.cs">
+      <DependentUpon>CustomerEditView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CustomerPricingRuleEditView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\CustomerPricingRuleEditView.Designer.cs">
+      <DependentUpon>CustomerPricingRuleEditView.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\CustomersView.cs">
       <SubType>Form</SubType>
@@ -483,6 +497,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\CurrencyEditView.resx">
       <DependentUpon>CurrencyEditView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\CustomerEditView.resx">
+      <DependentUpon>CustomerEditView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\CustomerPricingRuleEditView.resx">
+      <DependentUpon>CustomerPricingRuleEditView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\CustomersView.resx">
       <DependentUpon>CustomersView.cs</DependentUpon>

@@ -60,6 +60,7 @@ namespace Kiriazi.Accounting.Pricing
             services.AddTransient(typeof(Views.DailyCurrencyExchangeRatesView));
             services.AddTransient(typeof(Views.DailyCurrencyExchangeRateEditView));
             services.AddTransient(typeof(Views.CustomersView));
+            services.AddTransient(typeof(Views.CustomerEditView));
 
             services.AddTransient(typeof(Controllers.CurrencyController));
             services.AddTransient(typeof(Controllers.GroupController));

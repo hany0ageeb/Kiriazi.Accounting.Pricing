@@ -1,5 +1,6 @@
 ﻿using Kiriazi.Accounting.Pricing.Controllers;
 using Kiriazi.Accounting.Pricing.Models;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -64,6 +65,41 @@ namespace Kiriazi.Accounting.Pricing.Views
                 });
             dataGridView1.DataSource = _customers;
             Search();
+            dataGridView1.CellContentClick += (o, e) =>
+            {
+                if(e.ColumnIndex == dataGridView1.Columns["Edit"].Index)
+                {
+                    if (e.RowIndex >= 0 && e.RowIndex < _customers.Count) 
+                    {
+                        using (CustomerEditView customerEditView = new CustomerEditView(_controller, _controller.Edit(_customers[e.RowIndex].Id)))
+                        {
+                            _ = customerEditView.ShowDialog(this);
+                            if (_customers.Count > 0)
+                                Search();
+                        }
+                    }
+                }
+                else if(e.ColumnIndex == dataGridView1.Columns["Delete"].Index)
+                {
+                    if (e.RowIndex >= 0 && e.RowIndex < _customers.Count)
+                    {
+                        DialogResult result = MessageBox.Show(this, $"Are you sure you want to delete Customer: {_customers[e.RowIndex].Name}", "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                        if (result == DialogResult.Yes)
+                        {
+                            string message = _controller.Delete(_customers[e.RowIndex].Id);
+                            if (!string.IsNullOrEmpty(message))
+                            {
+                                _ = MessageBox.Show(this, message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
+                            else
+                            {
+                                if(_customers.Count > 0)
+                                    Search();
+                            }
+                        }
+                    }
+                }
+            };
         }
         private void Search()
         {
@@ -73,11 +109,42 @@ namespace Kiriazi.Accounting.Pricing.Views
             {
                 _customers.Add(customer);
             }
+            if (_customers.Count > 0)
+            {
+                btnPricingRules.Enabled = true;
+            }
+            else
+            {
+                btnPricingRules.Enabled = false;
+            }
         }
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
             Search();
+        }
+
+        private void btnNew_Click(object sender, EventArgs e)
+        {
+            using(CustomerEditView customerEditView = Program.ServiceProvider.GetRequiredService<CustomerEditView>())
+            {
+                customerEditView.ShowDialog(this);
+                if(_customers.Count > 0)
+                    Search();
+            }
+        }
+
+        private void btnPricingRules_Click(object sender, EventArgs e)
+        {
+            int? index = dataGridView1.CurrentRow?.Index;
+            if(index != null && index >= 0 && index < _customers.Count)
+            {
+                var rules = _controller.EditCustomerPricingRules(_customers[index.Value].Id);
+                using(CustomerPricingRuleEditView pricingRuleEditView  = new CustomerPricingRuleEditView(_controller,rules))
+                {
+                    _ = pricingRuleEditView.ShowDialog(this);
+                }
+            }
         }
     }
 }

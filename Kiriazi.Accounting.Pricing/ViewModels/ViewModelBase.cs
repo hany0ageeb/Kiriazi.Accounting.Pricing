@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Kiriazi.Accounting.Pricing.Models;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace Kiriazi.Accounting.Pricing.ViewModels
@@ -32,7 +34,20 @@ namespace Kiriazi.Accounting.Pricing.ViewModels
             }
         }
         public DateTime Date { get; set; }
-        public Models.Currency FromCurrency { get; set; }
-        public Models.Currency ToCurrency { get; set; }
+        public Currency FromCurrency { get; set; }
+        public Currency ToCurrency { get; set; }
+    }
+    public class CustomerPricingRulesEditViewModel : ViewModelBase
+    {
+        public IList<string> ItemsCodes { get; set; }
+        public IList<string> PricingRuleTypes { get; set; }
+        public IList<string> RuleAmountTypes { get; set; }
+        public IList<string> IncrementDecrement { get; set; }
+        public IList<CustomerPricingRule> CustomerRules { get; set; }
+        public IList<Currency> Currencies { get; set; }
+        public IList<Group> Groups { get; set; }
+        public IList<Company> Companies { get; set; }
+        public IList<ItemType> ItemTypes { get; set; }
+        public Customer Customer { get; set; }
     }
 }
