@@ -35,19 +35,19 @@ namespace Kiriazi.Accounting.Pricing.DAL
                 return _context.Set<TEntity>().Where(predicate).AsEnumerable();
             return orderBy(_context.Set<TEntity>().Where(predicate)).AsEnumerable();
         }
-        public void Add(TEntity entity)
+        public virtual void Add(TEntity entity)
         {
             _context.Set<TEntity>().Add(entity);
         }
-        public void Add(IEnumerable<TEntity> entities)
+        public virtual void Add(IEnumerable<TEntity> entities)
         {
             _context.Set<TEntity>().AddRange(entities);
         }
-        public void Remove(TEntity entity)
+        public virtual void Remove(TEntity entity)
         {
             _context.Set<TEntity>().Remove(entity);
         }
-        public void Remove(IEnumerable<TEntity> entities)
+        public virtual void Remove(IEnumerable<TEntity> entities)
         {
             _context.Set<TEntity>().RemoveRange(entities);
         }

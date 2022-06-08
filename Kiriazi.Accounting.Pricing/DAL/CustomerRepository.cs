@@ -31,5 +31,14 @@ namespace Kiriazi.Accounting.Pricing.DAL
                 return orderBy(query).AsEnumerable();
             return query.AsEnumerable();
         }
+        public Customer FindWithPricingRules(Guid id)
+        {
+            return 
+                _context
+                .Set<Customer>()
+                .Where(c => c.Id == id)
+                .Include(e => e.Rules.Select(r => r.Group))
+                .FirstOrDefault();
+        }
     }
 }

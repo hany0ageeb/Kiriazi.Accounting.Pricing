@@ -17,5 +17,6 @@ namespace Kiriazi.Accounting.Pricing.DAL
             Guid Id,
             params string[] includeProperties
             );
+        IEnumerable<PriceListLine> FindPriceListLines(Guid companyId,Guid itemId,DateTime date);
     }
 }

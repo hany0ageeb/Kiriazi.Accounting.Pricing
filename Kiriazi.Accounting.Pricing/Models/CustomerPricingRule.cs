@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -69,7 +70,7 @@ namespace Kiriazi.Accounting.Pricing.Models
             }
         }
 
-        public Item Item 
+        public virtual Item Item 
         { 
             get=>_item;
             set
@@ -81,6 +82,9 @@ namespace Kiriazi.Accounting.Pricing.Models
                 }
             }
         }
+        [ForeignKey("Item")]
+        public Guid? ItemId { get; set; }
+
         [NotMapped]
         public string ItemCode
         {
@@ -94,7 +98,9 @@ namespace Kiriazi.Accounting.Pricing.Models
                 }
             }
         }
-        public ItemType ItemType 
+        [ForeignKey(nameof(ItemType))]
+        public Guid? ItemTypeId { get; set; }
+        public virtual ItemType ItemType 
         { 
             get=>_itemType;
             set
@@ -106,8 +112,9 @@ namespace Kiriazi.Accounting.Pricing.Models
                 }
             }
         }
-
-        public Group Group 
+        [ForeignKey(nameof(Group))]
+        public Guid? GroupId { get; set; }
+        public virtual Group Group 
         { 
             get=>_group;
             set
@@ -119,8 +126,9 @@ namespace Kiriazi.Accounting.Pricing.Models
                 }
             }
         }
-
-        public Company Company 
+        [ForeignKey(nameof(Company))]
+        public Guid? CompanyId { get; set; }
+        public virtual Company Company 
         { 
             get=>_company;
             set
@@ -132,8 +140,10 @@ namespace Kiriazi.Accounting.Pricing.Models
                 }
             }
         }
+        [ForeignKey(nameof(AmountCurrency))]
+        public Guid? AmountCurrencyId { get; set; }
 
-        public Currency AmountCurrency 
+        public virtual Currency AmountCurrency 
         { 
             get=>_currency;
             set
@@ -158,6 +168,7 @@ namespace Kiriazi.Accounting.Pricing.Models
                 }
             }
         }
+        
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string propertyName = "")

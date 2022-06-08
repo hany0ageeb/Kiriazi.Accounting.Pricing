@@ -19,5 +19,6 @@ namespace Kiriazi.Accounting.Pricing.DAL
             Func<IQueryable<Item>, IQueryable<Item>> include = null);
 
         IEnumerable<string> FindItemsCodes();
+        Item FindByItemCode(string itemCode);
     }
 }

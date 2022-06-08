@@ -10,5 +10,6 @@ namespace Kiriazi.Accounting.Pricing.DAL
             string customerName = "", 
             Func<IQueryable<Customer>, IOrderedQueryable<Customer>> orderBy = null,
             params string[] includeProperties);
+        Customer FindWithPricingRules(Guid id);
     }
 }

@@ -18,13 +18,16 @@ namespace Kiriazi.Accounting.Pricing.Views
         private readonly CustomerController _controller;
         private BindingList<CustomerPricingRule> _rules = new BindingList<CustomerPricingRule>();
         private CustomerPricingRulesEditViewModel _model;
+        private bool _hasChanged = false;
+        
+        private readonly AutoCompleteStringCollection _autoCompleteSource = new AutoCompleteStringCollection();
         public CustomerPricingRuleEditView(
             CustomerController controller,
             CustomerPricingRulesEditViewModel model)
         {
             _controller = controller;
             _model = model;
-            foreach(var rule in _model.CustomerRules)
+            foreach(var rule in _model.Customer.Rules)
             {
                 _rules.Add(rule);
             }
@@ -41,7 +44,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             dataGridView1.AutoGenerateColumns = false;
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
-            dataGridView1.EditMode = DataGridViewEditMode.EditOnEnter;
+            dataGridView1.EditMode = DataGridViewEditMode.EditOnKeystrokeOrF2;
             dataGridView1.Columns.Clear();
             dataGridView1.Columns.AddRange(
                 new DataGridViewComboBoxColumn()
@@ -131,13 +134,126 @@ namespace Kiriazi.Accounting.Pricing.Views
                     ReadOnly = true,
                     HeaderText = "Fixed Amount Currency"
                 });
-            _rules = new BindingList<CustomerPricingRule>(_model.CustomerRules);
+            _rules = new BindingList<CustomerPricingRule>(_model.Customer.Rules);
             dataGridView1.DataSource = _rules;
             dataGridView1.DefaultValuesNeeded += DataGridView1_DefaultValuesNeeded;
             dataGridView1.CellEndEdit += DataGridView1_CellEndEdit;
-            
+            dataGridView1.EditingControlShowing += DataGridView1_EditingControlShowing;
+            dataGridView1.RowValidating += DataGridView1_RowValidating;
+            dataGridView1.RowValidated += DataGridView1_RowValidated;
+
+            _autoCompleteSource.AddRange(_model.ItemsCodes.ToArray());
+
+            _rules.ListChanged += (o, e) =>
+            {
+                _hasChanged = true;
+                btnSave.Enabled = true;
+            };
         }
 
+        private void DataGridView1_RowValidated(object sender, DataGridViewCellEventArgs e)
+        {
+            dataGridView1.Rows[e.RowIndex].ErrorText = "";
+        }
+
+        private void DataGridView1_RowValidating(object sender, DataGridViewCellCancelEventArgs e)
+        {
+            DataGridView grid = sender as DataGridView;
+            if(grid!=null && e.RowIndex >= 0 && e.RowIndex < _rules.Count)
+            {
+                switch (_rules[e.RowIndex].RuleType)
+                {
+                    case CustomerPricingRuleTypes.AllItems:
+                        if (!string.IsNullOrEmpty(_rules[e.RowIndex].ItemCode))
+                        {
+                            e.Cancel = true;
+                            System.Media.SystemSounds.Hand.Play();
+                            dataGridView1.Rows[e.RowIndex].ErrorText = "All Items Rule Type Cannot has Item Code!";
+                        }
+                        break;
+                    case CustomerPricingRuleTypes.Company:
+                        if(_rules[e.RowIndex].Company==null || _rules[e.RowIndex].Company.Id == Guid.Empty)
+                        {
+                            e.Cancel = true;
+                            System.Media.SystemSounds.Hand.Play();
+                            dataGridView1.Rows[e.RowIndex].ErrorText = "select a company from the list.";
+                        }
+                        break;
+                    case CustomerPricingRuleTypes.Item:
+                        if (string.IsNullOrEmpty(_rules[e.RowIndex].ItemCode))
+                        {
+                            e.Cancel = true;
+                            System.Media.SystemSounds.Hand.Play();
+                            dataGridView1.Rows[e.RowIndex].ErrorText = "Invalid Item Code.";
+                        }
+                        else
+                        {
+                            if (!_autoCompleteSource.Contains(_rules[e.RowIndex].ItemCode))
+                            {
+                                e.Cancel = true;
+                                System.Media.SystemSounds.Hand.Play();
+                                dataGridView1.Rows[e.RowIndex].ErrorText = "Invalid Item Code.";
+                            }
+                            else
+                            {
+
+                            }
+                        }
+                        break;
+                    case CustomerPricingRuleTypes.ItemGroup:
+                        if(_rules[e.RowIndex].Group==null || _rules[e.RowIndex].Group.Id == Guid.Empty)
+                        {
+                            e.Cancel = true;
+                            System.Media.SystemSounds.Hand.Play();
+                            dataGridView1.Rows[e.RowIndex].ErrorText = "Select a Group from the list.";
+                        }
+                        break;
+                    case CustomerPricingRuleTypes.ItemType:
+                        if(_rules[e.RowIndex].ItemType == null || _rules[e.RowIndex].ItemType.Id == Guid.Empty)
+                        {
+                            e.Cancel = true;
+                            System.Media.SystemSounds.Hand.Play();
+                            dataGridView1.Rows[e.RowIndex].ErrorText = "Select an Item Type.";
+                        }
+                        break;
+                }
+                switch (_rules[e.RowIndex].RuleAmountType)
+                {
+                    case RuleAmountTypes.Fixed:
+                        if(_rules[e.RowIndex].AmountCurrency == null || _rules[e.RowIndex].AmountCurrency.Id == Guid.Empty)
+                        {
+                            e.Cancel = true;
+                            System.Media.SystemSounds.Hand.Play();
+                            dataGridView1.Rows[e.RowIndex].ErrorText = "Select Currency";
+                        }
+                        
+                        break;
+                    case RuleAmountTypes.Percentage:
+                        break;
+                }
+                if(_rules[e.RowIndex].Amount < 0)
+                {
+                    e.Cancel = true;
+                    System.Media.SystemSounds.Hand.Play();
+                    dataGridView1.Rows[e.RowIndex].ErrorText = "Invalid Amount. Enter value greater than or equal to zero.";
+                }
+            }
+        }
+        
+        private void DataGridView1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            int? index = dataGridView1.CurrentCell?.ColumnIndex;
+            if(index != null && index == dataGridView1.Columns[nameof(CustomerPricingRule.ItemCode)].Index)
+            {
+                TextBox textBox = e.Control as TextBox;
+                if (textBox != null)
+                {
+                    textBox.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+                    textBox.AutoCompleteSource = AutoCompleteSource.CustomSource;
+                    textBox.AutoCompleteCustomSource = _autoCompleteSource;
+                }
+            }
+        }
         private void DataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             if (e.ColumnIndex == dataGridView1.Columns[nameof(CustomerPricingRule.RuleType)].Index)
@@ -150,30 +266,64 @@ namespace Kiriazi.Accounting.Pricing.Views
                         dataGridView1.Rows[e.RowIndex].Cells[nameof(CustomerPricingRule.Group)].ReadOnly = true;
                         dataGridView1.Rows[e.RowIndex].Cells[nameof(CustomerPricingRule.Company)].ReadOnly = true;
                         dataGridView1.Rows[e.RowIndex].Cells[nameof(CustomerPricingRule.ItemType)].ReadOnly = true;
+                        if (e.RowIndex >= 0 && e.RowIndex < _rules.Count)
+                        {
+                            _rules[e.RowIndex].ItemCode = "";
+                            _rules[e.RowIndex].Group = _model.Groups.Where(g => g.Id == Guid.Empty).FirstOrDefault();
+                            _rules[e.RowIndex].Company = _model.Companies.Where(c => c.Id == Guid.Empty).FirstOrDefault();
+                            _rules[e.RowIndex].ItemType = _model.ItemTypes.Where(c => c.Id == Guid.Empty).FirstOrDefault();
+                        }
                         break;
                     case CustomerPricingRuleTypes.Company:
                         dataGridView1.Rows[e.RowIndex].Cells[nameof(CustomerPricingRule.ItemCode)].ReadOnly = true;
                         dataGridView1.Rows[e.RowIndex].Cells[nameof(CustomerPricingRule.Group)].ReadOnly = true;
                         dataGridView1.Rows[e.RowIndex].Cells[nameof(CustomerPricingRule.Company)].ReadOnly = false;
                         dataGridView1.Rows[e.RowIndex].Cells[nameof(CustomerPricingRule.ItemType)].ReadOnly = true;
+                        if (e.RowIndex >= 0 && e.RowIndex < _rules.Count)
+                        {
+                            _rules[e.RowIndex].ItemCode = "";
+                            _rules[e.RowIndex].Group = _model.Groups.Where(g => g.Id == Guid.Empty).FirstOrDefault();
+                            _rules[e.RowIndex].ItemType = _model.ItemTypes.Where(c => c.Id == Guid.Empty).FirstOrDefault();
+                            _rules[e.RowIndex].Company = _model.Companies.Where(c => c.Id != Guid.Empty).FirstOrDefault();
+                        }
                         break;
                     case CustomerPricingRuleTypes.Item:
                         dataGridView1.Rows[e.RowIndex].Cells[nameof(CustomerPricingRule.ItemCode)].ReadOnly = false;
                         dataGridView1.Rows[e.RowIndex].Cells[nameof(CustomerPricingRule.Group)].ReadOnly = true;
                         dataGridView1.Rows[e.RowIndex].Cells[nameof(CustomerPricingRule.Company)].ReadOnly = true;
                         dataGridView1.Rows[e.RowIndex].Cells[nameof(CustomerPricingRule.ItemType)].ReadOnly = true;
+                        if (e.RowIndex >= 0 && e.RowIndex < _rules.Count)
+                        {
+                            _rules[e.RowIndex].Group = _model.Groups.Where(g => g.Id == Guid.Empty).FirstOrDefault();
+                            _rules[e.RowIndex].Company = _model.Companies.Where(c => c.Id == Guid.Empty).FirstOrDefault();
+                            _rules[e.RowIndex].ItemType = _model.ItemTypes.Where(c => c.Id == Guid.Empty).FirstOrDefault();
+                        }
                         break;
                     case CustomerPricingRuleTypes.ItemGroup:
                         dataGridView1.Rows[e.RowIndex].Cells[nameof(CustomerPricingRule.ItemCode)].ReadOnly = true;
                         dataGridView1.Rows[e.RowIndex].Cells[nameof(CustomerPricingRule.Group)].ReadOnly = false;
                         dataGridView1.Rows[e.RowIndex].Cells[nameof(CustomerPricingRule.Company)].ReadOnly = true;
                         dataGridView1.Rows[e.RowIndex].Cells[nameof(CustomerPricingRule.ItemType)].ReadOnly = true;
+                        if (e.RowIndex >= 0 && e.RowIndex < _rules.Count)
+                        {
+                            _rules[e.RowIndex].ItemCode = "";
+                            _rules[e.RowIndex].Company = _model.Companies.Where(c => c.Id == Guid.Empty).FirstOrDefault();
+                            _rules[e.RowIndex].ItemType = _model.ItemTypes.Where(c => c.Id == Guid.Empty).FirstOrDefault();
+                            _rules[e.RowIndex].Group = _model.Groups.Where(g => g.Id != Guid.Empty).FirstOrDefault();
+                        }
                         break;
                     case CustomerPricingRuleTypes.ItemType:
                         dataGridView1.Rows[e.RowIndex].Cells[nameof(CustomerPricingRule.ItemCode)].ReadOnly = true;
                         dataGridView1.Rows[e.RowIndex].Cells[nameof(CustomerPricingRule.Group)].ReadOnly = true;
                         dataGridView1.Rows[e.RowIndex].Cells[nameof(CustomerPricingRule.Company)].ReadOnly = true;
                         dataGridView1.Rows[e.RowIndex].Cells[nameof(CustomerPricingRule.ItemType)].ReadOnly = false;
+                        if (e.RowIndex >= 0 && e.RowIndex < _rules.Count)
+                        {
+                            _rules[e.RowIndex].ItemCode = "";
+                            _rules[e.RowIndex].Group = _model.Groups.Where(g => g.Id == Guid.Empty).FirstOrDefault();
+                            _rules[e.RowIndex].Company = _model.Companies.Where(c => c.Id == Guid.Empty).FirstOrDefault();
+                            _rules[e.RowIndex].ItemType = _model.ItemTypes.Where(t => t.Id != Guid.Empty).FirstOrDefault();
+                        }
                         break;
                 }
             }
@@ -184,18 +334,23 @@ namespace Kiriazi.Accounting.Pricing.Views
                 {
                     case RuleAmountTypes.Fixed:
                         dataGridView1.Rows[e.RowIndex].Cells[nameof(CustomerPricingRule.AmountCurrency)].ReadOnly = false;
+                        if (e.RowIndex >= 0 && e.RowIndex < _rules.Count)
+                        {
+                            _rules[e.RowIndex].AmountCurrency = _model.Currencies.Where(c => c.Id != Guid.Empty).FirstOrDefault();
+                        }
                         break;
                     case RuleAmountTypes.Percentage:
                         dataGridView1.Rows[e.RowIndex].Cells[nameof(CustomerPricingRule.AmountCurrency)].ReadOnly = true;
+                        if (e.RowIndex >= 0 && e.RowIndex < _rules.Count)
+                            _rules[e.RowIndex].AmountCurrency = _model.Currencies.Where(c => c.Id == Guid.Empty).FirstOrDefault();
                         break;
                 }
             }
         }
-
         private void DataGridView1_DefaultValuesNeeded(object sender, DataGridViewRowEventArgs e)
         {
             e.Row.Cells[nameof(CustomerPricingRule.RuleType)].Value = CustomerPricingRuleTypes.AllItems;
-            e.Row.Cells[nameof(CustomerPricingRule.ItemCode)].Value = null;
+            e.Row.Cells[nameof(CustomerPricingRule.ItemCode)].Value = "";
             e.Row.Cells[nameof(CustomerPricingRule.ItemType)].Value = _model.ItemTypes.Where(g => g.Id == Guid.Empty).FirstOrDefault();
             e.Row.Cells[nameof(CustomerPricingRule.Group)].Value = _model.Groups.Where(g => g.Id == Guid.Empty).FirstOrDefault();
             e.Row.Cells[nameof(CustomerPricingRule.Company)].Value = _model.Companies.Where(g => g.Id == Guid.Empty).FirstOrDefault();
@@ -204,5 +359,109 @@ namespace Kiriazi.Accounting.Pricing.Views
             e.Row.Cells[nameof(CustomerPricingRule.Amount)].Value = 0M;
             e.Row.Cells[nameof(CustomerPricingRule.AmountCurrency)].Value = _model.Currencies.Where(c => c.Id == Guid.Empty).FirstOrDefault();
         }
+        private bool SaveChanges()
+        {
+            if (_hasChanged)
+            {
+               // try
+               // {
+                    var modelState = _controller.SaveOrUpdatePricingRules(_model);
+                    if (modelState.HasErrors)
+                    {
+                        var errors = modelState.GetErrors("Customer");
+                        if (errors.Count > 0)
+                        {
+                            _ = MessageBox.Show(
+                                this, 
+                                errors[0], 
+                                "Error", 
+                                MessageBoxButtons.OK, 
+                                MessageBoxIcon.Error);
+                        }
+                        for(int i = 0; i < modelState.InnerModelStatesCount; i++)
+                        {
+                            var temp = modelState.GetModelState(i);
+                            if (temp.HasErrors)
+                            {
+                                if (i < dataGridView1.Rows.Count)
+                                {
+                                    dataGridView1.Rows[i].ErrorText = temp.GetErrors()[0];
+                                }
+                            }
+                        }
+                        return false;
+                    }
+                    else
+                    {
+                        _hasChanged = false;
+                        System.Media.SystemSounds.Beep.Play();
+                        return true;
+                    }
+               // }
+                //catch(Exception ex)
+                //{
+                //    _ = MessageBox.Show(this, ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+               //     return false;
+                //}
+            }
+            return true;
+        }
+        private bool CloseForm()
+        {
+            if (_hasChanged)
+            {
+                DialogResult reuslt = MessageBox.Show(this, "Do you want to save changes?", "Confirm Save", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                if(reuslt == DialogResult.Yes)
+                {
+                    if (SaveChanges())
+                    {
+                        _hasChanged = false;
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else if (reuslt == DialogResult.No)
+                {
+                    _hasChanged = false;
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            if (SaveChanges())
+            {
+                _hasChanged = false;
+                Close();
+            }
+            else
+            {
+
+            }
+        }
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            if (CloseForm())
+            {
+                Close();
+            }
+        }
+        private void CustomerPricingRuleEditView_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if(_hasChanged && (e.CloseReason == CloseReason.UserClosing || e.CloseReason == CloseReason.MdiFormClosing))
+            {
+                e.Cancel = !CloseForm();
+            }
+        }
+
+       
     }
 }

@@ -193,6 +193,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\NoAvailableCurrencyExchangeRateException.cs" />
     <Compile Include="Controllers\AccountingPeriodController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\CurrencyController.cs" />
@@ -208,6 +209,7 @@
     <Compile Include="DAL\CompanyRepository.cs" />
     <Compile Include="DAL\CurrencyExchangeRateRepository.cs" />
     <Compile Include="DAL\CurrencyRepository.cs" />
+    <Compile Include="DAL\CustomerPricingRuleRepository.cs" />
     <Compile Include="DAL\CustomerRepository.cs" />
     <Compile Include="DAL\GroupRepository.cs" />
     <Compile Include="DAL\IAccountingPeriodRepository.cs" />
@@ -216,6 +218,7 @@
     <Compile Include="DAL\ICompanyRepository.cs" />
     <Compile Include="DAL\ICurrencyExchangeRateRepository.cs" />
     <Compile Include="DAL\ICurrencyRepository.cs" />
+    <Compile Include="DAL\ICustomerPricingRuleRepository.cs" />
     <Compile Include="DAL\ICustomerRepository.cs" />
     <Compile Include="DAL\IGroupRepository.cs" />
     <Compile Include="DAL\IItemRelationRepository.cs" />
@@ -341,6 +344,18 @@
     </Compile>
     <Compile Include="Views\CustomerEditView.Designer.cs">
       <DependentUpon>CustomerEditView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CustomerPriceListSearchView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\CustomerPriceListSearchView.Designer.cs">
+      <DependentUpon>CustomerPriceListSearchView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CustomerPriceListView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\CustomerPriceListView.Designer.cs">
+      <DependentUpon>CustomerPriceListView.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\CustomerPricingRuleEditView.cs">
       <SubType>Form</SubType>
@@ -500,6 +515,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\CustomerEditView.resx">
       <DependentUpon>CustomerEditView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\CustomerPriceListSearchView.resx">
+      <DependentUpon>CustomerPriceListSearchView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\CustomerPriceListView.resx">
+      <DependentUpon>CustomerPriceListView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\CustomerPricingRuleEditView.resx">
       <DependentUpon>CustomerPricingRuleEditView.cs</DependentUpon>

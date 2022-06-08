@@ -106,7 +106,7 @@ namespace Kiriazi.Accounting.Pricing.Views
                 },
                 new UserCommand()
                 {
-                    DisplayName = "Production Trees",
+                    DisplayName = "Products Trees",
                     Action = () =>
                     {
                         ItemTreesView itemTreesView = Program.ServiceProvider.GetRequiredService<ItemTreesView>();
@@ -132,6 +132,16 @@ namespace Kiriazi.Accounting.Pricing.Views
                         CustomersView customersView = Program.ServiceProvider.GetRequiredService<CustomersView>();
                         customersView.MdiParent = this.MdiParent;
                         customersView.Show();
+                    }
+                },
+                new UserCommand()
+                {
+                    DisplayName = "Customer Price List",
+                    Action = () =>
+                    {
+                        CustomerPriceListSearchView customerPriceListSearchView = Program.ServiceProvider.GetRequiredService<CustomerPriceListSearchView>();
+                        customerPriceListSearchView.MdiParent = this.MdiParent;
+                        customerPriceListSearchView.Show();
                     }
                 }
             };

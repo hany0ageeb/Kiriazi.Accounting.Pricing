@@ -164,5 +164,429 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             }
             _unitOfWork.Complete();
         }
+        public CustomerPriceListSeachViewModel FindCustomerPriceList()
+        {
+            CustomerPriceListSeachViewModel model = new CustomerPriceListSeachViewModel();
+            model.Companies = _unitOfWork.CompanyRepository.Find().ToList();
+            model.Customers = _unitOfWork.CustomerRepository.Find().ToList();
+            model.Companies.Insert(0, new Company() { Id = Guid.Empty, Name = "" });
+            model.Customers.Insert(0, new Customer() { Id = Guid.Empty, Name = "" });
+            model.Company = model.Companies[0];
+            model.Customer = model.Customers[0];
+            model.Date = DateTime.Now;
+            return model;
+        }
+        public IList<CustomerPriceListViewModel> FindCustomerPriceList(CustomerPriceListSeachViewModel searchModel)
+        {
+            IList<CustomerPriceListViewModel> lines = new List<CustomerPriceListViewModel>();
+            IList<Company> selectedCompanies;
+            if(searchModel.Company.Id == Guid.Empty)
+            {
+                selectedCompanies = 
+                    _unitOfWork.CompanyRepository.Find().ToList();
+            }
+            else
+            {
+                selectedCompanies = 
+                    _unitOfWork.CompanyRepository.Find(
+                        predicate: c => c.Id == searchModel.Company.Id, 
+                        orderBy: q => q.OrderBy(c => c.Name))
+                    .ToList();
+            }
+            IList<Customer> selectedCustomers;
+            if(searchModel.Customer.Id == Guid.Empty)
+            {
+                selectedCustomers =
+                       _unitOfWork.CustomerRepository.Find().ToList();
+
+            }
+            else
+            {
+                selectedCustomers =
+                    _unitOfWork.CustomerRepository.Find(
+                        predicate: c => c.Id == searchModel.Customer.Id, 
+                        orderBy: q => q.OrderBy(c => c.Name))
+                    .ToList();
+            }
+            foreach(Company company in selectedCompanies)
+            {
+                IList<Item> items = 
+                    _unitOfWork.CompanyItemAssignmentRepository
+                    .Find(
+                        predicate: ass => ass.CompanyId == company.Id, 
+                        selector: ass => ass.Item, orderBy: q => q.OrderBy(c => c.Code))
+                    .ToList();
+                foreach(Customer customer in selectedCustomers)
+                {
+                    foreach(Item item in items)
+                    {
+                        var unitValue = GetItemUnitValue(company, item, searchModel.Date,1);
+                        ApplyCustomerPricingRules(customer.Rules, item, company, unitValue, searchModel.Date);
+                        lines.Add(new CustomerPriceListViewModel()
+                        {
+                            CompanyName = company.Name,
+                            CustomerName = customer.Name,
+                            CurrencyCode = unitValue.Currency.Code,
+                            ItemAlias = item.Alias,
+                            ItemArabicName = item.ArabicName,
+                            PriceListDate = searchModel.Date,
+                            ItemCode = item.Code,
+                            ItemEnglishName = item.EnglishName,
+                            UnitPrice = unitValue.UnitPrice,
+                            UomCode = item.Uom.Code
+                        });
+                    }
+                }
+            }
+            return lines;
+        }
+        private void ApplyCustomerPricingRules(
+            IList<CustomerPricingRule> rules,
+            Item item,
+            Company company,
+            UnitValue unitValue,
+            DateTime date)
+        {
+            foreach(var rule in rules)
+            {
+                CurrencyExchangeRate exchangeRate = null;
+                if (rule.AmountCurrencyId != null && rule.AmountCurrencyId != unitValue.Currency.Id && rule.RuleAmountType == RuleAmountTypes.Fixed)
+                {
+                    exchangeRate =
+                               _unitOfWork
+                                .CurrencyExchangeRateRepository
+                                .FindCurrencyExchangeRate(
+                                         rule.AmountCurrencyId.Value,
+                                        unitValue.Currency.Id,
+                                        date
+                                        );
+                    if (exchangeRate == null)
+                    {
+                        throw new Common.NoAvailableCurrencyExchangeRateException($"No Available Conversion Rate From {rule.AmountCurrency.Name} to {unitValue.Currency.Name} at date {date.ToShortDateString()}") { FromCurrency = rule.AmountCurrency, ToCurrency = unitValue.Currency };
+                    }
+                }
+                switch (rule.RuleType)
+                {
+                    case CustomerPricingRuleTypes.AllItems:
+                        if(rule.RuleAmountType == RuleAmountTypes.Percentage)
+                        {
+                            if(rule.IncrementDecrement == IncrementDecrementTypes.Increment)
+                            {
+                                unitValue.UnitPrice += rule.Amount / 100.0M * unitValue.UnitPrice;
+                            }
+                            else
+                            {
+                                unitValue.UnitPrice -= rule.Amount / 100.0M * unitValue.UnitPrice;
+                            }
+                        }
+                        else if (rule.RuleAmountType == RuleAmountTypes.Fixed)
+                        {
+                            if (rule.IncrementDecrement == IncrementDecrementTypes.Increment)
+                            {
+                                if (exchangeRate == null)
+                                    unitValue.UnitPrice += rule.Amount;
+                                else
+                                    unitValue.UnitPrice += rule.Amount * exchangeRate.Rate;
+                            }
+                            else
+                            {
+                                if (exchangeRate == null)
+                                    unitValue.UnitPrice -= rule.Amount;
+                                else
+                                    unitValue.UnitPrice -= rule.Amount * exchangeRate.Rate;
+                            }
+                        }
+                        break;
+                    case CustomerPricingRuleTypes.Company:
+                        if(rule.CompanyId == company.Id)
+                        {
+                            if (rule.RuleAmountType == RuleAmountTypes.Percentage)
+                            {
+                                if (rule.IncrementDecrement == IncrementDecrementTypes.Increment)
+                                {
+                                    unitValue.UnitPrice += rule.Amount / 100.0M * unitValue.UnitPrice;
+                                }
+                                else
+                                {
+                                    unitValue.UnitPrice -= rule.Amount / 100.0M * unitValue.UnitPrice;
+                                }
+                            }
+                            else if (rule.RuleAmountType == RuleAmountTypes.Fixed)
+                            {
+                                if (rule.IncrementDecrement == IncrementDecrementTypes.Increment)
+                                {
+                                    if (exchangeRate == null)
+                                        unitValue.UnitPrice += rule.Amount;
+                                    else
+                                        unitValue.UnitPrice += rule.Amount * exchangeRate.Rate;
+                                }
+                                else
+                                {
+                                    if (exchangeRate == null)
+                                        unitValue.UnitPrice -= rule.Amount;
+                                    else
+                                        unitValue.UnitPrice -= rule.Amount * exchangeRate.Rate;
+                                }
+                            }
+                        }
+                        break;
+                    case CustomerPricingRuleTypes.Item:
+                        if (rule.ItemId == item.Id)
+                        {
+                            if (rule.RuleAmountType == RuleAmountTypes.Percentage)
+                            {
+                                if (rule.IncrementDecrement == IncrementDecrementTypes.Increment)
+                                {
+                                    unitValue.UnitPrice += rule.Amount / 100.0M * unitValue.UnitPrice;
+                                }
+                                else
+                                {
+                                    unitValue.UnitPrice -= rule.Amount / 100.0M * unitValue.UnitPrice;
+                                }
+                            }
+                            else if (rule.RuleAmountType == RuleAmountTypes.Fixed)
+                            {
+                                if (rule.IncrementDecrement == IncrementDecrementTypes.Increment)
+                                {
+                                    if (exchangeRate == null)
+                                        unitValue.UnitPrice += rule.Amount;
+                                    else
+                                        unitValue.UnitPrice += rule.Amount * exchangeRate.Rate;
+                                }
+                                else
+                                {
+                                    if (exchangeRate == null)
+                                        unitValue.UnitPrice -= rule.Amount;
+                                    else
+                                        unitValue.UnitPrice -= rule.Amount * exchangeRate.Rate;
+                                }
+                            }
+                        }
+                        break;
+                    case CustomerPricingRuleTypes.ItemGroup:
+                        if(rule.GroupId == item.CompanyAssignments.Where(ass => ass.CompanyId == company.Id).Select(ass => ass.GroupId).FirstOrDefault())
+                        {
+                            if (rule.RuleAmountType == RuleAmountTypes.Percentage)
+                            {
+                                if (rule.IncrementDecrement == IncrementDecrementTypes.Increment)
+                                {
+                                    unitValue.UnitPrice += rule.Amount / 100.0M * unitValue.UnitPrice;
+                                }
+                                else
+                                {
+                                    unitValue.UnitPrice -= rule.Amount / 100.0M * unitValue.UnitPrice;
+                                }
+                            }
+                            else if (rule.RuleAmountType == RuleAmountTypes.Fixed)
+                            {
+                                if (rule.IncrementDecrement == IncrementDecrementTypes.Increment)
+                                {
+                                    if (exchangeRate == null)
+                                        unitValue.UnitPrice += rule.Amount;
+                                    else
+                                        unitValue.UnitPrice += rule.Amount * exchangeRate.Rate;
+                                }
+                                else
+                                {
+                                    if (exchangeRate == null)
+                                        unitValue.UnitPrice -= rule.Amount;
+                                    else
+                                        unitValue.UnitPrice -= rule.Amount * exchangeRate.Rate;
+                                }
+                            }
+                        }
+                        break;
+                    case CustomerPricingRuleTypes.ItemType:
+                        if(rule.ItemTypeId == item.ItemTypeId)
+                        {
+                            if (rule.RuleAmountType == RuleAmountTypes.Percentage)
+                            {
+                                if (rule.IncrementDecrement == IncrementDecrementTypes.Increment)
+                                {
+                                    unitValue.UnitPrice += rule.Amount / 100.0M * unitValue.UnitPrice;
+                                }
+                                else
+                                {
+                                    unitValue.UnitPrice -= rule.Amount / 100.0M * unitValue.UnitPrice;
+                                }
+                            }
+                            else if (rule.RuleAmountType == RuleAmountTypes.Fixed)
+                            {
+                                if (rule.IncrementDecrement == IncrementDecrementTypes.Increment)
+                                {
+                                    if (exchangeRate == null)
+                                        unitValue.UnitPrice += rule.Amount;
+                                    else
+                                        unitValue.UnitPrice += rule.Amount * exchangeRate.Rate;
+                                }
+                                else
+                                {
+                                    if (exchangeRate == null)
+                                        unitValue.UnitPrice -= rule.Amount;
+                                    else
+                                        unitValue.UnitPrice -= rule.Amount * exchangeRate.Rate;
+                                }
+                            }
+                        }
+                        break;
+                }
+            }
+        }
+        public UnitValue GetItemUnitValue(Company company,Item item,DateTime date,decimal quantity)
+        {
+            if (item.ItemType == ItemTypeRepository.RawItemType)
+            {
+                var line = _unitOfWork.PriceListRepository.FindPriceListLines(company.Id, item.Id, date).FirstOrDefault();
+                if (line != null)
+                {
+                    if (string.IsNullOrEmpty(line.ExchangeRateType))
+                    {
+                        if (line.CurrencyId == company.CurrencyId)
+                        {
+                            if (string.IsNullOrEmpty(line.TarrifType))
+                            {
+                                return new UnitValue() { Currency = line.Currency, UnitPrice = line.UnitPrice * quantity };
+                            }
+                            else if (line.TarrifType == ExchangeRateTypes.System)
+                            {
+                                return new UnitValue() { Currency = line.Currency, UnitPrice = (line.UnitPrice + (item.TarrifPercentage.Value / 100M * line.UnitPrice)) * quantity };
+                            }
+                            else
+                            {
+                                return new UnitValue() { Currency = line.Currency, UnitPrice = (line.UnitPrice + (line.TarrrifPercentage.Value / 100M * line.UnitPrice)) * quantity };
+                            }
+                        }
+                        else
+                        {
+                            var exchangeRate =
+                                _unitOfWork
+                                 .CurrencyExchangeRateRepository
+                                 .FindCurrencyExchangeRate(
+                                         line.CurrencyId,
+                                         company.CurrencyId,
+                                         date
+                                         );
+                            if (exchangeRate != null)
+                            {
+                                if (string.IsNullOrEmpty(line.TarrifType))
+                                {
+                                    return new UnitValue() { Currency = company.Currency, UnitPrice = line.UnitPrice * exchangeRate.Rate * quantity };
+                                }
+                                else if(line.TarrifType == ExchangeRateTypes.System) 
+                                {
+                                    return new UnitValue() { Currency = company.Currency, UnitPrice = ((line.UnitPrice * exchangeRate.Rate) + (item.TarrifPercentage.Value / 100M * (line.UnitPrice * exchangeRate.Rate))) * quantity };
+                                }
+                                else
+                                {
+                                    return new UnitValue() { Currency = company.Currency, UnitPrice = ((line.UnitPrice * exchangeRate.Rate) + (line.TarrrifPercentage.Value / 100M * (line.UnitPrice * exchangeRate.Rate))) * quantity };
+                                }
+                            }
+                            else
+                            {
+                                throw new Common.NoAvailableCurrencyExchangeRateException($"No Exchange Rate From {line.Currency.Name} To {company.Currency.Name} At Date {date.ToShortDateString()}") { FromCurrency = line.Currency, ToCurrency = company.Currency };
+                            }
+                        }
+                    }
+                    else if(line.ExchangeRateType == ExchangeRateTypes.System)
+                    {
+                        if (line.CurrencyId == company.CurrencyId)
+                        {
+                            if (string.IsNullOrEmpty(line.TarrifType))
+                            {
+                                return new UnitValue() { Currency = line.Currency, UnitPrice = line.UnitPrice * quantity };
+                            }
+                            else if(line.TarrifType == ExchangeRateTypes.System)
+                            {
+                                return new UnitValue() { Currency = line.Currency, UnitPrice = (line.UnitPrice + (item.TarrifPercentage.Value / 100M * line.UnitPrice)) * quantity };
+                            }
+                            else
+                            {
+                                return new UnitValue() { Currency = line.Currency, UnitPrice = (line.UnitPrice + (line.TarrrifPercentage.Value / 100M * line.UnitPrice)) * quantity };
+                            }
+                        }
+                        else
+                        {
+                            var exchangeRate = 
+                                _unitOfWork
+                                 .CurrencyExchangeRateRepository
+                                 .FindCurrencyExchangeRate(
+                                         line.CurrencyId,
+                                         company.CurrencyId,
+                                         date
+                                         );
+                            if (exchangeRate != null)
+                            {
+                                if (string.IsNullOrEmpty(line.TarrifType))
+                                {
+                                    return new UnitValue() { Currency = company.Currency, UnitPrice = line.UnitPrice * exchangeRate.Rate * quantity };
+                                }
+                                else if (line.TarrifType == ExchangeRateTypes.System)
+                                {
+                                    return new UnitValue() { Currency = company.Currency, UnitPrice = ((line.UnitPrice * exchangeRate.Rate) + item.TarrifPercentage.Value / 100.0M * (line.UnitPrice * exchangeRate.Rate)) * quantity };
+                                }
+                                else
+                                {
+                                    return new UnitValue() { Currency = company.Currency, UnitPrice = ((line.UnitPrice * exchangeRate.Rate) + line.TarrrifPercentage.Value / 100.0M * (line.UnitPrice * exchangeRate.Rate)) * quantity };
+                                }
+                            }
+                            else
+                            {
+                                throw new Common.NoAvailableCurrencyExchangeRateException($"No Exchange Rate From {line.Currency.Name} To {company.Currency.Name} At Date {date.ToShortDateString()}") { FromCurrency = line.Currency, ToCurrency = company.Currency };
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (line.CurrencyId == company.CurrencyId)
+                        {
+                            if (string.IsNullOrEmpty(line.TarrifType))
+                            {
+                                return new UnitValue() { Currency = line.Currency, UnitPrice = line.UnitPrice * quantity };
+                            }
+                            else if (line.TarrifType == ExchangeRateTypes.System)
+                            {
+                                return new UnitValue() { Currency = line.Currency, UnitPrice = (line.UnitPrice + item.TarrifPercentage.Value/100.0M * line.UnitPrice) * quantity };
+                            }
+                            else
+                            {
+                                return new UnitValue() { Currency = line.Currency, UnitPrice = (line.UnitPrice + line.TarrrifPercentage.Value / 100.0M * line.UnitPrice) * quantity };
+                            }
+                        }
+                        else
+                        {
+                            decimal temp = line.UnitPrice * (line.CurrencyExchangeRate ?? 1);
+                            if (string.IsNullOrEmpty(line.TarrifType))
+                            {
+                                return new UnitValue() { Currency = line.Currency, UnitPrice = temp * quantity };
+                            }
+                            
+                            else if(line.TarrifType == ExchangeRateTypes.System)
+                            {
+                                
+                                return new UnitValue() { Currency = line.Currency, UnitPrice = (temp+item.TarrifPercentage.Value / 100 * temp) * quantity };
+                            }
+                            else
+                            {
+                                return new UnitValue() { Currency = line.Currency, UnitPrice = (temp + line.TarrrifPercentage.Value / 100 * temp) * quantity };
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    return new UnitValue { UnitPrice = 0M, Currency = company.Currency };
+                }
+            }
+            else
+            {
+                UnitValue totalUnitValue = new UnitValue() { Currency = company.Currency, UnitPrice = 0M };
+                foreach(var child in item.Children)
+                {
+                    var unitValue = GetItemUnitValue(company, child.Child, date, child.Quantity);
+                    totalUnitValue.UnitPrice += unitValue.UnitPrice;
+                }
+                return totalUnitValue;
+            }
+        }
     }
 }

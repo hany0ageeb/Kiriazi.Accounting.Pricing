@@ -53,7 +53,10 @@ namespace Kiriazi.Accounting.Pricing.Models
             }
         }
 
-        public virtual ICollection<CustomerPricingRule> Rules { get; set; } = new HashSet<CustomerPricingRule>();
+        public virtual IList<CustomerPricingRule> Rules { get; set; } = new List<CustomerPricingRule>();
+
+        [NotMapped]
+        public Customer Self => this;
     }
     
 }

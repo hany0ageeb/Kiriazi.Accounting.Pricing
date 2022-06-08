@@ -208,6 +208,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
                     Uom = uoms[3],
                     ItemTypeId = itemTypes[0].Id,
                     ItemType = itemTypes[0]
+                    
                 },
                 //2
                 new Item()
@@ -217,7 +218,8 @@ namespace Kiriazi.Accounting.Pricing.DAL
                     ArabicName="كريستال SAN",
                     Uom = uoms[1],
                     ItemTypeId = itemTypes[0].Id,
-                    ItemType = itemTypes[0]
+                    ItemType = itemTypes[0],
+                    Tarrif = tarrifs[0]
                 },
                 //3
                 new Item()
@@ -248,7 +250,28 @@ namespace Kiriazi.Accounting.Pricing.DAL
                     Item = items[0],
                     Company = companies[0],
                     Group = groups[0],
-                    NameAlias = "Fuck"
+                    NameAlias = ""
+                },
+                new CompanyItemAssignment()
+                {
+                    Item = items[1],
+                    Company = companies[0],
+                    Group = groups[0],
+                    NameAlias = ""
+                },
+                new CompanyItemAssignment()
+                {
+                    Item = items[2],
+                    Company = companies[0],
+                    Group = groups[0],
+                    NameAlias = ""
+                },
+                new CompanyItemAssignment()
+                {
+                    Item = items[3],
+                    Company = companies[0],
+                    Group = groups[0],
+                    NameAlias = ""
                 }
             };
             int month = System.DateTime.Now.Month;
@@ -284,12 +307,13 @@ namespace Kiriazi.Accounting.Pricing.DAL
                     {
                         new PriceListLine()
                         {
-                            Item = items[0],
-                            UnitPrice = 1.0M,
-                            Currency = currencies[0],
+                            Item = items[2],
+                            UnitPrice = 5.0M,
+                            Currency = currencies[1],
+                            ExchangeRateType = ExchangeRateTypes.System,
                             CurrencyExchangeRate = null,
+                            TarrifType = ExchangeRateTypes.System,
                             TarrrifPercentage = null
-                            
                         }
                     }
                 }
@@ -300,7 +324,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
                 {
                     Name = "مراكز الصيانة",
                     Description = "مراكز الصيانة",
-                    Rules = new System.Collections.Generic.HashSet<CustomerPricingRule>()
+                    Rules = new System.Collections.Generic.List<CustomerPricingRule>()
                     {
                         new CustomerPricingRule()
                         {
@@ -324,7 +348,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
                 {
                     Name = "فولكان",
                     Description = "فولكان",
-                    Rules = new System.Collections.Generic.HashSet<CustomerPricingRule>()
+                    Rules = new System.Collections.Generic.List<CustomerPricingRule>()
                     {
                         new CustomerPricingRule()
                         {
@@ -348,7 +372,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
                 {
                     Name = "التصدير",
                     Description = "التصدير",
-                     Rules = new System.Collections.Generic.HashSet<CustomerPricingRule>()
+                     Rules = new System.Collections.Generic.List<CustomerPricingRule>()
                     {
                         new CustomerPricingRule()
                         {

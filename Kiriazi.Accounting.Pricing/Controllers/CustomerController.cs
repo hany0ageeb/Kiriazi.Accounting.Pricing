@@ -12,11 +12,13 @@ namespace Kiriazi.Accounting.Pricing.Controllers
     public class CustomerController
     {
         private readonly IUnitOfWork _unitOfWork;
-
-        public CustomerController(IUnitOfWork unitOfWork)
+        private readonly IValidator<CustomerPricingRule> _pricingRuleValidator;
+        public CustomerController(IUnitOfWork unitOfWork,IValidator<Models.CustomerPricingRule> validator) 
         {
             _unitOfWork = unitOfWork;
+            _pricingRuleValidator = validator;
         }
+        public IValidator<CustomerPricingRule> PricingRuleValidator { get => _pricingRuleValidator; }
         public IList<Customer> Find(string customerName = "")
         {
             return 
@@ -84,8 +86,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
         }
         public CustomerPricingRulesEditViewModel EditCustomerPricingRules(Guid customerId)
         {
-            var rules = _unitOfWork.CustomerPricingRuleRepository.Find(
-                predicate: c => c.CustomerId == customerId).ToList();
+            
             var model = new CustomerPricingRulesEditViewModel()
             {
                 Currencies = _unitOfWork.CurrencyRepository.Find(predicate: c => c.IsEnabled, orderBy: q => q.OrderBy(c => c.Code)).ToList(),
@@ -100,10 +101,90 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             model.Currencies.Insert(0, new Currency { Code = "", Id = Guid.Empty });
             model.Groups.Insert(0, new Group { Name = "", Id = Guid.Empty });
             model.Companies.Insert(0, new Company { Name = "", Id = Guid.Empty });
-            model.Customer = _unitOfWork.CustomerRepository.Find(predicate:c=>c.Id==customerId,include:q=>q.Include(e=>e.Rules)).FirstOrDefault();
+            model.Customer = _unitOfWork.CustomerRepository.FindWithPricingRules(customerId);
             model.ItemTypes.Insert(0, new ItemType() { Id = Guid.Empty, Name = "" });
-            model.CustomerRules = rules;
             return model;
+        }
+        public ModelState SaveOrUpdatePricingRules(CustomerPricingRulesEditViewModel model)
+        {
+            ModelState modelState = new ModelState();
+            foreach (var rule in model.Customer.Rules)
+            {
+                if (rule.Customer == null)
+                {
+                    rule.Customer = model.Customer;
+                }
+                if (!string.IsNullOrEmpty(rule.ItemCode))
+                {
+                    rule.Item = _unitOfWork.ItemRepository.FindByItemCode(rule.ItemCode);
+                    rule.ItemId = rule.Item?.Id;
+                }
+                else
+                {
+                    rule.Item = null;
+                }
+                if(rule.AmountCurrency!=null && rule.AmountCurrency.Id == Guid.Empty)
+                {
+                    rule.AmountCurrency = null;
+                }
+                else
+                {
+                    if (rule.AmountCurrency != null)
+                    {
+                        rule.AmountCurrency = _unitOfWork.CurrencyRepository.Find(Id: rule.AmountCurrency.Id);
+                        rule.AmountCurrencyId = rule.AmountCurrency?.Id;
+                    }
+                }
+                if(rule.Company!=null && rule.Company.Id == Guid.Empty)
+                {
+                    rule.Company = null;
+                }
+                else
+                {
+                    if (rule.Company != null)
+                    {
+                        rule.Company = _unitOfWork.CompanyRepository.Find(Id: rule.Company.Id);
+                        rule.CompanyId = rule.Company?.Id;
+                    }
+                }
+                if(rule.Group!=null && rule.Group.Id == Guid.Empty)
+                {
+                    rule.Group = null;
+                }
+                else
+                {
+                    if (rule.Group != null)
+                    {
+                        rule.Group = _unitOfWork.GroupRepository.Find(Id: rule.Group.Id);
+                        rule.GroupId = rule.Group?.Id;
+                    }
+                }
+                if(rule.Item!=null && rule.Item.Id == Guid.Empty)
+                {
+                    rule.Item = null;
+                }
+                else
+                {
+                    rule.ItemId = rule.Item?.Id;
+                }
+                if(rule.ItemType!=null && rule.ItemType.Id == Guid.Empty)
+                {
+                    rule.ItemType = null;
+                }
+                else
+                {
+                    if (rule.ItemType != null)
+                    {
+                        //rule.ItemType = _unitOfWork.ItemTypeRepository.Find(Id: rule.ItemType.Id);
+                        //rule.ItemTypeId = rule.ItemType.Id;
+                    }
+                }
+                modelState.AddModelState(_pricingRuleValidator.Validate(rule));
+            }
+            if (modelState.HasErrors)
+                return modelState;
+            _ = _unitOfWork.Complete();
+            return modelState;
         }
         private ModelState ValidateCustomer(Customer customer)
         {

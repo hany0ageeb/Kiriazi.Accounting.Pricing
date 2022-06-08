@@ -138,7 +138,8 @@ namespace Kiriazi.Accounting.Pricing.Models
                 }
             }
         }
-
+        [NotMapped]
+        public UnitValue UnitValue => new UnitValue() { Currency = Currency, UnitPrice = UnitPrice };
         [Required]
         public virtual PriceList PriceList { get; set; }
 
@@ -151,5 +152,10 @@ namespace Kiriazi.Accounting.Pricing.Models
         [ForeignKey("Currency")]
         public Guid CurrencyId { get; set; }
 
+    }
+    public class UnitValue
+    {
+        public decimal UnitPrice { get; set; }
+        public Currency Currency { get; set; }
     }
 }

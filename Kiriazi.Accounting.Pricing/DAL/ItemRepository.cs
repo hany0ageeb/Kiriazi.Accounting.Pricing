@@ -65,5 +65,10 @@ namespace Kiriazi.Accounting.Pricing.DAL
         {
             return _context.Set<Item>().Select(itm => itm.Code).AsEnumerable();
         }
+
+        public Item FindByItemCode(string itemCode)
+        {
+            return _context.Set<Item>().Where(itm => itm.Code.Equals(itemCode, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+        }
     }
 }
