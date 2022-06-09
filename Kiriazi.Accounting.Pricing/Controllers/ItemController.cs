@@ -88,6 +88,28 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             _unitOfWork.Complete();
             return modelState;
         }
+        public ModelState AddRange(IEnumerable<Item> items)
+        {
+            ModelState modelState = new ModelState();
+            foreach(var item in items)
+            {
+                ModelState temp = _validator.Validate(item);
+                if (!temp.HasErrors)
+                {
+                    if (_unitOfWork.ItemRepository.Find(itm => itm.Code.Equals(item.Code, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault() != null)
+                    {
+                        temp.AddErrors(nameof(item.Code), $"Item With Code: {item.Code} already exist.");
+                    }
+                    else
+                    {
+                        _unitOfWork.ItemRepository.Add(item);
+                    }
+                }
+                modelState.AddModelState(temp);
+            }
+            _ = _unitOfWork.Complete();
+            return modelState;
+        }
         public ModelState Edit(ItemEditViewModel model)
         {
             Item item = model.Item;
@@ -169,6 +191,20 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             }
             return model;
         }
+
+        public ModelState ImportFromExcelFile(string fileName)
+        {
+            DAL.Excel.ItemRepository itemRepository = new DAL.Excel.ItemRepository(fileName);
+            IList<Item> items = itemRepository.Find().ToList();
+            foreach(var item in items)
+            {
+                item.Uom = _unitOfWork.UomRepository.Find(u => u.Code.Equals(item.Uom.Code, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+                item.ItemType = _unitOfWork.ItemTypeRepository.Find(it => it.Name.Equals(item.ItemType.Name, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+                item.Tarrif = _unitOfWork.TarrifRepository.Find(t => t.Code.Equals(item.Tarrif.Code, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+            }
+            return AddRange(items);
+        }
+
         public void EditItemCompanyAssignment(IList<ItemCompanyAssignmentViewModel> assignments,Guid itemId)
         {
             Item item = _unitOfWork.ItemRepository.Find(itemId);

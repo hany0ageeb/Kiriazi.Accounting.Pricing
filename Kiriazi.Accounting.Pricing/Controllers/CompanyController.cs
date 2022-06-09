@@ -220,8 +220,8 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                 {
                     foreach(Item item in items)
                     {
-                        var unitValue = GetItemUnitValue(company, item, searchModel.Date,1);
-                        ApplyCustomerPricingRules(customer.Rules, item, company, unitValue, searchModel.Date);
+                        var unitValue = GetItemUnitValue(customer.Rules,company, item, searchModel.Date,1);
+                        
                         lines.Add(new CustomerPriceListViewModel()
                         {
                             CompanyName = company.Name,
@@ -432,8 +432,9 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                 }
             }
         }
-        public UnitValue GetItemUnitValue(Company company,Item item,DateTime date,decimal quantity)
+        public UnitValue GetItemUnitValue(IList<CustomerPricingRule> customerPricingRules,Company company,Item item,DateTime date,decimal quantity)
         {
+            UnitValue unitValue = null;
             if (item.ItemType == ItemTypeRepository.RawItemType)
             {
                 var line = _unitOfWork.PriceListRepository.FindPriceListLines(company.Id, item.Id, date).FirstOrDefault();
@@ -445,15 +446,21 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                         {
                             if (string.IsNullOrEmpty(line.TarrifType))
                             {
-                                return new UnitValue() { Currency = line.Currency, UnitPrice = line.UnitPrice * quantity };
+                                unitValue = new UnitValue() { Currency = line.Currency, UnitPrice = line.UnitPrice * quantity };
+                                ApplyCustomerPricingRules(customerPricingRules, item, company, unitValue, date);
+                                return unitValue;
                             }
                             else if (line.TarrifType == ExchangeRateTypes.System)
                             {
-                                return new UnitValue() { Currency = line.Currency, UnitPrice = (line.UnitPrice + (item.TarrifPercentage.Value / 100M * line.UnitPrice)) * quantity };
+                                unitValue =  new UnitValue() { Currency = line.Currency, UnitPrice = (line.UnitPrice + (item.TarrifPercentage.Value / 100M * line.UnitPrice)) * quantity };
+                                ApplyCustomerPricingRules(customerPricingRules, item, company, unitValue, date);
+                                return unitValue;
                             }
                             else
                             {
-                                return new UnitValue() { Currency = line.Currency, UnitPrice = (line.UnitPrice + (line.TarrrifPercentage.Value / 100M * line.UnitPrice)) * quantity };
+                                unitValue = new UnitValue() { Currency = line.Currency, UnitPrice = (line.UnitPrice + (line.TarrrifPercentage.Value / 100M * line.UnitPrice)) * quantity };
+                                ApplyCustomerPricingRules(customerPricingRules, item, company, unitValue, date);
+                                return unitValue;
                             }
                         }
                         else
@@ -470,15 +477,21 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                             {
                                 if (string.IsNullOrEmpty(line.TarrifType))
                                 {
-                                    return new UnitValue() { Currency = company.Currency, UnitPrice = line.UnitPrice * exchangeRate.Rate * quantity };
+                                    unitValue = new UnitValue() { Currency = company.Currency, UnitPrice = line.UnitPrice * exchangeRate.Rate * quantity };
+                                    ApplyCustomerPricingRules(customerPricingRules, item, company, unitValue, date);
+                                    return unitValue;
                                 }
                                 else if(line.TarrifType == ExchangeRateTypes.System) 
                                 {
-                                    return new UnitValue() { Currency = company.Currency, UnitPrice = ((line.UnitPrice * exchangeRate.Rate) + (item.TarrifPercentage.Value / 100M * (line.UnitPrice * exchangeRate.Rate))) * quantity };
+                                    unitValue = new UnitValue() { Currency = company.Currency, UnitPrice = ((line.UnitPrice * exchangeRate.Rate) + (item.TarrifPercentage.Value / 100M * (line.UnitPrice * exchangeRate.Rate))) * quantity };
+                                    ApplyCustomerPricingRules(customerPricingRules, item, company, unitValue, date);
+                                    return unitValue;
                                 }
                                 else
                                 {
-                                    return new UnitValue() { Currency = company.Currency, UnitPrice = ((line.UnitPrice * exchangeRate.Rate) + (line.TarrrifPercentage.Value / 100M * (line.UnitPrice * exchangeRate.Rate))) * quantity };
+                                    unitValue = new UnitValue() { Currency = company.Currency, UnitPrice = ((line.UnitPrice * exchangeRate.Rate) + (line.TarrrifPercentage.Value / 100M * (line.UnitPrice * exchangeRate.Rate))) * quantity };
+                                    ApplyCustomerPricingRules(customerPricingRules, item, company, unitValue, date);
+                                    return unitValue;
                                 }
                             }
                             else
@@ -493,15 +506,21 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                         {
                             if (string.IsNullOrEmpty(line.TarrifType))
                             {
-                                return new UnitValue() { Currency = line.Currency, UnitPrice = line.UnitPrice * quantity };
+                                unitValue = new UnitValue() { Currency = line.Currency, UnitPrice = line.UnitPrice * quantity };
+                                ApplyCustomerPricingRules(customerPricingRules, item, company, unitValue, date);
+                                return unitValue;
                             }
                             else if(line.TarrifType == ExchangeRateTypes.System)
                             {
-                                return new UnitValue() { Currency = line.Currency, UnitPrice = (line.UnitPrice + (item.TarrifPercentage.Value / 100M * line.UnitPrice)) * quantity };
+                                unitValue = new UnitValue() { Currency = line.Currency, UnitPrice = (line.UnitPrice + (item.TarrifPercentage.Value / 100M * line.UnitPrice)) * quantity };
+                                ApplyCustomerPricingRules(customerPricingRules, item, company, unitValue, date);
+                                return unitValue;
                             }
                             else
                             {
-                                return new UnitValue() { Currency = line.Currency, UnitPrice = (line.UnitPrice + (line.TarrrifPercentage.Value / 100M * line.UnitPrice)) * quantity };
+                                unitValue = new UnitValue() { Currency = line.Currency, UnitPrice = (line.UnitPrice + (line.TarrrifPercentage.Value / 100M * line.UnitPrice)) * quantity };
+                                ApplyCustomerPricingRules(customerPricingRules, item, company, unitValue, date);
+                                return unitValue;
                             }
                         }
                         else
@@ -518,15 +537,21 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                             {
                                 if (string.IsNullOrEmpty(line.TarrifType))
                                 {
-                                    return new UnitValue() { Currency = company.Currency, UnitPrice = line.UnitPrice * exchangeRate.Rate * quantity };
+                                    unitValue = new UnitValue() { Currency = company.Currency, UnitPrice = line.UnitPrice * exchangeRate.Rate * quantity };
+                                    ApplyCustomerPricingRules(customerPricingRules, item, company, unitValue, date);
+                                    return unitValue;
                                 }
                                 else if (line.TarrifType == ExchangeRateTypes.System)
                                 {
-                                    return new UnitValue() { Currency = company.Currency, UnitPrice = ((line.UnitPrice * exchangeRate.Rate) + item.TarrifPercentage.Value / 100.0M * (line.UnitPrice * exchangeRate.Rate)) * quantity };
+                                    unitValue = new UnitValue() { Currency = company.Currency, UnitPrice = ((line.UnitPrice * exchangeRate.Rate) + item.TarrifPercentage.Value / 100.0M * (line.UnitPrice * exchangeRate.Rate)) * quantity };
+                                    ApplyCustomerPricingRules(customerPricingRules, item, company, unitValue, date);
+                                    return unitValue;
                                 }
                                 else
                                 {
-                                    return new UnitValue() { Currency = company.Currency, UnitPrice = ((line.UnitPrice * exchangeRate.Rate) + line.TarrrifPercentage.Value / 100.0M * (line.UnitPrice * exchangeRate.Rate)) * quantity };
+                                    unitValue = new UnitValue() { Currency = company.Currency, UnitPrice = ((line.UnitPrice * exchangeRate.Rate) + line.TarrrifPercentage.Value / 100.0M * (line.UnitPrice * exchangeRate.Rate)) * quantity };
+                                    ApplyCustomerPricingRules(customerPricingRules, item, company, unitValue, date);
+                                    return unitValue;
                                 }
                             }
                             else
@@ -541,15 +566,21 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                         {
                             if (string.IsNullOrEmpty(line.TarrifType))
                             {
-                                return new UnitValue() { Currency = line.Currency, UnitPrice = line.UnitPrice * quantity };
+                                unitValue = new UnitValue() { Currency = line.Currency, UnitPrice = line.UnitPrice * quantity };
+                                ApplyCustomerPricingRules(customerPricingRules, item, company, unitValue, date);
+                                return unitValue;
                             }
                             else if (line.TarrifType == ExchangeRateTypes.System)
                             {
-                                return new UnitValue() { Currency = line.Currency, UnitPrice = (line.UnitPrice + item.TarrifPercentage.Value/100.0M * line.UnitPrice) * quantity };
+                                unitValue = new UnitValue() { Currency = line.Currency, UnitPrice = (line.UnitPrice + item.TarrifPercentage.Value/100.0M * line.UnitPrice) * quantity };
+                                ApplyCustomerPricingRules(customerPricingRules, item, company, unitValue, date);
+                                return unitValue;
                             }
                             else
                             {
-                                return new UnitValue() { Currency = line.Currency, UnitPrice = (line.UnitPrice + line.TarrrifPercentage.Value / 100.0M * line.UnitPrice) * quantity };
+                                unitValue = new UnitValue() { Currency = line.Currency, UnitPrice = (line.UnitPrice + line.TarrrifPercentage.Value / 100.0M * line.UnitPrice) * quantity };
+                                ApplyCustomerPricingRules(customerPricingRules, item, company, unitValue, date);
+                                return unitValue;
                             }
                         }
                         else
@@ -557,17 +588,23 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                             decimal temp = line.UnitPrice * (line.CurrencyExchangeRate ?? 1);
                             if (string.IsNullOrEmpty(line.TarrifType))
                             {
-                                return new UnitValue() { Currency = line.Currency, UnitPrice = temp * quantity };
+                                unitValue = new UnitValue() { Currency = line.Currency, UnitPrice = temp * quantity };
+                                ApplyCustomerPricingRules(customerPricingRules, item, company, unitValue, date);
+                                return unitValue;
                             }
                             
                             else if(line.TarrifType == ExchangeRateTypes.System)
                             {
-                                
-                                return new UnitValue() { Currency = line.Currency, UnitPrice = (temp+item.TarrifPercentage.Value / 100 * temp) * quantity };
+
+                                unitValue = new UnitValue() { Currency = line.Currency, UnitPrice = (temp+item.TarrifPercentage.Value / 100 * temp) * quantity };
+                                ApplyCustomerPricingRules(customerPricingRules, item, company, unitValue, date);
+                                return unitValue;
                             }
                             else
                             {
-                                return new UnitValue() { Currency = line.Currency, UnitPrice = (temp + line.TarrrifPercentage.Value / 100 * temp) * quantity };
+                                unitValue = new UnitValue() { Currency = line.Currency, UnitPrice = (temp + line.TarrrifPercentage.Value / 100 * temp) * quantity };
+                                ApplyCustomerPricingRules(customerPricingRules, item, company, unitValue, date);
+                                return unitValue;
                             }
                         }
                     }
@@ -582,9 +619,11 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                 UnitValue totalUnitValue = new UnitValue() { Currency = company.Currency, UnitPrice = 0M };
                 foreach(var child in item.Children)
                 {
-                    var unitValue = GetItemUnitValue(company, child.Child, date, child.Quantity);
+                    unitValue = GetItemUnitValue(customerPricingRules,company, child.Child, date, child.Quantity);
                     totalUnitValue.UnitPrice += unitValue.UnitPrice;
                 }
+                //
+                ApplyCustomerPricingRules(customerPricingRules, item, company, totalUnitValue, date);
                 return totalUnitValue;
             }
         }

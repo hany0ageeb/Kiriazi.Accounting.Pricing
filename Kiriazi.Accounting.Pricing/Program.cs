@@ -43,6 +43,7 @@ namespace Kiriazi.Accounting.Pricing
             
             services.AddTransient(typeof(DAL.PricingDBContext),(sp)=> { return new DAL.PricingDBContext(Configuration.GetConnectionString("PricingDBLocalConnection")); });
             services.AddTransient<DAL.IUnitOfWork, DAL.UnitOfWork>();
+            
             services.AddTransient(typeof(ViewModels.CurrencyEditViewModel));
             services.AddTransient(typeof(ViewModels.ItemSearchViewModel));
 

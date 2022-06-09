@@ -30,6 +30,7 @@ namespace Kiriazi.Accounting.Pricing.Views
         private void InitializeComponent()
         {
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -52,8 +53,6 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.ClientSize = new System.Drawing.Size(887, 580);
             this.Controls.Add(this.dataGridView1);
             this.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.MinimizeBox = false;
             this.Name = "CustomerPriceListsView";
             this.Text = "Customer Price Lists";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
@@ -64,5 +63,6 @@ namespace Kiriazi.Accounting.Pricing.Views
         #endregion
 
         private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
     }
 }

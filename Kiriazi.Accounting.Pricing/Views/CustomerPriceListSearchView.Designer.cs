@@ -63,6 +63,8 @@ namespace Kiriazi.Accounting.Pricing.Views
             // 
             // cboCustomers
             // 
+            this.cboCustomers.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cboCustomers.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cboCustomers.FormattingEnabled = true;
             this.cboCustomers.Location = new System.Drawing.Point(99, 68);
             this.cboCustomers.Name = "cboCustomers";
@@ -107,6 +109,8 @@ namespace Kiriazi.Accounting.Pricing.Views
             // 
             // cboCompanies
             // 
+            this.cboCompanies.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cboCompanies.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cboCompanies.FormattingEnabled = true;
             this.cboCompanies.Location = new System.Drawing.Point(99, 37);
             this.cboCompanies.Name = "cboCompanies";

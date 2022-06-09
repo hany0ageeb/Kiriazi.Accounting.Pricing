@@ -1,4 +1,5 @@
 ﻿using System;
+using Npoi.Mapper.Attributes;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -22,9 +23,11 @@ namespace Kiriazi.Accounting.Pricing.Models
         }
         #endregion INotifyPropertyChanged
         [Timestamp]
+        [Ignore]
         public byte[] Timestamp { get; set; }
 
         [Required(AllowEmptyStrings = false), MaxLength(250)]
+        [Npoi.Mapper.Attributes.Column("الاسم")]
         public string Name 
         { 
             get=>_name;
@@ -39,6 +42,7 @@ namespace Kiriazi.Accounting.Pricing.Models
         }
 
         [MaxLength(500)]
+        [Npoi.Mapper.Attributes.Column("الوصف")]
         public string Description 
         { 
             get => _description;
@@ -52,10 +56,11 @@ namespace Kiriazi.Accounting.Pricing.Models
             }
         }
 
+        [Ignore]
         public virtual ICollection<CompanyItemAssignment> ItemAssignments { get; set; } = new HashSet<CompanyItemAssignment>();
 
         [NotMapped]
-
+        [Ignore]
         public Group Self => this;
     }
 }

@@ -2,6 +2,8 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Npoi.Mapper.Attributes;
+
 
 namespace Kiriazi.Accounting.Pricing.Models
 {
@@ -12,6 +14,7 @@ namespace Kiriazi.Accounting.Pricing.Models
         private decimal _percentage = 0.0M;
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [Ignore]
         public Guid Id { get;  set; } = Guid.NewGuid();
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
@@ -21,8 +24,10 @@ namespace Kiriazi.Accounting.Pricing.Models
         }
         #endregion INotifyPropertyChanged
         [Timestamp]
+        [Ignore]
         public byte[] Timestamp { get; set; }
         [Required(AllowEmptyStrings = false),MaxLength(14)]
+        [Npoi.Mapper.Attributes.Column("البند")]
         public string Code 
         { 
             get => _code;
@@ -36,6 +41,7 @@ namespace Kiriazi.Accounting.Pricing.Models
             }
         }
         [Required(AllowEmptyStrings = false), MaxLength(500)]
+        [Npoi.Mapper.Attributes.Column("نص البند")]
         public string Name 
         { 
             get=>_name;
@@ -50,6 +56,7 @@ namespace Kiriazi.Accounting.Pricing.Models
         }
 
         [Range(0.0,double.MaxValue)]
+        [Npoi.Mapper.Attributes.Column("النسبة")]
         public decimal PercentageAmount 
         {
             get => _percentage;
@@ -63,6 +70,7 @@ namespace Kiriazi.Accounting.Pricing.Models
             } 
         }
         [NotMapped]
+        [Ignore]
         public Tarrif Self => this;
     }
 }
