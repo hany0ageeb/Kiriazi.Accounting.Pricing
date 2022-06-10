@@ -129,7 +129,8 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                 old.ArabicName = item.ArabicName;
                 old.EnglishName = item.EnglishName;
                 old.Uom = _unitOfWork.UomRepository.Find(item.Uom.Id);
-                old.Tarrif = _unitOfWork.TarrifRepository.Find(item.Tarrif.Id);
+                if(item.Tarrif!=null)
+                    old.Tarrif = _unitOfWork.TarrifRepository.Find(item.Tarrif.Id);
                 old.ItemType = _unitOfWork.ItemTypeRepository.Find(item.ItemType.Id);
                 _unitOfWork.Complete();
             }
@@ -194,17 +195,80 @@ namespace Kiriazi.Accounting.Pricing.Controllers
 
         public ModelState ImportFromExcelFile(string fileName)
         {
-            DAL.Excel.ItemRepository itemRepository = new DAL.Excel.ItemRepository(fileName);
-            IList<Item> items = itemRepository.Find().ToList();
-            foreach(var item in items)
+            DAL.Excel.ItemDTORepository itemDTORepository = new DAL.Excel.ItemDTORepository(fileName);
+            IList<ItemDTO> itemsDto = itemDTORepository.Find().ToList();
+            IList<Item> items = new List<Item>();
+            foreach(var itemDto in itemsDto)
             {
-                item.Uom = _unitOfWork.UomRepository.Find(u => u.Code.Equals(item.Uom.Code, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
-                item.ItemType = _unitOfWork.ItemTypeRepository.Find(it => it.Name.Equals(item.ItemType.Name, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
-                item.Tarrif = _unitOfWork.TarrifRepository.Find(t => t.Code.Equals(item.Tarrif.Code, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+                items.Add(new Item()
+                {
+                    Code = itemDto.Code,
+                    ArabicName = itemDto.ArabicName,
+                    EnglishName = itemDto.EnglishName,
+                    Alias = itemDto.Alias,
+                    Uom = _unitOfWork.UomRepository.Find(u=>u.Code.Equals(itemDto.UomCode,StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault(),
+                    ItemType = _unitOfWork.ItemTypeRepository.Find(it=>it.Name.Equals(itemDto.ItemTypeName,StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault(),
+                    Tarrif = _unitOfWork.TarrifRepository.Find(t => t.Code.Equals(itemDto.TarrifCode, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault()
+                });
             }
             return AddRange(items);
         }
-
+        public ModelState ImportCompanyAssignemntFromExcelFile(string fileName)
+        {
+            DAL.Excel.ItemCompanyAssignmentDTORepository excelRepository = new DAL.Excel.ItemCompanyAssignmentDTORepository(fileName);
+            IList<ItemCompanyAssignmentDTO> dtos = excelRepository.Find().ToList();
+            IList<CompanyItemAssignment> companyItemAssignments = new List<CompanyItemAssignment>();
+            foreach(var dto in dtos)
+            {
+                var temp = new CompanyItemAssignment()
+                {
+                    Company = _unitOfWork.CompanyRepository.Find(c => c.Name.Equals(dto.CompanyName, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault(),
+                    Item = _unitOfWork.ItemRepository.Find(i => i.Code.Equals(dto.ItemCode, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault(),
+                    NameAlias = dto.Alias
+                };
+                if (!string.IsNullOrEmpty(dto.GroupName))
+                {
+                    temp.Group = _unitOfWork.GroupRepository.Find(g => g.Name.Equals(dto.GroupName, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+                }
+                companyItemAssignments.Add(temp);
+            }
+            return AddCompanyItemAssignmentRange(companyItemAssignments);
+        }
+        public ModelState AddCompanyItemAssignmentRange(IList<CompanyItemAssignment> companyItemAssignments)
+        {
+            ModelState modelState = new ModelState();
+            for(int index = 0; index < companyItemAssignments.Count; index++)
+            {
+                var temp = companyItemAssignments[index];
+                if (temp.Company == null)
+                {
+                    modelState.AddErrors("Company", $"Invalid Company Name # {index+1}");
+                }
+                else
+                {
+                    temp.CompanyId = temp.Company.Id;
+                }
+                if (temp.Item == null)
+                {
+                    modelState.AddErrors("Item", $"Invalid Item Name # {index + 1}");
+                }
+                else
+                {
+                    temp.ItemId = temp.Item.Id;
+                }
+                if(_unitOfWork.CompanyItemAssignmentRepository.Find(
+                    predicate: ass => ass.CompanyId == temp.CompanyId && ass.ItemId==temp.ItemId).FirstOrDefault() != null)
+                {
+                    modelState.AddErrors("Company/Item", $"Item: {temp.Item.Code} already assigned to Company: {temp.Company.Name} At {index+1}");
+                }
+                if (!modelState.HasErrors)
+                {
+                    _unitOfWork.CompanyItemAssignmentRepository.Add(temp);
+                }
+            }
+            _unitOfWork.Complete();
+            return modelState;
+        }
         public void EditItemCompanyAssignment(IList<ItemCompanyAssignmentViewModel> assignments,Guid itemId)
         {
             Item item = _unitOfWork.ItemRepository.Find(itemId);
@@ -248,6 +312,9 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             }
             _unitOfWork.Complete();
         }
+
+        
+
         public string Delete(Guid id)
         {
             Item item = _unitOfWork.ItemRepository.Find(id);

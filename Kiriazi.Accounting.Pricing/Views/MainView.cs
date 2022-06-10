@@ -73,8 +73,9 @@ namespace Kiriazi.Accounting.Pricing.Views
             {
                 try
                 {
-                    Controllers.GroupController groupController = Program.ServiceProvider.GetRequiredService<Controllers.GroupController>();
                     Cursor = Cursors.WaitCursor;
+                    Controllers.GroupController groupController = Program.ServiceProvider.GetRequiredService<Controllers.GroupController>();
+                    
                     var modelState = groupController.ImportGroupsFromExcelFile(openFileDialog1.FileName);
                     Cursor = Cursors.Default;
                     if (modelState.HasErrors)
@@ -120,8 +121,9 @@ namespace Kiriazi.Accounting.Pricing.Views
             {
                 try
                 {
-                    Controllers.TarrifController groupController = Program.ServiceProvider.GetRequiredService<Controllers.TarrifController>();
                     Cursor = Cursors.WaitCursor;
+                    Controllers.TarrifController groupController = Program.ServiceProvider.GetRequiredService<Controllers.TarrifController>();
+                    
                     var modelState = groupController.ImportFromExcelFile(openFileDialog1.FileName);
                     Cursor = Cursors.Default;
                     if (modelState.HasErrors)
@@ -167,9 +169,11 @@ namespace Kiriazi.Accounting.Pricing.Views
             {
                 try
                 {
-                    Controllers.ItemController groupController = Program.ServiceProvider.GetRequiredService<Controllers.ItemController>();
                     Cursor = Cursors.WaitCursor;
-                    ModelState modelState = groupController.ImportFromExcelFile(openFileDialog1.FileName);
+
+                    Controllers.ItemController itemController = Program.ServiceProvider.GetRequiredService<Controllers.ItemController>();
+                    
+                    ModelState modelState = itemController.ImportFromExcelFile(openFileDialog1.FileName);
                    
                     if (modelState.HasErrors)
                     {
@@ -205,6 +209,195 @@ namespace Kiriazi.Accounting.Pricing.Views
                     Cursor = Cursors.Default;
                 }
             }
+        }
+
+        private void productionTreeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var result = openFileDialog1.ShowDialog(this);
+            if (result == DialogResult.OK)
+            {
+                try
+                {
+                    Cursor = Cursors.WaitCursor;
+                    Controllers.ItemRelationController itemRelationController = Program.ServiceProvider.GetRequiredService<Controllers.ItemRelationController>();
+                    ModelState modelState = itemRelationController.ImportFromExcelFile(openFileDialog1.FileName);
+                    if (modelState.HasErrors)
+                    {
+                        StringBuilder sb = new StringBuilder();
+                        foreach (var err in modelState.GetErrors())
+                        {
+                            sb.AppendLine(err);
+                        }
+                        for (int i = 0; i < modelState.InnerModelStatesCount; i++)
+                        {
+                            foreach (var temp in modelState.GetModelState(i).GetErrors())
+                            {
+                                sb.AppendLine(temp);
+                            }
+                        }
+                        using (ImportErrorsView importErrorsView = new ImportErrorsView(sb.ToString()))
+                        {
+                            importErrorsView.ShowDialog(this);
+                        }
+                    }
+                    else
+                    {
+                        _ = MessageBox.Show(this, $"All Data Was imported without errors.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+                catch(Exception ex)
+                {
+                    _ = MessageBox.Show(this, ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    Cursor = Cursors.Default;
+                }
+            }
+        }
+
+        private void itemCompanyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var result = openFileDialog1.ShowDialog(this);
+            if (result == DialogResult.OK)
+            {
+                try
+                {
+                    Cursor = Cursors.WaitCursor;
+                    Controllers.ItemController itemController = Program.ServiceProvider.GetRequiredService<Controllers.ItemController>();
+                    ModelState modelState = itemController.ImportCompanyAssignemntFromExcelFile(openFileDialog1.FileName);
+                    if (modelState.HasErrors)
+                    {
+                        StringBuilder sb = new StringBuilder();
+                        foreach (var err in modelState.GetErrors())
+                        {
+                            sb.AppendLine(err);
+                        }
+                        for (int i = 0; i < modelState.InnerModelStatesCount; i++)
+                        {
+                            foreach (var temp in modelState.GetModelState(i).GetErrors())
+                            {
+                                sb.AppendLine(temp);
+                            }
+                        }
+                        using (ImportErrorsView importErrorsView = new ImportErrorsView(sb.ToString()))
+                        {
+                            importErrorsView.ShowDialog(this);
+                        }
+                    }
+                    else
+                    {
+                        _ = MessageBox.Show(this, $"All Data Was imported without errors.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _ = MessageBox.Show(this, ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    Cursor = Cursors.Default;
+                }
+            }
+        }
+
+        private void dailyCurrencyExchangeRateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var result = openFileDialog1.ShowDialog(this);
+            if (result == DialogResult.OK)
+            {
+                try
+                {
+                    Cursor = Cursors.WaitCursor;
+                    Controllers.CurrencyExchangeRateController currencyExchangeRateController = Program.ServiceProvider.GetRequiredService<Controllers.CurrencyExchangeRateController>();
+                    ModelState modelState = currencyExchangeRateController.ImportDailyExchangeRateFromExcelFile(openFileDialog1.FileName);
+                    if (modelState.HasErrors)
+                    {
+                        StringBuilder sb = new StringBuilder();
+                        foreach (var err in modelState.GetErrors())
+                        {
+                            sb.AppendLine(err);
+                        }
+                        for (int i = 0; i < modelState.InnerModelStatesCount; i++)
+                        {
+                            foreach (var temp in modelState.GetModelState(i).GetErrors())
+                            {
+                                sb.AppendLine(temp);
+                            }
+                        }
+                        using (ImportErrorsView importErrorsView = new ImportErrorsView(sb.ToString()))
+                        {
+                            importErrorsView.ShowDialog(this);
+                        }
+                    }
+                    else
+                    {
+                        _ = MessageBox.Show(this, $"All Data Was imported without errors.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _ = MessageBox.Show(this, ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    Cursor = Cursors.Default;
+                }
+            }
+        }
+
+        private void priceListToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var result = openFileDialog1.ShowDialog(this);
+            if (result == DialogResult.OK)
+            {
+                try
+                {
+                    Cursor = Cursors.WaitCursor;
+                    Controllers.PriceListController priceListController = Program.ServiceProvider.GetRequiredService<Controllers.PriceListController>();
+                    ModelState modelState = priceListController.ImportDailyExchangeRateFromExcelFile(openFileDialog1.FileName);
+                    if (modelState.HasErrors)
+                    {
+                        StringBuilder sb = new StringBuilder();
+                        foreach (var err in modelState.GetErrors())
+                        {
+                            sb.AppendLine(err);
+                        }
+                        for (int i = 0; i < modelState.InnerModelStatesCount; i++)
+                        {
+                            foreach (var temp in modelState.GetModelState(i).GetErrors())
+                            {
+                                sb.AppendLine(temp);
+                            }
+                        }
+                        using (ImportErrorsView importErrorsView = new ImportErrorsView(sb.ToString()))
+                        {
+                            importErrorsView.ShowDialog(this);
+                        }
+                    }
+                    else
+                    {
+                        _ = MessageBox.Show(this, $"All Data Was imported without errors.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _ = MessageBox.Show(this, ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    Cursor = Cursors.Default;
+                }
+            }
+        }
+
+        private void customerPriceListReportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Cursor = Cursors.WaitCursor;
+            Reports.ParametersForms.CustomerPriceListReportParameterForm customerPriceListReportParameterForm = Program.ServiceProvider.GetRequiredService<Reports.ParametersForms.CustomerPriceListReportParameterForm>();
+            Cursor = Cursors.Default;
+            customerPriceListReportParameterForm.MdiParent = this.MdiParent;
+            customerPriceListReportParameterForm.Show();
         }
     }
 }

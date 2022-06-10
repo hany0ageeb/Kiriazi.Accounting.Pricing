@@ -32,22 +32,26 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dailyCurrencyExchangeRateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.priceListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.productionTreeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.itemsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.customesTarrifToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.itemCompanyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.reportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.customerPriceListReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem});
+            this.fileToolStripMenuItem,
+            this.reportToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(827, 24);
@@ -67,6 +71,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             // importToolStripMenuItem
             // 
             this.importToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.dailyCurrencyExchangeRateToolStripMenuItem,
             this.priceListToolStripMenuItem,
             this.productionTreeToolStripMenuItem,
             this.itemsToolStripMenuItem,
@@ -75,67 +80,92 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.itemCompanyToolStripMenuItem});
             this.importToolStripMenuItem.Name = "importToolStripMenuItem";
             this.importToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.I)));
-            this.importToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.importToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.importToolStripMenuItem.Text = "Import";
+            // 
+            // dailyCurrencyExchangeRateToolStripMenuItem
+            // 
+            this.dailyCurrencyExchangeRateToolStripMenuItem.Name = "dailyCurrencyExchangeRateToolStripMenuItem";
+            this.dailyCurrencyExchangeRateToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
+            this.dailyCurrencyExchangeRateToolStripMenuItem.Text = "Daily Currency Exchange Rate";
+            this.dailyCurrencyExchangeRateToolStripMenuItem.Click += new System.EventHandler(this.dailyCurrencyExchangeRateToolStripMenuItem_Click);
             // 
             // priceListToolStripMenuItem
             // 
             this.priceListToolStripMenuItem.Name = "priceListToolStripMenuItem";
-            this.priceListToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.priceListToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
             this.priceListToolStripMenuItem.Text = "Price List";
+            this.priceListToolStripMenuItem.Click += new System.EventHandler(this.priceListToolStripMenuItem_Click);
             // 
             // productionTreeToolStripMenuItem
             // 
             this.productionTreeToolStripMenuItem.Name = "productionTreeToolStripMenuItem";
-            this.productionTreeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.productionTreeToolStripMenuItem.Text = "Production Tree";
+            this.productionTreeToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
+            this.productionTreeToolStripMenuItem.Text = "Product Tree";
+            this.productionTreeToolStripMenuItem.Click += new System.EventHandler(this.productionTreeToolStripMenuItem_Click);
             // 
             // itemsToolStripMenuItem
             // 
             this.itemsToolStripMenuItem.Name = "itemsToolStripMenuItem";
-            this.itemsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.itemsToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
             this.itemsToolStripMenuItem.Text = "Items";
             this.itemsToolStripMenuItem.Click += new System.EventHandler(this.itemsToolStripMenuItem_Click);
             // 
             // groupsToolStripMenuItem
             // 
             this.groupsToolStripMenuItem.Name = "groupsToolStripMenuItem";
-            this.groupsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.groupsToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
             this.groupsToolStripMenuItem.Text = "Groups";
             this.groupsToolStripMenuItem.Click += new System.EventHandler(this.groupsToolStripMenuItem_Click);
-            // 
-            // exportToolStripMenuItem
-            // 
-            this.exportToolStripMenuItem.Enabled = false;
-            this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
-            this.exportToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
-            this.exportToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.exportToolStripMenuItem.Text = "Export";
-            // 
-            // exitToolStripMenuItem
-            // 
-            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.exitToolStripMenuItem.Text = "Exit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // customesTarrifToolStripMenuItem
             // 
             this.customesTarrifToolStripMenuItem.Name = "customesTarrifToolStripMenuItem";
-            this.customesTarrifToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.customesTarrifToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
             this.customesTarrifToolStripMenuItem.Text = "Customs Tarrif";
             this.customesTarrifToolStripMenuItem.Click += new System.EventHandler(this.customesTarrifToolStripMenuItem_Click);
             // 
             // itemCompanyToolStripMenuItem
             // 
             this.itemCompanyToolStripMenuItem.Name = "itemCompanyToolStripMenuItem";
-            this.itemCompanyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.itemCompanyToolStripMenuItem.Text = "Item / Company";
+            this.itemCompanyToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
+            this.itemCompanyToolStripMenuItem.Text = "Item / Company Assignment";
+            this.itemCompanyToolStripMenuItem.Click += new System.EventHandler(this.itemCompanyToolStripMenuItem_Click);
+            // 
+            // exportToolStripMenuItem
+            // 
+            this.exportToolStripMenuItem.Enabled = false;
+            this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
+            this.exportToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.exportToolStripMenuItem.Text = "Export";
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
+            // 
+            // reportToolStripMenuItem
+            // 
+            this.reportToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.customerPriceListReportToolStripMenuItem});
+            this.reportToolStripMenuItem.Name = "reportToolStripMenuItem";
+            this.reportToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
+            this.reportToolStripMenuItem.Text = "&Report";
+            // 
+            // customerPriceListReportToolStripMenuItem
+            // 
+            this.customerPriceListReportToolStripMenuItem.Name = "customerPriceListReportToolStripMenuItem";
+            this.customerPriceListReportToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
+            this.customerPriceListReportToolStripMenuItem.Text = "Customer Price List Report";
+            this.customerPriceListReportToolStripMenuItem.Click += new System.EventHandler(this.customerPriceListReportToolStripMenuItem_Click);
             // 
             // MainView
             // 
@@ -170,5 +200,8 @@ namespace Kiriazi.Accounting.Pricing.Views
         private System.Windows.Forms.ToolStripMenuItem customesTarrifToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem itemCompanyToolStripMenuItem;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.ToolStripMenuItem dailyCurrencyExchangeRateToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem reportToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem customerPriceListReportToolStripMenuItem;
     }
 }

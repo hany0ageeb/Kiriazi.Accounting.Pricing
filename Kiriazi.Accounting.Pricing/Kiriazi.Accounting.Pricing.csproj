@@ -126,6 +126,24 @@
     <Reference Include="Microsoft.Extensions.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Primitives.6.0.0\lib\net461\Microsoft.Extensions.Primitives.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.ReportViewer.Common, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.140.1000.523\lib\net40\Microsoft.ReportViewer.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.DataVisualization, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.140.1000.523\lib\net40\Microsoft.ReportViewer.DataVisualization.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.Design, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.140.1000.523\lib\net40\Microsoft.ReportViewer.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.ProcessingObjectModel, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.140.1000.523\lib\net40\Microsoft.ReportViewer.ProcessingObjectModel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WinForms, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.140.1000.523\lib\net40\Microsoft.ReportViewer.WinForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Types, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.Types.14.0.314.76\lib\net40\Microsoft.SqlServer.Types.dll</HintPath>
+    </Reference>
     <Reference Include="NPOI, Version=2.5.6.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
       <HintPath>..\packages\NPOI.2.5.6\lib\net45\NPOI.dll</HintPath>
     </Reference>
@@ -203,6 +221,7 @@
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -233,7 +252,13 @@
     <Compile Include="DAL\CurrencyRepository.cs" />
     <Compile Include="DAL\CustomerPricingRuleRepository.cs" />
     <Compile Include="DAL\CustomerRepository.cs" />
+    <Compile Include="DAL\Excel\DailyCurrencyExchangeRateDTORepository.cs" />
     <Compile Include="DAL\Excel\GroupRepository.cs" />
+    <Compile Include="DAL\Excel\ItemCompanyAssignmentDTORepository.cs" />
+    <Compile Include="DAL\Excel\ItemDTORepository.cs" />
+    <Compile Include="DAL\Excel\ItemParentChildDTORepository.cs" />
+    <Compile Include="DAL\Excel\PriceListDTORepository.cs" />
+    <Compile Include="DAL\Excel\TarrifRepository.cs" />
     <Compile Include="DAL\GroupRepository.cs" />
     <Compile Include="DAL\IAccountingPeriodRepository.cs" />
     <Compile Include="DAL\ICompanyAccountingPeriodRepository.cs" />
@@ -272,27 +297,47 @@
     <Compile Include="Models\Currency.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\CustomerPricingRule.cs" />
+    <Compile Include="Models\DailyCurrencyExchangeRateDTO.cs" />
     <Compile Include="Models\ExchangeRateType.cs" />
     <Compile Include="Models\Group.cs" />
     <Compile Include="Models\Item.cs" />
+    <Compile Include="Models\ItemCompanyAssignmentDTO.cs" />
+    <Compile Include="Models\ItemDTO.cs" />
+    <Compile Include="Models\ItemParentChildDTO.cs" />
     <Compile Include="Models\ItemRelation.cs" />
     <Compile Include="Models\ItemType.cs" />
     <Compile Include="Models\PriceList.cs" />
+    <Compile Include="Models\PriceListDTO.cs" />
     <Compile Include="Models\PriceListLine.cs" />
     <Compile Include="Models\Tarrif.cs" />
     <Compile Include="Models\Uom.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reports\ParametersForms\CustomerPriceListReportParameterForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\ParametersForms\CustomerPriceListReportParameterForm.Designer.cs">
+      <DependentUpon>CustomerPriceListReportParameterForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportsForms\CustomerPriceListReportForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportsForms\CustomerPriceListReportForm.Designer.cs">
+      <DependentUpon>CustomerPriceListReportForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SqlServerTypes\Loader.cs" />
     <Compile Include="Validation\AccountingPeriodValidator.cs" />
     <Compile Include="Validation\ComapnyAccountingPeriodValidator.cs" />
     <Compile Include="Validation\CompanyValidator.cs" />
     <Compile Include="Validation\CurrencyValidator.cs" />
     <Compile Include="Validation\GroupValidator.cs" />
+    <Compile Include="Validation\ItemRelationValidator.cs" />
     <Compile Include="Validation\ItemValidator.cs" />
     <Compile Include="Validation\IValidator.cs" />
     <Compile Include="Validation\ModelState.cs" />
     <Compile Include="Validation\PriceListLineValidator.cs" />
     <Compile Include="Validation\PriceListValidator.cs" />
+    <Compile Include="Validation\PricingRuleValidator.cs" />
     <Compile Include="Validation\TarrifValidator.cs" />
     <Compile Include="Validation\UomValidaor.cs" />
     <Compile Include="ViewModels\AccountingPeriodEditViewModel.cs" />
@@ -519,6 +564,13 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Reports\CustomerPriceListReport.rdlc" />
+    <EmbeddedResource Include="Reports\ParametersForms\CustomerPriceListReportParameterForm.resx">
+      <DependentUpon>CustomerPriceListReportParameterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\ReportsForms\CustomerPriceListReportForm.resx">
+      <DependentUpon>CustomerPriceListReportForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\AccountingPeriodsView.resx">
       <DependentUpon>AccountingPeriodsView.cs</DependentUpon>
     </EmbeddedResource>
@@ -619,6 +671,7 @@
       <DependentUpon>UomsView.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\Kiriazi.Accounting.Pricing.ViewModels.CustomerPriceListViewModel.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -635,7 +688,21 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="SqlServerTypes\readme.htm" />
+    <Content Include="SqlServerTypes\x64\msvcr120.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SqlServerTypes\x64\SqlServerSpatial140.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SqlServerTypes\x86\msvcr120.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SqlServerTypes\x86\SqlServerSpatial140.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

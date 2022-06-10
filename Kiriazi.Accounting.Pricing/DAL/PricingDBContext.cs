@@ -454,6 +454,11 @@ namespace Kiriazi.Accounting.Pricing.DAL
         
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder
+                .Entity<ItemRelation>()
+                .Property(e => e.Quantity)
+                .HasPrecision(18, 4);
+
             modelBuilder.Entity<ItemRelation>()
                  .HasIndex(e => new { e.ParentId, e.ChildId, e.CompanyId })
                  .IsUnique(true)

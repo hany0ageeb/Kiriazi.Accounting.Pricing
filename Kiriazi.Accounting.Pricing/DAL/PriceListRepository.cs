@@ -58,7 +58,8 @@ namespace Kiriazi.Accounting.Pricing.DAL
                     l.PriceList.CompanyAccountingPeriod.CompanyId == companyId && 
                     l.ItemId == itemId && l.PriceList.CompanyAccountingPeriod.AccountingPeriod.FromDate <= date &&
                     ((l.PriceList.CompanyAccountingPeriod.AccountingPeriod.ToDate != null && l.PriceList.CompanyAccountingPeriod.AccountingPeriod.ToDate >= date)|| l.PriceList.CompanyAccountingPeriod.AccountingPeriod.ToDate == null)
-                    );
+                    )
+                .Include(nameof(PriceListLine.Currency));
             return query.AsEnumerable();
         }
     }

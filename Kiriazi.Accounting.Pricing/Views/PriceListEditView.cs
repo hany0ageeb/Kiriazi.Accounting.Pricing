@@ -62,7 +62,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             dataGridView1.AutoGenerateColumns = false;
             dataGridView1.AllowUserToAddRows = true;
             dataGridView1.AllowUserToDeleteRows = true;
-            dataGridView1.EditMode = DataGridViewEditMode.EditOnEnter;
+            dataGridView1.EditMode = DataGridViewEditMode.EditOnKeystrokeOrF2;
             dataGridView1.MultiSelect = false;
             dataGridView1.DataSource = _lines;
             dataGridView1.EditingControlShowing += DataGridView1_EditingControlShowing;
@@ -72,6 +72,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             dataGridView1.RowValidating += DataGridView1_RowValidating;
             dataGridView1.RowValidated += DataGridView1_RowValidated;
             dataGridView1.DefaultValuesNeeded += DataGridView1_DefaultValuesNeeded;
+            
             _model.PropertyChanged += (o, e) =>
             {
                 _hasChanged = true;
@@ -87,6 +88,7 @@ namespace Kiriazi.Accounting.Pricing.Views
                 _hasChanged = true;
                 btnSave.Enabled = true;
             }
+            
         }
 
         private void DataGridView1_DefaultValuesNeeded(object sender, DataGridViewRowEventArgs e)
@@ -364,7 +366,7 @@ namespace Kiriazi.Accounting.Pricing.Views
                     {
                         if(_lines[e.RowIndex].Item != null && _lines[e.RowIndex].Item.Tarrif != null)
                         {
-                            _lines[e.RowIndex].TarrrifPercentage = _lines[e.RowIndex].Item.TarrifPercentage;
+                            //_lines[e.RowIndex].TarrrifPercentage = _lines[e.RowIndex].Item.TarrifPercentage;
                             dataGridView1.Rows[e.RowIndex].Cells["TarrrifPercentage"].ReadOnly = true;
                         }
                         else
@@ -379,7 +381,7 @@ namespace Kiriazi.Accounting.Pricing.Views
                     {
                         if (_lines[e.RowIndex].Item != null && _lines[e.RowIndex].Item.Tarrif != null)
                         {
-                            _lines[e.RowIndex].TarrrifPercentage = _lines[e.RowIndex].Item.TarrifPercentage;
+                            //_lines[e.RowIndex].TarrrifPercentage = _lines[e.RowIndex].Item.TarrifPercentage;
                             dataGridView1.Rows[e.RowIndex].Cells["TarrrifPercentage"].ReadOnly = false;
                             _lines[e.RowIndex].TarrrifPercentage = _lines[e.RowIndex].Item.TarrifPercentage;
                         }
@@ -410,8 +412,9 @@ namespace Kiriazi.Accounting.Pricing.Views
                         _lines[e.RowIndex].Item = item;
                         if (_lines[e.RowIndex].Item.Tarrif != null)
                         {
-                            _lines[e.RowIndex].TarrifType = ExchangeRateTypes.System;
-                            _lines[e.RowIndex].TarrrifPercentage = _lines[e.RowIndex].Item.TarrifPercentage;
+                           
+                            //_lines[e.RowIndex].TarrifType = ExchangeRateTypes.System;
+                            //_lines[e.RowIndex].TarrrifPercentage = _lines[e.RowIndex].Item.TarrifPercentage;
                             dataGridView1.Rows[e.RowIndex].Cells["TarrrifPercentage"].ReadOnly = true;
                         }
                         else
@@ -491,7 +494,7 @@ namespace Kiriazi.Accounting.Pricing.Views
                 new DataGridViewTextBoxColumn()
                 {
                     Name = "ItemCode",
-                    DataPropertyName = "ItemCode",
+                    DataPropertyName = nameof(PriceListLine.ItemCode),
                     ReadOnly = false,
                     HeaderText = "Item",
                     Visible = true
@@ -499,7 +502,7 @@ namespace Kiriazi.Accounting.Pricing.Views
                 new DataGridViewTextBoxColumn()
                 {
                     Name = "UnitPrice",
-                    DataPropertyName = "UnitPrice",
+                    DataPropertyName = nameof(PriceListLine.UnitPrice),
                     ReadOnly = false,
                     HeaderText = "Unit Price",
                     Visible = true
@@ -507,7 +510,7 @@ namespace Kiriazi.Accounting.Pricing.Views
                 ,new DataGridViewComboBoxColumn()
                 {
                     Name = "Currency",
-                    DataPropertyName = "Currency",
+                    DataPropertyName = nameof(PriceListLine.Currency),
                     DisplayMember = "Code",
                     ValueMember = "Self",
                     DataSource = _model.Currencies,
@@ -518,7 +521,7 @@ namespace Kiriazi.Accounting.Pricing.Views
                 new DataGridViewComboBoxColumn()
                 {
                     Name = "ExchangeRateType",
-                    DataPropertyName = "ExchangeRateType",
+                    DataPropertyName = nameof(PriceListLine.ExchangeRateType),
                     DataSource = _model.RateTypes,
                     HeaderText = "Currency Exchange Rate Type",
                     ReadOnly = true,
@@ -527,7 +530,7 @@ namespace Kiriazi.Accounting.Pricing.Views
                 new DataGridViewTextBoxColumn()
                 {
                     Name = "CurrencyExchangeRate",
-                    DataPropertyName = "CurrencyExchangeRate",
+                    DataPropertyName = nameof(PriceListLine.CurrencyExchangeRate),
                     HeaderText = "Exchange Rate",
                     ReadOnly = true,
                     Visible = true
@@ -535,7 +538,7 @@ namespace Kiriazi.Accounting.Pricing.Views
                 new DataGridViewComboBoxColumn()
                 {
                     Name = "TarrifType",
-                    DataPropertyName = "TarrifType",
+                    DataPropertyName = nameof(PriceListLine.TarrifType),
                     DataSource = _model.RateTypes,
                     ReadOnly = true,
                     HeaderText = "Tarrif Type",
@@ -544,7 +547,7 @@ namespace Kiriazi.Accounting.Pricing.Views
                 new DataGridViewTextBoxColumn()
                 {
                     Name = "TarrrifPercentage",
-                    DataPropertyName = "TarrrifPercentage",
+                    DataPropertyName = nameof(PriceListLine.TarrrifPercentage),
                     HeaderText = "Tarrrif Percentage(%)",
                     ReadOnly = true,
                     Visible = true

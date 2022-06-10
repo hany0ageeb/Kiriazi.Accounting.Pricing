@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using Npoi.Mapper.Attributes;
+using System.ComponentModel;
 
 namespace Kiriazi.Accounting.Pricing.ViewModels
 {
@@ -13,5 +14,5 @@ namespace Kiriazi.Accounting.Pricing.ViewModels
         }
         #endregion INotifyPropertyChanged
     }
-   
+    
 }

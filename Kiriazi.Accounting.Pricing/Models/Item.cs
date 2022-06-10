@@ -23,27 +23,25 @@ namespace Kiriazi.Accounting.Pricing.Models
         public byte[] Timestamp { get; set; }
 
         [Required(AllowEmptyStrings = false), MaxLength(250)]
-        [Npoi.Mapper.Attributes.Column("كود الصنف")]
+        
         public string Code { get; set; }
         
         [MaxLength(500),Required(AllowEmptyStrings = false)]
-        [Npoi.Mapper.Attributes.Column("الاسم بالعربي")]
+        
         public string ArabicName { get; set; }
 
         [MaxLength(500)]
-        [Npoi.Mapper.Attributes.Column("الاسم بالانجليزى")]
+        
         public string EnglishName { get; set; }
 
         [MaxLength(500)]
-        [Npoi.Mapper.Attributes.Column("اسم أخر للصنف")]
+        
         public string Alias { get; set; }
         
         [Required]
-        
         public virtual Uom Uom { get; set; }
 
         [ForeignKey(nameof(Uom))]
-        [Ignore]
         public Guid UomId { get; set; }
 
         
@@ -54,13 +52,13 @@ namespace Kiriazi.Accounting.Pricing.Models
         public virtual ItemType ItemType { get; set; }
 
         [ForeignKey(nameof(ItemType))]
-        [Ignore]
+        
         public Guid ItemTypeId { get; set; }
 
         [ForeignKey(nameof(Tarrif))]
-        [Ignore]
+        
         public Guid? TarrifId { get; set; }
-        [Ignore]
+        
         public virtual IList<PriceListLine> PriceListLines { get; set; } = new List<PriceListLine>();
         [Ignore]
         public virtual ICollection<ItemRelation> Children { get; set; } = new HashSet<ItemRelation>();
