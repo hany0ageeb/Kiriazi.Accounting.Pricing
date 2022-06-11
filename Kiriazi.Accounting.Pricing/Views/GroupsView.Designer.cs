@@ -34,9 +34,11 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnNew = new System.Windows.Forms.Button();
+            this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.flowLayoutPanel2.SuspendLayout();
+            this.flowLayoutPanel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // flowLayoutPanel1
@@ -47,7 +49,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(773, 416);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(773, 400);
             this.flowLayoutPanel1.TabIndex = 0;
             // 
             // dataGridView1
@@ -65,11 +67,11 @@ namespace Kiriazi.Accounting.Pricing.Views
             // flowLayoutPanel2
             // 
             this.flowLayoutPanel2.Controls.Add(this.btnClose);
-            this.flowLayoutPanel2.Controls.Add(this.btnNew);
+            this.flowLayoutPanel2.Controls.Add(this.flowLayoutPanel3);
             this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
             this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 346);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(758, 51);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(758, 44);
             this.flowLayoutPanel2.TabIndex = 1;
             // 
             // btnClose
@@ -84,7 +86,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             // 
             // btnNew
             // 
-            this.btnNew.Location = new System.Drawing.Point(529, 3);
+            this.btnNew.Location = new System.Drawing.Point(3, 3);
             this.btnNew.Name = "btnNew";
             this.btnNew.Size = new System.Drawing.Size(110, 35);
             this.btnNew.TabIndex = 1;
@@ -92,11 +94,20 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.btnNew.UseVisualStyleBackColor = true;
             this.btnNew.Click += new System.EventHandler(this.btnNew_Click);
             // 
+            // flowLayoutPanel3
+            // 
+            this.flowLayoutPanel3.Controls.Add(this.btnNew);
+            this.flowLayoutPanel3.Location = new System.Drawing.Point(9, 3);
+            this.flowLayoutPanel3.Name = "flowLayoutPanel3";
+            this.flowLayoutPanel3.Size = new System.Drawing.Size(630, 41);
+            this.flowLayoutPanel3.TabIndex = 2;
+            // 
             // GroupsView
             // 
+            this.AcceptButton = this.btnClose;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(773, 416);
+            this.ClientSize = new System.Drawing.Size(773, 400);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MaximizeBox = false;
@@ -105,6 +116,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.flowLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.flowLayoutPanel2.ResumeLayout(false);
+            this.flowLayoutPanel3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -116,5 +128,6 @@ namespace Kiriazi.Accounting.Pricing.Views
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Button btnNew;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel3;
     }
 }

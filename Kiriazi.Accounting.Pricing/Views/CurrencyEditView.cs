@@ -67,12 +67,14 @@ namespace Kiriazi.Accounting.Pricing.Views
             //
             chkIsEnabled.DataBindings.Clear();
             chkIsEnabled.DataBindings.Add(new Binding(nameof(chkIsEnabled.Checked), _model, nameof(_model.IsEnabled)) { DataSourceUpdateMode = DataSourceUpdateMode.OnPropertyChanged});
+            chkIsEnabled.DataBindings.Add(new Binding(nameof(chkIsEnabled.Enabled),_model,nameof(_model.CanCurrencyDisabled)));
             //
             _model.PropertyChanged += (o, e) =>
             {
                 _hasChanged = true;
                 btnSave.Enabled = true;
             };
+
         }
         private void Control_Validated(object sender, EventArgs e)
         {
@@ -107,30 +109,41 @@ namespace Kiriazi.Accounting.Pricing.Views
             }
             return true;
         }
+        private bool CloseForm()
+        {
+            if (_hasChanged)
+            {
+                DialogResult result = MessageBox.Show(
+                    owner: this, 
+                    text:"Do you want to save changes?", 
+                    caption: "Confirm", 
+                    buttons: MessageBoxButtons.YesNoCancel, 
+                    icon: MessageBoxIcon.Question);
+                if(result == DialogResult.Yes)
+                {
+                    if (SaveChanges())
+                    {
+                        _hasChanged = false;
+                        return true;
+                    }
+                }
+                else if(result == DialogResult.No)
+                {
+                    _hasChanged = false;
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
         private void CurrencyEditView_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (_hasChanged && e.CloseReason == CloseReason.UserClosing)
             {
-                DialogResult result = MessageBox.Show(this, "Do you want to save changes?", "Confirm", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
-                if (result == DialogResult.Yes)
-                {
-                    if (!SaveChanges())
-                    {
-                        e.Cancel = true;
-                    }
-                }
-                else if (result == DialogResult.No)
-                {
-
-                }
-                else
-                {
-                    e.Cancel = true;
-                }
-            }
-            else
-            {
-                e.Cancel = false;
+                e.Cancel = !CloseForm();
             }
         }
 
@@ -138,13 +151,34 @@ namespace Kiriazi.Accounting.Pricing.Views
         {
             if (SaveChanges())
             {
-                _model.Code = "";
-                _model.Name = "";
-                _model.Description = "";
-                _model.IsEnabled = true;
-                _model.Id = Guid.NewGuid();
+                _model = this._controller.Add();
+                Initialize();
                 _hasChanged = false;
                 btnSave.Enabled = false;
+            }
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            if (CloseForm())
+            {
+                _hasChanged = false;
+                btnSave.Enabled = false;
+                Close();
+            }
+        }
+
+        private void CurrencyEditView_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Control && e.KeyCode == Keys.S)
+            {
+                if (SaveChanges())
+                {
+                    _model = this._controller.Add();
+                    Initialize();
+                    _hasChanged = false;
+                    btnSave.Enabled = false;
+                }
             }
         }
     }

@@ -48,6 +48,7 @@
               <TextRun>
                 <Value>=First(Fields!CustomerName.Value, "CustomerPriceListDataSet")</Value>
                 <Style>
+                  <FontWeight>Bold</FontWeight>
                   <Language>ar-EG</Language>
                   <Calendar>GregorianArabic</Calendar>
                 </Style>
@@ -154,6 +155,7 @@
               <TextRun>
                 <Value>=First(Fields!PriceListDate.Value, "CustomerPriceListDataSet")</Value>
                 <Style>
+                  <FontWeight>Bold</FontWeight>
                   <Format>d</Format>
                   <Language>ar-EG</Language>
                   <Calendar>GregorianArabic</Calendar>
@@ -189,7 +191,7 @@
               <Width>2.39212cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.99524cm</Width>
+              <Width>1.59836cm</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>1.73589cm</Width>
@@ -201,7 +203,7 @@
               <Width>5.19147cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>3.37108cm</Width>
+              <Width>3.76796cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -231,9 +233,9 @@
                       <rd:DefaultName>Textbox14</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
+                        <BackgroundColor>LightGrey</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -265,9 +267,9 @@
                       <rd:DefaultName>Textbox12</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
+                        <BackgroundColor>LightGrey</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -299,9 +301,9 @@
                       <rd:DefaultName>Textbox16</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
+                        <BackgroundColor>LightGrey</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -333,9 +335,9 @@
                       <rd:DefaultName>Textbox6</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
+                        <BackgroundColor>LightGrey</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -367,9 +369,9 @@
                       <rd:DefaultName>Textbox8</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
+                        <BackgroundColor>LightGrey</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -401,9 +403,9 @@
                       <rd:DefaultName>Textbox10</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
+                        <BackgroundColor>LightGrey</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -441,7 +443,6 @@
                       <rd:DefaultName>UnitPrice</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -475,7 +476,6 @@
                       <rd:DefaultName>CurrencyCode</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -509,7 +509,6 @@
                       <rd:DefaultName>UomCode</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -543,7 +542,6 @@
                       <rd:DefaultName>ItemAlias</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -577,7 +575,6 @@
                       <rd:DefaultName>ItemArabicName</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -611,7 +608,6 @@
                       <rd:DefaultName>ItemCode</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>

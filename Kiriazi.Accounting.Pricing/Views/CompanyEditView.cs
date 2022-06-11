@@ -51,6 +51,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             //
             chkIsEnabled.DataBindings.Clear();
             chkIsEnabled.DataBindings.Add(new Binding(nameof(chkIsEnabled.Checked),_model,nameof(_model.IsEnabled)) { DataSourceUpdateMode = DataSourceUpdateMode.OnPropertyChanged});
+
             //
             cboCurrencies.DataSource = _model.Currencies;
             cboCurrencies.DisplayMember = "Name";
@@ -59,6 +60,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             cboCurrencies.DataBindings.Add(new Binding(nameof(cboCurrencies.SelectedItem),_model,nameof(_model.Currency)) { });
             cboCurrencies.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             cboCurrencies.AutoCompleteSource = AutoCompleteSource.ListItems;
+            cboCurrencies.DataBindings.Add(new Binding(nameof(cboCurrencies.Enabled), _model, nameof(_model.CanChangeCompanyCurrency)));
             //
             _model.PropertyChanged += (o, e) =>
             {
@@ -113,27 +115,47 @@ namespace Kiriazi.Accounting.Pricing.Views
 
             }
         }
-
-        private void CompanyEditView_FormClosing(object sender, FormClosingEventArgs e)
+        private bool CloseForm()
         {
             if (_hasChanged)
             {
-                if(e.CloseReason == CloseReason.UserClosing)
+                DialogResult result = MessageBox.Show(this, "Do you want to save changes?", "Question", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
                 {
-                    DialogResult result = MessageBox.Show(this, "Do you want to save changes?", "Question", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
-                    if(result == DialogResult.Yes)
+                    if (SaveChanges())
                     {
-                        e.Cancel = !SaveChanges();
-                    }
-                    else if(result == DialogResult.No)
-                    {
-
-                    }
-                    else
-                    {
-                        e.Cancel = true;
+                        _hasChanged = false;
+                        return true;
                     }
                 }
+                else if(result == DialogResult.No)
+                {
+                    _hasChanged = false;
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        private void CompanyEditView_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (_hasChanged && e.CloseReason == CloseReason.UserClosing)
+            {
+                if(e.CloseReason == CloseReason.UserClosing)
+                {
+                    e.Cancel = !CloseForm();
+                }
+            }
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            if (CloseForm())
+            {
+                Close();
             }
         }
     }

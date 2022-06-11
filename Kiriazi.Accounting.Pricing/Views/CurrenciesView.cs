@@ -88,9 +88,12 @@ namespace Kiriazi.Accounting.Pricing.Views
             {
                 if (e.ColumnIndex == grid.Columns["Edit"].Index)
                 {
-                    using (CurrencyEditView currencyEditView = Program.ServiceProvider.GetRequiredService<CurrencyEditView>())
+                    if (e.RowIndex >= 0 && e.RowIndex < _currencies.Count)
                     {
-                        currencyEditView.ShowDialog(this);
+                        using (CurrencyEditView currencyEditView = new CurrencyEditView(currencyController.Edit(_currencies[e.RowIndex].Id), this.currencyController))
+                        {
+                            currencyEditView.ShowDialog(this);
+                        }
                     }
                 }
                 else if (e.ColumnIndex == grid.Columns["Delete"].Index)

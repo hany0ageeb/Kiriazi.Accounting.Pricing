@@ -27,7 +27,12 @@ namespace Kiriazi.Accounting.Pricing.Controllers
         }
         public CompanyEditViewModel Edit(Guid id)
         {
-            return new CompanyEditViewModel(_unitOfWork.CompanyRepository.Find(id),_unitOfWork.CurrencyRepository.Find(c => c.IsEnabled).ToList());
+
+            return new CompanyEditViewModel(_unitOfWork.CompanyRepository.Find(id),_unitOfWork.CurrencyRepository.Find(c => c.IsEnabled).ToList(), CanChangeCompanyCurrency(id));
+        }
+        public bool CanChangeCompanyCurrency(Guid companyId)
+        {
+            return _unitOfWork.PriceListRepository.Find(predicate: pl => pl.CompanyAccountingPeriod.CompanyId == companyId).Count() == 0;
         }
         public CompanyEditViewModel Add()
         {
@@ -617,7 +622,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             else
             {
                 UnitValue totalUnitValue = new UnitValue() { Currency = company.Currency, UnitPrice = 0M };
-                foreach(var child in item.Children)
+                foreach(var child in item.Children.Where(c=>c.CompanyId == company.Id))
                 {
                     unitValue = GetItemUnitValue(customerPricingRules,company, child.Child, date, child.Quantity);
                     totalUnitValue.UnitPrice += unitValue.UnitPrice;

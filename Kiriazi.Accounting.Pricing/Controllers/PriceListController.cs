@@ -158,6 +158,8 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             {
                 model.AccountingPeriods = model.Company.CompanyAccountingPeriods.Where(ap => ap.State == AccountingPeriodStates.Opened && ap.PriceList == null).Select(ap => ap.AccountingPeriod).ToList();
             }
+            if (model.AccountingPeriods.Count > 0)
+                model.AccountingPeriod = model.AccountingPeriods[0];
             model.ItemsCodes = _unitOfWork.ItemRepository.FindItemsCodes().ToList();
             model.Currencies = _unitOfWork.CurrencyRepository.Find(c => c.IsEnabled, q => q.OrderBy(e => e.Code)).ToList();
             PriceList oldPriceList = _unitOfWork.PriceListRepository.Find(Pl=>Pl.Id==priceListId,include:q=>q.Include(p=>p.PriceListLines.Select(l=>l.Item))).FirstOrDefault();
@@ -276,6 +278,8 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             if (modelState.HasErrors)
                 return modelState;
             _unitOfWork.PriceListRepository.Add(priceList);
+            _ = _unitOfWork.Complete();
+            priceList.CompanyAccountingPeriod.PriceListId = priceList.Id;
             _ = _unitOfWork.Complete();
             return modelState;
         }

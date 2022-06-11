@@ -79,15 +79,9 @@ namespace Kiriazi.Accounting.Pricing.DAL
                     Name = "يورو",
                     Description = "Euro",
                     IsEnabled = true
-                },
-                new Currency()
-                {
-                    Code = "CNY",
-                    Name = "يوان صينى",
-                    Description = "يوان صينى",
-                    IsEnabled = true
                 }
            };
+            /*
             CurrencyExchangeRate[] exchangeRates = new CurrencyExchangeRate[]
             {
                 new CurrencyExchangeRate()
@@ -133,6 +127,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
                     Rate = 2.3251M
                 }
             };
+            */
             Tarrif[] tarrifs = new Tarrif[]
             {
                 new Tarrif()
@@ -323,7 +318,8 @@ namespace Kiriazi.Accounting.Pricing.DAL
                 new Customer()
                 {
                     Name = "مراكز الصيانة",
-                    Description = "مراكز الصيانة",
+                    Description = "مراكز الصيانة"
+                    /*,
                     Rules = new System.Collections.Generic.List<CustomerPricingRule>()
                     {
                         new CustomerPricingRule()
@@ -343,11 +339,13 @@ namespace Kiriazi.Accounting.Pricing.DAL
                             ItemType = itemTypes[1]
                         }
                     }
+                    */
                 },
                 new Customer()
                 {
                     Name = "فولكان",
-                    Description = "فولكان",
+                    Description = "فولكان"
+                    /*,
                     Rules = new System.Collections.Generic.List<CustomerPricingRule>()
                     {
                         new CustomerPricingRule()
@@ -367,11 +365,13 @@ namespace Kiriazi.Accounting.Pricing.DAL
                             ItemType = itemTypes[1]
                         }
                     }
+                    */
                 },
                 new Customer()
                 {
                     Name = "التصدير",
-                    Description = "التصدير",
+                    Description = "التصدير"
+                    /*,
                      Rules = new System.Collections.Generic.List<CustomerPricingRule>()
                     {
                         new CustomerPricingRule()
@@ -391,6 +391,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
                             ItemType = itemTypes[1]
                         }
                     }
+                    */
                 },
                 new Customer()
                 {
@@ -398,22 +399,22 @@ namespace Kiriazi.Accounting.Pricing.DAL
                     Description = "تحت التشغيل"
                 }
             };
-            context.AccountingPeriods.AddRange(accountingPeriods);
+            //context.AccountingPeriods.AddRange(accountingPeriods);
             context.Uoms.AddRange(uoms);
             context.ItemTypes.AddRange(itemTypes);
-            context.Groups.AddRange(groups);
-            context.Items.AddRange(items);
+            //context.Groups.AddRange(groups);
+            //context.Items.AddRange(items);
             context.Currencies.AddRange(currencies);
-            context.Tarrifs.AddRange(tarrifs);
+           //context.Tarrifs.AddRange(tarrifs);
             context.Companies.AddRange(companies);
-            context.CompanyAccountingPeriods.AddRange(companyAccountingPeriods);
-            context.SaveChanges();
-            companyAccountingPeriods[0].PriceListId = priceLists[0].Id;
-            companyAccountingPeriods[0].PriceList = priceLists[0];
-            context.CompanyItemAssignments.AddRange(companyItemAssignments);
-            context.PriceLists.AddRange(priceLists);
-            context.ItemRelations.AddRange(relations);
-            context.CurrenciesExchangeRates.AddRange(exchangeRates);
+            //context.CompanyAccountingPeriods.AddRange(companyAccountingPeriods);
+            //context.SaveChanges();
+            //companyAccountingPeriods[0].PriceListId = priceLists[0].Id;
+            //companyAccountingPeriods[0].PriceList = priceLists[0];
+            //context.CompanyItemAssignments.AddRange(companyItemAssignments);
+            //context.PriceLists.AddRange(priceLists);
+            //context.ItemRelations.AddRange(relations);
+            //context.CurrenciesExchangeRates.AddRange(exchangeRates);
             context.Customers.AddRange(customers);
             context.SaveChanges();
         }

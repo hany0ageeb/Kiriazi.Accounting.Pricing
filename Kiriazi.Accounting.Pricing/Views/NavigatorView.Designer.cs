@@ -69,7 +69,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "NavigatorView";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Navigator";
             this.ResumeLayout(false);
 

@@ -91,6 +91,13 @@ namespace Kiriazi.Accounting.Pricing.Views
                     UseColumnTextForButtonValue = true,
                     Text = "Delete",
                     Name = "Delete"
+                },
+                new DataGridViewButtonColumn()
+                {
+                    HeaderText = "",
+                    UseColumnTextForButtonValue = true,
+                    Text = "View",
+                    Name = "View"
                 });
             dataGridView1.DataSource = _trees;
             dataGridView1.CellContentClick += (o, e) =>
@@ -114,6 +121,17 @@ namespace Kiriazi.Accounting.Pricing.Views
                         {
                             relationEditView.ShowDialog(this);
                         }
+                    }
+                }
+                if(e.ColumnIndex == dataGridView1.Columns["View"].Index)
+                {
+                    //View ...
+                    if(e.RowIndex >=0 && e.RowIndex < _trees.Count)
+                    {
+                        IList<ViewModels.ItemRelationViewModel> itemTree = _controller.Find(_trees[e.RowIndex].CompanyId, _trees[e.RowIndex].RootId);
+                        ItemTreeViewer itemTreeViewer = new ItemTreeViewer(_controller, itemTree);
+                        itemTreeViewer.MdiParent = this.MdiParent;
+                        itemTreeViewer.Show();
                     }
                 }
             };

@@ -232,7 +232,7 @@ namespace Kiriazi.Accounting.Pricing.Views
                                     }
                                 }
                             }
-                            if (_lines[e.RowIndex].Item.Tarrif != null)
+                            if (_lines[e.RowIndex].Item.Tarrif != null && _lines[e.RowIndex].Currency.Id != _model.Company.Currency.Id)
                             {
                                 if (!string.IsNullOrEmpty(_lines[e.RowIndex].TarrifType))
                                 {

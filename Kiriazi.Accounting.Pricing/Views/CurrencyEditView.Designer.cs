@@ -41,8 +41,8 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.txtDescription = new System.Windows.Forms.TextBox();
             this.chkIsEnabled = new System.Windows.Forms.CheckBox();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
-            this.btnSave = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
+            this.btnSave = new System.Windows.Forms.Button();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.flowLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -168,6 +168,16 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.flowLayoutPanel2.Size = new System.Drawing.Size(754, 38);
             this.flowLayoutPanel2.TabIndex = 1;
             // 
+            // btnClose
+            // 
+            this.btnClose.Location = new System.Drawing.Point(657, 3);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(94, 35);
+            this.btnClose.TabIndex = 6;
+            this.btnClose.Text = "Close";
+            this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            // 
             // btnSave
             // 
             this.btnSave.Location = new System.Drawing.Point(557, 3);
@@ -177,15 +187,6 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-            // 
-            // btnClose
-            // 
-            this.btnClose.Location = new System.Drawing.Point(657, 3);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(94, 35);
-            this.btnClose.TabIndex = 6;
-            this.btnClose.Text = "Close";
-            this.btnClose.UseVisualStyleBackColor = true;
             // 
             // errorProvider1
             // 
@@ -200,11 +201,13 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.ClientSize = new System.Drawing.Size(757, 254);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.KeyPreview = true;
             this.MaximizeBox = false;
             this.Name = "CurrencyEditView";
             this.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Text = "Currency";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CurrencyEditView_FormClosing);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CurrencyEditView_KeyDown);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();

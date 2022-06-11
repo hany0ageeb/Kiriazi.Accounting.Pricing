@@ -24,7 +24,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
         public IList<CurrencyEditViewModel> Find()
         {
             return
-                _unitOfWork.CurrencyRepository.Find().Select(c=>new CurrencyEditViewModel(c)).ToList();
+                _unitOfWork.CurrencyRepository.Find().Select(c=>new CurrencyEditViewModel(c,true)).ToList();
         }
         public string DeleteCurrecny(Guid Id)
         {
@@ -72,6 +72,15 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             _unitOfWork.CurrencyRepository.Add(model.Currency);
             _unitOfWork.Complete();
             return modelState;
+        }
+        public CurrencyEditViewModel Edit(Guid currencyId)
+        {
+            Currency currency = _unitOfWork.CurrencyRepository.Find(Id: currencyId);
+            if (currency == null)
+                throw new ArgumentException($"Invalid Currency Id {currencyId}");
+            bool canDisableCurrency = _unitOfWork.CompanyRepository.Find(c => c.CurrencyId == currencyId).Count() == 0;
+            CurrencyEditViewModel model = new CurrencyEditViewModel(currency, canDisableCurrency);
+            return model;
         }
         public ModelState Edit(CurrencyEditViewModel model)
         {

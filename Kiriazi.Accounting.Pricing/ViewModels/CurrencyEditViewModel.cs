@@ -14,6 +14,10 @@ namespace Kiriazi.Accounting.Pricing.ViewModels
     public class CurrencyEditViewModel : ViewModelBase
     {
         private readonly Currency _currency;
+        public bool CanCurrencyDisabled
+        {
+            get;private set;
+        }
         public string Code
         {
             get => _currency.Code;
@@ -71,10 +75,12 @@ namespace Kiriazi.Accounting.Pricing.ViewModels
         public CurrencyEditViewModel()
         {
             _currency = new Currency();
+            CanCurrencyDisabled = true;
         }
-        public CurrencyEditViewModel(Currency currency)
+        public CurrencyEditViewModel(Currency currency,bool canDisableCurrency)
         {
             _currency = currency;
+            CanCurrencyDisabled = canDisableCurrency;
         }
         public Currency Currency => _currency;
     }

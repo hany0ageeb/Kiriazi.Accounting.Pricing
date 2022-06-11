@@ -47,6 +47,33 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                 .Select(r => new ItemTreeViewModel(r)).ToList();
                 
         }
+        public IList<ViewModels.ItemRelationViewModel> Find(Guid companyId,Guid rootId)
+        {
+            return _unitOfWork
+                .ItemRelationRepository
+                .Find<ItemRelationViewModel>(
+                    predicate: r => 
+                    r.CompanyId == companyId && 
+                    r.ParentId == rootId, 
+                    selector: r => new ItemRelationViewModel()
+                    {
+                        RootId = r.ParentId,
+                        RootCode = r.Parent.Code,
+                        RootArabicName = r.Parent.ArabicName,
+                        CompanyId = r.CompanyId,
+                        ComponentCode = r.Child.Code,
+                        CompanyName = r.Company.Name,
+                        ComponentArabicName = r.Child.ArabicName,
+                        ComponentId = r.ChildId,
+                        ComponentQuantity = r.Quantity,
+                        ComponentUomCode = r.Child.Uom.Code,
+                        RootUomCode = r.Parent.Uom.Code
+                    },
+                    orderBy:q=>
+                        q.OrderBy(r=>r.ComponentCode))
+                .ToList();
+                
+        }
         public IList<CompanySelectionViewModel> GetCompanies(Guid? parentId = null)
         {
             

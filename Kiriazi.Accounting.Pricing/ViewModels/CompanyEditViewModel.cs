@@ -10,14 +10,14 @@ namespace Kiriazi.Accounting.Pricing.ViewModels
         private string _description = "";
         private bool _isEnabled = true;
         private Currency _currency;
-
+        public bool CanChangeCompanyCurrency { get; private set; } = true;
         public Guid Id { get; set; } = Guid.NewGuid();
 
         public CompanyEditViewModel(IList<Currency> currencies)
         {
             Currencies = new List<Currency>(currencies);
         }
-        public CompanyEditViewModel(Company company, IList<Currency> currencies)
+        public CompanyEditViewModel(Company company, IList<Currency> currencies,bool canChangeCompanyCurrency = true)
         {
             Currencies = new List<Currency>(currencies);
             Id = company.Id;
@@ -25,6 +25,7 @@ namespace Kiriazi.Accounting.Pricing.ViewModels
             _description = company.Description;
             _currency = company.Currency;
             _isEnabled = company.IsEnabled;
+            CanChangeCompanyCurrency = canChangeCompanyCurrency;
         }
         public string Name
         {

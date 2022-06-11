@@ -501,6 +501,12 @@
     <Compile Include="Views\ItemTreesView.Designer.cs">
       <DependentUpon>ItemTreesView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\ItemTreeViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ItemTreeViewer.Designer.cs">
+      <DependentUpon>ItemTreeViewer.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -642,6 +648,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\ItemTreesView.resx">
       <DependentUpon>ItemTreesView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ItemTreeViewer.resx">
+      <DependentUpon>ItemTreeViewer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\MainView.resx">
       <DependentUpon>MainView.cs</DependentUpon>

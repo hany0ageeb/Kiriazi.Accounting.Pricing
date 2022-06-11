@@ -168,6 +168,10 @@ namespace Kiriazi.Accounting.Pricing.Views
                     Close();
                 }
             }
+            else
+            {
+                Close();
+            }
         }
 
         private void ItemCompaniesAssignmentView_FormClosing(object sender, FormClosingEventArgs e)

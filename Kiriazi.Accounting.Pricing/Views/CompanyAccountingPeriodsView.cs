@@ -178,14 +178,19 @@ namespace Kiriazi.Accounting.Pricing.Views
                 if (result == DialogResult.Yes)
                 {
                     _controller.SaveOrUpdateCompanyAccountingPeriods(_model);
+                    _hasChanged = false;
                     System.Media.SystemSounds.Beep.Play();
                     Close();
                 }
                 else if (result == DialogResult.No)
                 {
+                    _hasChanged = false;
                     Close();
                 }
-
+            }
+            else
+            {
+                Close();
             }
         }
 
@@ -214,6 +219,7 @@ namespace Kiriazi.Accounting.Pricing.Views
                 if (result == DialogResult.Yes)
                 {
                     _controller.SaveOrUpdateCompanyAccountingPeriods(_model);
+                    _hasChanged = false;
                     System.Media.SystemSounds.Beep.Play();
                 }
                 else if (result == DialogResult.Cancel)
