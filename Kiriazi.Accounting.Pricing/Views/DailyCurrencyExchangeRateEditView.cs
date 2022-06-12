@@ -16,12 +16,15 @@ namespace Kiriazi.Accounting.Pricing.Views
     {
         private readonly CurrencyExchangeRateController _controller;
         private BindingList<DailyCurrencyExchangeRateViewModel> _lines = new BindingList<DailyCurrencyExchangeRateViewModel>();
+        private bool _hasChanged = false;
         public DailyCurrencyExchangeRateEditView(CurrencyExchangeRateController controller)
             : this(controller,null)
         {
 
         }
-        public DailyCurrencyExchangeRateEditView(CurrencyExchangeRateController controller,IList<DailyCurrencyExchangeRateViewModel> lines = null)
+        public DailyCurrencyExchangeRateEditView(
+            CurrencyExchangeRateController controller,
+            IList<DailyCurrencyExchangeRateViewModel> lines = null)
         {
             _controller = controller;
             if (lines == null || lines.Count==0)
@@ -37,6 +40,19 @@ namespace Kiriazi.Accounting.Pricing.Views
         }
         private void Initialize()
         {
+            if (_lines.Count > 0) 
+            {
+                dateTimePicker1.Value = _lines[0].Date;
+            }
+            dateTimePicker1.ValueChanged += (o, e) =>
+            {
+                foreach(var line in _lines)
+                {
+                    line.Date = new DateTime(dateTimePicker1.Value.Year, dateTimePicker1.Value.Month, dateTimePicker1.Value.Day, 0, 0, 0);
+                }
+                _hasChanged = true;
+                btnSave.Enabled = true;
+            };
             dataGridView1.AllowUserToAddRows = false;
             dataGridView1.AllowUserToDeleteRows = false;
             dataGridView1.AutoGenerateColumns = false;
@@ -83,6 +99,110 @@ namespace Kiriazi.Accounting.Pricing.Views
                     dataGridView1.Rows[e.RowIndex].ErrorText = "";
                 }
             };
+            _lines.ListChanged += (o, e) =>
+            {
+                _hasChanged = true;
+                btnSave.Enabled = true;
+            };
+            btnSave.Enabled = false;
+            _hasChanged = false;
+        }
+        private bool SaveChanges()
+        {
+            if (_hasChanged)
+            {
+                var modelState = _controller.SaveOrUpdate(_lines);
+                if (modelState.HasErrors)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    foreach(var err in modelState.GetErrors())
+                    {
+                        sb.AppendLine(err);
+                    }
+                    for(int idx = 0; idx < modelState.InnerModelStatesCount; idx++)
+                    {
+                        foreach(var err in modelState.GetModelState(idx).GetErrors())
+                        {
+                            sb.AppendLine(err);
+                        }
+                    }
+                    using(Views.ImportErrorsView errorsView = new ImportErrorsView(sb.ToString()))
+                    {
+                        errorsView.ShowDialog(this);
+                    }
+                    return false;
+                }
+                else
+                {
+                    _hasChanged = false;
+                    return true;
+                }
+            }
+            else
+            {
+                return true;
+            }
+        }
+        private bool CloseForm()
+        {
+            if (_hasChanged)
+            {
+                DialogResult result = MessageBox.Show(
+                    owner: this, 
+                    text: "Do you want to save changes?",
+                    caption: "Confirm Save", 
+                    buttons: MessageBoxButtons.YesNoCancel,
+                    icon: MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    if (SaveChanges())
+                    {
+                        _hasChanged = false;
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else if (result == DialogResult.No)
+                {
+                    _hasChanged = false;
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return true;
+            }
+        }
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            if (_hasChanged)
+            {
+                if (SaveChanges())
+                {
+                    Close();
+                }
+            }
+        }
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            if (CloseForm())
+            {
+                Close();
+            }
+        }
+        private void DailyCurrencyExchangeRateEditView_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if(_hasChanged && e.CloseReason == CloseReason.UserClosing)
+            {
+                e.Cancel = !CloseForm();
+            }
         }
     }
 }

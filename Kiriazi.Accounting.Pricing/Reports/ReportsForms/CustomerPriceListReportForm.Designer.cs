@@ -48,9 +48,11 @@ namespace Kiriazi.Accounting.Pricing.Reports.ReportsForms
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.reportViewer1);
+            this.KeyPreview = true;
             this.Name = "CustomerPriceListReportForm";
             this.Text = "Customer Price List Report";
             this.Load += new System.EventHandler(this.CustomerPriceListReportForm_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CustomerPriceListReportForm_KeyDown);
             this.ResumeLayout(false);
 
         }

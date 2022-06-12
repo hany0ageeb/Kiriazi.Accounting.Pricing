@@ -26,13 +26,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             cboDates.DataSource = _controller.Find();
             cboDates.SelectedIndexChanged += (o, e) =>
             {
-                string dateAsString = cboDates.SelectedItem as string;
-                _lines.Clear();
-                var lines = _controller.Find(dateAsString);
-                foreach(var line in lines)
-                {
-                    _lines.Add(line);
-                }
+                Search();
             };
             // ....
             dataGridView1.AllowUserToAddRows = false;
@@ -73,12 +67,61 @@ namespace Kiriazi.Accounting.Pricing.Views
             dataGridView1.Columns[nameof(ViewModels.DailyCurrencyExchangeRateViewModel.Date)].DefaultCellStyle.Format = "g";
             dataGridView1.DataSource = _lines;
         }
-
+        private void Search()
+        {
+            string dateAsString = cboDates.SelectedItem as string;
+            _lines.Clear();
+            var lines = _controller.Find(dateAsString);
+            foreach (var line in lines)
+            {
+                _lines.Add(line);
+            }
+            if (_lines.Count > 0)
+            {
+                btnEdit.Enabled = true;
+            }
+            else
+            {
+                btnEdit.Enabled = false;
+            }
+        }
         private void btnNew_Click(object sender, EventArgs e)
         {
             using (DailyCurrencyExchangeRateEditView editView = Program.ServiceProvider.GetRequiredService<DailyCurrencyExchangeRateEditView>())
             {
                 editView.ShowDialog(this);
+                string selectedItem = cboDates.SelectedItem as string;
+                cboDates.DataSource = _controller.Find();
+                cboDates.SelectedItem = selectedItem;
+                if (_lines.Count > 0)
+                {
+                    Search();
+                }
+            }
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void btnEdit_Click(object sender, EventArgs e)
+        {
+            int? index = dataGridView1.CurrentRow?.Index;
+            if(index!=null && index >= 0 && index < _lines.Count)
+            {
+                var lines = _controller.Edit(_lines[index.Value].Date);
+                using(DailyCurrencyExchangeRateEditView editView = new DailyCurrencyExchangeRateEditView(_controller, lines))
+                {
+                    editView.ShowDialog(this);
+                    string selectedItem = cboDates.SelectedItem as string;
+                    cboDates.DataSource = _controller.Find();
+                    cboDates.SelectedItem = selectedItem;
+                    if (_lines.Count > 0)
+                    {
+                        Search();
+                    }
+                }
             }
         }
     }

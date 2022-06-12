@@ -5,6 +5,8 @@ namespace Kiriazi.Accounting.Pricing.Models
 {
     public class DailyCurrencyExchangeRateDTO
     {
+        [Ignore]
+        public Guid Id { get; set; } = Guid.Empty;
         [Column("From Currency Code")]
         public string FromCurrencyCode { get; set; }
         [Column("To Currency Code")]

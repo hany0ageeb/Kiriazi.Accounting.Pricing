@@ -18,16 +18,18 @@ namespace Kiriazi.Accounting.Pricing.Views
         private readonly CustomerController _controller;
         private BindingList<CustomerPricingRule> _rules = new BindingList<CustomerPricingRule>();
         private CustomerPricingRulesEditViewModel _model;
+        private readonly Customer _customer;
         private bool _hasChanged = false;
         
         private readonly AutoCompleteStringCollection _autoCompleteSource = new AutoCompleteStringCollection();
         public CustomerPricingRuleEditView(
             CustomerController controller,
-            CustomerPricingRulesEditViewModel model)
+            CustomerPricingRulesEditViewModel model,Customer customer)
         {
             _controller = controller;
+            _customer = customer;
             _model = model;
-            foreach(var rule in _model.Customer.Rules)
+            foreach(var rule in _model.Rules)
             {
                 _rules.Add(rule);
             }
@@ -37,7 +39,7 @@ namespace Kiriazi.Accounting.Pricing.Views
         }
         private void Initialize()
         {
-            Text += _model.Customer.Name;
+            Text += _customer.Name;
             //
             dataGridView1.AllowUserToAddRows = true;
             dataGridView1.AllowUserToDeleteRows = true;
@@ -134,20 +136,23 @@ namespace Kiriazi.Accounting.Pricing.Views
                     ReadOnly = true,
                     HeaderText = "Fixed Amount Currency"
                 });
-            _rules = new BindingList<CustomerPricingRule>(_model.Customer.Rules);
+            _rules = new BindingList<CustomerPricingRule>(_model.Rules);
             dataGridView1.DataSource = _rules;
             dataGridView1.DefaultValuesNeeded += DataGridView1_DefaultValuesNeeded;
             dataGridView1.CellEndEdit += DataGridView1_CellEndEdit;
             dataGridView1.EditingControlShowing += DataGridView1_EditingControlShowing;
             dataGridView1.RowValidating += DataGridView1_RowValidating;
             dataGridView1.RowValidated += DataGridView1_RowValidated;
-
             _autoCompleteSource.AddRange(_model.ItemsCodes.ToArray());
 
             _rules.ListChanged += (o, e) =>
             {
                 _hasChanged = true;
                 btnSave.Enabled = true;
+                if(e.ListChangedType == ListChangedType.ItemAdded)
+                {
+                    _rules[e.NewIndex].Id = Guid.Empty;
+                }
             };
         }
 
@@ -251,6 +256,19 @@ namespace Kiriazi.Accounting.Pricing.Views
                     textBox.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
                     textBox.AutoCompleteSource = AutoCompleteSource.CustomSource;
                     textBox.AutoCompleteCustomSource = _autoCompleteSource;
+                }
+            }
+            else
+            {
+                if (index != null)
+                {
+                    TextBox textBox = e.Control as TextBox;
+                    if (textBox != null)
+                    {
+                        textBox.AutoCompleteMode = AutoCompleteMode.None;
+                        textBox.AutoCompleteSource = AutoCompleteSource.None;
+                        textBox.AutoCompleteCustomSource = null;
+                    }
                 }
             }
         }
@@ -365,7 +383,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             {
                // try
                // {
-                    var modelState = _controller.SaveOrUpdatePricingRules(_model);
+                    var modelState = _controller.SaveOrUpdatePricingRules(_model,_customer);
                     if (modelState.HasErrors)
                     {
                         var errors = modelState.GetErrors("Customer");

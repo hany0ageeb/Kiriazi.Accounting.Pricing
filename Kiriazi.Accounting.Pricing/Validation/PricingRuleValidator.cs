@@ -8,28 +8,37 @@ namespace Kiriazi.Accounting.Pricing.Validation
         public ModelState Validate(CustomerPricingRule entity)
         {
             ModelState modelState = new ModelState();
-            if (entity.Customer == null)
-            {
-                modelState.AddErrors(nameof(entity.Customer), "Invalid Customer.");
-            }
+            
             switch (entity.RuleType)
             {
                 case CustomerPricingRuleTypes.AllItems:
-                    if (entity.Item != null || entity.Item.Id != System.Guid.Empty)
+                    if (entity.Item != null)
                     {
-                        modelState.AddErrors(nameof(entity.Item), $"Invalid Item: {entity.Item.Code} for Rule Type: {entity.RuleType}.");
+                        if (entity.Item.Id != System.Guid.Empty)
+                        {
+                            modelState.AddErrors(nameof(entity.Item), $"Invalid Item: {entity.Item.Code} for Rule Type: {entity.RuleType}.");
+                        }
                     }
-                    if (entity.ItemType != null && entity.ItemType.Id != System.Guid.Empty)
+                    if (entity.ItemType != null)
                     {
-                        modelState.AddErrors(nameof(entity.ItemType), $"Invalid Item Type: {entity.ItemType.Name} for rule type: {entity.RuleType}");
+                        if (entity.ItemType.Id != System.Guid.Empty)
+                        {
+                            modelState.AddErrors(nameof(entity.ItemType), $"Invalid Item Type: {entity.ItemType.Name} for rule type: {entity.RuleType}");
+                        }
                     }
-                    if (entity.Group != null && entity.Group.Id != System.Guid.Empty)
+                    if (entity.Group != null)
                     {
-                        modelState.AddErrors(nameof(entity.Group), $"Invalid Group: {entity.Group.Name} for rule type: {entity.RuleType}");
+                        if (entity.Group.Id != System.Guid.Empty)
+                        {
+                            modelState.AddErrors(nameof(entity.Group), $"Invalid Group: {entity.Group.Name} for rule type: {entity.RuleType}");
+                        }
                     }
-                    if (entity.Company != null && entity.Company.Id != System.Guid.Empty)
+                    if (entity.Company != null)
                     {
-                        modelState.AddErrors(nameof(entity.Company), $"Invalid Company: {entity.Company.Name} for rule type: {entity.RuleType}");
+                        if (entity.Company.Id != System.Guid.Empty)
+                        {
+                            modelState.AddErrors(nameof(entity.Company), $"Invalid Company: {entity.Company.Name} for rule type: {entity.RuleType}");
+                        }
                     }
                     break;
                 case CustomerPricingRuleTypes.Company:
@@ -37,17 +46,26 @@ namespace Kiriazi.Accounting.Pricing.Validation
                     {
                         modelState.AddErrors(nameof(entity.Company), "Invalid Picing Rule Company.");
                     }
-                    if (entity.Item != null && entity.Item.Id != System.Guid.Empty)
+                    if (entity.Item != null)
                     {
-                        modelState.AddErrors(nameof(entity.Item), $"Invalid Item: {entity.Item.Code} for Rule Type: {entity.RuleType}.");
+                        if (entity.Item.Id != System.Guid.Empty)
+                        {
+                            modelState.AddErrors(nameof(entity.Item), $"Invalid Item: {entity.Item.Code} for Rule Type: {entity.RuleType}.");
+                        }
                     }
-                    if (entity.ItemType != null && entity.ItemType.Id != System.Guid.Empty)
+                    if (entity.ItemType != null)
                     {
-                        modelState.AddErrors(nameof(entity.ItemType), $"Invalid Item Type: {entity.ItemType.Name} for rule type: {entity.RuleType}");
+                        if (entity.ItemType.Id != System.Guid.Empty)
+                        {
+                            modelState.AddErrors(nameof(entity.ItemType), $"Invalid Item Type: {entity.ItemType.Name} for rule type: {entity.RuleType}");
+                        }
                     }
-                    if (entity.Group != null && entity.Group.Id != System.Guid.Empty)
+                    if (entity.Group != null)
                     {
-                        modelState.AddErrors(nameof(entity.Group), $"Invalid Group: {entity.Group.Name} for rule type: {entity.RuleType}");
+                        if (entity.Group.Id != System.Guid.Empty)
+                        {
+                            modelState.AddErrors(nameof(entity.Group), $"Invalid Group: {entity.Group.Name} for rule type: {entity.RuleType}");
+                        }
                     }
                     break;
                 case CustomerPricingRuleTypes.Item:
@@ -55,17 +73,26 @@ namespace Kiriazi.Accounting.Pricing.Validation
                     {
                         modelState.AddErrors(nameof(entity.Item), "Invalid Picing Rule Item.");
                     }
-                    if (entity.ItemType != null && entity.ItemType.Id != System.Guid.Empty)
+                    if (entity.ItemType != null)
                     {
-                        modelState.AddErrors(nameof(entity.ItemType), $"Invalid Item Type: {entity.ItemType.Name} for rule type: {entity.RuleType}");
+                        if (entity.ItemType.Id != System.Guid.Empty)
+                        {
+                            modelState.AddErrors(nameof(entity.ItemType), $"Invalid Item Type: {entity.ItemType.Name} for rule type: {entity.RuleType}");
+                        }
                     }
-                    if (entity.Group != null && entity.Group.Id != System.Guid.Empty)
+                    if (entity.Group != null)
                     {
-                        modelState.AddErrors(nameof(entity.Group), $"Invalid Group: {entity.Group.Name} for rule type: {entity.RuleType}");
+                        if (entity.Group.Id != System.Guid.Empty) 
+                        {
+                            modelState.AddErrors(nameof(entity.Group), $"Invalid Group: {entity.Group.Name} for rule type: {entity.RuleType}");
+                        }
                     }
-                    if (entity.Company != null && entity.Company.Id != System.Guid.Empty)
+                    if (entity.Company != null)
                     {
-                        modelState.AddErrors(nameof(entity.Company), $"Invalid Company: {entity.Company.Name} for rule type: {entity.RuleType}");
+                        if (entity.Company.Id != System.Guid.Empty)
+                        {
+                            modelState.AddErrors(nameof(entity.Company), $"Invalid Company: {entity.Company.Name} for rule type: {entity.RuleType}");
+                        }
                     }
                     break;
                 case CustomerPricingRuleTypes.ItemGroup:
@@ -73,17 +100,26 @@ namespace Kiriazi.Accounting.Pricing.Validation
                     {
                         modelState.AddErrors(nameof(entity.Group), "Invalid Picing Rule Item Group.");
                     }
-                    if (entity.Item != null && entity.Item.Id != System.Guid.Empty)
+                    if (entity.Item != null)
                     {
-                        modelState.AddErrors(nameof(entity.Item), $"Invalid Item: {entity.Item.Code} for Rule Type: {entity.RuleType}.");
+                        if (entity.Item.Id != System.Guid.Empty)
+                        {
+                            modelState.AddErrors(nameof(entity.Item), $"Invalid Item: {entity.Item.Code} for Rule Type: {entity.RuleType}.");
+                        }
                     }
-                    if (entity.ItemType != null && entity.ItemType.Id != System.Guid.Empty)
+                    if (entity.ItemType != null)
                     {
-                        modelState.AddErrors(nameof(entity.ItemType), $"Invalid Item Type: {entity.ItemType.Name} for rule type: {entity.RuleType}");
+                        if (entity.ItemType.Id != System.Guid.Empty)
+                        {
+                            modelState.AddErrors(nameof(entity.ItemType), $"Invalid Item Type: {entity.ItemType.Name} for rule type: {entity.RuleType}");
+                        }
                     }
-                    if (entity.Company != null && entity.Company.Id != System.Guid.Empty)
+                    if (entity.Company != null)
                     {
-                        modelState.AddErrors(nameof(entity.Company), $"Invalid Company: {entity.Company.Name} for rule type: {entity.RuleType}");
+                        if (entity.Company.Id != System.Guid.Empty)
+                        {
+                            modelState.AddErrors(nameof(entity.Company), $"Invalid Company: {entity.Company.Name} for rule type: {entity.RuleType}");
+                        }
                     }
                     break;
                 case CustomerPricingRuleTypes.ItemType:
@@ -91,17 +127,26 @@ namespace Kiriazi.Accounting.Pricing.Validation
                     {
                         modelState.AddErrors(nameof(entity.ItemType), "Invalid Picing Rule Item Type.");
                     }
-                    if (entity.Item != null && entity.Item.Id != System.Guid.Empty)
+                    if (entity.Item != null)
                     {
-                        modelState.AddErrors(nameof(entity.Item), $"Invalid Item: {entity.Item.Code} for Rule Type: {entity.RuleType}.");
+                        if (entity.Item.Id != System.Guid.Empty)
+                        {
+                            modelState.AddErrors(nameof(entity.Item), $"Invalid Item: {entity.Item.Code} for Rule Type: {entity.RuleType}.");
+                        }
                     }
-                    if (entity.Company != null && entity.Company.Id != System.Guid.Empty)
+                    if (entity.Company != null)
                     {
-                        modelState.AddErrors(nameof(entity.Company), $"Invalid Company: {entity.Company.Name} for rule type: {entity.RuleType}");
+                        if (entity.Company.Id != System.Guid.Empty)
+                        {
+                            modelState.AddErrors(nameof(entity.Company), $"Invalid Company: {entity.Company.Name} for rule type: {entity.RuleType}");
+                        }
                     }
-                    if (entity.Group != null && entity.Group.Id != System.Guid.Empty)
+                    if (entity.Group != null)
                     {
-                        modelState.AddErrors(nameof(entity.Group), $"Invalid Group: {entity.Group.Name} for rule type: {entity.RuleType}");
+                        if (entity.Group.Id != System.Guid.Empty)
+                        {
+                            modelState.AddErrors(nameof(entity.Group), $"Invalid Group: {entity.Group.Name} for rule type: {entity.RuleType}");
+                        }
                     }
                     break;
             }
@@ -114,9 +159,12 @@ namespace Kiriazi.Accounting.Pricing.Validation
                     }
                     break;
                 case RuleAmountTypes.Percentage:
-                    if (entity.AmountCurrency != null && entity.AmountCurrency.Id != System.Guid.Empty)
+                    if (entity.AmountCurrency != null)
                     {
-                        modelState.AddErrors(nameof(entity.AmountCurrency), $"Invalid Currency {entity.AmountCurrency.Name} for Percentage Amount.");
+                        if (entity.AmountCurrency.Id != System.Guid.Empty)
+                        {
+                            modelState.AddErrors(nameof(entity.AmountCurrency), $"Invalid Currency {entity.AmountCurrency.Name} for Percentage Amount.");
+                        }
                     }
                     break;
             }

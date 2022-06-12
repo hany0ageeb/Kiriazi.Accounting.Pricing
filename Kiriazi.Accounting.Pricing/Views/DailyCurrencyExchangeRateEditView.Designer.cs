@@ -73,6 +73,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.btnSave.TabIndex = 3;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // btnClose
             // 
@@ -82,6 +83,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.btnClose.TabIndex = 4;
             this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // DailyCurrencyExchangeRateEditView
             // 
@@ -98,6 +100,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.MaximizeBox = false;
             this.Name = "DailyCurrencyExchangeRateEditView";
             this.Text = "Daily Currency Exchange Rate";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DailyCurrencyExchangeRateEditView_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -67,11 +67,18 @@ namespace Kiriazi.Accounting.Pricing.Reports.ParametersForms
 
         private void btnOk_Click(object sender, EventArgs e)
         {
-            IList<ViewModels.CustomerPriceListViewModel> data = _companyController.FindCustomerPriceList(_model);
-            Reports.ReportsForms.CustomerPriceListReportForm customerPriceListReportForm = new ReportsForms.CustomerPriceListReportForm(data);
-            customerPriceListReportForm.MdiParent = this.MdiParent;
-            customerPriceListReportForm.Show();
-            Close();
+            try
+            {
+                IList<ViewModels.CustomerPriceListViewModel> data = _companyController.FindCustomerPriceList(_model);
+                Reports.ReportsForms.CustomerPriceListReportForm customerPriceListReportForm = new ReportsForms.CustomerPriceListReportForm(data);
+                customerPriceListReportForm.MdiParent = this.MdiParent;
+                customerPriceListReportForm.Show();
+                Close();
+            }
+            catch(Exception ex)
+            {
+                _ = MessageBox.Show(this, ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

@@ -29,6 +29,37 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             dates.Insert(0, "");
             return dates;
         }
+        public IList<DailyCurrencyExchangeRateViewModel> Edit(DateTime conversionDate)
+        {
+            var oldLines = _unitOfWork.CurrencyExchangeRateRepository.Find(predicate: r => r.ConversionDate == conversionDate).ToList();
+            var model = Add();
+            foreach(var olLine in oldLines)
+            {
+                var modelLine = model.Where(r => r.FromCurrency == olLine.FromCurrency && r.ToCurrency == olLine.ToCurrency).FirstOrDefault();
+                if (modelLine != null)
+                {
+                    modelLine.Id = olLine.Id;
+                    modelLine.Date = olLine.ConversionDate;
+                    modelLine.Rate = olLine.Rate;
+                    modelLine.ToCurrencyCode = olLine.ToCurrency.Code;
+                    modelLine.FromCurrencyCode = olLine.FromCurrency.Code;
+                }
+                else
+                {
+                    model.Add(new DailyCurrencyExchangeRateViewModel()
+                    {
+                        FromCurrency = olLine.FromCurrency,
+                        ToCurrency = olLine.ToCurrency,
+                        Date = olLine.ConversionDate,
+                        Rate = olLine.Rate,
+                        Id = olLine.Id,
+                        FromCurrencyCode = olLine.FromCurrency.Code,
+                        ToCurrencyCode = olLine.ToCurrency.Code
+                    });
+                }
+            }
+            return model;
+        }
         public IList<DailyCurrencyExchangeRateViewModel> Add()
         {
             IList<DailyCurrencyExchangeRateViewModel> lines = new List<DailyCurrencyExchangeRateViewModel>();
@@ -58,12 +89,52 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                             ToCurrencyCode = compCurrency.Code,
                             ToCurrency = compCurrency,
                             Rate = 1.0M,
-                            Date = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0)
+                            Date = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0),
+                            Id = Guid.Empty
                         });
                     }
                 }
             }
             return lines;
+        }
+        public ModelState SaveOrUpdate(IList<DailyCurrencyExchangeRateViewModel> lines)
+        {
+            ModelState modelState = new ModelState();
+            IList<Models.CurrencyExchangeRate> exchangeRates = new List<Models.CurrencyExchangeRate>();
+            foreach(var line in lines)
+            {
+                var tempLine = line.CurrencyExchangeRate;
+                var tempModelState = ValidateExchangeRate(tempLine);
+                if (!tempModelState.HasErrors)
+                    exchangeRates.Add(tempLine);
+                modelState.AddModelState(tempModelState);
+            }
+            if(!modelState.HasErrors)
+            {
+                foreach(var line in exchangeRates)
+                {
+                    if (line.Id == Guid.Empty)
+                    {
+                        line.Id = Guid.NewGuid();
+                        _unitOfWork.CurrencyExchangeRateRepository.Add(line);
+                    }
+                    else
+                    {
+                        var oldLine = _unitOfWork.CurrencyExchangeRateRepository.Find(Id: line.Id);
+                        if (oldLine != null)
+                        {
+                            oldLine.Rate = line.Rate;
+                            oldLine.ConversionDate = line.ConversionDate;
+                        }
+                        else
+                        {
+                            _unitOfWork.CurrencyExchangeRateRepository.Add(line);
+                        }
+                    }
+                }
+                _unitOfWork.Complete();
+            }
+            return modelState;
         }
         public IList<ViewModels.DailyCurrencyExchangeRateViewModel> Find(string date="")
         {
@@ -108,6 +179,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                 var temp = ValidateExchangeRate(rate);
                 if (!temp.HasErrors)
                 {
+                    rate.Id = Guid.NewGuid();
                     _unitOfWork.CurrencyExchangeRateRepository.Add(rate);
                 }
                 modelState.AddModelState(temp);
@@ -138,9 +210,19 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             {
                 modelState.AddErrors(nameof(rate.FromCurrency), "Invalid Rate.");
             }
-            if(_unitOfWork.CurrencyExchangeRateRepository.Find(predicate:r=>r.FromCurrencyId==rate.FromCurrencyId && r.ToCurrencyId==rate.ToCurrencyId && r.ConversionDate == rate.ConversionDate).FirstOrDefault() != null)
+            if (rate.Id == Guid.Empty)
             {
-                modelState.AddErrors(nameof(rate.FromCurrency), $"Exchange Rate From: {rate.FromCurrency.Code} To: {rate.ToCurrency.Code} at date {rate.ConversionDate} already exist.");
+                if (_unitOfWork.CurrencyExchangeRateRepository.Find(predicate: r => r.FromCurrencyId == rate.FromCurrencyId && r.ToCurrencyId == rate.ToCurrencyId && r.ConversionDate == rate.ConversionDate).FirstOrDefault() != null)
+                {
+                    modelState.AddErrors(nameof(rate.FromCurrency), $"Exchange Rate From: {rate.FromCurrency.Code} To: {rate.ToCurrency.Code} at date {rate.ConversionDate} already exist.");
+                }
+            }
+            else
+            {
+                if (_unitOfWork.CurrencyExchangeRateRepository.Find(predicate: r => r.FromCurrencyId == rate.FromCurrencyId && r.ToCurrencyId == rate.ToCurrencyId && r.ConversionDate == rate.ConversionDate && r.Id != rate.Id).FirstOrDefault() != null)
+                {
+                    modelState.AddErrors(nameof(rate.FromCurrency), $"Exchange Rate From: {rate.FromCurrency.Code} To: {rate.ToCurrency.Code} at date {rate.ConversionDate} already exist.");
+                }
             }
             if(rate.FromCurrency!=null && rate.ToCurrency!=null && rate.FromCurrencyId == rate.ToCurrencyId)
             {
@@ -161,7 +243,8 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                     FromCurrency = allCurrencies.Where(c => c.Code.Equals(rateDto.FromCurrencyCode, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault(),
                     ToCurrency = allCurrencies.Where(c => c.Code.Equals(rateDto.ToCurrencyCode, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault(),
                     ConversionDate = new DateTime(rateDto.ConversionDate.Year, rateDto.ConversionDate.Month, rateDto.ConversionDate.Day, 0, 0, 0),
-                    Rate = rateDto.ConversionRate
+                    Rate = rateDto.ConversionRate,
+                    Id = Guid.Empty
                 });
             }
             return AddRange(currencyExchangeRates);

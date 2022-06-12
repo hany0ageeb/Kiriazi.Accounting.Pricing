@@ -140,7 +140,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             if(index != null && index >= 0 && index < _customers.Count)
             {
                 var rules = _controller.EditCustomerPricingRules(_customers[index.Value].Id);
-                using(CustomerPricingRuleEditView pricingRuleEditView  = new CustomerPricingRuleEditView(_controller,rules))
+                using(CustomerPricingRuleEditView pricingRuleEditView  = new CustomerPricingRuleEditView(_controller,rules,_customers[index.Value]))
                 {
                     _ = pricingRuleEditView.ShowDialog(this);
                 }

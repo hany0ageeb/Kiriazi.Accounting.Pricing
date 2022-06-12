@@ -101,89 +101,96 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             model.Currencies.Insert(0, new Currency { Code = "", Id = Guid.Empty });
             model.Groups.Insert(0, new Group { Name = "", Id = Guid.Empty });
             model.Companies.Insert(0, new Company { Name = "", Id = Guid.Empty });
-            model.Customer = _unitOfWork.CustomerRepository.FindWithPricingRules(customerId);
+            model.Rules = _unitOfWork.CustomerPricingRuleRepository.Find(predicate: rule => rule.CustomerId == customerId).Select(rule => new CustomerPricingRule()
+            {
+                Id = Guid.NewGuid(),
+                AmountCurrencyId = rule.AmountCurrencyId,
+                AmountCurrency = rule.AmountCurrency,
+                Amount = rule.Amount,
+                Company = rule.Company,
+                CompanyId = rule.CompanyId,
+                //Customer = rule.Customer,
+                //CustomerId = rule.CustomerId,
+                Group = rule.Group,
+                GroupId = rule.GroupId,
+                IncrementDecrement = rule.IncrementDecrement,
+                Item = rule.Item,
+                ItemCode = rule.ItemCode,
+                ItemId = rule.ItemId,
+                ItemType = rule.ItemType,
+                ItemTypeId = rule.ItemTypeId,
+                RuleAmountType = rule.RuleAmountType,
+                RuleType = rule.RuleType
+            }).ToList();
             model.ItemTypes.Insert(0, new ItemType() { Id = Guid.Empty, Name = "" });
             return model;
         }
-        public ModelState SaveOrUpdatePricingRules(CustomerPricingRulesEditViewModel model)
+        public ModelState SaveOrUpdatePricingRules(CustomerPricingRulesEditViewModel model,Customer customer)
         {
             ModelState modelState = new ModelState();
-            foreach (var rule in model.Customer.Rules)
+            customer = _unitOfWork.CustomerRepository.Find(Id: customer.Id);
+            var oldRules = _unitOfWork.CustomerPricingRuleRepository.Find(predicate: rule => rule.CustomerId == customer.Id).ToList();
+            foreach (var rule in model.Rules)
             {
-                if (rule.Customer == null)
-                {
-                    rule.Customer = model.Customer;
-                }
                 if (!string.IsNullOrEmpty(rule.ItemCode))
                 {
                     rule.Item = _unitOfWork.ItemRepository.FindByItemCode(rule.ItemCode);
-                    rule.ItemId = rule.Item?.Id;
                 }
                 else
                 {
                     rule.Item = null;
+                    rule.ItemId = null;
                 }
-                if(rule.AmountCurrency!=null && rule.AmountCurrency.Id == Guid.Empty)
+                if (rule.Company == null || rule.Company.Id == Guid.Empty)
                 {
-                    rule.AmountCurrency = null;
-                }
-                else
-                {
-                    if (rule.AmountCurrency != null)
-                    {
-                        rule.AmountCurrency = _unitOfWork.CurrencyRepository.Find(Id: rule.AmountCurrency.Id);
-                        rule.AmountCurrencyId = rule.AmountCurrency?.Id;
-                    }
-                }
-                if(rule.Company!=null && rule.Company.Id == Guid.Empty)
-                {
+                    rule.CompanyId = null;
                     rule.Company = null;
                 }
                 else
                 {
-                    if (rule.Company != null)
-                    {
-                        rule.Company = _unitOfWork.CompanyRepository.Find(Id: rule.Company.Id);
-                        rule.CompanyId = rule.Company?.Id;
-                    }
+                    rule.CompanyId = rule.Company.Id;
                 }
-                if(rule.Group!=null && rule.Group.Id == Guid.Empty)
+                if (rule.Group == null || rule.Group.Id == Guid.Empty)
                 {
                     rule.Group = null;
+                    rule.GroupId = null;
                 }
                 else
                 {
-                    if (rule.Group != null)
-                    {
-                        rule.Group = _unitOfWork.GroupRepository.Find(Id: rule.Group.Id);
-                        rule.GroupId = rule.Group?.Id;
-                    }
+                    rule.GroupId = rule.Group.Id;
                 }
-                if(rule.Item!=null && rule.Item.Id == Guid.Empty)
-                {
-                    rule.Item = null;
-                }
-                else
-                {
-                    rule.ItemId = rule.Item?.Id;
-                }
-                if(rule.ItemType!=null && rule.ItemType.Id == Guid.Empty)
+                if (rule.ItemType == null || rule.ItemType.Id == Guid.Empty)
                 {
                     rule.ItemType = null;
+                    rule.ItemTypeId = null;
                 }
                 else
                 {
-                    if (rule.ItemType != null)
-                    {
-                        //rule.ItemType = _unitOfWork.ItemTypeRepository.Find(Id: rule.ItemType.Id);
-                        //rule.ItemTypeId = rule.ItemType.Id;
-                    }
+                    rule.ItemTypeId = rule.ItemType.Id;
                 }
-                modelState.AddModelState(_pricingRuleValidator.Validate(rule));
+                if(rule.RuleAmountType == RuleAmountTypes.Percentage)
+                {
+                    rule.AmountCurrency = null;
+                    rule.AmountCurrencyId = null;
+                }
+                else
+                {
+                    rule.AmountCurrencyId = rule.AmountCurrency.Id;
+                }
+                var temp = _pricingRuleValidator.Validate(rule);
+                modelState.AddModelState(temp);
             }
             if (modelState.HasErrors)
                 return modelState;
-            _ = _unitOfWork.Complete();
+            _unitOfWork.CustomerPricingRuleRepository.Remove(oldRules);
+            _unitOfWork.Complete();
+            foreach (var rule in model.Rules)
+            {
+                 rule.Customer = customer;
+                 rule.CustomerId = customer.Id;
+                _unitOfWork.CustomerPricingRuleRepository.Add(rule);
+                _unitOfWork.Complete();
+            }
             return modelState;
         }
         private ModelState ValidateCustomer(Customer customer)

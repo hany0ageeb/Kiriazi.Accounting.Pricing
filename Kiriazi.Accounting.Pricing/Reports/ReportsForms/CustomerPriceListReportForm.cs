@@ -46,5 +46,13 @@ namespace Kiriazi.Accounting.Pricing.Reports.ReportsForms
 
             this.reportViewer1.RefreshReport();
         }
+
+        private void CustomerPriceListReportForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Control && e.KeyCode == Keys.P)
+            {
+                reportViewer1.PrintDialog();
+            }
+        }
     }
 }

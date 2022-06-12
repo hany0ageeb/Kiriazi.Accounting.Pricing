@@ -6,6 +6,7 @@ namespace Kiriazi.Accounting.Pricing.ViewModels
     public class DailyCurrencyExchangeRateViewModel : ViewModelBase
     {
         private decimal _rate = 1.0M;
+        public Guid Id { get; set; } = Guid.Empty;
         public string FromCurrencyCode { get; set; }
         public string ToCurrencyCode { get; set; }
         public decimal Rate 
@@ -23,6 +24,18 @@ namespace Kiriazi.Accounting.Pricing.ViewModels
         public DateTime Date { get; set; }
         public Currency FromCurrency { get; set; }
         public Currency ToCurrency { get; set; }
+
+        public CurrencyExchangeRate CurrencyExchangeRate
+        {
+            get => new CurrencyExchangeRate()
+            {
+                Id = Id,
+                FromCurrency = FromCurrency,
+                ToCurrency = ToCurrency,
+                Rate = Rate,
+                ConversionDate = Date
+            };
+        }
     }
    
 }

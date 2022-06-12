@@ -59,10 +59,17 @@ namespace Kiriazi.Accounting.Pricing.Views
 
         private void btnOk_Click(object sender, EventArgs e)
         {
-            var lines = _companyController.FindCustomerPriceList(_model);
-            CustomerPriceListsView customerPriceListsView = new CustomerPriceListsView(lines);
-            customerPriceListsView.MdiParent = this.MdiParent;
-            customerPriceListsView.Show();
+            try
+            {
+                var lines = _companyController.FindCustomerPriceList(_model);
+                CustomerPriceListsView customerPriceListsView = new CustomerPriceListsView(lines);
+                customerPriceListsView.MdiParent = this.MdiParent;
+                customerPriceListsView.Show();
+            }
+            catch(Exception ex)
+            {
+                _ = MessageBox.Show(this, ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
