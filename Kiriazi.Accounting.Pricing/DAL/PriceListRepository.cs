@@ -62,5 +62,17 @@ namespace Kiriazi.Accounting.Pricing.DAL
                 .Include(nameof(PriceListLine.Currency));
             return query.AsEnumerable();
         }
+        public IEnumerable<PriceListLine> FindPriceListLines(Guid itemId, DateTime date)
+        {
+            var query =
+               _context
+               .Set<PriceListLine>()
+               .Where(l =>
+                   l.ItemId == itemId && l.PriceList.CompanyAccountingPeriod.AccountingPeriod.FromDate <= date &&
+                   ((l.PriceList.CompanyAccountingPeriod.AccountingPeriod.ToDate != null && l.PriceList.CompanyAccountingPeriod.AccountingPeriod.ToDate >= date) || l.PriceList.CompanyAccountingPeriod.AccountingPeriod.ToDate == null)
+                   )
+               .Include(nameof(PriceListLine.Currency));
+            return query.AsEnumerable();
+        }
     }
 }

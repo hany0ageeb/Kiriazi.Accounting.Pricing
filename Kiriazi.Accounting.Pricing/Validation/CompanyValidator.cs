@@ -13,6 +13,10 @@ namespace Kiriazi.Accounting.Pricing.Validation
             {
                 modelState.AddErrors(nameof(entity.Name), "Pleas Enete Company Name (No More Than 250 Letters).");
             }
+            if (entity.ShippingFeesPercentage < 0)
+            {
+                modelState.AddErrors(nameof(entity.ShippingFeesPercentage), "Please Enter a number greater than or equal to zero.");
+            }
             return modelState;
         }
 

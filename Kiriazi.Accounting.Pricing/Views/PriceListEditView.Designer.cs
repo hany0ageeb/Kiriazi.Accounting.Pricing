@@ -73,7 +73,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 22.32346F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 77.67654F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 131F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 301F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 302F));
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.cboCompanies, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.label2, 2, 1);
@@ -111,7 +111,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(399, 34);
+            this.label2.Location = new System.Drawing.Point(398, 34);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(107, 14);
             this.label2.TabIndex = 2;
@@ -121,7 +121,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             // 
             this.cboPeriods.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.cboPeriods.FormattingEnabled = true;
-            this.cboPeriods.Location = new System.Drawing.Point(530, 37);
+            this.cboPeriods.Location = new System.Drawing.Point(529, 37);
             this.cboPeriods.Name = "cboPeriods";
             this.cboPeriods.Size = new System.Drawing.Size(290, 22);
             this.cboPeriods.TabIndex = 3;
@@ -222,6 +222,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             // 
             // PriceListEditView
             // 
+            this.AcceptButton = this.btnSave;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(832, 574);

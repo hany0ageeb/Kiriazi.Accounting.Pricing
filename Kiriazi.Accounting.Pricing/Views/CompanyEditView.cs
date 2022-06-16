@@ -44,7 +44,30 @@ namespace Kiriazi.Accounting.Pricing.Views
                     errorProvider1.SetError(control, "Pleas Enter Company name less than 250 letters.");
                 }
             };
+            txtShppingFeesPercentage.DataBindings.Clear();
+            txtShppingFeesPercentage.DataBindings.Add(new Binding(nameof(txtShppingFeesPercentage.Text), _model, nameof(_model.ShippingFees)) { DataSourceUpdateMode = DataSourceUpdateMode.OnValidation });
+            txtShppingFeesPercentage.Validating += (o, e) =>
+            {
+                TextBox control = o as TextBox;
+                if (!string.IsNullOrEmpty(txtShppingFeesPercentage.Text))
+                {
+                    if(decimal.TryParse(txtShppingFeesPercentage.Text,out decimal percentage))
+                    {
+                        if (percentage < 0)
+                        {
+                            e.Cancel = true;
+                            errorProvider1.SetError(txtShppingFeesPercentage, "Invalid Number (Enter Value Greater than or equal to zero.)");
+                        }
+                    }
+                    else
+                    {
+                        e.Cancel = true;
+                        errorProvider1.SetError(txtShppingFeesPercentage, "Invalid Number.");
+                    }
+                }
+            };
             txtName.Validated += Control_Validated;
+            txtShppingFeesPercentage.Validated += Control_Validated;
             //
             txtDescription.DataBindings.Clear();
             txtDescription.DataBindings.Add(new Binding(nameof(txtDescription.Text), _model, nameof(_model.Description)) { DataSourceUpdateMode = DataSourceUpdateMode.OnPropertyChanged});
@@ -105,6 +128,7 @@ namespace Kiriazi.Accounting.Pricing.Views
                 _model.Id = Guid.NewGuid();
                 _model.Name = "";
                 _model.Description = "";
+                _model.ShippingFees = 0;
                 _model.IsEnabled = true;
                 _model.Currency = _model.Currencies[0];
                 _hasChanged = false;

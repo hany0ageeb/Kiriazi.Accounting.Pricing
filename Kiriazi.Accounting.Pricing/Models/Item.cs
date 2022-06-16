@@ -67,6 +67,9 @@ namespace Kiriazi.Accounting.Pricing.Models
         [Ignore]
         public virtual ICollection<CompanyItemAssignment> CompanyAssignments { get; set; } = new HashSet<CompanyItemAssignment>();
 
+        [Ignore]
+        public virtual ICollection<CustomerItemAssignment> CustomerItemAssignments { get; set; } = new HashSet<CustomerItemAssignment>();
+
         [NotMapped]
         [Ignore]
         public string UomName => Uom?.Name;

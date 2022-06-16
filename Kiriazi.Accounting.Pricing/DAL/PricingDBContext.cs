@@ -435,6 +435,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
         public DbSet<PriceList> PriceLists { get; set; }
         public DbSet<CompanyAccountingPeriod> CompanyAccountingPeriods { get; set; }
         public DbSet<CompanyItemAssignment> CompanyItemAssignments { get; set; }
+        public DbSet<CustomerItemAssignment> CustomerItemAssignments { get; set; }
         public DbSet<ItemRelation> ItemRelations { get; set; }
 
         public PricingDBContext()
@@ -549,6 +550,12 @@ namespace Kiriazi.Accounting.Pricing.DAL
                 .HasIndex(e => new { e.CompanyId, e.ItemId })
                 .IsUnique(true)
                 .HasName("Idx_Comp_Item_Id_UNQ");
+
+            modelBuilder
+                .Entity<CustomerItemAssignment>()
+                .HasIndex(e => new { e.CustomerId, e.ItemId })
+                .IsUnique(true)
+                .HasName("Idx_Cust_Item_Id_UNQ");
 
             modelBuilder.Entity<ItemRelation>()
                 .HasIndex(e => new { e.ParentId, e.ChildId, e.CompanyId })

@@ -296,6 +296,7 @@
     <Compile Include="Models\CurrencyExchangeRate.cs" />
     <Compile Include="Models\Currency.cs" />
     <Compile Include="Models\Customer.cs" />
+    <Compile Include="Models\CustomerItemAssignment.cs" />
     <Compile Include="Models\CustomerPricingRule.cs" />
     <Compile Include="Models\DailyCurrencyExchangeRateDTO.cs" />
     <Compile Include="Models\ExchangeRateType.cs" />
@@ -477,6 +478,12 @@
     <Compile Include="Views\ItemCompaniesAssignmentView.Designer.cs">
       <DependentUpon>ItemCompaniesAssignmentView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\ItemCustomersAssignmentView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ItemCustomersAssignmentView.designer.cs">
+      <DependentUpon>ItemCustomersAssignmentView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\ItemEditView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -636,6 +643,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\ItemCompaniesAssignmentView.resx">
       <DependentUpon>ItemCompaniesAssignmentView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ItemCustomersAssignmentView.resx">
+      <DependentUpon>ItemCustomersAssignmentView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\ItemEditView.resx">
       <DependentUpon>ItemEditView.cs</DependentUpon>

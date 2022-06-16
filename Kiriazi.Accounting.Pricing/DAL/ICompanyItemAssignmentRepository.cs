@@ -4,4 +4,16 @@
     {
 
     }
+    public interface ICustomerItemAssignmentRepository : IRepository<Models.CustomerItemAssignment>
+    {
+
+    }
+    public class CustomerItemAssignmentRepository : Repository<Models.CustomerItemAssignment>, ICustomerItemAssignmentRepository
+    {
+        public CustomerItemAssignmentRepository(PricingDBContext context)
+            : base(context)
+        {
+
+        }
+    }
 }

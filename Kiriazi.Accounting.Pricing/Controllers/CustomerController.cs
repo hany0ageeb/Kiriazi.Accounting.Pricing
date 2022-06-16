@@ -188,9 +188,10 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             {
                  rule.Customer = customer;
                  rule.CustomerId = customer.Id;
+                rule.Id = Guid.NewGuid();
                 _unitOfWork.CustomerPricingRuleRepository.Add(rule);
-                _unitOfWork.Complete();
             }
+            _unitOfWork.Complete();
             return modelState;
         }
         private ModelState ValidateCustomer(Customer customer)

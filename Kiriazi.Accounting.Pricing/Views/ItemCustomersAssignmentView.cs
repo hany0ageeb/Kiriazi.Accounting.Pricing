@@ -6,15 +6,15 @@ using System.Windows.Forms;
 
 namespace Kiriazi.Accounting.Pricing.Views
 {
-    public partial class ItemCompaniesAssignmentView : Form
+    public partial class ItemCustomersAssignmentView : Form
     {
         private readonly Controllers.ItemController _itemController;
-        private Models.Item _item;
-        private BindingList<ViewModels.ItemCompanyAssignmentViewModel> assignments;
-        private List<Models.Group> _groups = new List<Models.Group>();
+        private Item _item;
+        private BindingList<ViewModels.ItemCustomerAssignmentViewModel> assignments;
+        
         private bool _hasChanged = false;
         private bool _oldValue;
-        public ItemCompaniesAssignmentView(Controllers.ItemController controller,Models.Item item)
+        public ItemCustomersAssignmentView(Controllers.ItemController controller,Item item)
         {
             _itemController = controller;
             _item = item;
@@ -23,10 +23,9 @@ namespace Kiriazi.Accounting.Pricing.Views
         }
         private void Initialize()
         {
-            this.Text = $"Item {_item.Code} Companies Assignment";
-            assignments = new BindingList<ViewModels.ItemCompanyAssignmentViewModel>(_itemController.EditItemCompanyAssignment(_item.Id));
-            if (assignments.Count > 0)
-                _groups.AddRange(assignments[0].Groups);
+            this.Text = $"Item {_item.Code} Customers Assignment";
+            assignments = new BindingList<ViewModels.ItemCustomerAssignmentViewModel>(_itemController.EditItemCustomerAssignment(_item.Id));
+            
             //
             dataGridView1.AllowUserToAddRows = false;
             dataGridView1.AllowUserToDeleteRows = false;
@@ -39,32 +38,22 @@ namespace Kiriazi.Accounting.Pricing.Views
                 {
                     HeaderText = "Assigned",
                     Name = "IsAssigned",
-                    DataPropertyName = "IsAssigned",
+                    DataPropertyName = nameof(ViewModels.ItemCustomerAssignmentViewModel.IsAssigned),
                     ReadOnly = false
                 },
                 new DataGridViewTextBoxColumn()
                 {
-                    HeaderText = "Company",
+                    HeaderText = "Customer",
                     Name = "CompanyName",
-                    DataPropertyName = "CompanyName",
+                    DataPropertyName = nameof(ViewModels.ItemCustomerAssignmentViewModel.CustomerName),
                     ReadOnly = true
                 },
                 new DataGridViewTextBoxColumn()
                 {
                     HeaderText = "Item Name Alias",
                     Name = "Alise",
-                    DataPropertyName = "Alise",
+                    DataPropertyName = nameof(ViewModels.ItemCustomerAssignmentViewModel.Alise),
                     ReadOnly = false
-                },
-                new DataGridViewComboBoxColumn()
-                {
-                    HeaderText = "Group",
-                    ReadOnly = false,
-                    Name = "Group",
-                    DataPropertyName = "Group",
-                    DataSource = _groups,
-                    DisplayMember = "Name",
-                    ValueMember = "Self"
                 });
             assignments.ListChanged += (o, e) =>
             {
@@ -76,10 +65,6 @@ namespace Kiriazi.Accounting.Pricing.Views
             dataGridView1.CellBeginEdit += (o, e) =>
             {
                 if (e.ColumnIndex == dataGridView1.Columns["Alise"].Index) 
-                {
-                    e.Cancel = !assignments[e.RowIndex].IsAssigned;
-                }
-                else if(e.ColumnIndex == dataGridView1.Columns["Group"].Index)
                 {
                     e.Cancel = !assignments[e.RowIndex].IsAssigned;
                 }
@@ -104,7 +89,6 @@ namespace Kiriazi.Accounting.Pricing.Views
                         else
                         {
                             assignments[e.RowIndex].Alise = "";
-                            assignments[e.RowIndex].Group = _groups[0];
                         }
                     }
                 }
@@ -124,7 +108,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             {
                 try
                 {
-                    _itemController.EditItemCompanyAssignment(assignments, _item.Id);
+                    _itemController.EditItemCustomerAssignment(assignments, _item.Id);
                     return true;
                 }
                 catch(Exception ex)

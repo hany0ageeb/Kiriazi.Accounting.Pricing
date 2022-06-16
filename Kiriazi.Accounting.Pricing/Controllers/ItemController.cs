@@ -192,7 +192,32 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             }
             return model;
         }
-
+        public IList<ItemCustomerAssignmentViewModel> EditItemCustomerAssignment(Guid itemId)
+        {
+            Item item = _unitOfWork.ItemRepository.Find(predicate:itm => itm.Id == itemId, include:q => q.Include(itm => itm.CustomerItemAssignments)).FirstOrDefault();
+            if (item == null)
+                throw new ArgumentException($"Item With Id = {itemId} does not exist.", "id");
+            IList<ItemCustomerAssignmentViewModel> model = new List<ItemCustomerAssignmentViewModel>();
+            var allCustomers = _unitOfWork.CustomerRepository.Find().ToList();
+            foreach(var customer in allCustomers)
+            {
+                ItemCustomerAssignmentViewModel temp = new ItemCustomerAssignmentViewModel(customer);
+                var assigned = item.CustomerItemAssignments.Where(cia => cia.CustomerId == customer.Id).FirstOrDefault();
+                if (assigned != null)
+                {
+                    temp.IsAssigned = true;
+                    temp.Alise = assigned.ItemNameAlias;
+                    temp.Id = assigned.Id;
+                }
+                else
+                {
+                    temp.IsAssigned = false;
+                    temp.Alise = "";
+                }
+                model.Add(temp);
+            }
+            return model;
+        }
         public ModelState ImportFromExcelFile(string fileName)
         {
             DAL.Excel.ItemDTORepository itemDTORepository = new DAL.Excel.ItemDTORepository(fileName);
@@ -268,6 +293,45 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             }
             _unitOfWork.Complete();
             return modelState;
+        }
+        public void EditItemCustomerAssignment(IList<ItemCustomerAssignmentViewModel> assignments,Guid itemId)
+        {
+            Item item = _unitOfWork.ItemRepository.Find(itemId);
+            if (item == null)
+                throw new ArgumentException("Invalid Item Id");
+            foreach (ItemCustomerAssignmentViewModel assignment in assignments)
+            {
+                var ass = _unitOfWork.CustomerItemAssignmentRepository.Find(Id: assignment.Id);
+                if (assignment.IsAssigned)
+                {
+                    //New ...
+                    if (ass == null)
+                    {
+                        // Add new ...
+                        _unitOfWork.CustomerItemAssignmentRepository.Add(new CustomerItemAssignment()
+                        {
+                            Id = assignment.Id,
+                            Customer = assignment.Customer,
+                            Item = item,
+                            ItemNameAlias = assignment.Alise
+                        }); 
+                    }
+                    else
+                    {
+                        //update ...
+                        ass.ItemNameAlias = assignment.Alise;
+                    }
+                }
+                else
+                {
+                    // remove if exists
+                    if (ass != null)
+                    {
+                        _unitOfWork.CustomerItemAssignmentRepository.Remove(ass);
+                    }
+                }
+            }
+            _unitOfWork.Complete();
         }
         public void EditItemCompanyAssignment(IList<ItemCompanyAssignmentViewModel> assignments,Guid itemId)
         {

@@ -61,9 +61,12 @@ namespace Kiriazi.Accounting.Pricing.DAL
             return query.AsEnumerable();
         }
 
-        public IEnumerable<string> FindItemsCodes()
+        public IEnumerable<string> FindItemsCodes(Guid? itemTypeId = null)
         {
-            return _context.Set<Item>().Select(itm => itm.Code).AsEnumerable();
+            if (itemTypeId == null)
+                return _context.Set<Item>().Select(itm => itm.Code).AsEnumerable();
+            else
+                return _context.Set<Item>().Where(itm=>itm.ItemTypeId == itemTypeId).Select(itm => itm.Code).AsEnumerable();
         }
 
         public Item FindByItemCode(string itemCode)

@@ -166,6 +166,16 @@ namespace Kiriazi.Accounting.Pricing.Views
             {
                 _items.Add(item);
             }
+            if (_items.Count > 0)
+            {
+                btnCompanies.Enabled = true;
+                btnCustomers.Enabled = true;
+            }
+            else
+            {
+                btnCompanies.Enabled = false;
+                btnCustomers.Enabled = false;
+            }
         }
 
         private void btnSearch_Click(object sender, EventArgs e)
@@ -177,7 +187,6 @@ namespace Kiriazi.Accounting.Pricing.Views
         {
             Close();
         }
-
         private void btnNew_Click(object sender, EventArgs e)
         {
             using (ItemEditView itemEditView = new ItemEditView(_itemController.Add(),_itemController))
@@ -186,7 +195,6 @@ namespace Kiriazi.Accounting.Pricing.Views
                 Search();
             }
         }
-
         private void btnCompanies_Click(object sender, EventArgs e)
         {
             if (itemsGrid.CurrentRow != null)
@@ -197,6 +205,17 @@ namespace Kiriazi.Accounting.Pricing.Views
                     {
                         companiesAssignmentView.ShowDialog(this);
                     }
+                }
+            }
+        }
+        private void btnCustomers_Click(object sender, EventArgs e)
+        {
+            int? index = itemsGrid.CurrentRow?.Index;
+            if(index!=null && index >= 0 && index < _items.Count)
+            {
+                using(ItemCustomersAssignmentView itemCustomersAssignmentView = new ItemCustomersAssignmentView(_itemController, _items[index.Value]))
+                {
+                    itemCustomersAssignmentView.ShowDialog(this);
                 }
             }
         }

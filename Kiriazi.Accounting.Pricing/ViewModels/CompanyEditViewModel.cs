@@ -8,6 +8,7 @@ namespace Kiriazi.Accounting.Pricing.ViewModels
     {
         private string _name = "";
         private string _description = "";
+        private decimal _shippingFees = 0;
         private bool _isEnabled = true;
         private Currency _currency;
         public bool CanChangeCompanyCurrency { get; private set; } = true;
@@ -25,6 +26,7 @@ namespace Kiriazi.Accounting.Pricing.ViewModels
             _description = company.Description;
             _currency = company.Currency;
             _isEnabled = company.IsEnabled;
+            _shippingFees = company.ShippingFeesPercentage;
             CanChangeCompanyCurrency = canChangeCompanyCurrency;
         }
         public string Name
@@ -84,8 +86,21 @@ namespace Kiriazi.Accounting.Pricing.ViewModels
                 Name = Name,
                 Description = Description,
                 IsEnabled = IsEnabled,
-                Currency = Currency
+                Currency = Currency,
+                ShippingFeesPercentage = ShippingFees
             };
+        }
+        public decimal ShippingFees
+        {
+            get => _shippingFees;
+            set
+            {
+                if (_shippingFees != value)
+                {
+                    _shippingFees = value;
+                    OnPropertyChanged(nameof(ShippingFees));
+                }
+            }
         }
         public IList<Currency> Currencies { get; set; }
     }

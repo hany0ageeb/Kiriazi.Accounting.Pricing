@@ -20,7 +20,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
         IPriceListLineRepository PriceListLineRepository{ get;}
         IItemRelationRepository ItemRelationRepository { get; }
         ICustomerPricingRuleRepository CustomerPricingRuleRepository { get; }
-
+        ICustomerItemAssignmentRepository CustomerItemAssignmentRepository { get; }
         DateTime Now { get; }
 
         int Complete();

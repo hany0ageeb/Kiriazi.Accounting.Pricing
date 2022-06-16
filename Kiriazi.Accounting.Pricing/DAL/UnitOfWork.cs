@@ -24,6 +24,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
             PriceListLineRepository = new PriceListLineRepository(_context);
             ItemRelationRepository = new ItemRelationRepository(_context);
             CustomerPricingRuleRepository = new CustomerPricingRuleRepository(_context);
+            CustomerItemAssignmentRepository = new CustomerItemAssignmentRepository(_context);
 
         }
         public IUomRepository UomRepository { get; private set; }
@@ -57,6 +58,8 @@ namespace Kiriazi.Accounting.Pricing.DAL
         public IItemRelationRepository ItemRelationRepository { get; private set; }
 
         public ICustomerPricingRuleRepository CustomerPricingRuleRepository { get; private set; }
+
+        public ICustomerItemAssignmentRepository CustomerItemAssignmentRepository { get; private set; }
 
         public int Complete()
         {

@@ -11,7 +11,8 @@ namespace Kiriazi.Accounting.Pricing.Models
         private string _name = "";
         private string _description = "";
         private bool _isEnabled = true;
-        private bool _currency;
+        private Currency _currency;
+        private decimal _shippingFess = 0;
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
@@ -70,7 +71,31 @@ namespace Kiriazi.Accounting.Pricing.Models
         }
         
         [Required]
-        public virtual Currency Currency { get; set; }
+        public virtual Currency Currency 
+        { 
+            get=>_currency;
+            set
+            {
+                if (_currency != value)
+                {
+                    _currency = value;
+                    OnPropertyChanged(nameof(Currency));
+                }
+            }
+        }
+        [Range(0,double.MaxValue)]
+        public decimal ShippingFeesPercentage 
+        { 
+            get=>_shippingFess;
+            set
+            {
+                if (_shippingFess != value)
+                {
+                    _shippingFess = value;
+                    OnPropertyChanged(nameof(ShippingFeesPercentage));
+                }
+            }
+        }
 
         public virtual ICollection<CompanyItemAssignment> ItemAssignments { get; set; } = new HashSet<CompanyItemAssignment>();
 
