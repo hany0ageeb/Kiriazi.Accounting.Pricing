@@ -6,6 +6,7 @@ using Npoi.Mapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace Kiriazi.Accounting.Pricing.Controllers
 {
@@ -13,7 +14,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IValidator<Group> _validator;
-        private DAL.Excel.GroupRepository excelGroupRepository;
+        
         public GroupController(IUnitOfWork unitOfWork,IValidator<Group> validator)
         {
             _unitOfWork = unitOfWork;

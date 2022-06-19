@@ -361,6 +361,39 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                 }
                 switch (rule.RuleType)
                 {
+                    case CustomerPricingRuleTypes.ItemInCompany:
+                        if(rule.CompanyId==company.Id && rule.ItemId == item.Id)
+                        {
+                            if (rule.RuleAmountType == RuleAmountTypes.Percentage)
+                            {
+                                if (rule.IncrementDecrement == IncrementDecrementTypes.Increment)
+                                {
+                                    unitValue.UnitPrice += rule.Amount / 100.0M * unitValue.UnitPrice;
+                                }
+                                else
+                                {
+                                    unitValue.UnitPrice -= rule.Amount / 100.0M * unitValue.UnitPrice;
+                                }
+                            }
+                            else if (rule.RuleAmountType == RuleAmountTypes.Fixed)
+                            {
+                                if (rule.IncrementDecrement == IncrementDecrementTypes.Increment)
+                                {
+                                    if (exchangeRate == null)
+                                        unitValue.UnitPrice += rule.Amount;
+                                    else
+                                        unitValue.UnitPrice += rule.Amount * exchangeRate.Rate;
+                                }
+                                else
+                                {
+                                    if (exchangeRate == null)
+                                        unitValue.UnitPrice -= rule.Amount;
+                                    else
+                                        unitValue.UnitPrice -= rule.Amount * exchangeRate.Rate;
+                                }
+                            }
+                        }
+                        break;
                     case CustomerPricingRuleTypes.AllItems:
                         if(rule.RuleAmountType == RuleAmountTypes.Percentage)
                         {

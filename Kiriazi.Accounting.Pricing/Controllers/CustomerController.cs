@@ -115,7 +115,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                 GroupId = rule.GroupId,
                 IncrementDecrement = rule.IncrementDecrement,
                 Item = rule.Item,
-                ItemCode = rule.ItemCode,
+                ItemCode = rule.Item?.Code,
                 ItemId = rule.ItemId,
                 ItemType = rule.ItemType,
                 ItemTypeId = rule.ItemTypeId,

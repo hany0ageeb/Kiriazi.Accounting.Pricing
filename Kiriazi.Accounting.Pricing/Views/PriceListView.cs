@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using Kiriazi.Accounting.Pricing.Controllers;
 using Kiriazi.Accounting.Pricing.Models;
 using Kiriazi.Accounting.Pricing.ViewModels;
+using Npoi.Mapper;
 
 namespace Kiriazi.Accounting.Pricing.Views
 {
@@ -24,12 +25,66 @@ namespace Kiriazi.Accounting.Pricing.Views
         public PriceListView(PriceListViewModel model)
         {
             _model = model;
-
             InitializeComponent();
             Initialize();
         }
+        private void ExportMenuItem_Click(object sender,EventArgs args)
+        {
+            if (saveFileDialog1.ShowDialog(this) == DialogResult.OK)
+            {
+                try
+                {
+                    Cursor = Cursors.WaitCursor;
+                    Mapper mapper = new Mapper();
+                    mapper.Save<PriceListLineViewModel>(saveFileDialog1.FileName, _model.Lines.OrderBy(l=>l.ItemCode));
+                }
+                catch(Exception ex)
+                {
+                    _ = MessageBox.Show(this, ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    Cursor = Cursors.Default;
+                }
+            }
+            
+        }
         private void Initialize()
         {
+            saveFileDialog1.Filter = "Excel Files | *.xlsx";
+            saveFileDialog1.DefaultExt = "xlsx";
+            saveFileDialog1.InitialDirectory = Environment.CurrentDirectory;
+            saveFileDialog1.OverwritePrompt = true;
+            Enter += (o, e) =>
+            {
+                if (_model.Lines.Count > 0)
+                {
+                    MainView mainView = MdiParent as MainView;
+                    if (mainView != null)
+                    {
+                        mainView.AddExportMenuItemClickEventHandler(ExportMenuItem_Click);
+                        mainView.IsExportMenuItemEnabled = true;
+                    }
+                }
+                else
+                {
+                    MainView mainView = MdiParent as MainView;
+                    if (mainView != null)
+                    {
+                        mainView.ClearExportMenuItemClickEventHandlers();
+                        mainView.IsExportMenuItemEnabled = false;
+                    }
+                }
+            };
+            Leave += (o, e) =>
+            {
+                MainView mainView = MdiParent as MainView;
+                if (mainView != null)
+                {
+                    mainView.ClearExportMenuItemClickEventHandlers();
+                    mainView.IsExportMenuItemEnabled = false;
+                }
+            };
             DataTable dataTable = new DataTable("PriceListLines");
             dataTable.Columns.AddRange(new DataColumn[]
             {
@@ -98,7 +153,7 @@ namespace Kiriazi.Accounting.Pricing.Views
                     Caption = "Tarrif Percentage(%)"
                 }
             });
-            foreach (var line in _model.Lines)
+            foreach (var line in _model.Lines.OrderBy(l=>l.ItemCode))
             {
                 var row = dataTable.NewRow();
                 row["ItemCode"] = line.ItemCode;

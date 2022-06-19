@@ -99,6 +99,8 @@ namespace Kiriazi.Accounting.Pricing.Views
             // 
             // cboItemTypes
             // 
+            this.cboItemTypes.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cboItemTypes.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cboItemTypes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.cboItemTypes.FormattingEnabled = true;
             this.cboItemTypes.Location = new System.Drawing.Point(150, 214);
@@ -201,6 +203,8 @@ namespace Kiriazi.Accounting.Pricing.Views
             // 
             // cboUoms
             // 
+            this.cboUoms.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cboUoms.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cboUoms.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.cboUoms.FormattingEnabled = true;
             this.cboUoms.Location = new System.Drawing.Point(150, 173);

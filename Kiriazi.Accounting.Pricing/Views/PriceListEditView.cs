@@ -182,7 +182,6 @@ namespace Kiriazi.Accounting.Pricing.Views
                 dataGridView1.Rows[e.RowIndex].ErrorText = "";
                 if (_lines[e.RowIndex].Item != null)
                 {
-                    
                     if (_lines[e.RowIndex].UnitPrice >= 0)
                     {
                         if (_lines[e.RowIndex].Currency != null)
@@ -456,10 +455,10 @@ namespace Kiriazi.Accounting.Pricing.Views
             }
             if(e.ColumnIndex == dataGridView1.Columns["UnitPrice"].Index)
             {
-                decimal? unitPrice = e.FormattedValue as decimal?;
+                
                 if(decimal.TryParse(e.FormattedValue.ToString(),out decimal uprice))
                 {
-                    if (unitPrice < 0)
+                    if (uprice < 0)
                     {
                         e.Cancel = true;
                         System.Media.SystemSounds.Hand.Play();
@@ -484,6 +483,11 @@ namespace Kiriazi.Accounting.Pricing.Views
                     textBox.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
                     textBox.AutoCompleteSource = AutoCompleteSource.CustomSource;
                     textBox.AutoCompleteCustomSource = _autoCompleteSource;
+                }
+                else
+                {
+                    textBox.AutoCompleteMode = AutoCompleteMode.None;
+                    textBox.AutoCompleteSource = AutoCompleteSource.None;
                 }
             }
         }

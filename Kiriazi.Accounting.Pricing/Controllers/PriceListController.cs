@@ -6,6 +6,7 @@ using System.Data.Entity;
 using System.Collections.Generic;
 using System.Linq;
 using Kiriazi.Accounting.Pricing.Validation;
+using System.Threading.Tasks;
 
 namespace Kiriazi.Accounting.Pricing.Controllers
 {
@@ -99,9 +100,9 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                 model.AccountingPeriod = oldPriceList.CompanyAccountingPeriod.AccountingPeriod;
                 model.AccountingPeriods = _unitOfWork.CompanyAccountingPeriodRepository.Find<AccountingPeriod>(predicate: a => a.CompanyId == oldPriceList.CompanyAccountingPeriod.CompanyId && (a.State==AccountingPeriodStates.Opened || a.PriceListId==oldPriceList.Id),selector:cap=>cap.AccountingPeriod).ToList();
                 model.Companies = _unitOfWork.CompanyRepository.Find(predicate: c => c.IsEnabled, include: q => q.Include(e => e.CompanyAccountingPeriods.Select(ac => ac.AccountingPeriod))).ToList();
-                model.ItemsCodes = _unitOfWork.ItemRepository.FindItemsCodes(ItemTypeRepository.RawItemType.Id).ToList();
+                model.ItemsCodes = _unitOfWork.ItemRepository.FindItemsCodes(ItemTypeRepository.RawItemType.Id).OrderBy(s=>s).ToList();
                 model.Currencies = _unitOfWork.CurrencyRepository.Find(c => c.IsEnabled, q => q.OrderBy(e => e.Code)).ToList();
-                foreach (var line in oldPriceList.PriceListLines)
+                foreach (var line in oldPriceList.PriceListLines.OrderBy(l=>l.Item.Code))
                 {
                     if (!model.Currencies.Contains(line.Currency))
                         model.Currencies.Add(line.Currency);
@@ -284,167 +285,175 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             return modelState;
         }
 
-        internal ModelState ImportDailyExchangeRateFromExcelFile(string fileName)
+        public async Task<ModelState> ImportPriceListFromExcelFileAsync(string fileName,IProgress<int> progress)
         {
-            DAL.Excel.PriceListDTORepository excelRepository = new DAL.Excel.PriceListDTORepository(fileName);
-            var dtos = excelRepository.Find();
-            var priceLists = dtos.GroupBy(g => new { g.AccountingPeriodName, g.CompanyName, g.Name });
-            IList<PriceList> newPriceLists = new List<PriceList>();
-            ModelState modelState = new ModelState();
-            foreach(var priceList in priceLists)
+            return await Task.Run<ModelState>(() =>
             {
-                if (modelState.HasErrors)
-                    break;
-                PriceList plist = new PriceList();
-                Company company = _unitOfWork.CompanyRepository.Find(c => c.Name.Equals(priceList.Key.CompanyName, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
-                if (company == null)
-                    modelState.AddErrors("Company", $"Invalid Company Name {priceList.Key.CompanyName}");
-                AccountingPeriod accountingPeriod = _unitOfWork.AccountingPeriodRepository.Find(ap => ap.Name.Equals(priceList.Key.AccountingPeriodName,StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
-                if (accountingPeriod == null)
-                    modelState.AddErrors("Accounting Period", $"Invalid Accounting Period {priceList.Key.AccountingPeriodName}");
-                if (company != null && accountingPeriod != null)
+                DAL.Excel.PriceListDTORepository excelRepository = new DAL.Excel.PriceListDTORepository(fileName);
+                var dtos = excelRepository.Find();
+                var priceLists = dtos.GroupBy(g => new { g.AccountingPeriodName, g.CompanyName, g.Name });
+                IList<PriceList> newPriceLists = new List<PriceList>();
+                ModelState modelState = new ModelState();
+                int count=0, oldProgress = 0, newProgress = 0;
+                foreach (var priceList in priceLists)
                 {
-                    CompanyAccountingPeriod companyAccountingPeriod = _unitOfWork.CompanyAccountingPeriodRepository.Find(predicate: cap => cap.CompanyId == company.Id && cap.AccountingPeriodId == accountingPeriod.Id).FirstOrDefault();
-                    if (companyAccountingPeriod == null)
+                    if (modelState.HasErrors)
+                        break;
+                    PriceList plist = new PriceList();
+                    Company company = _unitOfWork.CompanyRepository.Find(c => c.Name.Equals(priceList.Key.CompanyName, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+                    if (company == null)
+                        modelState.AddErrors("Company", $"Invalid Company Name {priceList.Key.CompanyName}");
+                    AccountingPeriod accountingPeriod = _unitOfWork.AccountingPeriodRepository.Find(ap => ap.Name.Equals(priceList.Key.AccountingPeriodName, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+                    if (accountingPeriod == null)
+                        modelState.AddErrors("Accounting Period", $"Invalid Accounting Period {priceList.Key.AccountingPeriodName}");
+                    if (company != null && accountingPeriod != null)
                     {
-                        companyAccountingPeriod = new CompanyAccountingPeriod()
+                        CompanyAccountingPeriod companyAccountingPeriod = _unitOfWork.CompanyAccountingPeriodRepository.Find(predicate: cap => cap.CompanyId == company.Id && cap.AccountingPeriodId == accountingPeriod.Id).FirstOrDefault();
+                        if (companyAccountingPeriod == null)
                         {
-                            Company = company,
-                            AccountingPeriod = accountingPeriod,
-                            State = AccountingPeriodStates.Opened,
-                            CompanyId = company.Id,
-                            AccountingPeriodId = accountingPeriod.Id
-                        };
-                        _unitOfWork.CompanyAccountingPeriodRepository.Add(companyAccountingPeriod);
-                    }
-                    if (companyAccountingPeriod.State == AccountingPeriodStates.Opened)
-                    {
-                        plist.Name = priceList.Key.Name;
-                        plist.CompanyAccountingPeriod = companyAccountingPeriod;
-                        
-                        foreach (var line in priceList)
+                            companyAccountingPeriod = new CompanyAccountingPeriod()
+                            {
+                                Company = company,
+                                AccountingPeriod = accountingPeriod,
+                                State = AccountingPeriodStates.Opened,
+                                CompanyId = company.Id,
+                                AccountingPeriodId = accountingPeriod.Id
+                            };
+                            _unitOfWork.CompanyAccountingPeriodRepository.Add(companyAccountingPeriod);
+                        }
+                        if (companyAccountingPeriod.State == AccountingPeriodStates.Opened)
                         {
-                            if (modelState.HasErrors)
-                                break;
-                            PriceListLine pline = new PriceListLine();
-                            var item = _unitOfWork.ItemRepository.Find(predicate: itm => itm.Code.Equals(line.ItemCode, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
-                            var currency = _unitOfWork.CurrencyRepository.Find(predicate: c => c.Code.Equals(line.CurrencyCode, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
-                            if (item == null)
+                            plist.Name = priceList.Key.Name;
+                            plist.CompanyAccountingPeriod = companyAccountingPeriod;
+
+                            foreach (var line in priceList)
                             {
-                                modelState.AddErrors("Item", $"Invalid Item Code {line.ItemCode}");
-                            }
-                            else
-                            {
-                                pline.Item = item;
-                                if (currency == null)
+                                if (modelState.HasErrors)
+                                    break;
+                                PriceListLine pline = new PriceListLine();
+                                var item = _unitOfWork.ItemRepository.Find(predicate: itm => itm.Code.Equals(line.ItemCode, StringComparison.InvariantCultureIgnoreCase) && itm.ItemTypeId == ItemTypeRepository.RawItemType.Id,include:q=>q.Include(e=>e.Tarrif)).FirstOrDefault();
+                                var currency = _unitOfWork.CurrencyRepository.Find(predicate: c => c.Code.Equals(line.CurrencyCode, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+                                if (item == null)
                                 {
-                                    modelState.AddErrors("Currency", $"Invalid Currency Code {line.CurrencyCode}");
+                                    modelState.AddErrors("Item", $"Invalid Item Code {line.ItemCode}");
                                 }
                                 else
                                 {
-                                    pline.Currency = currency;
-                                    if (line.UnitPrice >= 0)
+                                    pline.Item = item;
+                                    if (currency == null)
                                     {
-                                        pline.UnitPrice = line.UnitPrice;
-                                        if (currency.Id != company.CurrencyId)
+                                        modelState.AddErrors("Currency", $"Invalid Currency Code {line.CurrencyCode}");
+                                    }
+                                    else
+                                    {
+                                        pline.Currency = currency;
+                                        if (line.UnitPrice >= 0)
                                         {
-                                            if (!line.CurrencyExchangeRateType.Equals(ExchangeRateTypes.System, StringComparison.InvariantCultureIgnoreCase) && !line.CurrencyExchangeRateType.Equals(ExchangeRateTypes.Manual, StringComparison.InvariantCultureIgnoreCase))
+                                            pline.UnitPrice = line.UnitPrice;
+                                            if (currency.Id != company.CurrencyId)
                                             {
-                                                modelState.AddErrors("CurrencyExchangeRateType", $"Invalid Currency Exchange Rate Type {line.CurrencyExchangeRateType}");
-                                            }
-                                            else
-                                            {
-                                                if (line.CurrencyExchangeRateType.Equals(ExchangeRateTypes.Manual,StringComparison.InvariantCultureIgnoreCase))
+                                                if (!line.CurrencyExchangeRateType.Equals(ExchangeRateTypes.System, StringComparison.InvariantCultureIgnoreCase) && !line.CurrencyExchangeRateType.Equals(ExchangeRateTypes.Manual, StringComparison.InvariantCultureIgnoreCase))
                                                 {
-                                                    line.CurrencyExchangeRateType = ExchangeRateTypes.Manual;
-                                                    if(line.CurrencyExchangeRate == null || line.CurrencyExchangeRate <= 0)
+                                                    modelState.AddErrors("CurrencyExchangeRateType", $"Invalid Currency Exchange Rate Type {line.CurrencyExchangeRateType}");
+                                                }
+                                                else
+                                                {
+                                                    if (line.CurrencyExchangeRateType.Equals(ExchangeRateTypes.Manual, StringComparison.InvariantCultureIgnoreCase))
                                                     {
-                                                        modelState.AddErrors("CurrencyExchangeRate", $"Invalid Currency Exchange Rate {line.CurrencyExchangeRate}");
-                                                    }
-                                                    else
-                                                    {
-                                                        pline.CurrencyExchangeRate = line.CurrencyExchangeRate;
-                                                        if (!line.TarrifType.Equals(ExchangeRateTypes.System, StringComparison.InvariantCultureIgnoreCase) && !line.TarrifType.Equals(ExchangeRateTypes.Manual, StringComparison.InvariantCultureIgnoreCase))
+                                                        line.CurrencyExchangeRateType = ExchangeRateTypes.Manual;
+                                                        if (line.CurrencyExchangeRate == null || line.CurrencyExchangeRate <= 0)
                                                         {
-                                                            modelState.AddErrors("TarrifType", $"Invalid Tarrif Type {line.TarrifType}");
+                                                            modelState.AddErrors("CurrencyExchangeRate", $"Invalid Currency Exchange Rate {line.CurrencyExchangeRate}");
                                                         }
                                                         else
                                                         {
-                                                            if(item.Tarrif!=null)
-                                                            { 
-                                                                if (line.TarrifType.Equals(ExchangeRateTypes.Manual, StringComparison.InvariantCultureIgnoreCase))
-                                                                {
-                                                                    line.TarrifType = ExchangeRateTypes.Manual;
-                                                                    if (line.TarrifPercentage == null || line.TarrifPercentage < 0)
-                                                                    {
-                                                                        modelState.AddErrors("TarrifPercentage", $"Invalid Tarrif Percentage {line.TarrifPercentage}");
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        pline.TarrrifPercentage = line.TarrifPercentage;
-                                                                    }
-                                                                }
-                                                                else
-                                                                {
-                                                                    line.TarrifType = ExchangeRateTypes.System;
-                                                                    pline.TarrrifPercentage = null;
-
-                                                                }
-                                                                pline.TarrifType = line.TarrifType;
+                                                            pline.CurrencyExchangeRate = line.CurrencyExchangeRate;
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        line.CurrencyExchangeRateType = ExchangeRateTypes.System;
+                                                        pline.CurrencyExchangeRate = null;
+                                                    }
+                                                    pline.ExchangeRateType = line.CurrencyExchangeRateType;
+                                                }
+                                                if (item.Tarrif != null)
+                                                {
+                                                    if (!line.TarrifType.Equals(ExchangeRateTypes.System,StringComparison.InvariantCultureIgnoreCase) && !line.TarrifType.Equals(ExchangeRateTypes.Manual, StringComparison.InvariantCultureIgnoreCase))
+                                                    {
+                                                        modelState.AddErrors("TarrifType", $"Invalid Tarrif Type {line.TarrifType}");
+                                                    }
+                                                    else
+                                                    {
+                                                        if(line.TarrifType.Equals(ExchangeRateTypes.System, StringComparison.InvariantCultureIgnoreCase))
+                                                        {
+                                                            pline.TarrifType = ExchangeRateTypes.System;
+                                                            pline.TarrrifPercentage = null;
+                                                        }
+                                                        else
+                                                        {
+                                                            if(line.TarrifPercentage==null || line.TarrifPercentage < 0)
+                                                            {
+                                                                modelState.AddErrors("TarrifPercentage", $"Invalid Tarrrif Percentage {line.TarrifPercentage}");
+                                                            }
+                                                            else
+                                                            {
+                                                                pline.TarrrifPercentage = line.TarrifPercentage;
                                                             }
                                                         }
                                                     }
                                                 }
-                                                else
-                                                {
-                                                    line.CurrencyExchangeRateType = ExchangeRateTypes.System;
-                                                    pline.CurrencyExchangeRate = null;
-                                                }
-                                                pline.ExchangeRateType = line.CurrencyExchangeRateType;
+                                            }
+                                            else
+                                            {
+                                                pline.Item = item;
+                                                pline.UnitPrice = line.UnitPrice;
+                                                pline.Currency = currency;
                                             }
                                         }
                                         else
                                         {
-                                            pline.Item = item;
-                                            pline.UnitPrice = line.UnitPrice;
-                                            pline.Currency = currency;
+                                            modelState.AddErrors("UnitPrice", $"Invalid Unit Price {line.ItemCode}");
                                         }
                                     }
-                                    else
-                                    {
-                                        modelState.AddErrors("UnitPrice", $"Invalid Unit Price {line.ItemCode}");
-                                    }
+                                }
+                                if (!modelState.HasErrors)
+                                {
+                                    plist.PriceListLines.Add(pline);
                                 }
                             }
-                            if(!modelState.HasErrors)
-                            {
-                                plist.PriceListLines.Add(pline);
-                            }
+                        }
+                        else
+                        {
+                            modelState.AddErrors("Company/Accounting Period", $"{accountingPeriod.Name} is closed for company {company.Name}");
                         }
                     }
-                    else
+                    if (!modelState.HasErrors)
                     {
-                        modelState.AddErrors("Company/Accounting Period", $"{accountingPeriod.Name} is closed for company {company.Name}");
+                        newPriceLists.Add(plist);
+                    }
+                    count++;
+                    newProgress = (int)((double)count / (double)priceLists.Count() * 100.0);
+                    if(newProgress - oldProgress >= 1)
+                    {
+                        progress.Report(newProgress);
+                        oldProgress = newProgress;
                     }
                 }
                 if (!modelState.HasErrors)
                 {
-                    newPriceLists.Add(plist);
+                    foreach (var lst in newPriceLists)
+                    {
+                        _unitOfWork.PriceListRepository.Add(lst);
+                        _unitOfWork.Complete();
+                        lst.CompanyAccountingPeriod.PriceListId = lst.Id;
+                        lst.CompanyAccountingPeriod.PriceList = lst;
+                        _unitOfWork.Complete();
+                    }
+
                 }
-            }
-            if (!modelState.HasErrors)
-            {
-                foreach(var lst in newPriceLists)
-                {
-                    _unitOfWork.PriceListRepository.Add(lst);
-                    _unitOfWork.Complete();
-                    lst.CompanyAccountingPeriod.PriceListId = lst.Id;
-                    lst.CompanyAccountingPeriod.PriceList = lst;
-                    _unitOfWork.Complete();
-                }
-                
-            }
-            return modelState;
+                return modelState;
+            });
         }
         
         private ModelState ValidatePriceListLine(PriceListLine line,Company company)

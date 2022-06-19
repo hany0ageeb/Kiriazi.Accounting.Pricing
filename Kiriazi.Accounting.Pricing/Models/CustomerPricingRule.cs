@@ -189,7 +189,9 @@ namespace Kiriazi.Accounting.Pricing.Models
 
         public const string Company = "Company";
 
-        public static string[] AllCustomerPricingRuleTypes { get; } = new string[] { AllItems, ItemType, Item, ItemGroup, Company };
+        public const string ItemInCompany = "Company/Item";
+
+        public static string[] AllCustomerPricingRuleTypes { get; } = new string[] { AllItems, ItemType, Item, ItemGroup, Company, ItemInCompany };
     }
     public static class IncrementDecrementTypes
     {

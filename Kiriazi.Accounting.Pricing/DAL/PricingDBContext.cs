@@ -35,6 +35,21 @@ namespace Kiriazi.Accounting.Pricing.DAL
                 {
                     Code = "ROLL",
                     Name = "ROLL"
+                },
+                new Uom()
+                {
+                    Code = "SUIT",
+                    Name = "SUIT"
+                },
+                new Uom()
+                {
+                    Code = "TUBE",
+                    Name = "Tube"
+                },
+                new Uom()
+                {
+                    Code = "SET",
+                    Name  = "Set/Group"
                 }
            };
             ItemType[] itemTypes = new ItemType[]
@@ -48,14 +63,6 @@ namespace Kiriazi.Accounting.Pricing.DAL
                     Name = "صنف مصنع"
                 }
             };
-            Group[] groups = new Group[]
-           {
-                new Group()
-                {
-                    Name = "الزجاج",
-                    Description = ""
-                }
-           };
             
             Currency[] currencies = new Currency[]
            {
@@ -81,74 +88,102 @@ namespace Kiriazi.Accounting.Pricing.DAL
                     IsEnabled = true
                 }
            };
-            /*
-            CurrencyExchangeRate[] exchangeRates = new CurrencyExchangeRate[]
-            {
-                new CurrencyExchangeRate()
+            UserCommand[] commands = new UserCommand[]
+           {
+                new UserCommand()
                 {
-                    ConversionDate = new System.DateTime(System.DateTime.Now.Year,System.DateTime.Now.Month,System.DateTime.Now.Day,0,0,0),
-                    FromCurrency = currencies[1],
-                    ToCurrency = currencies[0],
-                    Rate =  16.0M
+                   DisplayName = "Currency",
+                   Name = "Currency",
+                   FormType = typeof(Views.CurrenciesView).FullName,
+                   Sequence = 80
                 },
-                new CurrencyExchangeRate()
+                new UserCommand()
                 {
-                    ConversionDate = new System.DateTime(System.DateTime.Now.Year,System.DateTime.Now.Month,System.DateTime.Now.Day,0,0,0),
-                    FromCurrency = currencies[2],
-                    ToCurrency = currencies[0],
-                    Rate = 17.8448M
+                    DisplayName = "Company",
+                    Name = "Company",
+                    FormType = typeof(Views.CompaniesView).FullName,
+                    Sequence = 60
                 },
-                new CurrencyExchangeRate()
+                new UserCommand()
                 {
-                    ConversionDate = new System.DateTime(System.DateTime.Now.Year,System.DateTime.Now.Month,System.DateTime.Now.Day,0,0,0),
-                    FromCurrency = currencies[3],
-                    ToCurrency = currencies[0],
-                    Rate = 2.3251M
+                    DisplayName = "Unit Of Measure",
+                    Name = "Unit Of Measure",
+                    FormType = typeof(Views.UomsView).FullName,
+                    Sequence = 70
                 },
-                new CurrencyExchangeRate()
+                new UserCommand()
                 {
-                    ConversionDate = new System.DateTime(System.DateTime.Now.Year,System.DateTime.Now.Month,System.DateTime.Now.Day-1,0,0,0),
-                    FromCurrency = currencies[1],
-                    ToCurrency = currencies[0],
-                    Rate = 16.0M
+                    DisplayName = "Item Groups",
+                    Name = "Item Groups",
+                    FormType = typeof(Views.GroupsView).FullName,
+                    Sequence = 110
                 },
-                new CurrencyExchangeRate()
+                new UserCommand()
                 {
-                    ConversionDate = new System.DateTime(System.DateTime.Now.Year,System.DateTime.Now.Month,System.DateTime.Now.Day-1,0,0,0),
-                    FromCurrency = currencies[2],
-                    ToCurrency = currencies[0],
-                    Rate = 17.8448M
+                    DisplayName = "Customs Tarrif",
+                    Name = "Customs Tarrif",
+                    FormType = typeof(Views.TarrifsView).FullName,
+                    Sequence = 50
                 },
-                new CurrencyExchangeRate()
+                new UserCommand()
                 {
-                    ConversionDate = new System.DateTime(System.DateTime.Now.Year,System.DateTime.Now.Month,System.DateTime.Now.Day-1,0,0,0),
-                    FromCurrency = currencies[3],
-                    ToCurrency = currencies[0],
-                    Rate = 2.3251M
+                    DisplayName = "Item",
+                    Name = "Item",
+                    FormType = typeof(Views.ItemsView).FullName,
+                    Sequence = 10
+                },
+                new UserCommand()
+                {
+                    DisplayName = "Accounting Period",
+                    Name = "Accounting Period",
+                    FormType = typeof(Views.AccountingPeriodsView).FullName,
+                    Sequence = 30
+                },
+                new UserCommand()
+                {
+                    DisplayName = "Raw Material Price List",
+                    Name = "Raw Material Price List",
+                    FormType = typeof(Views.PriceListsView).FullName,
+                    Sequence = 40
+                },
+                new UserCommand()
+                {
+                    DisplayName = "Products Trees",
+                    Name = "Products Trees",
+                    FormType = typeof(Views.ItemTreesView).FullName,
+                    Sequence = 50
+                },
+                new UserCommand()
+                {
+                    DisplayName = "Daily Currency Exchange Rates",
+                    Name = "Daily Currency Exchange Rates",
+                    FormType = typeof(Views.DailyCurrencyExchangeRatesView).FullName,
+                    Sequence = 20
+                },
+                new UserCommand()
+                {
+                    DisplayName = "Customers",
+                    Name = "Customers",
+                    FormType = typeof(Views.CustomersView).FullName,
+                    Sequence = 90
+                },
+                new UserCommand()
+                {
+                    DisplayName = "Customer Price List",
+                    Name = "Customer Price List",
+                    FormType = typeof(Views.CustomerPriceListSearchView).FullName,
+                    Sequence = 100
+                },
+                new UserCommand()
+                {
+                    DisplayName = "Users",
+                    Name = "Users",
+                    FormType = typeof(Views.UsersView).FullName,
+                    Sequence = 150
                 }
-            };
-            */
-            Tarrif[] tarrifs = new Tarrif[]
-            {
-                new Tarrif()
-                {
-                    Code = "28/12/12/00/00",
-                    Name = "أوكسى كلوريد الفسفور",
-                    PercentageAmount = 2.0M
-                },
-                new Tarrif()
-                {
-                    Code = "40/10/19/00/30",
-                    Name = "سيور نقل مواد أخر ‘ من مطاط مبركن مقواه بمواد أخر ‘ بعرض يتجاوز 160سم .",
-                    PercentageAmount = 2.0M
-                },
-                new Tarrif()
-                {
-                    Code = "40/12/90/00/00",
-                    Name = "اطارات مصمتة أو اطارات جوفاء [نصف مصمتة ] ، أشرطةللاطارات ، بطانات أنابيب [ فلابس ] ، من مطاط .",
-                    PercentageAmount = 10.0M
-                }
-            };
+           };
+           
+            
             Company[] companies = new Company[]
             {
                     new Company()
@@ -180,218 +215,24 @@ namespace Kiriazi.Accounting.Pricing.DAL
                         Currency = currencies[0]
                     }
             };
-            Item[] items = new Item[]
-           {
-               //0
-                new Item()
-                {
-                    Code = "3/4K",
-                    EnglishName = "",
-                    ArabicName = "سلك شعر 3/4مم اسود",
-                    UomId = uoms[3].Id,
-                    Uom = uoms[2],
-                    ItemTypeId = itemTypes[0].Id,
-                    ItemType = itemTypes[0]
-                },
-                //1
-                new Item()
-                {
-                    Code = "3*53C",
-                    EnglishName = "",
-                    ArabicName = "غطاء شعله صغيره اسود سوبر",
-                    UomId = uoms[3].Id,
-                    Uom = uoms[3],
-                    ItemTypeId = itemTypes[0].Id,
-                    ItemType = itemTypes[0]
-                    
-                },
-                //2
-                new Item()
-                {
-                    Code = "SAN330I",
-                    EnglishName = "",
-                    ArabicName="كريستال SAN",
-                    Uom = uoms[1],
-                    ItemTypeId = itemTypes[0].Id,
-                    ItemType = itemTypes[0],
-                    Tarrif = tarrifs[0]
-                },
-                //3
-                new Item()
-                {
-                    Code = "PLSRAFB000500000",
-                    ArabicName = "رف اعلى الاداج  K460/2",
-                    EnglishName = "",
-                    UomId = uoms[0].Id,
-                    Uom = uoms[0],
-                    ItemTypeId = itemTypes[1].Id,
-                    ItemType = itemTypes[1]
-                }
-           };
-            ItemRelation[] relations = new ItemRelation[]
-            {
-                new ItemRelation()
-                {
-                    Parent = items[3],
-                    Child = items[2],
-                    Quantity = 1.12M,
-                    Company = companies[0]
-                }
-            };
-            CompanyItemAssignment[] companyItemAssignments = new CompanyItemAssignment[]
-            {
-                new CompanyItemAssignment()
-                {
-                    Item = items[0],
-                    Company = companies[0],
-                    Group = groups[0],
-                    NameAlias = ""
-                },
-                new CompanyItemAssignment()
-                {
-                    Item = items[1],
-                    Company = companies[0],
-                    Group = groups[0],
-                    NameAlias = ""
-                },
-                new CompanyItemAssignment()
-                {
-                    Item = items[2],
-                    Company = companies[0],
-                    Group = groups[0],
-                    NameAlias = ""
-                },
-                new CompanyItemAssignment()
-                {
-                    Item = items[3],
-                    Company = companies[0],
-                    Group = groups[0],
-                    NameAlias = ""
-                }
-            };
-            int month = System.DateTime.Now.Month;
-            int year = System.DateTime.Now.Year;
-            System.DateTime fromDate = new System.DateTime(year, month, 1);
-            System.DateTime toDate = fromDate.AddMonths(3).AddHours(23).AddMinutes(59).AddSeconds(59);
-            AccountingPeriod[] accountingPeriods = new AccountingPeriod[]
-            {
-                new AccountingPeriod()
-                {
-                    Name = $"{month}/{year} To {toDate.Month}/{toDate.Year}",
-                    Description = "",
-                    FromDate = fromDate,
-                    ToDate = toDate
-                }
-            };
-            CompanyAccountingPeriod[] companyAccountingPeriods = new CompanyAccountingPeriod[]
-            {
-                new CompanyAccountingPeriod()
-                {
-                    AccountingPeriod = accountingPeriods[0],
-                    Company = companies[0],
-                    State = AccountingPeriodStates.Opened
-                }
-            };
-            PriceList[] priceLists = new PriceList[]
-            {
-                new PriceList()
-                {
-                    Name = "Eng Initial",
-                    CompanyAccountingPeriod = companyAccountingPeriods[0],
-                    PriceListLines = new System.Collections.Generic.List<PriceListLine>()
-                    {
-                        new PriceListLine()
-                        {
-                            Item = items[2],
-                            UnitPrice = 5.0M,
-                            Currency = currencies[1],
-                            ExchangeRateType = ExchangeRateTypes.System,
-                            CurrencyExchangeRate = null,
-                            TarrifType = ExchangeRateTypes.System,
-                            TarrrifPercentage = null
-                        }
-                    }
-                }
-            };
             Customer[] customers = new Customer[]
             {
                 new Customer()
                 {
                     Name = "مراكز الصيانة",
                     Description = "مراكز الصيانة"
-                    /*,
-                    Rules = new System.Collections.Generic.List<CustomerPricingRule>()
-                    {
-                        new CustomerPricingRule()
-                        {
-                            IncrementDecrement = IncrementDecrementTypes.Increment,
-                            Amount = 35M,
-                            RuleAmountType = RuleAmountTypes.Percentage,
-                            RuleType = CustomerPricingRuleTypes.ItemType,
-                            ItemType = itemTypes[0]
-                        },
-                        new CustomerPricingRule()
-                        {
-                            IncrementDecrement = IncrementDecrementTypes.Increment,
-                            Amount = 10M,
-                            RuleAmountType = RuleAmountTypes.Percentage,
-                            RuleType = CustomerPricingRuleTypes.ItemType,
-                            ItemType = itemTypes[1]
-                        }
-                    }
-                    */
+                    
                 },
                 new Customer()
                 {
                     Name = "فولكان",
                     Description = "فولكان"
-                    /*,
-                    Rules = new System.Collections.Generic.List<CustomerPricingRule>()
-                    {
-                        new CustomerPricingRule()
-                        {
-                            IncrementDecrement = IncrementDecrementTypes.Increment,
-                            Amount = 25M,
-                            RuleAmountType = RuleAmountTypes.Percentage,
-                            RuleType = CustomerPricingRuleTypes.ItemType,
-                            ItemType = itemTypes[0]
-                        },
-                        new CustomerPricingRule()
-                        {
-                            IncrementDecrement = IncrementDecrementTypes.Increment,
-                            Amount = 10M,
-                            RuleAmountType = RuleAmountTypes.Percentage,
-                            RuleType = CustomerPricingRuleTypes.ItemType,
-                            ItemType = itemTypes[1]
-                        }
-                    }
-                    */
+                   
                 },
                 new Customer()
                 {
                     Name = "التصدير",
                     Description = "التصدير"
-                    /*,
-                     Rules = new System.Collections.Generic.List<CustomerPricingRule>()
-                    {
-                        new CustomerPricingRule()
-                        {
-                            IncrementDecrement = IncrementDecrementTypes.Increment,
-                            Amount = 25M,
-                            RuleAmountType = RuleAmountTypes.Percentage,
-                            RuleType = CustomerPricingRuleTypes.ItemType,
-                            ItemType = itemTypes[0]
-                        },
-                        new CustomerPricingRule()
-                        {
-                            IncrementDecrement = IncrementDecrementTypes.Increment,
-                            Amount = 11M,
-                            RuleAmountType = RuleAmountTypes.Percentage,
-                            RuleType = CustomerPricingRuleTypes.ItemType,
-                            ItemType = itemTypes[1]
-                        }
-                    }
-                    */
                 },
                 new Customer()
                 {
@@ -399,23 +240,118 @@ namespace Kiriazi.Accounting.Pricing.DAL
                     Description = "تحت التشغيل"
                 }
             };
-            //context.AccountingPeriods.AddRange(accountingPeriods);
+            User[] users = new User[]
+            {
+                new User()
+                {
+                    UserName = "admin",
+                    Password = "admin",
+                    EmployeeName = "admin",
+                    State = UserStates.Active
+                }
+            };
+            UserCommandAssignment[] userCommandAssignments = new UserCommandAssignment[]
+            {
+                new UserCommandAssignment()
+                {
+                    User = users[0],
+                    Command = commands[0],
+                    DisplayName = commands[0].DisplayName,
+                    Sequence = 10
+                },
+                new UserCommandAssignment()
+                {
+                    User = users[0],
+                    Command = commands[1],
+                    DisplayName = commands[1].DisplayName,
+                    Sequence = 20
+                },
+                new UserCommandAssignment()
+                {
+                    User = users[0],
+                    Command = commands[2],
+                    DisplayName = commands[2].DisplayName,
+                    Sequence = 30
+                },
+                new UserCommandAssignment()
+                {
+                    User = users[0],
+                    Command = commands[3],
+                    DisplayName = commands[3].DisplayName,
+                    Sequence = 40
+                },
+                new UserCommandAssignment()
+                {
+                    User = users[0],
+                    Command = commands[4],
+                    DisplayName = commands[4].DisplayName,
+                    Sequence = 50
+                },
+                new UserCommandAssignment()
+                {
+                    User = users[0],
+                    Command = commands[5],
+                    DisplayName = commands[5].DisplayName,
+                    Sequence = 60
+                },
+                new UserCommandAssignment()
+                {
+                    User = users[0],
+                    Command = commands[6],
+                    DisplayName = commands[6].DisplayName,
+                    Sequence = 70
+                },
+                new UserCommandAssignment()
+                {
+                    User = users[0],
+                    Command = commands[7],
+                    DisplayName = commands[7].DisplayName,
+                    Sequence = 80
+                },
+                new UserCommandAssignment()
+                {
+                    User = users[0],
+                    Command = commands[8],
+                    DisplayName = commands[8].DisplayName,
+                    Sequence = 90
+                },
+                new UserCommandAssignment()
+                {
+                    User = users[0],
+                    Command = commands[9],
+                    DisplayName = commands[9].DisplayName,
+                    Sequence = 90
+                },
+                new UserCommandAssignment()
+                {
+                    User = users[0],
+                    Command = commands[10],
+                    DisplayName = commands[10].DisplayName,
+                    Sequence = 90
+                },
+                new UserCommandAssignment()
+                {
+                    User = users[0],
+                    Command = commands[11],
+                    DisplayName = commands[11].DisplayName,
+                    Sequence = 100
+                },
+                new UserCommandAssignment()
+                {
+                    User = users[0],
+                    Command = commands[12],
+                    DisplayName = commands[12].DisplayName,
+                    Sequence = 110
+                }
+            };
             context.Uoms.AddRange(uoms);
             context.ItemTypes.AddRange(itemTypes);
-            //context.Groups.AddRange(groups);
-            //context.Items.AddRange(items);
             context.Currencies.AddRange(currencies);
-           //context.Tarrifs.AddRange(tarrifs);
             context.Companies.AddRange(companies);
-            //context.CompanyAccountingPeriods.AddRange(companyAccountingPeriods);
-            //context.SaveChanges();
-            //companyAccountingPeriods[0].PriceListId = priceLists[0].Id;
-            //companyAccountingPeriods[0].PriceList = priceLists[0];
-            //context.CompanyItemAssignments.AddRange(companyItemAssignments);
-            //context.PriceLists.AddRange(priceLists);
-            //context.ItemRelations.AddRange(relations);
-            //context.CurrenciesExchangeRates.AddRange(exchangeRates);
             context.Customers.AddRange(customers);
+            context.UserCommands.AddRange(commands);
+            context.Users.AddRange(users);
+            context.UserCommandAssignments.AddRange(userCommandAssignments);
             context.SaveChanges();
         }
        
@@ -437,6 +373,11 @@ namespace Kiriazi.Accounting.Pricing.DAL
         public DbSet<CompanyItemAssignment> CompanyItemAssignments { get; set; }
         public DbSet<CustomerItemAssignment> CustomerItemAssignments { get; set; }
         public DbSet<ItemRelation> ItemRelations { get; set; }
+        public DbSet<UserCommand> UserCommands { get; set; }
+        public DbSet<UserReport> Reports { get; set; }
+        public DbSet<UserCommandAssignment> UserCommandAssignments { get; set; }
+        public DbSet<UserReportAssignment> UserReportAssignments { get; set; }
+        public DbSet<User> Users { get; set; }
 
         public PricingDBContext()
             : base("PricingDBLocalConnection")
@@ -601,6 +542,11 @@ namespace Kiriazi.Accounting.Pricing.DAL
                  .HasIndex(e => new { ItemId = e.ItemId, PriceListId = e.PriceListId })
                  .IsUnique()
                  .HasName("Idx_Unq_Item_PriceList_Id");
+            modelBuilder
+                .Entity<UserCommand>()
+                .HasIndex(e => e.Name)
+                .IsUnique(true)
+                .HasName("Idx_User_Command_Name_UNQ");
         }
         
     }

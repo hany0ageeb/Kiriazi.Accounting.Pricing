@@ -15,10 +15,12 @@ namespace Kiriazi.Accounting.Pricing.Views
     public partial class CustomerPriceListsView : Form
     {
         private BindingList<CustomerPriceListViewModel> _lines;
+        private List<CustomerPriceListViewModel> _allLines;
         public CustomerPriceListsView(IList<CustomerPriceListViewModel> lines)
         {
             InitializeComponent();
             _lines = new BindingList<CustomerPriceListViewModel>(lines);
+            _allLines = new List<CustomerPriceListViewModel>(lines);
             Initialize();
         }
         private void Initialize()
@@ -110,6 +112,21 @@ namespace Kiriazi.Accounting.Pricing.Views
                 MainView main = this.MdiParent as MainView;
                 main.ClearExportMenuItemClickEventHandlers();
                 main.IsExportMenuItemEnabled = false;
+            };
+            IList<string> itemCodes = _allLines.Select(l => l.ItemCode).ToList();
+            itemCodes.Insert(0, "");
+            cboItems.DataSource = itemCodes;
+            cboItems.SelectedIndexChanged += (o, e) =>
+            {
+                string itemCode = cboItems.SelectedItem as string;
+                if (!string.IsNullOrEmpty(itemCode))
+                {
+                    dataGridView1.DataSource = new BindingList<CustomerPriceListViewModel>(_allLines.Where(l=>l.ItemCode==itemCode).Select(l => l).ToList());
+                }
+                else
+                {
+                    dataGridView1.DataSource = new BindingList<CustomerPriceListViewModel>(_allLines.Select(l => l).ToList());
+                }
             };
         }
         private void ExportMenuItem_Click(object sender,EventArgs args)

@@ -50,6 +50,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.btnCustomers = new System.Windows.Forms.Button();
             this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
             this.btnClose = new System.Windows.Forms.Button();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.flowLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.itemsGrid)).BeginInit();
@@ -75,7 +76,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.57604F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 74.42397F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 121F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 356F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 361F));
             this.tableLayoutPanel1.Controls.Add(this.btnSearch, 3, 2);
             this.tableLayoutPanel1.Controls.Add(this.label5, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.txtAlias, 3, 1);
@@ -118,7 +119,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             // 
             // txtAlias
             // 
-            this.txtAlias.Location = new System.Drawing.Point(672, 35);
+            this.txtAlias.Location = new System.Drawing.Point(667, 35);
             this.txtAlias.Name = "txtAlias";
             this.txtAlias.Size = new System.Drawing.Size(326, 23);
             this.txtAlias.TabIndex = 7;
@@ -126,7 +127,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(551, 32);
+            this.label4.Location = new System.Drawing.Point(546, 32);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(67, 15);
             this.label4.TabIndex = 6;
@@ -134,7 +135,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             // 
             // txtEnglishName
             // 
-            this.txtEnglishName.Location = new System.Drawing.Point(672, 3);
+            this.txtEnglishName.Location = new System.Drawing.Point(667, 3);
             this.txtEnglishName.Name = "txtEnglishName";
             this.txtEnglishName.Size = new System.Drawing.Size(326, 23);
             this.txtEnglishName.TabIndex = 5;
@@ -142,7 +143,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(551, 0);
+            this.label3.Location = new System.Drawing.Point(546, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(80, 15);
             this.label3.TabIndex = 4;
@@ -159,7 +160,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             // 
             // txtCode
             // 
-            this.txtCode.Location = new System.Drawing.Point(143, 3);
+            this.txtCode.Location = new System.Drawing.Point(142, 3);
             this.txtCode.Name = "txtCode";
             this.txtCode.Size = new System.Drawing.Size(324, 23);
             this.txtCode.TabIndex = 1;
@@ -175,7 +176,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             // 
             // txtArabicName
             // 
-            this.txtArabicName.Location = new System.Drawing.Point(143, 35);
+            this.txtArabicName.Location = new System.Drawing.Point(142, 35);
             this.txtArabicName.Name = "txtArabicName";
             this.txtArabicName.Size = new System.Drawing.Size(324, 23);
             this.txtArabicName.TabIndex = 3;
@@ -184,7 +185,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             // 
             this.cboItemTypes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboItemTypes.FormattingEnabled = true;
-            this.cboItemTypes.Location = new System.Drawing.Point(143, 62);
+            this.cboItemTypes.Location = new System.Drawing.Point(142, 62);
             this.cboItemTypes.Name = "cboItemTypes";
             this.cboItemTypes.Size = new System.Drawing.Size(324, 23);
             this.cboItemTypes.TabIndex = 9;
@@ -319,5 +320,6 @@ namespace Kiriazi.Accounting.Pricing.Views
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel4;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Button btnCustomers;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
     }
 }

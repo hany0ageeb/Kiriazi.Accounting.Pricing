@@ -76,6 +76,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             cboItemTypes.DisplayMember = nameof(_model.ItemType.Name);
             cboItemTypes.ValueMember = "Self";
             cboItemTypes.DataBindings.Add(new Binding(nameof(cboItemTypes.SelectedItem), _model, nameof(_model.ItemType)));
+            cboItemTypes.DataBindings.Add(new Binding(nameof(cboItemTypes.Enabled), _model, nameof(_model.CanItemTypeChange)));
             //
             cboTarrifs.DataBindings.Clear();
             cboTarrifs.DataSource = _model.Tarrifs;
@@ -111,6 +112,7 @@ namespace Kiriazi.Accounting.Pricing.Views
                         errorProvider1.SetError(txtCode, errors[0]);
                     }
                     errors = modelState.GetErrors("ArabicName");
+                    if(errors.Count>0)
                     {
                         errorProvider1.SetError(txtArabicName, errors[0]);
                     }

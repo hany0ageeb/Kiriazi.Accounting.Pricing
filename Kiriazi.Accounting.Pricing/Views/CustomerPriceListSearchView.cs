@@ -26,7 +26,7 @@ namespace Kiriazi.Accounting.Pricing.Views
         }
         private void Initialize()
         {
-            pickPriceListDate.MaxDate = DateTime.Now;
+            //pickPriceListDate.MaxDate = DateTime.Now;
             pickPriceListDate.DataBindings.Clear();
             pickPriceListDate.DataBindings.Add(new Binding(nameof(pickPriceListDate.Value),_model,nameof(_model.Date))
             {
@@ -61,6 +61,7 @@ namespace Kiriazi.Accounting.Pricing.Views
         {
             try
             {
+                Cursor = Cursors.WaitCursor;
                 var lines = _companyController.FindCustomerPriceList(_model);
                 CustomerPriceListsView customerPriceListsView = new CustomerPriceListsView(lines);
                 customerPriceListsView.MdiParent = this.MdiParent;
@@ -69,6 +70,10 @@ namespace Kiriazi.Accounting.Pricing.Views
             catch(Exception ex)
             {
                 _ = MessageBox.Show(this, ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
             }
         }
     }

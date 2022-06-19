@@ -59,6 +59,9 @@ namespace Kiriazi.Accounting.Pricing.Reports.ParametersForms
             { 
                 DataSourceUpdateMode = DataSourceUpdateMode.OnValidation
             });
+            //
+            pickPriceListDate.DataBindings.Clear();
+            pickPriceListDate.DataBindings.Add(new Binding(nameof(pickPriceListDate.Value),_model,nameof(_model.Date)) { DataSourceUpdateMode = DataSourceUpdateMode.OnPropertyChanged });
         }
         private void btnCancel_Click(object sender, EventArgs e)
         {
@@ -69,6 +72,7 @@ namespace Kiriazi.Accounting.Pricing.Reports.ParametersForms
         {
             try
             {
+                Cursor = Cursors.WaitCursor;
                 IList<ViewModels.CustomerPriceListViewModel> data = _companyController.FindCustomerPriceList(_model);
                 Reports.ReportsForms.CustomerPriceListReportForm customerPriceListReportForm = new ReportsForms.CustomerPriceListReportForm(data);
                 customerPriceListReportForm.MdiParent = this.MdiParent;
@@ -78,6 +82,10 @@ namespace Kiriazi.Accounting.Pricing.Reports.ParametersForms
             catch(Exception ex)
             {
                 _ = MessageBox.Show(this, ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
             }
         }
     }

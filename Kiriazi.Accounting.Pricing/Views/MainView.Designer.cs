@@ -39,12 +39,16 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.groupsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.customesTarrifToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.itemCompanyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.itemCustomerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.reportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.customerPriceListReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.menuStrip1.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -77,7 +81,8 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.itemsToolStripMenuItem,
             this.groupsToolStripMenuItem,
             this.customesTarrifToolStripMenuItem,
-            this.itemCompanyToolStripMenuItem});
+            this.itemCompanyToolStripMenuItem,
+            this.itemCustomerToolStripMenuItem});
             this.importToolStripMenuItem.Name = "importToolStripMenuItem";
             this.importToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.I)));
             this.importToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
@@ -129,8 +134,15 @@ namespace Kiriazi.Accounting.Pricing.Views
             // 
             this.itemCompanyToolStripMenuItem.Name = "itemCompanyToolStripMenuItem";
             this.itemCompanyToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
-            this.itemCompanyToolStripMenuItem.Text = "Item / Company Assignment";
+            this.itemCompanyToolStripMenuItem.Text = "Item / Company";
             this.itemCompanyToolStripMenuItem.Click += new System.EventHandler(this.itemCompanyToolStripMenuItem_Click);
+            // 
+            // itemCustomerToolStripMenuItem
+            // 
+            this.itemCustomerToolStripMenuItem.Name = "itemCustomerToolStripMenuItem";
+            this.itemCustomerToolStripMenuItem.Size = new System.Drawing.Size(230, 22);
+            this.itemCustomerToolStripMenuItem.Text = "Item / Customer";
+            this.itemCustomerToolStripMenuItem.Click += new System.EventHandler(this.itemCustomerToolStripMenuItem_Click);
             // 
             // exportToolStripMenuItem
             // 
@@ -148,10 +160,6 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
-            // openFileDialog1
-            // 
-            this.openFileDialog1.FileName = "openFileDialog1";
-            // 
             // reportToolStripMenuItem
             // 
             this.reportToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -167,11 +175,32 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.customerPriceListReportToolStripMenuItem.Text = "Customer Price List Report";
             this.customerPriceListReportToolStripMenuItem.Click += new System.EventHandler(this.customerPriceListReportToolStripMenuItem_Click);
             // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripProgressBar1});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 476);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(827, 22);
+            this.statusStrip1.TabIndex = 3;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripProgressBar1
+            // 
+            this.toolStripProgressBar1.Name = "toolStripProgressBar1";
+            this.toolStripProgressBar1.Size = new System.Drawing.Size(100, 16);
+            this.toolStripProgressBar1.Visible = false;
+            // 
             // MainView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(827, 498);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.IsMdiContainer = true;
@@ -181,6 +210,8 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -203,5 +234,8 @@ namespace Kiriazi.Accounting.Pricing.Views
         private System.Windows.Forms.ToolStripMenuItem dailyCurrencyExchangeRateToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem reportToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem customerPriceListReportToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem itemCustomerToolStripMenuItem;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
     }
 }

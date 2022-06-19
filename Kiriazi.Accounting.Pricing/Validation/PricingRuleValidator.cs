@@ -11,6 +11,28 @@ namespace Kiriazi.Accounting.Pricing.Validation
             
             switch (entity.RuleType)
             {
+                case CustomerPricingRuleTypes.ItemInCompany:
+                    if (entity.Item == null || entity.Item.Id==System.Guid.Empty)
+                    {
+                        modelState.AddErrors(nameof(entity.Item), "Invalid Pricing Rule Item.");
+                    }
+                    if(entity.Company==null || entity.Company.Id == System.Guid.Empty)
+                    {
+                        modelState.AddErrors(nameof(entity.Company), "Invalid Pricing Rule Company.");
+                    }
+                    if (entity.Group != null && entity.Group?.Id != System.Guid.Empty)
+                    {
+                        modelState.AddErrors(nameof(entity.Group), $"Invalid Group {entity.Group?.Name} for rule type {entity.RuleType}");
+                    }
+                    if(entity.ItemType != null && entity.ItemType?.Id != System.Guid.Empty)
+                    {
+                        modelState.AddErrors(nameof(entity.ItemType), $"Invalid Item Type {entity.ItemType?.Name} for rule type {entity.RuleType}");
+                    }
+                    if(entity.Customer!=null && entity.Customer?.Id != System.Guid.Empty)
+                    {
+                        modelState.AddErrors(nameof(entity.Customer), $"Invalid Item Type {entity.Customer?.Name} for rule type {entity.RuleType}");
+                    }
+                    break;
                 case CustomerPricingRuleTypes.AllItems:
                     if (entity.Item != null)
                     {
@@ -148,6 +170,9 @@ namespace Kiriazi.Accounting.Pricing.Validation
                             modelState.AddErrors(nameof(entity.Group), $"Invalid Group: {entity.Group.Name} for rule type: {entity.RuleType}");
                         }
                     }
+                    break;
+                default:
+                    modelState.AddErrors(nameof(entity.RuleType), $"Invalid Rule Type {entity.RuleType}");
                     break;
             }
             switch (entity.RuleAmountType)

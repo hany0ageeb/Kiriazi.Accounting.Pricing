@@ -14,7 +14,7 @@ namespace Kiriazi.Accounting.Pricing.Validation
             }
             if(entity.Child == null)
             {
-                modelState.AddErrors(nameof(entity.Parent), "Invalid Component.");
+                modelState.AddErrors(nameof(entity.Child), "Invalid Component.");
             }
             if (entity.Parent?.Id == entity.Child?.Id)
             {

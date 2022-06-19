@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Kiriazi.Accounting.Pricing.Controllers
 {
@@ -252,7 +253,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                 component.ChildItem = _unitOfWork.ItemRepository.Find(predicate: itm => itm.Code == component.ItemCode).FirstOrDefault();
                 if (component.ChildItem == null)
                 {
-                    temp.AddErrors("ChildItem", "Invalid Component");
+                    temp.AddErrors("ChildItem", $"Invalid Component {component.ItemCode} .");
                     modelState.AddModelState(temp);
                     return modelState;
                 }
@@ -260,6 +261,10 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                 {
                     foreach (Guid companyId in model.CompaniesIds)
                     {
+                        if(_unitOfWork.ItemRelationRepository.Find(predicate: r => r.ParentId == model.ParentItem.Id && r.ChildId == component.ChildItem.Id && r.CompanyId == companyId).FirstOrDefault() != null)
+                        {
+                            temp.AddErrors("Paremt/Child/Company", $"{model.ParentItem.Code}/{component.ChildItem.Code} already exists");
+                        }
                         if (component.ChildItem.IsChild(model.ParentItem.Id, companyId))
                         {
                             temp.AddErrors("ChildItem", "Invalid Component / Cyclic Relation");
@@ -279,63 +284,128 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             return modelState;
         }
 
-        public ModelState ImportFromExcelFile(string fileName)
+        public async Task<ModelState> ImportFromExcelFileAsync(string fileName,IProgress<int> progress)
         {
-            DAL.Excel.ItemParentChildDTORepository parentChildRepository = new DAL.Excel.ItemParentChildDTORepository(fileName);
-            var parentChildDTOs = parentChildRepository.Find();
-            List<ItemRelation> parentChilds = new List<ItemRelation>();
-            
-            var companies = _unitOfWork.CompanyRepository.Find().ToList();
-            foreach(var parentChildDTO in parentChildDTOs)
+            return await Task.Run<ModelState>(
+                async ()=>
             {
-               
+                DAL.Excel.ItemParentChildDTORepository parentChildRepository = new DAL.Excel.ItemParentChildDTORepository(fileName);
+                var parentChildDTOs = parentChildRepository.Find();
+                progress.Report(0);
+                List<ItemRelation> parentChilds = new List<ItemRelation>();
+                var companies = _unitOfWork.CompanyRepository.Find().ToList();
+                var allItems = _unitOfWork.ItemRepository.Find().ToList();
+                int count = 0;
+                int oldProgress = 0;
+                foreach (var parentChildDTO in parentChildDTOs)
+                {
+
                     if (!string.IsNullOrEmpty(parentChildDTO.CompanyName))
                     {
-                        parentChilds.Add(new ItemRelation()
+                        var temp = new ItemRelation()
                         {
-                            Parent = _unitOfWork.ItemRepository.Find(i => i.Code.Equals(parentChildDTO.AssemblyCode, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault(),
-                            Child = _unitOfWork.ItemRepository.Find(i => i.Code.Equals(parentChildDTO.ComponentCode, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault(),
+                            //Parent = _unitOfWork.ItemRepository.Find(i => i.Code.Equals(parentChildDTO.AssemblyCode, StringComparison.InvariantCultureIgnoreCase) && i.ItemTypeId == ItemTypeRepository.ManufacturedItemType.Id).FirstOrDefault(),
+                            //Child = _unitOfWork.ItemRepository.Find(i => i.Code.Equals(parentChildDTO.ComponentCode, StringComparison.InvariantCultureIgnoreCase) && i.ItemTypeId == ItemTypeRepository.RawItemType.Id).FirstOrDefault(),
+                            Parent = allItems.Where(i => i.Code.Equals(parentChildDTO.AssemblyCode, StringComparison.InvariantCultureIgnoreCase) && i.ItemTypeId == ItemTypeRepository.ManufacturedItemType.Id).FirstOrDefault(),
+                            Child = allItems.Where(i => i.Code.Equals(parentChildDTO.ComponentCode, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault(),
                             Quantity = parentChildDTO.Quantity,
-                            Company = companies.Where(c=>c.Name.Equals(parentChildDTO.CompanyName,StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault()
-                        });
+                            Company = companies.Where(c => c.Name.Equals(parentChildDTO.CompanyName, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault()
+                        };
+                        if (temp.Parent != null)
+                            temp.ParentId = temp.Parent.Id;
+                        if (temp.Child != null)
+                            temp.ChildId = temp.Child.Id;
+                        if (temp.Company != null)
+                            temp.CompanyId = temp.Company.Id;
+                        parentChilds.Add(temp);
                     }
                     else
                     {
-                        foreach(var comp in companies)
+                        foreach (var comp in companies)
                         {
-                            parentChilds.Add(new ItemRelation()
+                            var temp = new ItemRelation()
                             {
                                 Company = comp,
-                                Parent = _unitOfWork.ItemRepository.Find(i => i.Code.Equals(parentChildDTO.AssemblyCode, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault(),
-                                Child = _unitOfWork.ItemRepository.Find(i => i.Code.Equals(parentChildDTO.ComponentCode, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault(),
+                                //Parent = _unitOfWork.ItemRepository.Find(i => i.Code.Equals(parentChildDTO.AssemblyCode, StringComparison.InvariantCultureIgnoreCase) && i.ItemTypeId == ItemTypeRepository.ManufacturedItemType.Id).FirstOrDefault(),
+                                //Child = _unitOfWork.ItemRepository.Find(i => i.Code.Equals(parentChildDTO.ComponentCode, StringComparison.InvariantCultureIgnoreCase) && i.ItemTypeId == ItemTypeRepository.RawItemType.Id).FirstOrDefault(),
+                                Parent = allItems.Where(i => i.Code.Equals(parentChildDTO.AssemblyCode, StringComparison.InvariantCultureIgnoreCase) && i.ItemTypeId == ItemTypeRepository.ManufacturedItemType.Id).FirstOrDefault(),
+                                Child = allItems.Where(i => i.Code.Equals(parentChildDTO.ComponentCode, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault(),
                                 Quantity = parentChildDTO.Quantity
-                            });
+                            };
+                            if (temp.Parent != null)
+                                temp.ParentId = temp.Parent.Id;
+                            if (temp.Child != null)
+                                temp.ChildId = temp.Child.Id;
+                            if (temp.Company != null)
+                                temp.CompanyId = temp.Company.Id;
+                            parentChilds.Add(temp);
                         }
                     }
-            }
-            return AddRange(parentChilds);
-        }
-        public ModelState AddRange(IList<ItemRelation> itemRelations)
-        {
-            ModelState modelState = new ModelState();
-            foreach(var relation in itemRelations)
-            {
-                var temp = _validator.Validate(relation);
-                if (!temp.HasErrors)
-                {
-                    if (!relation.Child.IsChild(relation.Parent.Id, relation.CompanyId))
+                    count++;
+                    int newProgress =(int)((double)count / (double)parentChildDTOs.Count() * 100.0);
+                    if (newProgress - oldProgress >= 1)
                     {
-                        _unitOfWork.ItemRelationRepository.Add(relation);
-                    }
-                    else
-                    {
-                        temp.AddErrors("Parent","Invalid Relation will cause cycle in the tree.");
+                        progress.Report(newProgress);
+                        oldProgress = newProgress;
                     }
                 }
-                modelState.AddModelState(temp);
-            }
-            _unitOfWork.Complete();
-            return modelState;
+                return await AddRangeAsync(parentChilds, parentChildDTOs.ToList(), progress);
+            });
+           
+        }
+        public async Task<ModelState> AddRangeAsync(IList<ItemRelation> itemRelations,IList<ItemParentChildDTO> parentChildDTOs,IProgress<int> progress)
+        {
+            return await Task.Run<ModelState>(
+                async () => 
+                {
+                    ModelState modelState = new ModelState();
+                    int index = 0;
+                    int count = 0;
+                    int oldProgress = 0;
+                    progress.Report(0);
+                    foreach (var relation in itemRelations)
+                    {
+                        var temp = _validator.Validate(relation);
+                        modelState.AddModelState(temp);
+                        if (!temp.HasErrors)
+                        {
+                            if (_unitOfWork.ItemRelationRepository.Find(predicate: r => r.ChildId == relation.ChildId && r.ParentId == relation.ParentId && r.CompanyId == relation.CompanyId).FirstOrDefault() != null)
+                            {
+                                temp.AddErrors("Assembly/Component/Company", $"{relation.Parent.Code}/{relation.Child.Code}/{relation.Company.Name} Already exist.");
+                            }
+                            if (!relation.Child.IsChild(relation.Parent.Id, relation.CompanyId))
+                            {
+                                _unitOfWork.ItemRelationRepository.Add(relation);
+                            }
+                            else
+                            {
+                                temp.AddErrors("Parent", $"Invalid Relation will cause cycle in the tree. Assembly Code: {relation.Parent.Code}, Component Code: {relation.Child.Code} .");
+                            }
+                        }
+                        else
+                        {
+                            if (temp.GetErrors("Parent").Count > 0)
+                                temp.GetErrors("Parent")[0] = $"Invalid Assembly Code: {parentChildDTOs[index].AssemblyCode}";
+                            if (temp.GetErrors("Child").Count > 0)
+                                temp.GetErrors("Child")[0] = $"Invalid Component Code: {parentChildDTOs[index].ComponentCode}";
+                            if (temp.GetErrors("Company").Count > 0)
+                                temp.GetErrors("Company")[0] = $"Invalid Company Name: {parentChildDTOs[index].CompanyName}";
+                        }
+                        index++;
+                        count++;
+                        int newProgress = (int)((double)count / (double)parentChildDTOs.Count() * 100.0);
+                        if (newProgress - oldProgress >= 1)
+                        {
+                            progress.Report(newProgress);
+                            oldProgress = newProgress;
+                        }
+                    }
+                    if (modelState.HasErrors)
+                        return modelState;
+                    _unitOfWork.Complete();
+                    return modelState;
+                });
+           
         }
         public Item FindItemByCode(string code)
         {

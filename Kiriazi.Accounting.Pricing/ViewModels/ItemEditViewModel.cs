@@ -13,7 +13,7 @@ namespace Kiriazi.Accounting.Pricing.ViewModels
         private Models.ItemType _itemType;
         private Models.Tarrif _tarrif;
         public Guid Id { get; private set; } = Guid.NewGuid();
-        public bool CanItemTypeChange { get; private set; } = true;
+        public bool CanItemTypeChange { get; set; } = true;
         public ItemEditViewModel(Models.Item item)
         {
             Id = item.Id;

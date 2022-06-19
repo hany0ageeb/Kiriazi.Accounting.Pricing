@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Npoi.Mapper;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -152,15 +153,64 @@ namespace Kiriazi.Accounting.Pricing.Views
             cboItemTypes.ValueMember = "Self";
             cboItemTypes.DataSource = _model.ItemTypes;
             //
-           // cboCompanies.DataBindings.Clear();
-           // cboCompanies.DataBindings.Add(new Binding(nameof(cboCompanies.SelectedItem),_model,nameof(_model.Company)) { DataSourceUpdateMode = DataSourceUpdateMode.OnPropertyChanged });
-           // cboCompanies.DataSource = _model.Companies;
-           // cboCompanies.DisplayMember = "Name";
-           // cboCompanies.ValueMember = "Self";
+            // cboCompanies.DataBindings.Clear();
+            // cboCompanies.DataBindings.Add(new Binding(nameof(cboCompanies.SelectedItem),_model,nameof(_model.Company)) { DataSourceUpdateMode = DataSourceUpdateMode.OnPropertyChanged });
+            // cboCompanies.DataSource = _model.Companies;
+            // cboCompanies.DisplayMember = "Name";
+            // cboCompanies.ValueMember = "Self";
+
+            saveFileDialog1.Filter = "Excel Files | *.xlsx";
+            saveFileDialog1.DefaultExt = "xlsx";
+            saveFileDialog1.InitialDirectory = Environment.CurrentDirectory;
+            saveFileDialog1.OverwritePrompt = true;
+            Leave += (o, e) =>
+            {
+                MainView mainView = this.MdiParent as MainView;
+                if (mainView != null)
+                {
+                    mainView.ClearExportMenuItemClickEventHandlers();
+                    mainView.IsExportMenuItemEnabled = false;
+                }
+            };
+            Enter += (o, e) =>
+            {
+                if (_items.Count > 0)
+                {
+                    MainView mainView = this.MdiParent as MainView;
+                    if (mainView != null)
+                    {
+                        mainView.AddExportMenuItemClickEventHandler(ExportDataToExile);
+                        mainView.IsExportMenuItemEnabled = true;
+                    }
+                }
+                else
+                {
+                    MainView mainView = this.MdiParent as MainView;
+                    if (mainView != null)
+                    {
+                        mainView.ClearExportMenuItemClickEventHandlers();
+                        mainView.IsExportMenuItemEnabled = false;
+                    }
+                }
+            };
+        }
+        private async void ExportDataToExile(Object sender,EventArgs args)
+        {
+            DialogResult result = saveFileDialog1.ShowDialog(this);
+            if (result == DialogResult.OK)
+            {
+                await _itemController.ExportToExcel(_items.ToList(), saveFileDialog1.FileName);
+            }
         }
         private void Search()
         {
             _items.Clear();
+            MainView mainView = this.MdiParent as MainView;
+            if (mainView != null)
+            {
+                mainView.ClearExportMenuItemClickEventHandlers();
+                mainView.IsExportMenuItemEnabled = false;
+            }
             var items = _itemController.Find(_model);
             foreach(var item in items)
             {
@@ -170,11 +220,23 @@ namespace Kiriazi.Accounting.Pricing.Views
             {
                 btnCompanies.Enabled = true;
                 btnCustomers.Enabled = true;
+                mainView = this.MdiParent as MainView;
+                if (mainView != null)
+                {
+                    mainView.AddExportMenuItemClickEventHandler(ExportDataToExile);
+                    mainView.IsExportMenuItemEnabled = true;
+                }
             }
             else
             {
                 btnCompanies.Enabled = false;
                 btnCustomers.Enabled = false;
+                mainView = this.MdiParent as MainView;
+                if (mainView != null)
+                {
+                    mainView.ClearExportMenuItemClickEventHandlers();
+                    mainView.IsExportMenuItemEnabled = false;
+                }
             }
         }
 

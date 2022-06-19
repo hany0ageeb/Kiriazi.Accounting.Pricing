@@ -13,4 +13,13 @@ namespace Kiriazi.Accounting.Pricing.Models
         [Column("Group Name")]
         public string GroupName { get; set; } = null;
     }
+    public class ItemCustomerDTO
+    {
+        [Column("Customer Name")]
+        public string CustomerName { get; set; }
+        [Column("Item Code")]
+        public string ItemCode { get; set; }
+        [Column("Item Name Alias")]
+        public string Alias { get; set; }
+    }
 }

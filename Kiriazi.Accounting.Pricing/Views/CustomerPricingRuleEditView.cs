@@ -168,6 +168,20 @@ namespace Kiriazi.Accounting.Pricing.Views
             {
                 switch (_rules[e.RowIndex].RuleType)
                 {
+                    case CustomerPricingRuleTypes.ItemInCompany:
+                        if(_rules[e.RowIndex].Company==null || _rules[e.RowIndex].Company.Id == Guid.Empty)
+                        {
+                            e.Cancel = true;
+                            System.Media.SystemSounds.Hand.Play();
+                            dataGridView1.Rows[e.RowIndex].ErrorText = "select a company from the list.";
+                        }
+                        else if (string.IsNullOrEmpty(_rules[e.RowIndex].ItemCode))
+                        {
+                            e.Cancel = true;
+                            System.Media.SystemSounds.Hand.Play();
+                            dataGridView1.Rows[e.RowIndex].ErrorText = "Invalid Item Code.";
+                        }
+                        break;
                     case CustomerPricingRuleTypes.AllItems:
                         if (!string.IsNullOrEmpty(_rules[e.RowIndex].ItemCode))
                         {
@@ -279,6 +293,17 @@ namespace Kiriazi.Accounting.Pricing.Views
                 string ruleType = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
                 switch (ruleType)
                 {
+                    case CustomerPricingRuleTypes.ItemInCompany:
+                        dataGridView1.Rows[e.RowIndex].Cells[nameof(CustomerPricingRule.Group)].ReadOnly = true;
+                        dataGridView1.Rows[e.RowIndex].Cells[nameof(CustomerPricingRule.ItemType)].ReadOnly = true;
+                        dataGridView1.Rows[e.RowIndex].Cells[nameof(CustomerPricingRule.ItemCode)].ReadOnly = false;
+                        dataGridView1.Rows[e.RowIndex].Cells[nameof(CustomerPricingRule.Company)].ReadOnly = false;
+                        if (e.RowIndex >=0 && e.RowIndex < _rules.Count)
+                        {
+                            _rules[e.RowIndex].Group = _model.Groups.Where(g => g.Id == Guid.Empty).FirstOrDefault();
+                            _rules[e.RowIndex].ItemType = _model.ItemTypes.Where(c => c.Id == Guid.Empty).FirstOrDefault();
+                        }
+                        break;
                     case CustomerPricingRuleTypes.AllItems:
                         dataGridView1.Rows[e.RowIndex].Cells[nameof(CustomerPricingRule.ItemCode)].ReadOnly = true;
                         dataGridView1.Rows[e.RowIndex].Cells[nameof(CustomerPricingRule.Group)].ReadOnly = true;

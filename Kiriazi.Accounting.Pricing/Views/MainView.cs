@@ -211,7 +211,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             }
         }
 
-        private void productionTreeToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void productionTreeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var result = openFileDialog1.ShowDialog(this);
             if (result == DialogResult.OK)
@@ -220,7 +220,13 @@ namespace Kiriazi.Accounting.Pricing.Views
                 {
                     Cursor = Cursors.WaitCursor;
                     Controllers.ItemRelationController itemRelationController = Program.ServiceProvider.GetRequiredService<Controllers.ItemRelationController>();
-                    ModelState modelState = itemRelationController.ImportFromExcelFile(openFileDialog1.FileName);
+                    toolStripProgressBar1.Visible = true;
+                    Progress<int> progress = new Progress<int>();
+                    progress.ProgressChanged += (o, evt) =>
+                    {
+                        toolStripProgressBar1.Value = evt;
+                    };
+                    ModelState modelState = await itemRelationController.ImportFromExcelFileAsync(openFileDialog1.FileName, progress);
                     if (modelState.HasErrors)
                     {
                         StringBuilder sb = new StringBuilder();
@@ -247,16 +253,21 @@ namespace Kiriazi.Accounting.Pricing.Views
                 }
                 catch(Exception ex)
                 {
-                    _ = MessageBox.Show(this, ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    if(ex.InnerException!=null)
+                        _ = MessageBox.Show(this, ex.Message+"\n"+ex.InnerException.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    else
+                        _ = MessageBox.Show(this, ex.Message , "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 finally
                 {
                     Cursor = Cursors.Default;
+                    toolStripProgressBar1.Visible = false;
+                    toolStripProgressBar1.Value = 0;
                 }
             }
         }
 
-        private void itemCompanyToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void itemCompanyToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var result = openFileDialog1.ShowDialog(this);
             if (result == DialogResult.OK)
@@ -265,7 +276,13 @@ namespace Kiriazi.Accounting.Pricing.Views
                 {
                     Cursor = Cursors.WaitCursor;
                     Controllers.ItemController itemController = Program.ServiceProvider.GetRequiredService<Controllers.ItemController>();
-                    ModelState modelState = itemController.ImportCompanyAssignemntFromExcelFile(openFileDialog1.FileName);
+                    Progress<int> progress = new Progress<int>((int pro) =>
+                    {
+                        toolStripProgressBar1.Value = pro;
+                    });
+                    toolStripProgressBar1.Visible = true;
+                    toolStripProgressBar1.Value = 0;
+                    ModelState modelState = await itemController.ImportCompanyAssignemntFromExcelFileAsync(openFileDialog1.FileName, progress);
                     if (modelState.HasErrors)
                     {
                         StringBuilder sb = new StringBuilder();
@@ -297,6 +314,8 @@ namespace Kiriazi.Accounting.Pricing.Views
                 finally
                 {
                     Cursor = Cursors.Default;
+                    toolStripProgressBar1.Visible = false;
+                    toolStripProgressBar1.Value = 0;
                 }
             }
         }
@@ -346,7 +365,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             }
         }
 
-        private void priceListToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void priceListToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var result = openFileDialog1.ShowDialog(this);
             if (result == DialogResult.OK)
@@ -354,8 +373,14 @@ namespace Kiriazi.Accounting.Pricing.Views
                 try
                 {
                     Cursor = Cursors.WaitCursor;
+                    toolStripProgressBar1.Visible = true;
+                    toolStripProgressBar1.Value = 0;
                     Controllers.PriceListController priceListController = Program.ServiceProvider.GetRequiredService<Controllers.PriceListController>();
-                    ModelState modelState = priceListController.ImportDailyExchangeRateFromExcelFile(openFileDialog1.FileName);
+                    Progress<int> progress = new Progress<int>((int p) =>
+                    {
+                        toolStripProgressBar1.Value = p;
+                    });
+                    ModelState modelState = await priceListController.ImportPriceListFromExcelFileAsync(openFileDialog1.FileName,progress);
                     if (modelState.HasErrors)
                     {
                         StringBuilder sb = new StringBuilder();
@@ -387,17 +412,83 @@ namespace Kiriazi.Accounting.Pricing.Views
                 finally
                 {
                     Cursor = Cursors.Default;
+                    toolStripProgressBar1.Visible = false;
+                    toolStripProgressBar1.Value = 0;
                 }
             }
         }
 
         private void customerPriceListReportToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Cursor = Cursors.WaitCursor;
-            Reports.ParametersForms.CustomerPriceListReportParameterForm customerPriceListReportParameterForm = Program.ServiceProvider.GetRequiredService<Reports.ParametersForms.CustomerPriceListReportParameterForm>();
-            Cursor = Cursors.Default;
-            customerPriceListReportParameterForm.MdiParent = this.MdiParent;
-            customerPriceListReportParameterForm.Show();
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+                Reports.ParametersForms.CustomerPriceListReportParameterForm customerPriceListReportParameterForm = Program.ServiceProvider.GetRequiredService<Reports.ParametersForms.CustomerPriceListReportParameterForm>();
+                Cursor = Cursors.Default;
+                customerPriceListReportParameterForm.MdiParent = this.MdiParent;
+                customerPriceListReportParameterForm.Show();
+            }
+            catch(Exception ex)
+            {
+                _ = MessageBox.Show(this, $"{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
+        }
+
+        private async void itemCustomerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var result = openFileDialog1.ShowDialog(this);
+            if (result == DialogResult.OK)
+            {
+                try
+                {
+                    Cursor = Cursors.WaitCursor;
+                    toolStripProgressBar1.Visible = true;
+                    Progress<int> progress = new Progress<int>();
+                    progress.ProgressChanged += (o, evt) =>
+                    {
+                        toolStripProgressBar1.Value = evt;
+                    };
+                    Controllers.ItemController itemController = Program.ServiceProvider.GetRequiredService<Controllers.ItemController>();
+                    ModelState modelState = await itemController.ImportCustomerAssignmentsFromExcelFile(openFileDialog1.FileName, progress);
+                    if (modelState.HasErrors)
+                    {
+                        StringBuilder sb = new StringBuilder();
+                        foreach (var err in modelState.GetErrors())
+                        {
+                            sb.AppendLine(err);
+                        }
+                        for (int i = 0; i < modelState.InnerModelStatesCount; i++)
+                        {
+                            foreach (var temp in modelState.GetModelState(i).GetErrors())
+                            {
+                                sb.AppendLine(temp);
+                            }
+                        }
+                        using (ImportErrorsView importErrorsView = new ImportErrorsView(sb.ToString()))
+                        {
+                            importErrorsView.ShowDialog(this);
+                        }
+                    }
+                    else
+                    {
+                        _ = MessageBox.Show(this, $"All Data Was imported without errors.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _ = MessageBox.Show(this, ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    Cursor = Cursors.Default;
+                    toolStripProgressBar1.Visible = false;
+                    toolStripProgressBar1.Value = 0;
+                }
+            }
         }
     }
 }

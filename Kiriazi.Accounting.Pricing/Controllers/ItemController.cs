@@ -2,10 +2,12 @@
 using Kiriazi.Accounting.Pricing.Models;
 using Kiriazi.Accounting.Pricing.Validation;
 using Kiriazi.Accounting.Pricing.ViewModels;
+using Npoi.Mapper;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Kiriazi.Accounting.Pricing.Controllers
 {
@@ -18,6 +20,37 @@ namespace Kiriazi.Accounting.Pricing.Controllers
         {
             _unitOfWork = unitOfWork;
             _validator = validator;
+        }
+        public async Task ExportToExcel(IList<Item> items,string file)
+        {
+            await Task.Run(() =>
+            {
+                Mapper mapper = new Mapper();
+                mapper
+                .Map<Item>("Item Code", nameof(Item.Code))
+                .Map<Item>("Arabic Name", nameof(Item.ArabicName))
+                .Map<Item>("Alias", nameof(Item.Alias))
+                .Map<Item>("English Name", nameof(Item.EnglishName))
+                .Map<Item>("Item Type", nameof(Item.ItemTypeName))
+                .Map<Item>("Customs Tarrif", nameof(Item.TarrifCode))
+                .Map<Item>("Customs Tarrif Percentage", nameof(Item.TarrifPercentage))
+                .Map<Item>("Uom", nameof(Item.UomName))
+                .Ignore<Item>(nameof(Item.Children),
+                              nameof(Item.CompanyAssignments),
+                              nameof(Item.CustomerItemAssignments),
+                              nameof(Item.ItemType),
+                              nameof(Item.ItemTypeId),
+                              nameof(Item.Parents),
+                              nameof(Item.PriceListLines),
+                              nameof(Item.Self),
+                              nameof(Item.Tarrif),
+                              nameof(Item.TarrifId),
+                              nameof(Item.Timestamp),
+                              nameof(Item.Uom),
+                              nameof(Item.UomId),
+                              nameof(Item.Id));
+                mapper.Save(file, items);
+            });
         }
         public ItemSearchViewModel Find()
         {
@@ -149,7 +182,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
         }
         public ItemEditViewModel Edit(Guid id)
         {
-            Item item = _unitOfWork.ItemRepository.Find(id);
+            Item item = _unitOfWork.ItemRepository.Find(predicate:itm=>itm.Id==id,include:q=>q.Include(itm=>itm.Children)).FirstOrDefault();
             if (item == null)
                 throw new ArgumentException($"Item With Id = {id} does not exist.", "id");
             var model = new ItemEditViewModel(item);
@@ -158,6 +191,10 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             model.Tarrifs = _unitOfWork.TarrifRepository.Find(q => q.OrderBy(t => t.Code)).ToList();
             model.Tarrifs.Insert(0, new Tarrif() { Code = "", Name = "" });
             //model.Tarrif = model.Tarrifs[0];
+            if (item.Children.Count > 0)
+                model.CanItemTypeChange = false;
+            else
+                model.CanItemTypeChange = true;
             return model;
         }
         public IList<ItemCompanyAssignmentViewModel> EditItemCompanyAssignment(Guid itemId)
@@ -238,61 +275,156 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             }
             return AddRange(items);
         }
-        public ModelState ImportCompanyAssignemntFromExcelFile(string fileName)
+        public async Task<ModelState> ImportCustomerAssignmentsFromExcelFile(string fileName,IProgress<int> progress) 
         {
-            DAL.Excel.ItemCompanyAssignmentDTORepository excelRepository = new DAL.Excel.ItemCompanyAssignmentDTORepository(fileName);
-            IList<ItemCompanyAssignmentDTO> dtos = excelRepository.Find().ToList();
-            IList<CompanyItemAssignment> companyItemAssignments = new List<CompanyItemAssignment>();
-            foreach(var dto in dtos)
+            return await Task.Run<ModelState>(
+                async () =>
             {
-                var temp = new CompanyItemAssignment()
+                progress.Report(0);
+                DAL.Excel.ItemCustomerDTORepository excelRepository = new DAL.Excel.ItemCustomerDTORepository(fileName);
+                IList<ItemCustomerDTO> dtos = excelRepository.Find().ToList();
+                IList<CustomerItemAssignment> companyItemAssignments = new List<CustomerItemAssignment>();
+                int count = 0;
+                int oldProgress = 0;
+                int newProgress = 0;
+                foreach (var dto in dtos)
                 {
-                    Company = _unitOfWork.CompanyRepository.Find(c => c.Name.Equals(dto.CompanyName, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault(),
-                    Item = _unitOfWork.ItemRepository.Find(i => i.Code.Equals(dto.ItemCode, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault(),
-                    NameAlias = dto.Alias
-                };
-                if (!string.IsNullOrEmpty(dto.GroupName))
-                {
-                    temp.Group = _unitOfWork.GroupRepository.Find(g => g.Name.Equals(dto.GroupName, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+                    
+                    var temp = new CustomerItemAssignment()
+                    {
+                        Customer = _unitOfWork.CustomerRepository.Find(c => c.Name.Equals(dto.CustomerName, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault(),
+                        Item = _unitOfWork.ItemRepository.Find(i => i.Code.Equals(dto.ItemCode, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault(),
+                        ItemNameAlias = dto.Alias
+                    };
+                    if (temp.Customer != null)
+                        temp.CustomerId = temp.Customer.Id;
+                    if (temp.Item != null)
+                        temp.ItemId = temp.Item.Id;
+                    companyItemAssignments.Add(temp);
+                    count++;
+                    newProgress = (int)((double)count / (double)dtos.Count * 100.0);
+                    if (newProgress - oldProgress >= 1)
+                    {
+                        progress.Report(newProgress);
+                        oldProgress = newProgress;
+                    }
                 }
-                companyItemAssignments.Add(temp);
-            }
-            return AddCompanyItemAssignmentRange(companyItemAssignments);
+                return await AddCustomerItemAssignmentRange(companyItemAssignments,progress);
+            });
         }
-        public ModelState AddCompanyItemAssignmentRange(IList<CompanyItemAssignment> companyItemAssignments)
+        public async Task<ModelState> ImportCompanyAssignemntFromExcelFileAsync(string fileName, IProgress<int> progress)
         {
-            ModelState modelState = new ModelState();
-            for(int index = 0; index < companyItemAssignments.Count; index++)
+            return await Task.Run<ModelState>(async () =>
             {
-                var temp = companyItemAssignments[index];
-                if (temp.Company == null)
+                DAL.Excel.ItemCompanyAssignmentDTORepository excelRepository = new DAL.Excel.ItemCompanyAssignmentDTORepository(fileName);
+                IList<ItemCompanyAssignmentDTO> dtos = excelRepository.Find().ToList();
+                IList<CompanyItemAssignment> companyItemAssignments = new List<CompanyItemAssignment>();
+                foreach (var dto in dtos)
                 {
-                    modelState.AddErrors("Company", $"Invalid Company Name # {index+1}");
+                    var temp = new CompanyItemAssignment()
+                    {
+                        Company = _unitOfWork.CompanyRepository.Find(c => c.Name.Equals(dto.CompanyName, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault(),
+                        Item = _unitOfWork.ItemRepository.Find(i => i.Code.Equals(dto.ItemCode, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault(),
+                        NameAlias = dto.Alias
+                    };
+                    if (!string.IsNullOrEmpty(dto.GroupName))
+                    {
+                        temp.Group = _unitOfWork.GroupRepository.Find(g => g.Name.Equals(dto.GroupName, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+                    }
+                    companyItemAssignments.Add(temp);
                 }
-                else
+                return await AddCompanyItemAssignmentRangeAsync(companyItemAssignments, progress);
+            });
+           
+        }
+        public async Task<ModelState> AddCustomerItemAssignmentRange(IList<CustomerItemAssignment> customerItemAssignments,IProgress<int> progress)
+        {
+            return await Task.Run(() =>
+            {
+                ModelState modelState = new ModelState();
+                int count = 0;
+                int oldProgress = 0;
+                int newProgress = 0;
+                for (int index = 0; index < customerItemAssignments.Count; index++)
                 {
-                    temp.CompanyId = temp.Company.Id;
+                    var temp = customerItemAssignments[index];
+                    if (temp.Customer == null)
+                    {
+                        modelState.AddErrors(nameof(temp.Customer), $"Invalid Customer Name At # {index + 1} .");
+                    }
+                    else
+                    {
+                        temp.CustomerId = temp.Customer.Id;
+                    }
+                    if (temp.Item == null)
+                    {
+                        modelState.AddErrors(nameof(temp.Item), $"Invalid Item Code At # {index + 1} .");
+                    }
+                    else
+                    {
+                        temp.ItemId = temp.Item.Id;
+                    }
+                    if (_unitOfWork.CustomerItemAssignmentRepository.Find(predicate: ass => ass.CustomerId == temp.CustomerId && ass.ItemId == temp.ItemId).FirstOrDefault() != null)
+                    {
+                        modelState.AddErrors("Customer / Item", $"Item: {temp.Item.Code} already assigned to Customer: {temp.Customer.Name} At # {index + 1}");
+                    }
+                    if (!modelState.HasErrors)
+                        _unitOfWork.CustomerItemAssignmentRepository.Add(temp);
+                    count++;
+                    newProgress = (int)((double)count / (double)customerItemAssignments.Count * 100.0);
+                    if (newProgress - oldProgress >= 1)
+                    {
+                        progress.Report(newProgress);
+                        oldProgress = newProgress;
+                    }
                 }
-                if (temp.Item == null)
+                if (modelState.HasErrors)
+                    return modelState;
+                _unitOfWork.Complete();
+                return modelState;
+            });
+           
+        }
+        public async Task<ModelState> AddCompanyItemAssignmentRangeAsync(IList<CompanyItemAssignment> companyItemAssignments,IProgress<int> progress)
+        {
+            return await Task.Run<ModelState>(async () =>
+            {
+                ModelState modelState = new ModelState();
+                int count = 0;
+                int oldProgress = 0;
+                int newProgress = 0;
+                for (int index = 0; index < companyItemAssignments.Count; index++)
                 {
-                    modelState.AddErrors("Item", $"Invalid Item Name # {index + 1}");
+                    var temp = companyItemAssignments[index];
+                    if (temp.Company == null)
+                    {
+                        modelState.AddErrors("Company", $"Invalid Company Name # {index + 1}");
+                    }
+                    else
+                    {
+                        temp.CompanyId = temp.Company.Id;
+                    }
+                    if (temp.Item == null)
+                    {
+                        modelState.AddErrors("Item", $"Invalid Item Name # {index + 1}");
+                    }
+                    else
+                    {
+                        temp.ItemId = temp.Item.Id;
+                    }
+                    if (_unitOfWork.CompanyItemAssignmentRepository.Find(
+                        predicate: ass => ass.CompanyId == temp.CompanyId && ass.ItemId == temp.ItemId).FirstOrDefault() != null)
+                    {
+                        modelState.AddErrors("Company/Item", $"Item: {temp.Item.Code} already assigned to Company: {temp.Company.Name} At {index + 1}");
+                    }
+                    if (!modelState.HasErrors)
+                    {
+                        _unitOfWork.CompanyItemAssignmentRepository.Add(temp);
+                    }
                 }
-                else
-                {
-                    temp.ItemId = temp.Item.Id;
-                }
-                if(_unitOfWork.CompanyItemAssignmentRepository.Find(
-                    predicate: ass => ass.CompanyId == temp.CompanyId && ass.ItemId==temp.ItemId).FirstOrDefault() != null)
-                {
-                    modelState.AddErrors("Company/Item", $"Item: {temp.Item.Code} already assigned to Company: {temp.Company.Name} At {index+1}");
-                }
-                if (!modelState.HasErrors)
-                {
-                    _unitOfWork.CompanyItemAssignmentRepository.Add(temp);
-                }
-            }
-            _unitOfWork.Complete();
-            return modelState;
+                _unitOfWork.Complete();
+                return modelState;
+            });
         }
         public void EditItemCustomerAssignment(IList<ItemCustomerAssignmentViewModel> assignments,Guid itemId)
         {
