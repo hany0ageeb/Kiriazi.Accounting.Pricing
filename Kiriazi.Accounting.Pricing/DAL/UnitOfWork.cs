@@ -28,6 +28,8 @@ namespace Kiriazi.Accounting.Pricing.DAL
             UserCommandRepository = new UserCommandRepository(_context);
             UserRepository = new UserRepository(_context);
             UserCommandAssignmentRepository = new UserCommandAssignmentRepository(_context);
+            UserReportRepository = new UserReportRepository(_context);
+            UserReportAssignmentRepository = new UserReportAssignmentRepository(_context);
 
         }
         public IUomRepository UomRepository { get; private set; }
@@ -66,9 +68,13 @@ namespace Kiriazi.Accounting.Pricing.DAL
 
         public IUserCommandRepository UserCommandRepository { get; private set; }
 
+        public IUserReportRepository UserReportRepository { get; private set; }
+
         public IUserRepository UserRepository { get; private set; }
 
         public IUserCommandAssignmentRepository UserCommandAssignmentRepository { get; private set; }
+
+        public IUserReportAssignmentRepository UserReportAssignmentRepository { get; private set; }
 
         public int Complete()
         {

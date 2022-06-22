@@ -22,9 +22,10 @@ namespace Kiriazi.Accounting.Pricing.DAL
         ICustomerPricingRuleRepository CustomerPricingRuleRepository { get; }
         ICustomerItemAssignmentRepository CustomerItemAssignmentRepository { get; }
         IUserCommandRepository UserCommandRepository { get; }
+        IUserReportRepository UserReportRepository { get; }
         IUserRepository UserRepository { get; }
         IUserCommandAssignmentRepository UserCommandAssignmentRepository { get; }
-
+        IUserReportAssignmentRepository UserReportAssignmentRepository { get; }
         DateTime Now { get; }
 
         int Complete();

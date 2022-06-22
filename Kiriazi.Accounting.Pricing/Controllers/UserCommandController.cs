@@ -31,5 +31,11 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                 return commands;
             }
         }
+        public IList<UserCommand> Find(UserCommandType? userCommandType)
+        {
+            if (userCommandType == null)
+                return _unitOfWork.UserCommandRepository.Find(orderBy: q => q.OrderBy(uc => uc.Sequence).ThenBy(uc => uc.DisplayName)).ToList();
+            return _unitOfWork.UserCommandRepository.Find(predicate: uc => uc.CommandType == userCommandType,orderBy:q=>q.OrderBy(uc=>uc.Sequence).ThenBy(uc=>uc.DisplayName)).ToList();
+        }
     }
 }

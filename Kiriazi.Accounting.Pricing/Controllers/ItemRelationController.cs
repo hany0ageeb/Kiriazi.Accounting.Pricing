@@ -22,7 +22,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
         public ItemTreeSearchViewModel Find()
         {
             var model = new ItemTreeSearchViewModel();
-            model.Companies = _unitOfWork.CompanyRepository.Find().ToList();
+            model.Companies = _unitOfWork.CompanyRepository.Find(predicate:c=>c.Users.Select(u=>u.UserId).Contains(Common.Session.CurrentUser.UserId)).ToList();
             model.Items = _unitOfWork.ItemRepository.Find(predicate:itm=>itm.ItemTypeId == ItemTypeRepository.ManufacturedItemType.Id).ToList();
             model.Companies.Insert(0, new Company { Name = "" });
             model.Items.Insert(0, new Item() { Code = "" });
@@ -48,7 +48,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                 .Select(r => new ItemTreeViewModel(r)).ToList();
                 
         }
-        public IList<ViewModels.ItemRelationViewModel> Find(Guid companyId,Guid rootId)
+        public IList<ItemRelationViewModel> Find(Guid companyId,Guid rootId)
         {
             return _unitOfWork
                 .ItemRelationRepository
@@ -83,7 +83,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                 return 
                     _unitOfWork
                     .CompanyRepository
-                    .Find()
+                    .Find(predicate: c => c.Users.Select(u => u.UserId).Contains(Common.Session.CurrentUser.UserId), orderBy: q => q.OrderBy(c => c.Name))
                     .Select(e=>new CompanySelectionViewModel(e))
                     .ToList();
             }
@@ -131,13 +131,16 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                     .ToList();
                 if (model.Items.Count > 0)
                     model.ParentItem = model.Items[0];
-                model.ItemCodes =
-                    FindItemsCodes(selectedCompanies, model.ParentItem.Id);
+                if (model.ParentItem != null)
+                    model.ItemCodes =
+                        FindItemsCodes(selectedCompanies, model.ParentItem.Id);
+                else
+                    model.ItemCodes = _unitOfWork.ItemRepository.FindItemsCodes().ToList();
                 return model;
             }
             else
             {
-                throw new ArgumentException("You Should Select One Or More Companies before creating Production Tree.");
+                throw new ArgumentException("You Should Select One Or More Companies before creating Bill of material.");
             }
         }
         public ItemRelationEditViewModel AddFomExisting(IList<Guid> selectedCompanies,ItemTreeViewModel existingTree)
@@ -293,7 +296,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                 var parentChildDTOs = parentChildRepository.Find();
                 progress.Report(0);
                 List<ItemRelation> parentChilds = new List<ItemRelation>();
-                var companies = _unitOfWork.CompanyRepository.Find().ToList();
+                var companies = _unitOfWork.CompanyRepository.Find(c=>c.Users.Select(u=>u.UserId).Contains(Common.Session.CurrentUser.UserId)).ToList();
                 var allItems = _unitOfWork.ItemRepository.Find().ToList();
                 int count = 0;
                 int oldProgress = 0;

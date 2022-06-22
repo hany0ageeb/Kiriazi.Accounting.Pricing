@@ -4,6 +4,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Kiriazi.Accounting.Pricing.Models
 {
+    public enum UserCommandType
+    {
+        NormalCommand,
+        ImportCommand
+    }
     public class UserCommand
     {
         [Key,DatabaseGenerated(DatabaseGeneratedOption.None)]
@@ -20,7 +25,10 @@ namespace Kiriazi.Accounting.Pricing.Models
 
         public string FormType { get; set; }
 
-        
+        public UserCommandType CommandType { get; set; } = UserCommandType.NormalCommand;
+
+        [Required(AllowEmptyStrings = false),MaxLength(250)]
+        public string UserAccountType { get; set; } = UserAccountTypes.CompanyAccount;
     }
     
 }

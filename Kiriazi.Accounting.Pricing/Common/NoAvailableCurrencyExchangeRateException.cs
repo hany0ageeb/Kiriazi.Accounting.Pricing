@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Kiriazi.Accounting.Pricing.Common
 {
-    class NoAvailableCurrencyExchangeRateException : Exception
+    public class NoAvailableCurrencyExchangeRateException : Exception
     {
         public NoAvailableCurrencyExchangeRateException()
             : base()
@@ -26,5 +26,9 @@ namespace Kiriazi.Accounting.Pricing.Common
         }
         public Currency FromCurrency { get; set; }
         public Currency ToCurrency { get; set; }
+    }
+    public static class Session
+    {
+        public static User CurrentUser { get; set; }
     }
 }

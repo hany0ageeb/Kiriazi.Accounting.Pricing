@@ -77,9 +77,21 @@ namespace Kiriazi.Accounting.Pricing.Views
                 if(dataGridView1?.CurrentCell?.ColumnIndex == dataGridView1.Columns["ItemCode"].Index)
                 {
                     TextBox control = e.Control as TextBox;
-                    control.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-                    control.AutoCompleteSource = AutoCompleteSource.CustomSource;
-                    control.AutoCompleteCustomSource = _autoCompleteSource;
+                    if (control != null)
+                    {
+                        control.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+                        control.AutoCompleteSource = AutoCompleteSource.CustomSource;
+                        control.AutoCompleteCustomSource = _autoCompleteSource;
+                    }
+                }
+                else
+                {
+                    TextBox control = e.Control as TextBox;
+                    if (control != null)
+                    {
+                        control.AutoCompleteMode = AutoCompleteMode.None;
+                        control.AutoCompleteSource = AutoCompleteSource.None;
+                    }
                 }
             };
             dataGridView1.CellValidating += (o, e) =>
@@ -92,6 +104,34 @@ namespace Kiriazi.Accounting.Pricing.Views
                         e.Cancel = true;
                         System.Media.SystemSounds.Hand.Play();
                         dataGridView1.Rows[e.RowIndex].ErrorText = "Invalid Item code.";
+                    }
+                }
+                if (e.ColumnIndex == dataGridView1.Columns["Quantity"].Index)
+                {
+                    string str = e.FormattedValue as string;
+                    if (string.IsNullOrEmpty(str))
+                    {
+                        e.Cancel = true;
+                        System.Media.SystemSounds.Hand.Play();
+                        dataGridView1.Rows[e.RowIndex].ErrorText = "Invalid Quantity";
+                    }
+                    else
+                    {
+                        if(decimal.TryParse(str,out decimal qu))
+                        {
+                            if (qu <= 0)
+                            {
+                                e.Cancel = true;
+                                System.Media.SystemSounds.Hand.Play();
+                                dataGridView1.Rows[e.RowIndex].ErrorText = "Invalid Quantity";
+                            }
+                        }
+                        else
+                        {
+                            e.Cancel = true;
+                            System.Media.SystemSounds.Hand.Play();
+                            dataGridView1.Rows[e.RowIndex].ErrorText = "Invalid Quantity";
+                        }
                     }
                 }
             };
@@ -115,15 +155,18 @@ namespace Kiriazi.Accounting.Pricing.Views
             };
             dataGridView1.RowValidating += (o, e) =>
             {
-                if (_lines[e.RowIndex].Quantity <= 0)
+                if (e.RowIndex >= 0 && e.RowIndex < _lines.Count)
                 {
-                    e.Cancel = true;
-                    System.Media.SystemSounds.Hand.Play();
-                    dataGridView1.Rows[e.RowIndex].ErrorText = "Invalid Quantity";
-                }
-                else
-                {
+                    if (_lines[e.RowIndex].Quantity <= 0)
+                    {
+                        e.Cancel = true;
+                        System.Media.SystemSounds.Hand.Play();
+                        dataGridView1.Rows[e.RowIndex].ErrorText = "Invalid Quantity";
+                    }
+                    else
+                    {
 
+                    }
                 }
             };
             dataGridView1.RowValidated += (o, e) =>

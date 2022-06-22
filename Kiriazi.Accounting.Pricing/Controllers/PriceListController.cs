@@ -28,7 +28,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
         public PriceListSearchViewModel Find()
         {
             var model = new PriceListSearchViewModel();
-            model.Companies.AddRange(_unitOfWork.CompanyRepository.Find().ToList());
+            model.Companies.AddRange(_unitOfWork.CompanyRepository.Find(predicate:c=>c.Users.Select(u=>u.UserId).Contains(Common.Session.CurrentUser.UserId)).ToList());
             model.Companies.Insert(0, new Company() { Name = "" });
             model.Company = model.Companies[0];
             model.AccountingPeriods.AddRange(_unitOfWork.AccountingPeriodRepository.Find());
@@ -42,7 +42,8 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                 _unitOfWork
                 .CompanyRepository
                 .Find(
-                    predicate: c => c.IsEnabled && 
+                    predicate: c => c.IsEnabled &&
+                               c.Users.Select(u=>u.UserId).Contains(Common.Session.CurrentUser.UserId) && 
                                c.CompanyAccountingPeriods.Where(a=>a.PriceList==null && a.State == AccountingPeriodStates.Opened).Count() > 0, 
                     orderBy: q => q.OrderBy(c => c.Name))
                 .ToList();
@@ -54,7 +55,9 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             return
             _unitOfWork
             .PriceListRepository
-            .Find(companyId,
+            .Find(
+                    Common.Session.CurrentUser.UserId,
+                    companyId,
                     periodId,
                     (q) => q.OrderByDescending(p => p.CompanyAccountingPeriod.AccountingPeriod.FromDate),
                     (q) => q.Include(p => p.CompanyAccountingPeriod).Include(p=>p.PriceListLines.Select(l=>l.Currency)).Include(p=>p.PriceListLines.Select(l=>l.Item)))
@@ -89,7 +92,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             var listCompanyAccountingPeriod = _unitOfWork.CompanyAccountingPeriodRepository.Find(predicate:cap => cap.PriceListId == priceListId,include:q=>q.Include(cap=>cap.Company).Include(cap=>cap.AccountingPeriod)).FirstOrDefault();
             if (listCompanyAccountingPeriod?.State == AccountingPeriodStates.Opened && listCompanyAccountingPeriod.Company.IsEnabled)
             {
-                PriceList oldPriceList = _unitOfWork.PriceListRepository.Find(predicate: pl => pl.Id == priceListId, include: q => q.Include(pl => pl.PriceListLines.Select(l => l.Item)).Include(pl => pl.CompanyAccountingPeriod.Company).Include(pl => pl.CompanyAccountingPeriod.AccountingPeriod)).FirstOrDefault();
+                PriceList oldPriceList = _unitOfWork.PriceListRepository.Find(predicate: pl => pl.Id == priceListId && pl.CompanyAccountingPeriod.Company.Users.Select(u=>u.UserId).Contains(Common.Session.CurrentUser.UserId), include: q => q.Include(pl => pl.PriceListLines.Select(l => l.Item)).Include(pl => pl.CompanyAccountingPeriod.Company).Include(pl => pl.CompanyAccountingPeriod.AccountingPeriod)).FirstOrDefault();
                 if (oldPriceList == null)
                     throw new ArgumentException($"Price List With Id {priceListId} does no longer exist.");
                 PriceListEditViewModel model = new PriceListEditViewModel();
@@ -300,7 +303,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                     if (modelState.HasErrors)
                         break;
                     PriceList plist = new PriceList();
-                    Company company = _unitOfWork.CompanyRepository.Find(c => c.Name.Equals(priceList.Key.CompanyName, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+                    Company company = _unitOfWork.CompanyRepository.Find(c =>c.Users.Select(u=>u.UserId).Contains(Common.Session.CurrentUser.UserId) && c.Name.Equals(priceList.Key.CompanyName, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
                     if (company == null)
                         modelState.AddErrors("Company", $"Invalid Company Name {priceList.Key.CompanyName}");
                     AccountingPeriod accountingPeriod = _unitOfWork.AccountingPeriodRepository.Find(ap => ap.Name.Equals(priceList.Key.AccountingPeriodName, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();

@@ -285,6 +285,8 @@
     <Compile Include="DAL\IUomRepository.cs" />
     <Compile Include="DAL\IUserCommandAssignmentRepository.cs" />
     <Compile Include="DAL\IUserCommandRepository.cs" />
+    <Compile Include="DAL\IUserReportAssignmentRepository.cs" />
+    <Compile Include="DAL\IUserReportRepository.cs" />
     <Compile Include="DAL\IUserRepository.cs" />
     <Compile Include="DAL\PriceListLineRepository.cs" />
     <Compile Include="DAL\PriceListRepository.cs" />
@@ -294,6 +296,9 @@
     <Compile Include="DAL\UnitOfWork.cs" />
     <Compile Include="DAL\UomRepository.cs" />
     <Compile Include="DAL\UserCommandAssignmentRepository.cs" />
+    <Compile Include="DAL\UserCommandRepository.cs" />
+    <Compile Include="DAL\UserReportAssignmentRepository.cs" />
+    <Compile Include="DAL\UserReportRepository.cs" />
     <Compile Include="DAL\UserRepository.cs" />
     <Compile Include="Models\AccountingPeriod.cs" />
     <Compile Include="Models\AccountingPeriodState.cs" />
@@ -370,6 +375,7 @@
     <Compile Include="ViewModels\PriceListSearchViewModel.cs" />
     <Compile Include="ViewModels\PriceListViewModel.cs" />
     <Compile Include="ViewModels\UserCommandAssignmentEditViewModel.cs" />
+    <Compile Include="ViewModels\UserReportAssignmentEditViewMdel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\AccountingPeriodsView.cs">
       <SubType>Form</SubType>
@@ -382,6 +388,12 @@
     </Compile>
     <Compile Include="Views\AccountingPeriodView.Designer.cs">
       <DependentUpon>AccountingPeriodView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AddUserView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\AddUserView.Designer.cs">
+      <DependentUpon>AddUserView.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\CompaniesView.cs">
       <SubType>Form</SubType>
@@ -527,6 +539,12 @@
     <Compile Include="Views\ItemTreeViewer.Designer.cs">
       <DependentUpon>ItemTreeViewer.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\LogInView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\LogInView.Designer.cs">
+      <DependentUpon>LogInView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -587,6 +605,30 @@
     <Compile Include="Views\UserCommandsEditView.Designer.cs">
       <DependentUpon>UserCommandsEditView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\UserCompaniesEditView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\UserCompaniesEditView.Designer.cs">
+      <DependentUpon>UserCompaniesEditView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserCustomersEditView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\UserCustomersEditView.Designer.cs">
+      <DependentUpon>UserCustomersEditView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserEditView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\UserEditView.Designer.cs">
+      <DependentUpon>UserEditView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserReportsEditView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\UserReportsEditView.Designer.cs">
+      <DependentUpon>UserReportsEditView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\UsersView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -614,6 +656,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\AccountingPeriodView.resx">
       <DependentUpon>AccountingPeriodView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\AddUserView.resx">
+      <DependentUpon>AddUserView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\CompaniesView.resx">
       <DependentUpon>CompaniesView.cs</DependentUpon>
@@ -690,6 +735,9 @@
     <EmbeddedResource Include="Views\ItemTreeViewer.resx">
       <DependentUpon>ItemTreeViewer.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\LogInView.resx">
+      <DependentUpon>LogInView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\MainView.resx">
       <DependentUpon>MainView.cs</DependentUpon>
     </EmbeddedResource>
@@ -719,6 +767,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\UserCommandsEditView.resx">
       <DependentUpon>UserCommandsEditView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\UserCompaniesEditView.resx">
+      <DependentUpon>UserCompaniesEditView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\UserCustomersEditView.resx">
+      <DependentUpon>UserCustomersEditView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\UserEditView.resx">
+      <DependentUpon>UserEditView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\UserReportsEditView.resx">
+      <DependentUpon>UserReportsEditView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\UsersView.resx">
       <DependentUpon>UsersView.cs</DependentUpon>

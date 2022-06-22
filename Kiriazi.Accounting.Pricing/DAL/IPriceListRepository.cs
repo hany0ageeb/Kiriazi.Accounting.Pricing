@@ -8,6 +8,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
     public interface IPriceListRepository : IRepository<PriceList>
     {
         IEnumerable<PriceList> Find(
+            Guid? userId = null,
             Guid? companyId = null, 
             Guid? periodId = null,
             Func<IQueryable<PriceList>,IOrderedQueryable<PriceList>> orderBy = null,

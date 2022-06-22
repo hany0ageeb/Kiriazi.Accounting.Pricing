@@ -121,27 +121,42 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             _unitOfWork.Complete();
             return modelState;
         }
-        public ModelState AddRange(IEnumerable<Item> items)
+        public async Task<ModelState> AddRangeAsync(IEnumerable<Item> items,IProgress<int> progress)
         {
-            ModelState modelState = new ModelState();
-            foreach(var item in items)
+            return await Task.Run<ModelState>(() =>
             {
-                ModelState temp = _validator.Validate(item);
-                if (!temp.HasErrors)
+                ModelState modelState = new ModelState();
+                int count = 0;
+                int oldProgress = 0;
+                int newProgress = 0;
+                progress.Report(0);
+                foreach (var item in items)
                 {
-                    if (_unitOfWork.ItemRepository.Find(itm => itm.Code.Equals(item.Code, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault() != null)
+                    ModelState temp = _validator.Validate(item);
+                    if (!temp.HasErrors)
                     {
-                        temp.AddErrors(nameof(item.Code), $"Item With Code: {item.Code} already exist.");
+                        if (_unitOfWork.ItemRepository.Find(itm => itm.Code.Equals(item.Code, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault() != null)
+                        {
+                            temp.AddErrors(nameof(item.Code), $"Item With Code: {item.Code} already exist.");
+                        }
+                        else
+                        {
+                            _unitOfWork.ItemRepository.Add(item);
+                        }
                     }
-                    else
+                    modelState.AddModelState(temp);
+                    count++;
+                    newProgress = (int)((double)count / (double)items.Count() * 100.0);
+                    if (newProgress - oldProgress >= 1)
                     {
-                        _unitOfWork.ItemRepository.Add(item);
+                        progress.Report(newProgress);
                     }
+                    oldProgress = newProgress;
                 }
-                modelState.AddModelState(temp);
-            }
-            _ = _unitOfWork.Complete();
-            return modelState;
+                _ = _unitOfWork.Complete();
+                return modelState;
+            });
+           
         }
         public ModelState Edit(ItemEditViewModel model)
         {
@@ -255,25 +270,39 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             }
             return model;
         }
-        public ModelState ImportFromExcelFile(string fileName)
+        public async Task<ModelState> ImportFromExcelFileAsync(string fileName,IProgress<int> progress)
         {
-            DAL.Excel.ItemDTORepository itemDTORepository = new DAL.Excel.ItemDTORepository(fileName);
-            IList<ItemDTO> itemsDto = itemDTORepository.Find().ToList();
-            IList<Item> items = new List<Item>();
-            foreach(var itemDto in itemsDto)
-            {
-                items.Add(new Item()
-                {
-                    Code = itemDto.Code,
-                    ArabicName = itemDto.ArabicName,
-                    EnglishName = itemDto.EnglishName,
-                    Alias = itemDto.Alias,
-                    Uom = _unitOfWork.UomRepository.Find(u=>u.Code.Equals(itemDto.UomCode,StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault(),
-                    ItemType = _unitOfWork.ItemTypeRepository.Find(it=>it.Name.Equals(itemDto.ItemTypeName,StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault(),
-                    Tarrif = _unitOfWork.TarrifRepository.Find(t => t.Code.Equals(itemDto.TarrifCode, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault()
-                });
-            }
-            return AddRange(items);
+            return await Task.Run<ModelState>(async () =>
+              {
+                  DAL.Excel.ItemDTORepository itemDTORepository = new DAL.Excel.ItemDTORepository(fileName);
+                  IList<ItemDTO> itemsDto = itemDTORepository.Find().ToList();
+                  IList<Item> items = new List<Item>();
+                  int count = 0;
+                  int oldProgress = 0;
+                  int newProgress = 0;
+                  progress.Report(0);
+                  foreach (var itemDto in itemsDto)
+                  {
+                      items.Add(new Item()
+                      {
+                          Code = itemDto.Code,
+                          ArabicName = itemDto.ArabicName,
+                          EnglishName = itemDto.EnglishName,
+                          Alias = itemDto.Alias,
+                          Uom = _unitOfWork.UomRepository.Find(u => u.Code.Equals(itemDto.UomCode, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault(),
+                          ItemType = _unitOfWork.ItemTypeRepository.Find(it => it.Name.Equals(itemDto.ItemTypeName, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault(),
+                          Tarrif = _unitOfWork.TarrifRepository.Find(t => t.Code.Equals(itemDto.TarrifCode, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault()
+                      });
+                      count++;
+                      newProgress = (int)((double)count / (double)itemsDto.Count() * 100.0);
+                      if (newProgress - oldProgress >= 1)
+                      {
+                          progress.Report(newProgress);
+                          oldProgress = newProgress;
+                      }
+                  }
+                  return await AddRangeAsync(items,progress);
+              });
         }
         public async Task<ModelState> ImportCustomerAssignmentsFromExcelFile(string fileName,IProgress<int> progress) 
         {
@@ -387,7 +416,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
         }
         public async Task<ModelState> AddCompanyItemAssignmentRangeAsync(IList<CompanyItemAssignment> companyItemAssignments,IProgress<int> progress)
         {
-            return await Task.Run<ModelState>(async () =>
+            return await Task.Run<ModelState>( () =>
             {
                 ModelState modelState = new ModelState();
                 int count = 0;

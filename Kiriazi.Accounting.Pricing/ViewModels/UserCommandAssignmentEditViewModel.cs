@@ -2,6 +2,46 @@
 
 namespace Kiriazi.Accounting.Pricing.ViewModels
 {
+    public class UserCustomersEditViewModel : ViewModelBase
+    {
+        private bool _isSelected = false;
+        public bool IsSelected
+        {
+            get => _isSelected;
+            set
+            {
+                if (_isSelected != value)
+                {
+                    _isSelected = value;
+                    OnPropertyChanged(nameof(IsSelected));
+                }
+            }
+        }
+        public User User { get; set; }
+        public Customer Customer { get; set; }
+        public string UserName => User.UserName;
+        public string CustomerName => Customer.Name;
+    }
+    public class UserCompaniesEditViewModel : ViewModelBase
+    {
+        private bool _isSelected = false;
+        public bool IsSelected
+        {
+            get => _isSelected;
+            set
+            {
+                if (_isSelected != value)
+                {
+                    _isSelected = value;
+                    OnPropertyChanged(nameof(IsSelected));
+                }
+            }
+        }
+        public User User { get; set; }
+        public Company Company { get; set; }
+        public string UserName => User.UserName;
+        public string CompanyName => Company.Name;
+    }
     public class UserCommandAssignmentEditViewModel : ViewModelBase
     {
         private string _displayName;

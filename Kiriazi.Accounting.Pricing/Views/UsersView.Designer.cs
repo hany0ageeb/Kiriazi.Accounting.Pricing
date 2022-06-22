@@ -35,6 +35,8 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.btnNew = new System.Windows.Forms.Button();
             this.btnCommands = new System.Windows.Forms.Button();
             this.btnReports = new System.Windows.Forms.Button();
+            this.btnCustomers = new System.Windows.Forms.Button();
+            this.btnCompanies = new System.Windows.Forms.Button();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.btnClose = new System.Windows.Forms.Button();
             this.flowLayoutPanel1.SuspendLayout();
@@ -70,6 +72,8 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.flowLayoutPanel2.Controls.Add(this.btnNew);
             this.flowLayoutPanel2.Controls.Add(this.btnCommands);
             this.flowLayoutPanel2.Controls.Add(this.btnReports);
+            this.flowLayoutPanel2.Controls.Add(this.btnCustomers);
+            this.flowLayoutPanel2.Controls.Add(this.btnCompanies);
             this.flowLayoutPanel2.Controls.Add(this.flowLayoutPanel3);
             this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 476);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
@@ -84,6 +88,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.btnNew.TabIndex = 0;
             this.btnNew.Text = "New User ...";
             this.btnNew.UseVisualStyleBackColor = true;
+            this.btnNew.Click += new System.EventHandler(this.btnNew_Click);
             // 
             // btnCommands
             // 
@@ -105,21 +110,44 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.btnReports.TabIndex = 2;
             this.btnReports.Text = "Reports...";
             this.btnReports.UseVisualStyleBackColor = true;
+            this.btnReports.Click += new System.EventHandler(this.btnReports_Click);
+            // 
+            // btnCustomers
+            // 
+            this.btnCustomers.Enabled = false;
+            this.btnCustomers.Location = new System.Drawing.Point(354, 3);
+            this.btnCustomers.Name = "btnCustomers";
+            this.btnCustomers.Size = new System.Drawing.Size(111, 38);
+            this.btnCustomers.TabIndex = 5;
+            this.btnCustomers.Text = "Customers ...";
+            this.btnCustomers.UseVisualStyleBackColor = true;
+            this.btnCustomers.Click += new System.EventHandler(this.btnCustomers_Click);
+            // 
+            // btnCompanies
+            // 
+            this.btnCompanies.Enabled = false;
+            this.btnCompanies.Location = new System.Drawing.Point(471, 3);
+            this.btnCompanies.Name = "btnCompanies";
+            this.btnCompanies.Size = new System.Drawing.Size(111, 38);
+            this.btnCompanies.TabIndex = 4;
+            this.btnCompanies.Text = "Companies ...";
+            this.btnCompanies.UseVisualStyleBackColor = true;
+            this.btnCompanies.Click += new System.EventHandler(this.btnCompanies_Click);
             // 
             // flowLayoutPanel3
             // 
             this.flowLayoutPanel3.Controls.Add(this.btnClose);
             this.flowLayoutPanel3.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.flowLayoutPanel3.Location = new System.Drawing.Point(354, 3);
+            this.flowLayoutPanel3.Location = new System.Drawing.Point(588, 3);
             this.flowLayoutPanel3.Name = "flowLayoutPanel3";
-            this.flowLayoutPanel3.Size = new System.Drawing.Size(546, 45);
+            this.flowLayoutPanel3.Size = new System.Drawing.Size(312, 45);
             this.flowLayoutPanel3.TabIndex = 3;
             // 
             // btnClose
             // 
-            this.btnClose.Location = new System.Drawing.Point(432, 3);
+            this.btnClose.Location = new System.Drawing.Point(186, 3);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(111, 38);
+            this.btnClose.Size = new System.Drawing.Size(123, 38);
             this.btnClose.TabIndex = 1;
             this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = true;
@@ -152,5 +180,7 @@ namespace Kiriazi.Accounting.Pricing.Views
         private System.Windows.Forms.Button btnReports;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel3;
         private System.Windows.Forms.Button btnClose;
+        private System.Windows.Forms.Button btnCompanies;
+        private System.Windows.Forms.Button btnCustomers;
     }
 }

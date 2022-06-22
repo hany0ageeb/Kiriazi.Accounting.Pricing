@@ -19,16 +19,15 @@ namespace Kiriazi.Accounting.Pricing.Controllers
         }
         public IList<Company> Find()
         {
-            return _unitOfWork.CompanyRepository.Find().ToList();
+            return _unitOfWork.CompanyRepository.Find(predicate:c=>c.Users.Select(u=>u.UserId).Contains(Common.Session.CurrentUser.UserId)).ToList();
         }
         public Company Find(Guid id)
         {
-            return _unitOfWork.CompanyRepository.Find(id);
+            return _unitOfWork.CompanyRepository.Find(predicate:c=>c.Id == id && c.Users.Select(u=>u.UserId).Contains(Common.Session.CurrentUser.UserId)).FirstOrDefault();
         }
         public CompanyEditViewModel Edit(Guid id)
         {
-
-            return new CompanyEditViewModel(_unitOfWork.CompanyRepository.Find(id),_unitOfWork.CurrencyRepository.Find(c => c.IsEnabled).ToList(), CanChangeCompanyCurrency(id));
+            return new CompanyEditViewModel(_unitOfWork.CompanyRepository.Find(predicate:c=>c.Id == id && c.Users.Select(u=>u.UserId).Contains(Common.Session.CurrentUser.UserId)).FirstOrDefault(),_unitOfWork.CurrencyRepository.Find(c => c.IsEnabled).ToList(), CanChangeCompanyCurrency(id));
         }
         public bool CanChangeCompanyCurrency(Guid companyId)
         {
@@ -110,7 +109,9 @@ namespace Kiriazi.Accounting.Pricing.Controllers
         {
             IList<CompanyAccountingPeriodEditViewModel> model = new List<CompanyAccountingPeriodEditViewModel>();
             var allPeriods = _unitOfWork.AccountingPeriodRepository.Find();
-            var company = _unitOfWork.CompanyRepository.Find(companyId);
+            var company = _unitOfWork.CompanyRepository.Find(predicate:c=>c.Id == companyId && c.Users.Select(u=>u.UserId).Contains(Common.Session.CurrentUser.UserId)).FirstOrDefault();
+            if (company == null)
+                throw new ArgumentException($"Invalid Company Id {companyId}");
             var companyPeriods = company.CompanyAccountingPeriods.Select(x => x.AccountingPeriod);
             foreach (var p in allPeriods)
             {
@@ -173,8 +174,14 @@ namespace Kiriazi.Accounting.Pricing.Controllers
         public CustomerPriceListSeachViewModel FindCustomerPriceList()
         {
             CustomerPriceListSeachViewModel model = new CustomerPriceListSeachViewModel();
-            model.Companies = _unitOfWork.CompanyRepository.Find().ToList();
-            model.Customers = _unitOfWork.CustomerRepository.Find().ToList();
+            if (Common.Session.CurrentUser.AccountType == UserAccountTypes.CompanyAccount)
+                model.Companies = _unitOfWork.CompanyRepository.Find(predicate:c=>c.Users.Select(u=>u.UserId).Contains(Common.Session.CurrentUser.UserId),orderBy: q => q.OrderBy(c => c.Name)).ToList();
+            else
+                model.Companies = _unitOfWork.CompanyRepository.Find(orderBy: q => q.OrderBy(c => c.Name)).ToList();
+            if (Common.Session.CurrentUser.AccountType == UserAccountTypes.CompanyAccount)
+                model.Customers = _unitOfWork.CustomerRepository.Find(orderBy: q => q.OrderBy(c => c.Name)).ToList();
+            else
+                model.Customers = _unitOfWork.CustomerRepository.Find(predicate: c => c.Users.Select(u => u.UserId).Contains(Common.Session.CurrentUser.UserId), orderBy: q => q.OrderBy(c => c.Name)).ToList();
             model.Companies.Insert(0, new Company() { Id = Guid.Empty, Name = "" });
             model.Customers.Insert(0, new Customer() { Id = Guid.Empty, Name = "" });
             model.Company = model.Companies[0];
@@ -192,8 +199,12 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                 IList<Company> selectedCompanies;
                 if (searchModel.Company.Id == Guid.Empty)
                 {
-                    selectedCompanies =
-                        _unitOfWork.CompanyRepository.Find().ToList();
+                    if (Common.Session.CurrentUser.AccountType == UserAccountTypes.CompanyAccount)
+                        selectedCompanies =
+                            _unitOfWork.CompanyRepository.Find(predicate: c => c.Users.Select(u => u.UserId).Contains(Common.Session.CurrentUser.UserId)).ToList();
+                    else
+                        selectedCompanies =
+                       _unitOfWork.CompanyRepository.Find().ToList();
                 }
                 else
                 {
@@ -206,8 +217,12 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                 IList<Customer> selectedCustomers;
                 if (searchModel.Customer.Id == Guid.Empty)
                 {
-                    selectedCustomers =
+                    if (Common.Session.CurrentUser.AccountType == UserAccountTypes.CompanyAccount)
+                        selectedCustomers =
                            _unitOfWork.CustomerRepository.Find().ToList();
+                    else
+                        selectedCustomers =
+                          _unitOfWork.CustomerRepository.Find(predicate: c => c.Users.Select(u => u.UserId).Contains(Common.Session.CurrentUser.UserId)).ToList();
 
                 }
                 else
@@ -256,8 +271,12 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             IList<Company> selectedCompanies;
             if(searchModel.Company.Id == Guid.Empty)
             {
-                selectedCompanies = 
-                    _unitOfWork.CompanyRepository.Find().ToList();
+                if (Common.Session.CurrentUser.AccountType == UserAccountTypes.CompanyAccount)
+                    selectedCompanies =
+                        _unitOfWork.CompanyRepository.Find(predicate: c => c.Users.Select(u => u.UserId).Contains(Common.Session.CurrentUser.UserId)).ToList();
+                else
+                    selectedCompanies =
+                   _unitOfWork.CompanyRepository.Find().ToList();
             }
             else
             {
@@ -270,8 +289,12 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             IList<Customer> selectedCustomers;
             if(searchModel.Customer.Id == Guid.Empty)
             {
-                selectedCustomers =
+                if (Common.Session.CurrentUser.AccountType == UserAccountTypes.CompanyAccount)
+                    selectedCustomers =
                        _unitOfWork.CustomerRepository.Find().ToList();
+                else
+                    selectedCustomers =
+                      _unitOfWork.CustomerRepository.Find(predicate:c=>c.Users.Select(u=>u.UserId).Contains(Common.Session.CurrentUser.UserId)).ToList();
 
             }
             else

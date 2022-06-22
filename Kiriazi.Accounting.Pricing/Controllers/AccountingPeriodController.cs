@@ -99,7 +99,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             _unitOfWork.AccountingPeriodRepository.Add(accountingPeriod);
             if (model.AssignToAllCompanies)
             {
-                var allComp = _unitOfWork.CompanyRepository.Find();
+                var allComp = _unitOfWork.CompanyRepository.Find(predicate:c=>c.Users.Select(u=>u.UserId).Contains(Common.Session.CurrentUser.UserId));
                 foreach(var comp in allComp)
                 {
                     _unitOfWork.CompanyAccountingPeriodRepository.Add(new CompanyAccountingPeriod()

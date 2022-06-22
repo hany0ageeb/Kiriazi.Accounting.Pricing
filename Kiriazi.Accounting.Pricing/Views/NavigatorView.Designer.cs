@@ -71,6 +71,8 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.Name = "NavigatorView";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Navigator";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.NavigatorView_FormClosing);
+            this.Load += new System.EventHandler(this.NavigatorView_Load);
             this.ResumeLayout(false);
 
         }

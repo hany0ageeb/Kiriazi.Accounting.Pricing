@@ -1,4 +1,5 @@
-﻿using Kiriazi.Accounting.Pricing.Validation;
+﻿using Kiriazi.Accounting.Pricing.Models;
+using Kiriazi.Accounting.Pricing.Validation;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -28,10 +29,8 @@ namespace Kiriazi.Accounting.Pricing.Views
             openFileDialog1.InitialDirectory = Environment.CurrentDirectory;
             openFileDialog1.CheckFileExists = true;
             openFileDialog1.CheckPathExists = true;
-            _navigatorView = new NavigatorView();
-            _navigatorView.MdiParent = this;
             exportToolStripMenuItem.Click += ExportToolStripMenuItem_Click;
-            _navigatorView.Show();
+            importToolStripMenuItem.DropDownItems.Clear();
         }
 
         private void ExportToolStripMenuItem_Click(object sender, EventArgs e)
@@ -65,6 +64,8 @@ namespace Kiriazi.Accounting.Pricing.Views
         {
             exportMenuItemClickEventHandlers.Clear();
         }
+
+        public ToolStripMenuItem ReportMenu => this.reportToolStripMenuItem;
 
         private void groupsToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -162,7 +163,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             }
         }
 
-        private void itemsToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void itemsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var result = openFileDialog1.ShowDialog(this);
             if (result == DialogResult.OK)
@@ -170,11 +171,14 @@ namespace Kiriazi.Accounting.Pricing.Views
                 try
                 {
                     Cursor = Cursors.WaitCursor;
-
+                    toolStripProgressBar1.Visible = true;
                     Controllers.ItemController itemController = Program.ServiceProvider.GetRequiredService<Controllers.ItemController>();
-                    
-                    ModelState modelState = itemController.ImportFromExcelFile(openFileDialog1.FileName);
-                   
+                    Progress<int> progress = new Progress<int>();
+                    progress.ProgressChanged += (o, evt) =>
+                    {
+                        toolStripProgressBar1.Value = evt;
+                    };
+                    ModelState modelState = await itemController.ImportFromExcelFileAsync(openFileDialog1.FileName, progress);
                     if (modelState.HasErrors)
                     {
                         StringBuilder sb = new StringBuilder();
@@ -207,6 +211,8 @@ namespace Kiriazi.Accounting.Pricing.Views
                 finally
                 {
                     Cursor = Cursors.Default;
+                    toolStripProgressBar1.Visible = false;
+                    toolStripProgressBar1.Value = 0;
                 }
             }
         }
@@ -488,6 +494,109 @@ namespace Kiriazi.Accounting.Pricing.Views
                     toolStripProgressBar1.Visible = false;
                     toolStripProgressBar1.Value = 0;
                 }
+            }
+        }
+        private void MenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem menuItem = sender as ToolStripMenuItem;
+            if (menuItem != null)
+            {
+                UserReport report = Common.Session.CurrentUser.UserReports.Where(ass => ass.Report.Name == menuItem.Name).Select(ass => ass.Report).FirstOrDefault();
+                if (report != null)
+                {
+                    if (!string.IsNullOrEmpty(report.ParameterFormTypeName))
+                    {
+                        Form parameterFrom = (Form)Program.ServiceProvider.GetService(Type.GetType(report.ParameterFormTypeName));
+                        parameterFrom.MdiParent = this.MdiParent;
+                        parameterFrom.Show();
+                    }
+                    else if (!string.IsNullOrEmpty(report.ReportFormTypeName))
+                    {
+                        Form parameterFrom = (Form)Program.ServiceProvider.GetService(Type.GetType(report.ReportFormTypeName));
+                        parameterFrom.MdiParent = this.MdiParent;
+                        parameterFrom.Show();
+                    }
+                }
+            }
+        }
+        private void MainView_Load(object sender, EventArgs e)
+        {
+            using (LogInView logInView = Program.ServiceProvider.GetRequiredService<Views.LogInView>())
+            {
+                logInView.ShowDialog(this);
+                if (Common.Session.CurrentUser == null)
+                {
+                    Close();
+                }
+                else
+                {
+                    ReportMenu.DropDownItems.Clear();
+                    if (Common.Session.CurrentUser.UserReports.Count > 0)
+                    {
+                        this.ReportMenu.Enabled = true;
+                        foreach (UserReportAssignment ass in Common.Session.CurrentUser.UserReports.OrderBy(ass => ass.Sequence).ThenBy(ass => ass.DisplayName))
+                        {
+                            ToolStripMenuItem menuItem = new ToolStripMenuItem(ass.DisplayName);
+                            menuItem.Name = ass.Report.Name;
+                            menuItem.Click += MenuItem_Click;
+                            this.ReportMenu.DropDownItems.Add(menuItem);
+                        }
+                    }
+                    else
+                    {
+                        this.ReportMenu.Enabled = false;
+                    }
+                    importToolStripMenuItem.DropDownItems.Clear();
+                    var importCommands = Common.Session.CurrentUser.UserCommands.Select(uc => uc.Command).Where(c => c.CommandType == Models.UserCommandType.ImportCommand).ToList();
+                    if (importCommands.Count > 0)
+                    {
+                        foreach (var importCommand in importCommands)
+                        {
+                            ToolStripMenuItem toolStripItem = new ToolStripMenuItem();
+                            toolStripItem.Text = importCommand.DisplayName;
+                            toolStripItem.Name = importCommand.Name;
+                            switch (importCommand.Name)
+                            {
+                                case "DailyCurrencyExchangeRate":
+                                    toolStripItem.Click += dailyCurrencyExchangeRateToolStripMenuItem_Click;
+                                    break;
+                                case "PriceList":
+                                    toolStripItem.Click += this.priceListToolStripMenuItem_Click;
+                                    break;
+                                case "BOM":
+                                    toolStripItem.Click += this.productionTreeToolStripMenuItem_Click;
+                                    break;
+                                case "ImportItems":
+                                    toolStripItem.Click += this.itemsToolStripMenuItem_Click;
+                                    break;
+                                case "ImportGroups":
+                                    toolStripItem.Click += this.groupsToolStripMenuItem_Click;
+                                    break;
+                                case "CustomsTarrif":
+                                    toolStripItem.Click += this.customesTarrifToolStripMenuItem_Click;
+                                    break;
+                                case "ImportItemCompanyAssignment":
+                                    toolStripItem.Click += this.itemCompanyToolStripMenuItem_Click;
+                                    break;
+                                case "ImportItemCustomerAssigment":
+                                    toolStripItem.Click += this.itemCustomerToolStripMenuItem_Click;
+                                    break;
+                                default:
+                                    toolStripItem.Enabled = false;
+                                    break;
+                            }
+                            importToolStripMenuItem.DropDownItems.Add(toolStripItem);
+                        }
+                    }
+                    else
+                    {
+                        importToolStripMenuItem.Enabled = false;
+                    }
+                    _navigatorView = new NavigatorView();
+                    _navigatorView.MdiParent = this;
+                    _navigatorView.Show();
+                }
+
             }
         }
     }
