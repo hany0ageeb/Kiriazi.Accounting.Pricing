@@ -9,7 +9,7 @@ namespace Kiriazi.Accounting.Pricing.Models
     {
         private Currency _fromCurrency;
         private Currency _toCurrecny;
-        private DateTime _conversionDate = DateTime.Now;
+        private AccountingPeriod _accountingPeriod;
         private decimal _rate;
 
         [Key]
@@ -58,25 +58,28 @@ namespace Kiriazi.Accounting.Pricing.Models
                 }
             }
         }
-
-        public DateTime ConversionDate 
+        [Required]
+        public AccountingPeriod AccountingPeriod 
         { 
-            get=> _conversionDate;
+            get=> _accountingPeriod;
             set
             {
-                if (_conversionDate != value)
+                if (_accountingPeriod != value)
                 {
-                    _conversionDate = value;
-                    OnPropertyChanged(nameof(ConversionDate));
+                    _accountingPeriod = value;
+                    OnPropertyChanged(nameof(AccountingPeriod));
                 }
             }
         }
 
-        [ForeignKey("FromCurrency")]
+        [ForeignKey(nameof(FromCurrency))]
         public Guid FromCurrencyId { get; set; }
 
-        [ForeignKey("ToCurrency")]
+        [ForeignKey(nameof(ToCurrency))]
         public Guid ToCurrencyId { get; set; }
+
+        [ForeignKey(nameof(AccountingPeriod))]
+        public Guid AccountingPeriodId { get; set; }
 
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;

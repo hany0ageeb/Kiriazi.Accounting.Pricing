@@ -23,7 +23,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
         {
             var model = new ItemTreeSearchViewModel();
             model.Companies = _unitOfWork.CompanyRepository.Find(predicate:c=>c.Users.Select(u=>u.UserId).Contains(Common.Session.CurrentUser.UserId)).ToList();
-            model.Items = _unitOfWork.ItemRepository.Find(predicate:itm=>itm.ItemTypeId == ItemTypeRepository.ManufacturedItemType.Id).ToList();
+            model.Items = _unitOfWork.ItemRepository.Find(predicate:itm=>itm.ItemTypeId == _unitOfWork.ItemTypeRepository.ManufacturedItemType.Id).ToList();
             model.Companies.Insert(0, new Company { Name = "" });
             model.Items.Insert(0, new Item() { Code = "" });
             model.Company = model.Companies[0];
@@ -126,7 +126,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                 model.Items = _unitOfWork
                     .ItemRepository
                     .Find(
-                        predicate: itm => itm.ItemTypeId == ItemTypeRepository.ManufacturedItemType.Id,
+                        predicate: itm => itm.ItemTypeId == _unitOfWork.ItemTypeRepository.ManufacturedItemType.Id,
                         orderBy: q => q.OrderBy(s => s.Code))
                     .ToList();
                 if (model.Items.Count > 0)
@@ -152,7 +152,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                 model.Items = _unitOfWork
                         .ItemRepository
                         .Find(
-                            predicate: itm => itm.ItemTypeId == ItemTypeRepository.ManufacturedItemType.Id,
+                            predicate: itm => itm.ItemTypeId == _unitOfWork.ItemTypeRepository.ManufacturedItemType.Id,
                             orderBy: q => q.OrderBy(s => s.Code))
                         .ToList();
                 if (model.Items.Count > 0)
@@ -241,7 +241,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
         public ModelState Validate(ItemRelationEditViewModel model)
         {
             ModelState modelState = new ModelState();
-            if (model.ParentItem==null || model.ParentItem.ItemTypeId != ItemTypeRepository.ManufacturedItemType.Id)
+            if (model.ParentItem==null || model.ParentItem.ItemTypeId != _unitOfWork.ItemTypeRepository.ManufacturedItemType.Id)
             {
                 modelState.AddErrors(nameof(model.ParentItem), "Invalid Parent Item.");
                 return modelState;
@@ -309,7 +309,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                         {
                             //Parent = _unitOfWork.ItemRepository.Find(i => i.Code.Equals(parentChildDTO.AssemblyCode, StringComparison.InvariantCultureIgnoreCase) && i.ItemTypeId == ItemTypeRepository.ManufacturedItemType.Id).FirstOrDefault(),
                             //Child = _unitOfWork.ItemRepository.Find(i => i.Code.Equals(parentChildDTO.ComponentCode, StringComparison.InvariantCultureIgnoreCase) && i.ItemTypeId == ItemTypeRepository.RawItemType.Id).FirstOrDefault(),
-                            Parent = allItems.Where(i => i.Code.Equals(parentChildDTO.AssemblyCode, StringComparison.InvariantCultureIgnoreCase) && i.ItemTypeId == ItemTypeRepository.ManufacturedItemType.Id).FirstOrDefault(),
+                            Parent = allItems.Where(i => i.Code.Equals(parentChildDTO.AssemblyCode, StringComparison.InvariantCultureIgnoreCase) && i.ItemTypeId == _unitOfWork.ItemTypeRepository.ManufacturedItemType.Id).FirstOrDefault(),
                             Child = allItems.Where(i => i.Code.Equals(parentChildDTO.ComponentCode, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault(),
                             Quantity = parentChildDTO.Quantity,
                             Company = companies.Where(c => c.Name.Equals(parentChildDTO.CompanyName, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault()
@@ -331,7 +331,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                                 Company = comp,
                                 //Parent = _unitOfWork.ItemRepository.Find(i => i.Code.Equals(parentChildDTO.AssemblyCode, StringComparison.InvariantCultureIgnoreCase) && i.ItemTypeId == ItemTypeRepository.ManufacturedItemType.Id).FirstOrDefault(),
                                 //Child = _unitOfWork.ItemRepository.Find(i => i.Code.Equals(parentChildDTO.ComponentCode, StringComparison.InvariantCultureIgnoreCase) && i.ItemTypeId == ItemTypeRepository.RawItemType.Id).FirstOrDefault(),
-                                Parent = allItems.Where(i => i.Code.Equals(parentChildDTO.AssemblyCode, StringComparison.InvariantCultureIgnoreCase) && i.ItemTypeId == ItemTypeRepository.ManufacturedItemType.Id).FirstOrDefault(),
+                                Parent = allItems.Where(i => i.Code.Equals(parentChildDTO.AssemblyCode, StringComparison.InvariantCultureIgnoreCase) && i.ItemTypeId == _unitOfWork.ItemTypeRepository.ManufacturedItemType.Id).FirstOrDefault(),
                                 Child = allItems.Where(i => i.Code.Equals(parentChildDTO.ComponentCode, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault(),
                                 Quantity = parentChildDTO.Quantity
                             };

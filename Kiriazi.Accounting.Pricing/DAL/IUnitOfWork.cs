@@ -26,6 +26,8 @@ namespace Kiriazi.Accounting.Pricing.DAL
         IUserRepository UserRepository { get; }
         IUserCommandAssignmentRepository UserCommandAssignmentRepository { get; }
         IUserReportAssignmentRepository UserReportAssignmentRepository { get; }
+        ICustomerPriceListRepository CustomerPriceListRepository { get; }
+
         DateTime Now { get; }
 
         int Complete();

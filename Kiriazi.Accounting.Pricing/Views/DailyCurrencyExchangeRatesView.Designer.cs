@@ -29,7 +29,7 @@ namespace Kiriazi.Accounting.Pricing.Views
         /// </summary>
         private void InitializeComponent()
         {
-            this.cboDates = new System.Windows.Forms.ComboBox();
+            this.cboPeriods = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
@@ -42,22 +42,22 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.flowLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
-            // cboDates
+            // cboPeriods
             // 
-            this.cboDates.FormattingEnabled = true;
-            this.cboDates.Location = new System.Drawing.Point(209, 12);
-            this.cboDates.Name = "cboDates";
-            this.cboDates.Size = new System.Drawing.Size(480, 23);
-            this.cboDates.TabIndex = 0;
+            this.cboPeriods.FormattingEnabled = true;
+            this.cboPeriods.Location = new System.Drawing.Point(223, 9);
+            this.cboPeriods.Name = "cboPeriods";
+            this.cboPeriods.Size = new System.Drawing.Size(509, 23);
+            this.cboPeriods.TabIndex = 0;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(150, 12);
+            this.label1.Location = new System.Drawing.Point(100, 12);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(32, 15);
+            this.label1.Size = new System.Drawing.Size(106, 15);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Date";
+            this.label1.Text = "Accounting Period";
             // 
             // dataGridView1
             // 
@@ -128,12 +128,12 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.cboDates);
+            this.Controls.Add(this.cboPeriods);
             this.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "DailyCurrencyExchangeRatesView";
-            this.Text = "Daily Currency Exchange Rates";
+            this.Text = "Currency Exchange Rates";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel2.ResumeLayout(false);
@@ -144,7 +144,7 @@ namespace Kiriazi.Accounting.Pricing.Views
 
         #endregion
 
-        private System.Windows.Forms.ComboBox cboDates;
+        private System.Windows.Forms.ComboBox cboPeriods;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;

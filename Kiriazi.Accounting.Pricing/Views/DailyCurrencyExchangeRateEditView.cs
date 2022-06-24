@@ -16,17 +16,20 @@ namespace Kiriazi.Accounting.Pricing.Views
     {
         private readonly CurrencyExchangeRateController _controller;
         private BindingList<DailyCurrencyExchangeRateViewModel> _lines = new BindingList<DailyCurrencyExchangeRateViewModel>();
+        private IList<Models.AccountingPeriod> _periods;
         private bool _hasChanged = false;
-        public DailyCurrencyExchangeRateEditView(CurrencyExchangeRateController controller)
-            : this(controller,null)
+        public DailyCurrencyExchangeRateEditView(CurrencyExchangeRateController controller,IList<Models.AccountingPeriod> accountingPeriods)
+            : this(controller, accountingPeriods, null)
         {
-
+            
         }
         public DailyCurrencyExchangeRateEditView(
             CurrencyExchangeRateController controller,
+            IList<Models.AccountingPeriod> accountingPeriods,
             IList<DailyCurrencyExchangeRateViewModel> lines = null)
         {
             _controller = controller;
+            _periods = accountingPeriods;
             if (lines == null || lines.Count==0)
             {
                 lines = _controller.Add();
@@ -40,19 +43,23 @@ namespace Kiriazi.Accounting.Pricing.Views
         }
         private void Initialize()
         {
-            if (_lines.Count > 0) 
+            cboPeriods.ValueMember = nameof(Models.AccountingPeriod.Self);
+            cboPeriods.DisplayMember = nameof(Models.AccountingPeriod.Name);
+            cboPeriods.DataSource = _periods;
+            cboPeriods.SelectedIndexChanged += (o, e) =>
             {
-                dateTimePicker1.Value = _lines[0].Date;
-            }
-            dateTimePicker1.ValueChanged += (o, e) =>
-            {
-                foreach(var line in _lines)
+                Models.AccountingPeriod accountingPeriod = cboPeriods.SelectedItem as Models.AccountingPeriod;
+                if (accountingPeriod != null)
                 {
-                    line.Date = new DateTime(dateTimePicker1.Value.Year, dateTimePicker1.Value.Month, dateTimePicker1.Value.Day, 0, 0, 0);
+                    foreach (var line in _lines)
+                    {
+                        line.AccountingPeriod = accountingPeriod;
+                    }
                 }
                 _hasChanged = true;
                 btnSave.Enabled = true;
             };
+            
             dataGridView1.AllowUserToAddRows = false;
             dataGridView1.AllowUserToDeleteRows = false;
             dataGridView1.AutoGenerateColumns = false;

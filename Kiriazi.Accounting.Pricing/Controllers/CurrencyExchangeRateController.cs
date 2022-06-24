@@ -1,4 +1,5 @@
 ﻿using Kiriazi.Accounting.Pricing.DAL;
+using Kiriazi.Accounting.Pricing.Models;
 using Kiriazi.Accounting.Pricing.Validation;
 using Kiriazi.Accounting.Pricing.ViewModels;
 using System;
@@ -14,24 +15,24 @@ namespace Kiriazi.Accounting.Pricing.Controllers
         {
             _unitOfWork = unitOfwork;
         }
-        public IList<string> Find()
+        public IList<AccountingPeriod> Find()
         {
-            IList<string> dates = 
+            IList<AccountingPeriod> periods = 
                 _unitOfWork
-                .CurrencyExchangeRateRepository
-                .Find<DateTime>(
-                    predicate: r => true, 
-                    selector: r => r.ConversionDate , 
-                    orderBy: q => q.OrderByDescending(d => d))
-                .Select(d=>d.ToShortDateString())
-                .Distinct()
+                .AccountingPeriodRepository
+                .Find(orderBy: q => q.OrderBy(AccountingPeriodRepository => AccountingPeriodRepository.FromDate))
                 .ToList();
-            dates.Insert(0, "");
-            return dates;
+            periods.Insert(0, new AccountingPeriod() { Name = " ", Id = Guid.Empty });
+            return periods;
         }
-        public IList<DailyCurrencyExchangeRateViewModel> Edit(DateTime conversionDate)
+        public IList<AccountingPeriod> FindAvailableAccountingPeriods()
         {
-            var oldLines = _unitOfWork.CurrencyExchangeRateRepository.Find(predicate: r => r.ConversionDate == conversionDate).ToList();
+            return
+                _unitOfWork.AccountingPeriodRepository.Find(predicate: acc => acc.CurrencyExchangeRates.Count() == 0).ToList();
+        }
+        public IList<DailyCurrencyExchangeRateViewModel> Edit(AccountingPeriod accountingPeriod)
+        {
+            var oldLines = _unitOfWork.CurrencyExchangeRateRepository.Find(predicate: r => r.AccountingPeriodId == accountingPeriod.Id).ToList();
             var model = Add();
             foreach(var olLine in oldLines)
             {
@@ -39,7 +40,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                 if (modelLine != null)
                 {
                     modelLine.Id = olLine.Id;
-                    modelLine.Date = olLine.ConversionDate;
+                    modelLine.AccountingPeriod = olLine.AccountingPeriod;
                     modelLine.Rate = olLine.Rate;
                     modelLine.ToCurrencyCode = olLine.ToCurrency.Code;
                     modelLine.FromCurrencyCode = olLine.FromCurrency.Code;
@@ -50,7 +51,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                     {
                         FromCurrency = olLine.FromCurrency,
                         ToCurrency = olLine.ToCurrency,
-                        Date = olLine.ConversionDate,
+                        AccountingPeriod = olLine.AccountingPeriod,
                         Rate = olLine.Rate,
                         Id = olLine.Id,
                         FromCurrencyCode = olLine.FromCurrency.Code,
@@ -89,8 +90,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                             ToCurrencyCode = compCurrency.Code,
                             ToCurrency = compCurrency,
                             Rate = 1.0M,
-                            Date = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0),
-                            Id = Guid.Empty
+                            Id = Guid.Empty,
                         });
                     }
                 }
@@ -124,7 +124,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                         if (oldLine != null)
                         {
                             oldLine.Rate = line.Rate;
-                            oldLine.ConversionDate = line.ConversionDate;
+                            oldLine.AccountingPeriod = line.AccountingPeriod;
                         }
                         else
                         {
@@ -136,18 +136,18 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             }
             return modelState;
         }
-        public IList<ViewModels.DailyCurrencyExchangeRateViewModel> Find(string date="")
+        public IList<ViewModels.DailyCurrencyExchangeRateViewModel> Find(AccountingPeriod accountingPeriod)
         {
-            if(string.IsNullOrEmpty(date) || !DateTime.TryParse(date,out DateTime conversionDate))
+            if(accountingPeriod==null || accountingPeriod.Id==Guid.Empty)
             {
                 return 
                     _unitOfWork
                     .CurrencyExchangeRateRepository
-                    .Find(orderBy:q=>q.OrderByDescending(r=>r.ConversionDate))
+                    .Find(orderBy:q=>q.OrderByDescending(r=>r.AccountingPeriod.FromDate))
                     .Select(
                         r => new DailyCurrencyExchangeRateViewModel()
                         {
-                            Date = r.ConversionDate,
+                           AccountingPeriod = r.AccountingPeriod,
                             FromCurrencyCode = r.FromCurrency.Code,
                             ToCurrencyCode = r.ToCurrency.Code,
                             Rate = r.Rate
@@ -159,11 +159,11 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                 return
                     _unitOfWork
                     .CurrencyExchangeRateRepository
-                    .Find(predicate:r=>r.ConversionDate==conversionDate)
+                    .Find(predicate:r=>r.AccountingPeriodId== accountingPeriod.Id)
                     .Select(
                         r => new DailyCurrencyExchangeRateViewModel()
                         {
-                            Date = r.ConversionDate,
+                            AccountingPeriod = r.AccountingPeriod,
                             FromCurrencyCode = r.FromCurrency.Code,
                             ToCurrencyCode = r.ToCurrency.Code,
                             Rate = r.Rate
@@ -210,23 +210,27 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             {
                 modelState.AddErrors(nameof(rate.FromCurrency), "Invalid Rate.");
             }
+            if (rate.AccountingPeriod == null)
+            {
+                modelState.AddErrors(nameof(rate.AccountingPeriod),"Invalid Accounting Period.");
+            }
             if (rate.Id == Guid.Empty)
             {
-                if (_unitOfWork.CurrencyExchangeRateRepository.Find(predicate: r => r.FromCurrencyId == rate.FromCurrencyId && r.ToCurrencyId == rate.ToCurrencyId && r.ConversionDate == rate.ConversionDate).FirstOrDefault() != null)
+                if (_unitOfWork.CurrencyExchangeRateRepository.Find(predicate: r => r.FromCurrencyId == rate.FromCurrencyId && r.ToCurrencyId == rate.ToCurrencyId && r.AccountingPeriodId == rate.AccountingPeriod.Id).FirstOrDefault() != null)
                 {
-                    modelState.AddErrors(nameof(rate.FromCurrency), $"Exchange Rate From: {rate.FromCurrency.Code} To: {rate.ToCurrency.Code} at date {rate.ConversionDate} already exist.");
+                    modelState.AddErrors(nameof(rate.FromCurrency), $"Exchange Rate From: {rate.FromCurrency.Code} To: {rate.ToCurrency.Code} For Accounting Period: {rate.AccountingPeriod.Name} already exist.");
                 }
             }
             else
             {
-                if (_unitOfWork.CurrencyExchangeRateRepository.Find(predicate: r => r.FromCurrencyId == rate.FromCurrencyId && r.ToCurrencyId == rate.ToCurrencyId && r.ConversionDate == rate.ConversionDate && r.Id != rate.Id).FirstOrDefault() != null)
+                if (_unitOfWork.CurrencyExchangeRateRepository.Find(predicate: r => r.FromCurrencyId == rate.FromCurrencyId && r.ToCurrencyId == rate.ToCurrencyId && r.AccountingPeriodId == rate.AccountingPeriod.Id && r.Id != rate.Id).FirstOrDefault() != null)
                 {
-                    modelState.AddErrors(nameof(rate.FromCurrency), $"Exchange Rate From: {rate.FromCurrency.Code} To: {rate.ToCurrency.Code} at date {rate.ConversionDate} already exist.");
+                    modelState.AddErrors(nameof(rate.FromCurrency), $"Exchange Rate From: {rate.FromCurrency.Code} To: {rate.ToCurrency.Code} For Accounting Period: {rate.AccountingPeriod.Name} already exist.");
                 }
             }
             if(rate.FromCurrency!=null && rate.ToCurrency!=null && rate.FromCurrencyId == rate.ToCurrencyId)
             {
-                modelState.AddErrors(nameof(rate.FromCurrency), "Conversion Rate From Currency is the same is to currency.");
+                modelState.AddErrors(nameof(rate.FromCurrency), "Conversion Rate 'From Currency' is the same as 'To currency'.");
             }
             return modelState;
         }
@@ -234,15 +238,15 @@ namespace Kiriazi.Accounting.Pricing.Controllers
         {
             DAL.Excel.DailyCurrencyExchangeRateDTORepository excelRepository = new DAL.Excel.DailyCurrencyExchangeRateDTORepository(fileName);
             var rateDTOS = excelRepository.Find();
-            IList<Models.CurrencyExchangeRate> currencyExchangeRates = new List<Models.CurrencyExchangeRate>();
-            IList<Models.Currency> allCurrencies = _unitOfWork.CurrencyRepository.Find(c => c.IsEnabled).ToList();
+            IList<CurrencyExchangeRate> currencyExchangeRates = new List<CurrencyExchangeRate>();
+            IList<Currency> allCurrencies = _unitOfWork.CurrencyRepository.Find(c => c.IsEnabled).ToList();
             foreach(var rateDto in rateDTOS)
             {
                 currencyExchangeRates.Add(new Models.CurrencyExchangeRate()
                 {
                     FromCurrency = allCurrencies.Where(c => c.Code.Equals(rateDto.FromCurrencyCode, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault(),
                     ToCurrency = allCurrencies.Where(c => c.Code.Equals(rateDto.ToCurrencyCode, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault(),
-                    ConversionDate = new DateTime(rateDto.ConversionDate.Year, rateDto.ConversionDate.Month, rateDto.ConversionDate.Day, 0, 0, 0),
+                    AccountingPeriod = _unitOfWork.AccountingPeriodRepository.Find(predicate:acc=>acc.Name.Equals(rateDto.AccountingPeriodName,StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault(),
                     Rate = rateDto.ConversionRate,
                     Id = Guid.Empty
                 });

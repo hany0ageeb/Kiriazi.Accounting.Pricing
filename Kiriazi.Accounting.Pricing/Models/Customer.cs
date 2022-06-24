@@ -57,6 +57,8 @@ namespace Kiriazi.Accounting.Pricing.Models
 
         public virtual ICollection<User> Users { get; set; } = new HashSet<User>();
 
+        public virtual ICollection<CustomerPriceList> CustomerPriceLists { get; set; } = new HashSet<CustomerPriceList>();
+
         [NotMapped]
         public Customer Self => this;
     }

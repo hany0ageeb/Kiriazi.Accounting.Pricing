@@ -15,9 +15,9 @@ namespace Kiriazi.Accounting.Pricing.Views
 {
     public partial class CustomerPriceListSearchView : Form
     {
-        private readonly CompanyController _companyController;
+        private readonly CustomerPriceListController _companyController;
         private CustomerPriceListSeachViewModel _model;
-        public CustomerPriceListSearchView(CompanyController companyController)
+        public CustomerPriceListSearchView(CustomerPriceListController companyController)
         {
             _companyController = companyController;
             _model = _companyController.FindCustomerPriceList();
@@ -26,12 +26,14 @@ namespace Kiriazi.Accounting.Pricing.Views
         }
         private void Initialize()
         {
-            //pickPriceListDate.MaxDate = DateTime.Now;
-            pickPriceListDate.DataBindings.Clear();
-            pickPriceListDate.DataBindings.Add(new Binding(nameof(pickPriceListDate.Value),_model,nameof(_model.Date))
+            cboAccountingPeriods.DataBindings.Clear();
+            cboAccountingPeriods.DataBindings.Add(new Binding(nameof(cboAccountingPeriods.SelectedItem), _model, nameof(_model.AccountingPeriod))
             {
                 DataSourceUpdateMode = DataSourceUpdateMode.OnPropertyChanged
             });
+            cboAccountingPeriods.DataSource = _model.AccountingPeriods;
+            cboAccountingPeriods.DisplayMember = nameof(Models.AccountingPeriod.Name);
+            cboAccountingPeriods.ValueMember = nameof(Models.AccountingPeriod.Self);
             //
             cboCompanies.DataBindings.Clear();
             cboCompanies.DataBindings.Add(new Binding(nameof(cboCompanies.SelectedItem),_model,nameof(_model.Company))
@@ -61,6 +63,11 @@ namespace Kiriazi.Accounting.Pricing.Views
         {
             try
             {
+                if (_model.AccountingPeriod == null)
+                {
+                    _ = MessageBox.Show(this, "No Accounting Period Available.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
+                }
                 Cursor = Cursors.WaitCursor;
                 var lines = _companyController.FindCustomerPriceList(_model);
                 CustomerPriceListsView customerPriceListsView = new CustomerPriceListsView(lines);

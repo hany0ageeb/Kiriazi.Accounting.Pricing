@@ -16,20 +16,18 @@ namespace Kiriazi.Accounting.Pricing.DAL
             return 
                 _context
                 .Set<Models.CurrencyExchangeRate>()
-                .Where(r => r.ConversionDate >= period.FromDate && r.ConversionDate <= period.ToDate && r.FromCurrencyId == fromCurrency.Id && r.ToCurrencyId == toCurrency.Id)
+                .Where(r => r.FromCurrencyId==fromCurrency.Id&&r.ToCurrencyId==toCurrency.Id&&r.AccountingPeriodId==period.Id)
                 .Max(r =>(decimal?) r.Rate);
         }
-        public CurrencyExchangeRate FindCurrencyExchangeRate(Guid fromCurrencyId, Guid toCurrencyId, DateTime atDate)
+        public CurrencyExchangeRate FindCurrencyExchangeRate(Guid fromCurrencyId, Guid toCurrencyId, AccountingPeriod atPeriod)
         {
-            DateTime d1 = new DateTime(atDate.Year, atDate.Month, atDate.Day, 0, 0, 0);
-            DateTime d2 = new DateTime(atDate.Year, atDate.Month, atDate.Day, 23, 59, 59);
+           
             return 
                 _context.Set<CurrencyExchangeRate>().Where(
                 r =>
                     r.FromCurrencyId == fromCurrencyId &&
                     r.ToCurrencyId == toCurrencyId &&
-                    r.ConversionDate >= d1 && 
-                    r.ConversionDate <= d2)
+                    r.AccountingPeriodId == atPeriod.Id)
                 .FirstOrDefault();
         }
     }

@@ -103,7 +103,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                 model.AccountingPeriod = oldPriceList.CompanyAccountingPeriod.AccountingPeriod;
                 model.AccountingPeriods = _unitOfWork.CompanyAccountingPeriodRepository.Find<AccountingPeriod>(predicate: a => a.CompanyId == oldPriceList.CompanyAccountingPeriod.CompanyId && (a.State==AccountingPeriodStates.Opened || a.PriceListId==oldPriceList.Id),selector:cap=>cap.AccountingPeriod).ToList();
                 model.Companies = _unitOfWork.CompanyRepository.Find(predicate: c => c.IsEnabled, include: q => q.Include(e => e.CompanyAccountingPeriods.Select(ac => ac.AccountingPeriod))).ToList();
-                model.ItemsCodes = _unitOfWork.ItemRepository.FindItemsCodes(ItemTypeRepository.RawItemType.Id).OrderBy(s=>s).ToList();
+                model.ItemsCodes = _unitOfWork.ItemRepository.FindItemsCodes(_unitOfWork.ItemTypeRepository.RawItemType.Id).OrderBy(s=>s).ToList();
                 model.Currencies = _unitOfWork.CurrencyRepository.Find(c => c.IsEnabled, q => q.OrderBy(e => e.Code)).ToList();
                 foreach (var line in oldPriceList.PriceListLines.OrderBy(l=>l.Item.Code))
                 {
@@ -146,7 +146,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                 model.AccountingPeriods = model.Company.CompanyAccountingPeriods.Where(ap => ap.State == AccountingPeriodStates.Opened && ap.PriceList == null).Select(ap => ap.AccountingPeriod).ToList();
             }
             model.AccountingPeriod = model.AccountingPeriods[0];
-            model.ItemsCodes = _unitOfWork.ItemRepository.FindItemsCodes(ItemTypeRepository.RawItemType.Id).ToList();
+            model.ItemsCodes = _unitOfWork.ItemRepository.FindItemsCodes(_unitOfWork.ItemTypeRepository.RawItemType.Id).ToList();
             model.Currencies = _unitOfWork.CurrencyRepository.Find(c => c.IsEnabled, q => q.OrderBy(e => e.Code)).ToList();
             return model;
         }
@@ -334,7 +334,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                                 if (modelState.HasErrors)
                                     break;
                                 PriceListLine pline = new PriceListLine();
-                                var item = _unitOfWork.ItemRepository.Find(predicate: itm => itm.Code.Equals(line.ItemCode, StringComparison.InvariantCultureIgnoreCase) && itm.ItemTypeId == ItemTypeRepository.RawItemType.Id,include:q=>q.Include(e=>e.Tarrif)).FirstOrDefault();
+                                var item = _unitOfWork.ItemRepository.Find(predicate: itm => itm.Code.Equals(line.ItemCode, StringComparison.InvariantCultureIgnoreCase) && itm.ItemTypeId == _unitOfWork.ItemTypeRepository.RawItemType.Id,include:q=>q.Include(e=>e.Tarrif)).FirstOrDefault();
                                 var currency = _unitOfWork.CurrencyRepository.Find(predicate: c => c.Code.Equals(line.CurrencyCode, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
                                 if (item == null)
                                 {

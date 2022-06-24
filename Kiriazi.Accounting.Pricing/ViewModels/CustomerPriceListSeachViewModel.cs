@@ -8,7 +8,7 @@ namespace Kiriazi.Accounting.Pricing.ViewModels
     {
         private Company _company;
         private Customer _customer;
-        private DateTime _date;
+        private AccountingPeriod _accountingPeriod;
 
         public Company Company
         {
@@ -34,20 +34,21 @@ namespace Kiriazi.Accounting.Pricing.ViewModels
                 }
             }
         }
-        public DateTime Date
+        public AccountingPeriod AccountingPeriod
         {
-            get=>_date;
+            get=> _accountingPeriod;
             set
             {
-                if (_date != value)
+                if (_accountingPeriod != value)
                 {
-                    _date = value;
-                    OnPropertyChanged(nameof(Date));
+                    _accountingPeriod = value;
+                    OnPropertyChanged(nameof(AccountingPeriod));
                 }
             }
         }
         public IList<Company> Companies { get; set; }
         public IList<Customer> Customers { get; set; }
+        public IList<AccountingPeriod> AccountingPeriods { get; set; }
     }
    
 }

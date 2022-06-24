@@ -443,7 +443,59 @@ namespace Kiriazi.Accounting.Pricing.Views
                 Cursor = Cursors.Default;
             }
         }
-
+        private async void customerPriceListToolStripMenuItem_Click(object sender,EventArgs e)
+        {
+            var result = openFileDialog1.ShowDialog(this);
+            if(result == DialogResult.OK)
+            {
+                try
+                {
+                    Cursor = Cursors.WaitCursor;
+                    toolStripProgressBar1.Value = 0;
+                    toolStripProgressBar1.Visible = true;
+                    Progress<int> progress = new Progress<int>();
+                    progress.ProgressChanged += (o, evt) =>
+                    {
+                        toolStripProgressBar1.Value = evt;
+                    };
+                    Controllers.CustomerPriceListController customerPriceListController = Program.ServiceProvider.GetRequiredService<Controllers.CustomerPriceListController>();
+                    ModelState modelState = await customerPriceListController.ImportCustomerPriceListFromExcelFileAsync(openFileDialog1.FileName, progress);
+                    if (modelState.HasErrors)
+                    {
+                        StringBuilder sb = new StringBuilder();
+                        foreach (var err in modelState.GetErrors())
+                        {
+                            sb.AppendLine(err);
+                        }
+                        for (int i = 0; i < modelState.InnerModelStatesCount; i++)
+                        {
+                            foreach (var temp in modelState.GetModelState(i).GetErrors())
+                            {
+                                sb.AppendLine(temp);
+                            }
+                        }
+                        using (ImportErrorsView importErrorsView = new ImportErrorsView(sb.ToString()))
+                        {
+                            importErrorsView.ShowDialog(this);
+                        }
+                    }
+                    else
+                    {
+                        _ = MessageBox.Show(this, $"All Data Was imported without errors.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+                catch(Exception ex)
+                {
+                    _ = MessageBox.Show(this, ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    toolStripProgressBar1.Visible = false;
+                    toolStripProgressBar1.Value = 0;
+                    Cursor = Cursors.Default;
+                }
+            }
+        }
         private async void itemCustomerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var result = openFileDialog1.ShowDialog(this);
@@ -521,7 +573,7 @@ namespace Kiriazi.Accounting.Pricing.Views
         }
         private void MainView_Load(object sender, EventArgs e)
         {
-            using (LogInView logInView = Program.ServiceProvider.GetRequiredService<Views.LogInView>())
+            using (LogInView logInView = Program.ServiceProvider.GetRequiredService<LogInView>())
             {
                 logInView.ShowDialog(this);
                 if (Common.Session.CurrentUser == null)
@@ -580,6 +632,9 @@ namespace Kiriazi.Accounting.Pricing.Views
                                     break;
                                 case "ImportItemCustomerAssigment":
                                     toolStripItem.Click += this.itemCustomerToolStripMenuItem_Click;
+                                    break;
+                                case "ImportCustomerPriceList":
+                                    toolStripItem.Click += this.customerPriceListToolStripMenuItem_Click;
                                     break;
                                 default:
                                     toolStripItem.Enabled = false;

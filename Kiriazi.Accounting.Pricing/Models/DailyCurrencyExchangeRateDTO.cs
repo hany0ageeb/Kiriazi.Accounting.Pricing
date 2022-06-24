@@ -11,8 +11,8 @@ namespace Kiriazi.Accounting.Pricing.Models
         public string FromCurrencyCode { get; set; }
         [Column("To Currency Code")]
         public string ToCurrencyCode { get; set; }
-        [Column("Converion Date")]
-        public DateTime ConversionDate { get; set; }
+        [Column("Accounting Period Name")]
+        public string AccountingPeriodName { get; set; }
         [Column("Converion Rate")]
         public decimal ConversionRate { get; set; }
     }

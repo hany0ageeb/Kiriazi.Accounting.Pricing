@@ -69,7 +69,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
 
         public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IQueryable<TEntity>> include)
         {
-            return include(_context.Set<TEntity>().Where(predicate)).AsEnumerable();
+            return include(_context.Set<TEntity>().Where(predicate));
         }
         public IEnumerable<TResult> Find<TResult>(
             Expression<Func<TEntity, bool>> predicate, 

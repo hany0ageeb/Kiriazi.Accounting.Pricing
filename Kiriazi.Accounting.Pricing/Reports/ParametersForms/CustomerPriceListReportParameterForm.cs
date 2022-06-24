@@ -12,9 +12,9 @@ namespace Kiriazi.Accounting.Pricing.Reports.ParametersForms
 {
     public partial class CustomerPriceListReportParameterForm : Form
     {
-        private Controllers.CompanyController _companyController;
+        private Controllers.CustomerPriceListController _companyController;
         private ViewModels.CustomerPriceListSeachViewModel _model;
-        public CustomerPriceListReportParameterForm(Controllers.CompanyController companyController)
+        public CustomerPriceListReportParameterForm(Controllers.CustomerPriceListController companyController)
         {
             _companyController = companyController;
             _model = _companyController.FindCustomerPriceList();
@@ -41,6 +41,14 @@ namespace Kiriazi.Accounting.Pricing.Reports.ParametersForms
             {
                 _model.Customer = null;
             }
+            if(_model.AccountingPeriods.Count > 0)
+            {
+                _model.AccountingPeriod = _model.AccountingPeriods[0];
+            }
+            else
+            {
+                _model.AccountingPeriod = null;
+            }
             //
             cboCompanies.DataBindings.Clear();
             cboCompanies.DataSource = _model.Companies;
@@ -60,8 +68,11 @@ namespace Kiriazi.Accounting.Pricing.Reports.ParametersForms
                 DataSourceUpdateMode = DataSourceUpdateMode.OnValidation
             });
             //
-            pickPriceListDate.DataBindings.Clear();
-            pickPriceListDate.DataBindings.Add(new Binding(nameof(pickPriceListDate.Value),_model,nameof(_model.Date)) { DataSourceUpdateMode = DataSourceUpdateMode.OnPropertyChanged });
+            cboAccountingPeriods.DataBindings.Clear();
+            cboAccountingPeriods.DataSource = _model.AccountingPeriods;
+            cboAccountingPeriods.DisplayMember = nameof(Models.AccountingPeriod.Name);
+            cboAccountingPeriods.ValueMember = nameof(Models.AccountingPeriod.Self);
+            cboAccountingPeriods.DataBindings.Add(new Binding(nameof(cboAccountingPeriods.SelectedItem), _model, nameof(_model.AccountingPeriod)));
         }
         private void btnCancel_Click(object sender, EventArgs e)
         {
@@ -72,6 +83,11 @@ namespace Kiriazi.Accounting.Pricing.Reports.ParametersForms
         {
             try
             {
+                if (_model.AccountingPeriod == null)
+                {
+                    _ = MessageBox.Show(this, "No Accounting Period Available.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
+                }
                 Cursor = Cursors.WaitCursor;
                 IList<ViewModels.CustomerPriceListViewModel> data = _companyController.FindCustomerPriceList(_model);
                 Reports.ReportsForms.CustomerPriceListReportForm customerPriceListReportForm = new ReportsForms.CustomerPriceListReportForm(data);

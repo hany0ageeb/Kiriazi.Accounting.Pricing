@@ -44,6 +44,64 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                 AccountTypes = UserAccountTypes.AllAccountTypes.ToList()
             };
         }
+        public UserAccountEditViewModel EditUserAccount()
+        {
+            return new UserAccountEditViewModel(Common.Session.CurrentUser);
+        }
+        public ModelState EditUserAccount(UserAccountEditViewModel model)
+        {
+            ModelState modelState = ValidateUserAccountEditViewModel(model);
+            if (modelState.HasErrors)
+                return modelState;
+            User user = _unitOfWork.UserRepository.Find(Id: model.UserId);
+            if (user != null)
+            {
+                if (user.Password != model.OldPassword)
+                {
+                    modelState.AddErrors(nameof(model.OldPassword), "Invalid Old Password.");
+                    return modelState;
+                }
+                user.UserName = model.UserName;
+                user.Password = model.NewPassword;
+                _unitOfWork.Complete();
+                return modelState;
+            }
+            else
+            {
+                modelState.AddErrors(nameof(model.UserName), $"Invalid User Id {model.UserId}");
+                return modelState;
+            }
+        }
+        private ModelState ValidateUserAccountEditViewModel(UserAccountEditViewModel model)
+        {
+            ModelState modelState = new ModelState();
+            if (string.IsNullOrEmpty(model.UserName))
+            {
+                modelState.AddErrors(nameof(model.UserName), "Invalid User Name.");
+            }
+            else if (_unitOfWork.UserRepository.Find(predicate: u => u.UserId != model.UserId && u.UserName.Equals(model.UserName, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault() != null)
+            {
+                modelState.AddErrors(nameof(model.UserName), $"{model.UserName} Cannot be used as it is taken by another user.");
+            }
+            if (string.IsNullOrEmpty(model.OldPassword))
+            {
+                modelState.AddErrors(nameof(model.OldPassword), "Invalid Old Password.");
+            }
+            if (string.IsNullOrEmpty(model.NewPassword))
+            {
+                modelState.AddErrors(nameof(model.NewPassword), "Invalid New Password.");
+            }
+            if (string.IsNullOrEmpty(model.ConfirmPassword))
+            {
+                modelState.AddErrors(nameof(model.ConfirmPassword), "Invalid New Password");
+            }
+            if (model.NewPassword != model.ConfirmPassword)
+            {
+                modelState.AddErrors(nameof(model.NewPassword), "New Password does not mathc Confirm Password.");
+            }
+            
+            return modelState;
+        }
         public ModelState Edit(UserEditViewModel model)
         {
             var modelState = Validate(model);

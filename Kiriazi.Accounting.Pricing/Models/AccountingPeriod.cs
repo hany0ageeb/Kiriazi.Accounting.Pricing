@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -11,10 +12,10 @@ namespace Kiriazi.Accounting.Pricing.Models
         private string _description;
         private DateTime _fromDate = DateTime.Now;
         private DateTime? _toDate;
-        private bool _assignToAllCompanies = false;
+        
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public Guid Id { get; private set; } = Guid.NewGuid();
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         [Timestamp]
         public byte[] Timestamp { get; set; }
@@ -81,5 +82,9 @@ namespace Kiriazi.Accounting.Pricing.Models
         }
         [NotMapped]
         public AccountingPeriod Self => this;
+
+        public virtual ICollection<CurrencyExchangeRate> CurrencyExchangeRates { get; set; } = new HashSet<CurrencyExchangeRate>();
+
+        public virtual ICollection<CustomerPriceList> CustomerPriceLists { get; set; } = new HashSet<CustomerPriceList>();
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Kiriazi.Accounting.Pricing.Models;
 using System;
+using System.Collections.Generic;
 
 namespace Kiriazi.Accounting.Pricing.ViewModels
 {
@@ -21,9 +22,17 @@ namespace Kiriazi.Accounting.Pricing.ViewModels
                 }
             }
         }
-        public DateTime Date { get; set; }
+        public AccountingPeriod AccountingPeriod { get; set; }
+
         public Currency FromCurrency { get; set; }
+
         public Currency ToCurrency { get; set; }
+
+        public string AccountingPeriodName => AccountingPeriod?.Name;
+
+        public DateTime? FromDate => AccountingPeriod?.FromDate;
+
+        public DateTime? ToDate => AccountingPeriod?.ToDate;
 
         public CurrencyExchangeRate CurrencyExchangeRate
         {
@@ -33,7 +42,7 @@ namespace Kiriazi.Accounting.Pricing.ViewModels
                 FromCurrency = FromCurrency,
                 ToCurrency = ToCurrency,
                 Rate = Rate,
-                ConversionDate = Date
+                AccountingPeriod = AccountingPeriod
             };
         }
     }

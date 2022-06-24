@@ -23,8 +23,10 @@ namespace Kiriazi.Accounting.Pricing.Views
         }
         private void Initialize()
         {
-            cboDates.DataSource = _controller.Find();
-            cboDates.SelectedIndexChanged += (o, e) =>
+            cboPeriods.DisplayMember = nameof(Models.AccountingPeriod.Name);
+            cboPeriods.ValueMember = nameof(Models.AccountingPeriod.Self);
+            cboPeriods.DataSource = _controller.Find();
+            cboPeriods.SelectedIndexChanged += (o, e) =>
             {
                 Search();
             };
@@ -58,20 +60,35 @@ namespace Kiriazi.Accounting.Pricing.Views
                 },
                 new DataGridViewTextBoxColumn()
                 {
-                    HeaderText = "Date",
-                    DataPropertyName = nameof(ViewModels.DailyCurrencyExchangeRateViewModel.Date),
-                    Name = nameof(ViewModels.DailyCurrencyExchangeRateViewModel.Date),
+                    HeaderText = "Accounting Period",
+                    DataPropertyName = nameof(ViewModels.DailyCurrencyExchangeRateViewModel.AccountingPeriodName),
+                    Name = nameof(ViewModels.DailyCurrencyExchangeRateViewModel.AccountingPeriodName),
+                    ReadOnly = true
+                },
+                new DataGridViewTextBoxColumn()
+                {
+                    HeaderText = "From Date",
+                    DataPropertyName = nameof(ViewModels.DailyCurrencyExchangeRateViewModel.FromDate),
+                    Name = nameof(ViewModels.DailyCurrencyExchangeRateViewModel.FromDate),
+                    ReadOnly = true
+                },
+                new DataGridViewTextBoxColumn()
+                {
+                    HeaderText = "To Date",
+                    DataPropertyName = nameof(ViewModels.DailyCurrencyExchangeRateViewModel.ToDate),
+                    Name = nameof(ViewModels.DailyCurrencyExchangeRateViewModel.ToDate),
                     ReadOnly = true
                 });
             dataGridView1.Columns[nameof(ViewModels.DailyCurrencyExchangeRateViewModel.Rate)].DefaultCellStyle.Format = "##0.####";
-            dataGridView1.Columns[nameof(ViewModels.DailyCurrencyExchangeRateViewModel.Date)].DefaultCellStyle.Format = "g";
+            dataGridView1.Columns[nameof(ViewModels.DailyCurrencyExchangeRateViewModel.FromDate)].DefaultCellStyle.Format = "g";
+            dataGridView1.Columns[nameof(ViewModels.DailyCurrencyExchangeRateViewModel.ToDate)].DefaultCellStyle.Format = "g";
             dataGridView1.DataSource = _lines;
         }
         private void Search()
         {
-            string dateAsString = cboDates.SelectedItem as string;
+            Models.AccountingPeriod accountingPeriod = cboPeriods.SelectedItem as Models.AccountingPeriod;
             _lines.Clear();
-            var lines = _controller.Find(dateAsString);
+            var lines = _controller.Find(accountingPeriod);
             foreach (var line in lines)
             {
                 _lines.Add(line);
@@ -87,12 +104,18 @@ namespace Kiriazi.Accounting.Pricing.Views
         }
         private void btnNew_Click(object sender, EventArgs e)
         {
-            using (DailyCurrencyExchangeRateEditView editView = Program.ServiceProvider.GetRequiredService<DailyCurrencyExchangeRateEditView>())
+            var accountingPeriods = _controller.FindAvailableAccountingPeriods();
+            if (accountingPeriods.Count == 0)
+            {
+                _ = MessageBox.Show(this, $"No Accounting Period Available.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+            using (DailyCurrencyExchangeRateEditView editView = new DailyCurrencyExchangeRateEditView(_controller,accountingPeriods))
             {
                 editView.ShowDialog(this);
-                string selectedItem = cboDates.SelectedItem as string;
-                cboDates.DataSource = _controller.Find();
-                cboDates.SelectedItem = selectedItem;
+                string selectedItem = cboPeriods.SelectedItem as string;
+                cboPeriods.DataSource = _controller.Find();
+                cboPeriods.SelectedItem = selectedItem;
                 if (_lines.Count > 0)
                 {
                     Search();
@@ -110,13 +133,18 @@ namespace Kiriazi.Accounting.Pricing.Views
             int? index = dataGridView1.CurrentRow?.Index;
             if(index!=null && index >= 0 && index < _lines.Count)
             {
-                var lines = _controller.Edit(_lines[index.Value].Date);
-                using(DailyCurrencyExchangeRateEditView editView = new DailyCurrencyExchangeRateEditView(_controller, lines))
+                var lines = _controller.Edit(_lines[index.Value].AccountingPeriod);
+                var availablePeriods = _controller.FindAvailableAccountingPeriods();
+                if (!availablePeriods.Contains(_lines[index.Value].AccountingPeriod))
+                {
+                    availablePeriods.Insert(0, _lines[index.Value].AccountingPeriod);
+                }
+                using(DailyCurrencyExchangeRateEditView editView = new DailyCurrencyExchangeRateEditView(_controller, availablePeriods,lines))
                 {
                     editView.ShowDialog(this);
-                    string selectedItem = cboDates.SelectedItem as string;
-                    cboDates.DataSource = _controller.Find();
-                    cboDates.SelectedItem = selectedItem;
+                    Models.AccountingPeriod selectedItem = cboPeriods.SelectedItem as Models.AccountingPeriod;
+                    cboPeriods.DataSource = _controller.Find();
+                    cboPeriods.SelectedItem = selectedItem;
                     if (_lines.Count > 0)
                     {
                         Search();

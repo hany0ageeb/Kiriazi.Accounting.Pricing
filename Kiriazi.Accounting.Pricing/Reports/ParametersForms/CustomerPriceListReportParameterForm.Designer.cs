@@ -35,9 +35,9 @@ namespace Kiriazi.Accounting.Pricing.Reports.ParametersForms
             this.cboCustomers = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.pickPriceListDate = new System.Windows.Forms.DateTimePicker();
             this.label3 = new System.Windows.Forms.Label();
             this.cboCompanies = new System.Windows.Forms.ComboBox();
+            this.cboAccountingPeriods = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -64,20 +64,21 @@ namespace Kiriazi.Accounting.Pricing.Reports.ParametersForms
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 13.9738F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 86.0262F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 17.46032F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 82.53968F));
             this.tableLayoutPanel1.Controls.Add(this.cboCustomers, 1, 2);
             this.tableLayoutPanel1.Controls.Add(this.label2, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.pickPriceListDate, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.label3, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.cboCompanies, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.cboAccountingPeriods, 1, 0);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(14, 14);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 3;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 52.94118F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 47.05882F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 42F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(756, 118);
             this.tableLayoutPanel1.TabIndex = 3;
             // 
@@ -86,9 +87,9 @@ namespace Kiriazi.Accounting.Pricing.Reports.ParametersForms
             this.cboCustomers.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cboCustomers.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cboCustomers.FormattingEnabled = true;
-            this.cboCustomers.Location = new System.Drawing.Point(108, 78);
+            this.cboCustomers.Location = new System.Drawing.Point(135, 78);
             this.cboCustomers.Name = "cboCustomers";
-            this.cboCustomers.Size = new System.Drawing.Size(634, 23);
+            this.cboCustomers.Size = new System.Drawing.Size(593, 23);
             this.cboCustomers.TabIndex = 5;
             // 
             // label2
@@ -105,18 +106,9 @@ namespace Kiriazi.Accounting.Pricing.Reports.ParametersForms
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(32, 15);
+            this.label1.Size = new System.Drawing.Size(106, 15);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Date";
-            // 
-            // pickPriceListDate
-            // 
-            this.pickPriceListDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.pickPriceListDate.Location = new System.Drawing.Point(108, 3);
-            this.pickPriceListDate.Name = "pickPriceListDate";
-            this.pickPriceListDate.Size = new System.Drawing.Size(634, 23);
-            this.pickPriceListDate.TabIndex = 1;
-            this.pickPriceListDate.Value = new System.DateTime(2022, 6, 8, 0, 0, 0, 0);
+            this.label1.Text = "Accounting Period";
             // 
             // label3
             // 
@@ -132,13 +124,24 @@ namespace Kiriazi.Accounting.Pricing.Reports.ParametersForms
             this.cboCompanies.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cboCompanies.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cboCompanies.FormattingEnabled = true;
-            this.cboCompanies.Location = new System.Drawing.Point(108, 43);
+            this.cboCompanies.Location = new System.Drawing.Point(135, 43);
             this.cboCompanies.Name = "cboCompanies";
-            this.cboCompanies.Size = new System.Drawing.Size(634, 23);
+            this.cboCompanies.Size = new System.Drawing.Size(593, 23);
             this.cboCompanies.TabIndex = 4;
+            // 
+            // cboAccountingPeriods
+            // 
+            this.cboAccountingPeriods.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cboAccountingPeriods.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.cboAccountingPeriods.FormattingEnabled = true;
+            this.cboAccountingPeriods.Location = new System.Drawing.Point(135, 3);
+            this.cboAccountingPeriods.Name = "cboAccountingPeriods";
+            this.cboAccountingPeriods.Size = new System.Drawing.Size(593, 23);
+            this.cboAccountingPeriods.TabIndex = 6;
             // 
             // CustomerPriceListReportParameterForm
             // 
+            this.AcceptButton = this.btnOk;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(793, 210);
@@ -162,8 +165,8 @@ namespace Kiriazi.Accounting.Pricing.Reports.ParametersForms
         private System.Windows.Forms.ComboBox cboCustomers;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.DateTimePicker pickPriceListDate;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox cboCompanies;
+        private System.Windows.Forms.ComboBox cboAccountingPeriods;
     }
 }

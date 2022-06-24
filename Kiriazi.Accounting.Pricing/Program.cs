@@ -21,9 +21,12 @@ namespace Kiriazi.Accounting.Pricing
         [STAThread]
         static void Main()
         {
+            
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(ServiceProvider.GetRequiredService<Views.MainView>());
+            Application.Run(new Views.MainView());
+            
+           
         }
         static Program()
         {
@@ -65,6 +68,7 @@ namespace Kiriazi.Accounting.Pricing
             services.AddTransient(typeof(Views.CustomerPriceListSearchView));
             services.AddTransient(typeof(Views.UsersView));
             services.AddTransient(typeof(Views.LogInView));
+            services.AddTransient(typeof(Views.UserChangeAccountView));
 
             services.AddTransient(typeof(Reports.ParametersForms.CustomerPriceListReportParameterForm));
 
@@ -81,7 +85,7 @@ namespace Kiriazi.Accounting.Pricing
             services.AddTransient(typeof(Controllers.CustomerController));
             services.AddTransient(typeof(Controllers.UserCommandController));
             services.AddTransient(typeof(Controllers.UserController));
-            
+            services.AddTransient(typeof(Controllers.CustomerPriceListController));
 
             services.AddTransient<IValidator<Currency>, CurrencyValidator>();
             services.AddTransient<IValidator<Company>,CompanyValidator>();

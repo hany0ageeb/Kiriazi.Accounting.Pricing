@@ -101,6 +101,8 @@ namespace Kiriazi.Accounting.Pricing.Models
 
         public virtual ICollection<CompanyAccountingPeriod> CompanyAccountingPeriods { get; set; } = new HashSet<CompanyAccountingPeriod>();
 
+        public virtual ICollection<CustomerPriceList> CustomerPriceLists { get; set; } = new HashSet<CustomerPriceList>();
+
         public virtual ICollection<User> Users { get; set; } = new HashSet<User>();
 
         [ForeignKey("Currency")]

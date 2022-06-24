@@ -54,28 +54,24 @@ namespace Kiriazi.Accounting.Pricing.DAL
             }
             return query.AsEnumerable();
         }
-        public IEnumerable<PriceListLine> FindPriceListLines(Guid companyId, Guid itemId, DateTime date)
+        public IEnumerable<PriceListLine> FindPriceListLines(Guid companyId, Guid itemId, AccountingPeriod period)
         {
             var query =
                 _context
                 .Set<PriceListLine>()
                 .Where(l => 
                     l.PriceList.CompanyAccountingPeriod.CompanyId == companyId && 
-                    l.ItemId == itemId && l.PriceList.CompanyAccountingPeriod.AccountingPeriod.FromDate <= date &&
-                    ((l.PriceList.CompanyAccountingPeriod.AccountingPeriod.ToDate != null && l.PriceList.CompanyAccountingPeriod.AccountingPeriod.ToDate >= date)|| l.PriceList.CompanyAccountingPeriod.AccountingPeriod.ToDate == null)
-                    )
+                    l.ItemId == itemId && l.PriceList.CompanyAccountingPeriod.AccountingPeriod.Id == period.Id)
                 .Include(nameof(PriceListLine.Currency));
             return query.AsEnumerable();
         }
-        public IEnumerable<PriceListLine> FindPriceListLines(Guid itemId, DateTime date)
+        public IEnumerable<PriceListLine> FindPriceListLines(Guid itemId, AccountingPeriod period)
         {
             var query =
                _context
                .Set<PriceListLine>()
                .Where(l =>
-                   l.ItemId == itemId && l.PriceList.CompanyAccountingPeriod.AccountingPeriod.FromDate <= date &&
-                   ((l.PriceList.CompanyAccountingPeriod.AccountingPeriod.ToDate != null && l.PriceList.CompanyAccountingPeriod.AccountingPeriod.ToDate >= date) || l.PriceList.CompanyAccountingPeriod.AccountingPeriod.ToDate == null)
-                   )
+                   l.ItemId == itemId && l.PriceList.CompanyAccountingPeriod.AccountingPeriodId == period.Id)
                .Include(nameof(PriceListLine.Currency));
             return query.AsEnumerable();
         }

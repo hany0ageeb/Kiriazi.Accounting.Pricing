@@ -49,18 +49,27 @@ namespace Kiriazi.Accounting.Pricing.Views
                 },
                 new DataGridViewTextBoxColumn() 
                 {
-                    DataPropertyName = nameof(CustomerPriceListViewModel.PriceListDate),
-                    Name = nameof(CustomerPriceListViewModel.PriceListDate)
+                    DataPropertyName = nameof(CustomerPriceListViewModel.FromDate),
+                    Name = nameof(CustomerPriceListViewModel.FromDate),
+                    ReadOnly = true
+                },
+                new DataGridViewTextBoxColumn()
+                {
+                    DataPropertyName = nameof(CustomerPriceListViewModel.ToDate),
+                    Name = nameof(CustomerPriceListViewModel.ToDate),
+                    ReadOnly = true
                 },
                 new DataGridViewTextBoxColumn()
                 {
                     DataPropertyName = nameof(CustomerPriceListViewModel.ItemCode),
-                    Name = nameof(CustomerPriceListViewModel.ItemCode)
+                    Name = nameof(CustomerPriceListViewModel.ItemCode),
+                    ReadOnly = true
                 },
                 new DataGridViewTextBoxColumn()
                 {
                     DataPropertyName = nameof(CustomerPriceListViewModel.ItemArabicName),
-                    Name = nameof(CustomerPriceListViewModel.ItemArabicName)
+                    Name = nameof(CustomerPriceListViewModel.ItemArabicName),
+                    ReadOnly = true
                 },
                 new DataGridViewTextBoxColumn()
                 {
