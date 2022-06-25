@@ -8,6 +8,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
     {
         bool HasCompaniesAssigned(Guid id);
         AccountingPeriod FindPreviousAccountingPeriod(AccountingPeriod accountingPeriod);
+        bool HasCurrencyExchangeRateAssigned(Guid id);
     }
     public class AccountingPeriodRepository : Repository<AccountingPeriod>, IAccountingPeriodRepository
     {
@@ -23,6 +24,10 @@ namespace Kiriazi.Accounting.Pricing.DAL
         public AccountingPeriod FindPreviousAccountingPeriod(AccountingPeriod accountingPeriod)
         {
             return _context.Set<AccountingPeriod>().Where(p => p.ToDate < accountingPeriod.FromDate).OrderByDescending(p => p.ToDate).FirstOrDefault();
+        }
+        public bool HasCurrencyExchangeRateAssigned(Guid id)
+        {
+            return _context.Set<CurrencyExchangeRate>().Where(r => r.AccountingPeriodId == id).Count() > 0;
         }
     }
 }

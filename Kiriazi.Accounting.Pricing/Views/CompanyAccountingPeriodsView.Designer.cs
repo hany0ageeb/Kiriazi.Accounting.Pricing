@@ -85,6 +85,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "CompanyAccountingPeriodsView";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "AccountingPeriods - ";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CompanyAccountingPeriodsView_FormClosing);
             this.flowLayoutPanel1.ResumeLayout(false);

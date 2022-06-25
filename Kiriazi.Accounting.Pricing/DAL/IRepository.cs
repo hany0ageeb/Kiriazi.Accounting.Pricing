@@ -25,6 +25,8 @@ namespace Kiriazi.Accounting.Pricing.DAL
         void Add(TEntity entity);
         void Add(IEnumerable<TEntity> entities);
 
+        bool Exists(Expression<Func<TEntity, bool>> predicate);
+
         void Remove(TEntity entity);
         void Remove(IEnumerable<TEntity> entities);
     }

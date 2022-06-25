@@ -24,9 +24,14 @@ namespace Kiriazi.Accounting.Pricing.DAL.Excel
             throw new NotImplementedException();
         }
 
+        public bool Exists(Expression<Func<Tarrif, bool>> predicate)
+        {
+            return mapper.Take<Tarrif>().Select(r => r.Value).AsQueryable().Count(predicate) > 0;
+        }
+
         public Tarrif Find(object Id)
         {
-            throw new NotImplementedException();
+            return mapper.Take<Tarrif>().Select(r => r.Value).Where(t => t.Id.ToString() == Id.ToString()).FirstOrDefault();
         }
 
         public IEnumerable<Tarrif> Find()

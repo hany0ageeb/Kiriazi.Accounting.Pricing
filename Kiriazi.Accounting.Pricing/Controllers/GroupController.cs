@@ -37,7 +37,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                 var temp = _validator.Validate(group);
                 if (!temp.HasErrors)
                 {
-                    if (_unitOfWork.GroupRepository.Find(g => g.Name.Equals(group.Name, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault() != null)
+                    if (_unitOfWork.GroupRepository.Exists(g => g.Name.Equals(group.Name, StringComparison.InvariantCultureIgnoreCase)))
                     {
                         temp.AddErrors(nameof(group.Name), $"Group {group.Name} Already Exists");
                     }
@@ -61,7 +61,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             ModelState modelState = _validator.Validate(group);
             if (modelState.HasErrors)
                 return modelState;
-            if (_unitOfWork.GroupRepository.Find(g => g.Name.Equals(group.Name, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault() != null)
+            if (_unitOfWork.GroupRepository.Exists(g => g.Name.Equals(group.Name, StringComparison.InvariantCultureIgnoreCase)))
             {
                 modelState.AddErrors(nameof(group.Name), $"Group {group.Name} Already Exists");
                 return modelState;
@@ -75,7 +75,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             ModelState modelState = _validator.Validate(group);
             if (modelState.HasErrors)
                 return modelState;
-            if (_unitOfWork.GroupRepository.Find(g => g.Name.Equals(group.Name, StringComparison.InvariantCultureIgnoreCase)&&g.Id!=group.Id).FirstOrDefault() != null)
+            if (_unitOfWork.GroupRepository.Exists(g => g.Name.Equals(group.Name, StringComparison.InvariantCultureIgnoreCase)&&g.Id!=group.Id))
             {
                 modelState.AddErrors(nameof(group.Name), $"Group {group.Name} Already Exists");
                 return modelState;
@@ -105,7 +105,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             Group group = _unitOfWork.GroupRepository.Find(id);
             if (group != null)
             {
-                if (group.ItemAssignments.Count() > 0)
+                if (_unitOfWork.GroupRepository.HasItemsAssigned(id))
                 {
                     return $"Group: {group.Name} Cannot be deleted.";
                 }

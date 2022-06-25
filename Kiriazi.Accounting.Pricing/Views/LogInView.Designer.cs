@@ -90,6 +90,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.btnCancel.TabIndex = 5;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // LogInView
             // 
@@ -109,6 +110,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.Name = "LogInView";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Log In";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.LogInView_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 

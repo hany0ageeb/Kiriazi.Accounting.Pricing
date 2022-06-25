@@ -68,7 +68,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                 var temp = _validator.Validate(tarrif);
                 if (!temp.HasErrors)
                 {
-                    if (_unitOfWork.TarrifRepository.Find(t => t.Code.Equals(tarrif.Code, StringComparison.InvariantCultureIgnoreCase)).Count() > 0)
+                    if (_unitOfWork.TarrifRepository.Exists(t => t.Code.Equals(tarrif.Code, StringComparison.InvariantCultureIgnoreCase)))
                     {
                         temp.AddErrors(nameof(tarrif.Code), $"Tarrif Code {tarrif.Code} already Exist.");
                     }

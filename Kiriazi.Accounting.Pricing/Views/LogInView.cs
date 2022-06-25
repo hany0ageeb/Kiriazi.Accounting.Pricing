@@ -38,5 +38,18 @@ namespace Kiriazi.Accounting.Pricing.Views
                 return;
             }
         }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void LogInView_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (Common.Session.CurrentUser == null)
+            {
+                Application.Exit();
+            }
+        }
     }
 }

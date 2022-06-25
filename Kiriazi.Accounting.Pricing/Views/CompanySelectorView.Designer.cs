@@ -102,6 +102,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "CompanySelectorView";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Select A Company For Price List";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CompanySelectorView_FormClosing);
             this.ResumeLayout(false);

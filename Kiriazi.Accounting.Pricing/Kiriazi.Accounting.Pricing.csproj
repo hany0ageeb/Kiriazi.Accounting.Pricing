@@ -234,9 +234,11 @@
     <Compile Include="DAL\CustomerPriceListRepository.cs" />
     <Compile Include="DAL\CustomerPricingRuleRepository.cs" />
     <Compile Include="DAL\CustomerRepository.cs" />
+    <Compile Include="DAL\Excel\CustomerPriceListDTORepository.cs" />
     <Compile Include="DAL\Excel\DailyCurrencyExchangeRateDTORepository.cs" />
     <Compile Include="DAL\Excel\GroupRepository.cs" />
     <Compile Include="DAL\Excel\ItemCompanyAssignmentDTORepository.cs" />
+    <Compile Include="DAL\Excel\ItemCustomerDTORepository.cs" />
     <Compile Include="DAL\Excel\ItemDTORepository.cs" />
     <Compile Include="DAL\Excel\ItemParentChildDTORepository.cs" />
     <Compile Include="DAL\Excel\PriceListDTORepository.cs" />

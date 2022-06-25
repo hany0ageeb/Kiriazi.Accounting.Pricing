@@ -43,7 +43,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             var modelState = _validator.Validate(company);
             if (modelState.HasErrors)
                 return modelState;
-            if (_unitOfWork.CompanyRepository.Find(c => c.Name.Equals(model.Name, StringComparison.InvariantCultureIgnoreCase)).Count() > 0)
+            if (_unitOfWork.CompanyRepository.Exists(c => c.Name.Equals(model.Name, StringComparison.InvariantCultureIgnoreCase)))
             {
                 modelState.AddErrors(nameof(model.Name), "Company Name Already Exist.");
                 return modelState;
@@ -58,7 +58,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             var modelState = _validator.Validate(company);
             if (modelState.HasErrors)
                 return modelState;
-            if(_unitOfWork.CompanyRepository.Find(c=>c.Id != company.Id && c.Name.Equals(company.Name, StringComparison.CurrentCultureIgnoreCase)).Count() > 0)
+            if(_unitOfWork.CompanyRepository.Exists(c=>c.Id != company.Id && c.Name.Equals(company.Name, StringComparison.CurrentCultureIgnoreCase)))
             {
                 modelState.AddErrors(nameof(company.Name), "Company Name Already Exist");
                 return modelState;
@@ -89,7 +89,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
         }
         public string Delete(Guid id)
         {
-            var comp = _unitOfWork.CompanyRepository.Find(id);
+            var comp = _unitOfWork.CompanyRepository.Find(predicate:c=>c.Id==id && c.Users.Select(u=>u.UserId).Contains(Common.Session.CurrentUser.UserId)).FirstOrDefault();
             if (comp != null)
             {
                 if(comp.ItemAssignments.Count == 0 && comp.CompanyAccountingPeriods.Count == 0)

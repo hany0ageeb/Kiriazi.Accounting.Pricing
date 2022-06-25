@@ -73,5 +73,13 @@ namespace Kiriazi.Accounting.Pricing.DAL
         {
             return _context.Set<Item>().Where(itm => itm.Code.Equals(itemCode, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
         }
+        public bool HasRelatedPriceListLines(Guid itemId) 
+        {
+            return _context.Set<PriceListLine>().Count(l => l.ItemId == itemId) > 0;
+        }
+        public bool HasRelatedItemRelations(Guid itemId) 
+        {
+            return _context.Set<ItemRelation>().Count(rel => rel.ChildId == itemId || rel.ParentId == itemId) > 0;
+        }
     }
 }

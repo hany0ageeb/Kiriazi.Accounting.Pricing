@@ -20,5 +20,8 @@ namespace Kiriazi.Accounting.Pricing.DAL
 
         IEnumerable<string> FindItemsCodes(Guid? itemTypeId = null);
         Item FindByItemCode(string itemCode);
+
+        bool HasRelatedPriceListLines(Guid itemId);
+        bool HasRelatedItemRelations(Guid itemId);
     }
 }

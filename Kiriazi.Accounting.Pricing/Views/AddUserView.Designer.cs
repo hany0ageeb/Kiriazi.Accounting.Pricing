@@ -31,6 +31,7 @@ namespace Kiriazi.Accounting.Pricing.Views
         {
             this.components = new System.ComponentModel.Container();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.label6 = new System.Windows.Forms.Label();
             this.txtEmployeeName = new System.Windows.Forms.TextBox();
             this.txtConfirmPassword = new System.Windows.Forms.TextBox();
             this.txtPassword = new System.Windows.Forms.TextBox();
@@ -41,11 +42,10 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.label5 = new System.Windows.Forms.Label();
             this.txtUserName = new System.Windows.Forms.TextBox();
             this.cboUserStates = new System.Windows.Forms.ComboBox();
+            this.cboAccountTypes = new System.Windows.Forms.ComboBox();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.label6 = new System.Windows.Forms.Label();
-            this.cboAccountTypes = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
@@ -78,6 +78,15 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 34F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(862, 235);
             this.tableLayoutPanel1.TabIndex = 0;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(3, 200);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(107, 15);
+            this.label6.TabIndex = 10;
+            this.label6.Text = "User Account Type";
             // 
             // txtEmployeeName
             // 
@@ -169,6 +178,17 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.cboUserStates.Size = new System.Drawing.Size(641, 23);
             this.cboUserStates.TabIndex = 9;
             // 
+            // cboAccountTypes
+            // 
+            this.cboAccountTypes.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cboAccountTypes.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.cboAccountTypes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.cboAccountTypes.FormattingEnabled = true;
+            this.cboAccountTypes.Location = new System.Drawing.Point(167, 203);
+            this.cboAccountTypes.Name = "cboAccountTypes";
+            this.cboAccountTypes.Size = new System.Drawing.Size(641, 23);
+            this.cboAccountTypes.TabIndex = 11;
+            // 
             // btnSave
             // 
             this.btnSave.Enabled = false;
@@ -194,26 +214,6 @@ namespace Kiriazi.Accounting.Pricing.Views
             // 
             this.errorProvider1.ContainerControl = this;
             // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(3, 200);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(107, 15);
-            this.label6.TabIndex = 10;
-            this.label6.Text = "User Account Type";
-            // 
-            // cboAccountTypes
-            // 
-            this.cboAccountTypes.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.cboAccountTypes.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.cboAccountTypes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.cboAccountTypes.FormattingEnabled = true;
-            this.cboAccountTypes.Location = new System.Drawing.Point(167, 203);
-            this.cboAccountTypes.Name = "cboAccountTypes";
-            this.cboAccountTypes.Size = new System.Drawing.Size(641, 23);
-            this.cboAccountTypes.TabIndex = 11;
-            // 
             // AddUserView
             // 
             this.AcceptButton = this.btnSave;
@@ -227,6 +227,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "AddUserView";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "New User";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AddUserView_FormClosing);
             this.tableLayoutPanel1.ResumeLayout(false);

@@ -36,6 +36,8 @@ namespace Kiriazi.Accounting.Pricing.Views
             }
             foreach(var l in lines)
             {
+                if(l.AccountingPeriod == null)
+                    l.AccountingPeriod = accountingPeriods[0];
                 _lines.Add(l);
             }
             InitializeComponent();

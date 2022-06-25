@@ -31,21 +31,35 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             Currency currency = _unitOfWork.CurrencyRepository.Find(Id);
             if (currency != null)
             {
-                if(currency.Companies.Count > 0)
+                if(_unitOfWork.CurrencyRepository.HasRelatedCompanies(Id))
                 {
                     return $"Currency: {currency.Name} Cannot be deleted as it is used as the default currency for on or more company.";
                 }
                 else
                 {
-                    if(currency.ConversionRatesFromCurrency.Count>0 || currency.ConversionRatesToCurrency.Count > 0)
+                    if(_unitOfWork.CurrencyRepository.HasRelatedExchangeRates(Id))
                     {
                         return $"Currency: {currency.Name} cannot be deleted as it is used in Currency Conversion Rates.";
                     }
                     else
                     {
-                        _unitOfWork.CurrencyRepository.Remove(currency);
-                        _unitOfWork.Complete();
-                        return $"Currency: {currency.Name} Deleted Successfuly.";
+                        if (_unitOfWork.CurrencyRepository.HasRelatedPriceListLines(Id))
+                        {
+                            return $"Currency: {currency.Name} cannot be deleted as there is on or more raw material price list using it.";
+                        }
+                        else
+                        {
+                            if (_unitOfWork.CurrencyRepository.HasRelatedCustomerPriceListLines(Id))
+                            {
+                                return $"Currency: {currency.Name} cannot be deleted as there is on or more Customer Price list using it.";
+                            }
+                            else
+                            {
+                                _unitOfWork.CurrencyRepository.Remove(currency);
+                                _unitOfWork.Complete();
+                                return $"Currency: {currency.Name} Deleted Successfuly.";
+                            }
+                        }
                     }
                 }
             }
@@ -63,8 +77,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             ModelState modelState = _validator.Validate(model.Currency);
             if (modelState.HasErrors)
                 return modelState;
-            var old = _unitOfWork.CurrencyRepository.Find(c => c.Code.Equals(model.Code, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
-            if (old != null)
+            if (_unitOfWork.CurrencyRepository.Exists(c => c.Code.Equals(model.Code, StringComparison.InvariantCultureIgnoreCase)))
             {
                 modelState.AddErrors(nameof(model.Code), $"Currency Code {model.Code} already Exist.Pleas enter another Code.");
                 return modelState;
@@ -78,7 +91,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             Currency currency = _unitOfWork.CurrencyRepository.Find(Id: currencyId);
             if (currency == null)
                 throw new ArgumentException($"Invalid Currency Id {currencyId}");
-            bool canDisableCurrency = _unitOfWork.CompanyRepository.Find(c => c.CurrencyId == currencyId).Count() == 0;
+            bool canDisableCurrency = !_unitOfWork.CurrencyRepository.HasRelatedCompanies(currencyId);
             CurrencyEditViewModel model = new CurrencyEditViewModel(currency, canDisableCurrency);
             return model;
         }
@@ -87,7 +100,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             ModelState modelState = _validator.Validate(model.Currency);
             if (modelState.HasErrors)
                 return modelState;
-            if (_unitOfWork.CurrencyRepository.Find(c => c.Code.Equals(model.Code, StringComparison.InvariantCultureIgnoreCase) && c.Id != model.Id).Count() > 0)
+            if (_unitOfWork.CurrencyRepository.Exists(c => c.Code.Equals(model.Code, StringComparison.InvariantCultureIgnoreCase) && c.Id != model.Id))
             {
                 modelState.AddErrors(nameof(model.Code), $"Currency Code {model.Code} already Exist.Pleas enter another Code.");
                 return modelState;

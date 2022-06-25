@@ -96,10 +96,12 @@ namespace Kiriazi.Accounting.Pricing.Views
             if (_lines.Count > 0)
             {
                 btnEdit.Enabled = true;
+                btnDelete.Enabled = true;
             }
             else
             {
                 btnEdit.Enabled = false;
+                btnDelete.Enabled = false;
             }
         }
         private void btnNew_Click(object sender, EventArgs e)
@@ -146,6 +148,33 @@ namespace Kiriazi.Accounting.Pricing.Views
                     cboPeriods.DataSource = _controller.Find();
                     cboPeriods.SelectedItem = selectedItem;
                     if (_lines.Count > 0)
+                    {
+                        Search();
+                    }
+                }
+            }
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            int? index = dataGridView1.CurrentRow?.Index;
+            if (index != null && index >= 0 && index < _lines.Count)
+            {
+                Models.AccountingPeriod accountingPeriod = _lines[index.Value].AccountingPeriod;
+                DialogResult result = MessageBox.Show(
+                    this, 
+                    $"Are you Sure you want to delete Currency Exchange Rates For Accounting Period {accountingPeriod.Name} ?", 
+                    "Confirm Delete",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    string message = _controller.DeleteCurrencyExchangeRates(accountingPeriod.Id);
+                    if (message != string.Empty)
+                    {
+                        _ = MessageBox.Show(this, message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    else
                     {
                         Search();
                     }

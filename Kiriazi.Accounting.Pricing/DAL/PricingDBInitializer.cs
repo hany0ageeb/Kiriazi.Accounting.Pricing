@@ -76,7 +76,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
                 new Currency()
                 {
                     Code = "USD",
-                    Name = "دولا أمريكى",
+                    Name = "دولار أمريكى",
                     Description = "United States Currency",
                     IsEnabled = true
                 },

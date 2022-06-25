@@ -30,11 +30,11 @@ namespace Kiriazi.Accounting.Pricing.Views
         private void InitializeComponent()
         {
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.label1 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
-            this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.btnOk = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.flowLayoutPanel2.SuspendLayout();
@@ -48,16 +48,6 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(756, 449);
             this.flowLayoutPanel1.TabIndex = 0;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(12, 9);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(374, 21);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Select One Or More Company from the list below:";
             // 
             // dataGridView1
             // 
@@ -80,6 +70,16 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.flowLayoutPanel2.Size = new System.Drawing.Size(753, 38);
             this.flowLayoutPanel2.TabIndex = 1;
             // 
+            // btnCancel
+            // 
+            this.btnCancel.Location = new System.Drawing.Point(655, 3);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(95, 33);
+            this.btnCancel.TabIndex = 1;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
             // btnOk
             // 
             this.btnOk.Enabled = false;
@@ -91,15 +91,15 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.btnOk.UseVisualStyleBackColor = true;
             this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
             // 
-            // btnCancel
+            // label1
             // 
-            this.btnCancel.Location = new System.Drawing.Point(655, 3);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(95, 33);
-            this.btnCancel.TabIndex = 1;
-            this.btnCancel.Text = "Cancel";
-            this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(12, 9);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(374, 21);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Select One Or More Company from the list below:";
             // 
             // CompanyItemRelationSelectorView
             // 
@@ -112,6 +112,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "CompanyItemRelationSelectorView";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Select Company";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CompanyItemRelationSelectorView_FormClosing);
             this.flowLayoutPanel1.ResumeLayout(false);

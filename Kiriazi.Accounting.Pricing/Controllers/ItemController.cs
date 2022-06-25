@@ -111,7 +111,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             ModelState modelState = _validator.Validate(item);
             if (modelState.HasErrors)
                 return modelState;
-            if (_unitOfWork.ItemRepository.Find(itm => itm.Code.Equals(item.Code, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault() != null)
+            if (_unitOfWork.ItemRepository.Exists(itm => itm.Code.Equals(item.Code, StringComparison.InvariantCultureIgnoreCase)))
             {
                 modelState.AddErrors(nameof(item.Code), $"Item With Code: {item.Code} already exist.");
                 return modelState;
@@ -135,7 +135,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                     ModelState temp = _validator.Validate(item);
                     if (!temp.HasErrors)
                     {
-                        if (_unitOfWork.ItemRepository.Find(itm => itm.Code.Equals(item.Code, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault() != null)
+                        if (_unitOfWork.ItemRepository.Exists(itm => itm.Code.Equals(item.Code, StringComparison.InvariantCultureIgnoreCase)))
                         {
                             temp.AddErrors(nameof(item.Code), $"Item With Code: {item.Code} already exist.");
                         }
@@ -164,7 +164,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             ModelState modelState = _validator.Validate(item);
             if (modelState.HasErrors)
                 return modelState;
-            if (_unitOfWork.ItemRepository.Find(itm=>itm.Code.Equals(item.Code,StringComparison.InvariantCultureIgnoreCase)&&itm.Id!=item.Id).FirstOrDefault()!=null)
+            if (_unitOfWork.ItemRepository.Exists(itm=>itm.Code.Equals(item.Code,StringComparison.InvariantCultureIgnoreCase)&&itm.Id!=item.Id))
             {
                 modelState.AddErrors(nameof(item.Code), $"Item With Code: {item.Code} already exist.");
                 return modelState;
@@ -545,12 +545,12 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             Item item = _unitOfWork.ItemRepository.Find(id);
             if (item != null)
             {
-                
-                if(item.PriceListLines.Count() > 0)
+
+                if (_unitOfWork.ItemRepository.HasRelatedPriceListLines(id))
                 {
                     return $"Item: {item.Code} Cannot be deleted as its part of one or more Price List.";
                 }
-                else if(item.Parents.Count() > 0)
+                else if (_unitOfWork.ItemRepository.HasRelatedItemRelations(id))
                 {
                     return $"Item: {item.Code} cannot be deleted as its part of one or more manufactured item tree.";
                 }

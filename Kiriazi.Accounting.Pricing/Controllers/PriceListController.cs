@@ -66,7 +66,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
         }
         public string Delete(Guid priceListId)
         {
-            var priceList = _unitOfWork.PriceListRepository.Find(predicate: pl => pl.Id == priceListId,include:q=>q.Include(pl=>pl.PriceListLines).Include(pl=>pl.CompanyAccountingPeriod)).FirstOrDefault();
+            var priceList = _unitOfWork.PriceListRepository.Find(predicate: pl => pl.Id == priceListId && pl.CompanyAccountingPeriod.Company.Users.Select(u=>u.UserId).Contains(Common.Session.CurrentUser.UserId),include:q=>q.Include(pl=>pl.PriceListLines).Include(pl=>pl.CompanyAccountingPeriod)).FirstOrDefault();
             if (priceList != null)
             {
                 if(priceList.CompanyAccountingPeriod.State == AccountingPeriodStates.Opened)
@@ -82,7 +82,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                 }
                 else
                 {
-                    return $"Cannot Delete Pruice List {priceList.Name} as the Accounting Period is closed.";
+                    return $"Cannot Delete Price List {priceList.Name} as the Accounting Period is closed.";
                 }
             }
             return string.Empty;

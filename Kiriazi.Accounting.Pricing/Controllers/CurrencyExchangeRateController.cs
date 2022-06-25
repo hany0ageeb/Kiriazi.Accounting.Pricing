@@ -97,6 +97,13 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             }
             return lines;
         }
+        public string DeleteCurrencyExchangeRates(Guid accountingPeriodId)
+        {
+            var rates = _unitOfWork.CurrencyExchangeRateRepository.Find(r => r.AccountingPeriodId == accountingPeriodId);
+            _unitOfWork.CurrencyExchangeRateRepository.Remove(rates);
+            _unitOfWork.Complete();
+            return string.Empty;
+        }
         public ModelState SaveOrUpdate(IList<DailyCurrencyExchangeRateViewModel> lines)
         {
             ModelState modelState = new ModelState();

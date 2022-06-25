@@ -81,5 +81,10 @@ namespace Kiriazi.Accounting.Pricing.DAL
             else
                 return orderBy(_context.Set<TEntity>().Where(predicate).Select(selector));
         }
+
+        public bool Exists(Expression<Func<TEntity, bool>> predicate)
+        {
+            return _context.Set<TEntity>().Count(predicate) > 0;
+        }
     }
 }

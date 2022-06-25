@@ -43,7 +43,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             var modelState = ValidateCustomer(customer);
             if (modelState.HasErrors)
                 return modelState;
-            if (_unitOfWork.CustomerRepository.Find(predicate: c => c.Name.Equals(customer.Name, StringComparison.InvariantCultureIgnoreCase)).Count() > 0)
+            if (_unitOfWork.CustomerRepository.Exists(predicate: c => c.Name.Equals(customer.Name, StringComparison.InvariantCultureIgnoreCase)))
             {
                 modelState.AddErrors(nameof(customer.Name), "Duplicate Customer Name!");
                 return modelState;
@@ -60,7 +60,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             Customer oldCustomer = _unitOfWork.CustomerRepository.Find(Id: customer.Id);
             if (oldCustomer == null)
                 throw new ArgumentException($"Invalid Customer Id {customer.Id}");
-            if (_unitOfWork.CustomerRepository.Find(predicate:c=>c.Name.Equals(customer.Name, StringComparison.InvariantCultureIgnoreCase) && c.Id!=customer.Id).Count() > 0)
+            if (_unitOfWork.CustomerRepository.Exists(predicate:c=>c.Name.Equals(customer.Name, StringComparison.InvariantCultureIgnoreCase) && c.Id!=customer.Id))
             {
                 modelState.AddErrors(nameof(customer.Name), "Duplicate Customer Name!");
                 return modelState;

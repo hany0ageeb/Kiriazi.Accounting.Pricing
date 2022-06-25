@@ -37,6 +37,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.btnEdit = new System.Windows.Forms.Button();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.btnClose = new System.Windows.Forms.Button();
+            this.btnDelete = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
@@ -74,6 +75,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             // 
             this.flowLayoutPanel1.Controls.Add(this.btnNew);
             this.flowLayoutPanel1.Controls.Add(this.btnEdit);
+            this.flowLayoutPanel1.Controls.Add(this.btnDelete);
             this.flowLayoutPanel1.Controls.Add(this.flowLayoutPanel2);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(12, 531);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
@@ -105,20 +107,31 @@ namespace Kiriazi.Accounting.Pricing.Views
             // 
             this.flowLayoutPanel2.Controls.Add(this.btnClose);
             this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(232, 3);
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(346, 3);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(588, 38);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(470, 38);
             this.flowLayoutPanel2.TabIndex = 2;
             // 
             // btnClose
             // 
-            this.btnClose.Location = new System.Drawing.Point(490, 3);
+            this.btnClose.Location = new System.Drawing.Point(372, 3);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(95, 35);
             this.btnClose.TabIndex = 0;
             this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            // 
+            // btnDelete
+            // 
+            this.btnDelete.Enabled = false;
+            this.btnDelete.Location = new System.Drawing.Point(232, 3);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(108, 38);
+            this.btnDelete.TabIndex = 3;
+            this.btnDelete.Text = "Delete";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // DailyCurrencyExchangeRatesView
             // 
@@ -152,5 +165,6 @@ namespace Kiriazi.Accounting.Pricing.Views
         private System.Windows.Forms.Button btnEdit;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
         private System.Windows.Forms.Button btnClose;
+        private System.Windows.Forms.Button btnDelete;
     }
 }

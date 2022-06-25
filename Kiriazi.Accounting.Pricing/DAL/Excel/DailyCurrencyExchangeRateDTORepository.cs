@@ -26,6 +26,11 @@ namespace Kiriazi.Accounting.Pricing.DAL.Excel
             throw new NotImplementedException();
         }
 
+        public bool Exists(Expression<Func<DailyCurrencyExchangeRateDTO, bool>> predicate)
+        {
+            throw new NotImplementedException();
+        }
+
         public DailyCurrencyExchangeRateDTO Find(object Id)
         {
             throw new NotImplementedException();

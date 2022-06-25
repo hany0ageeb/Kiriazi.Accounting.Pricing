@@ -31,6 +31,10 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                 {
                     return $"Caanot delete period: {period.Name}. \nOne Or More Company is assigned to the period";
                 }
+                else if (_unitOfWork.AccountingPeriodRepository.HasCurrencyExchangeRateAssigned(id))
+                {
+                    return $"Currency Exchange Rate Exist for this Accounting Period\nconsider deleteing them first befor deleting this period.";
+                }
                 else
                 {
                     _unitOfWork.AccountingPeriodRepository.Remove(period);
@@ -73,7 +77,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             var modelState = _validator.Validate(accountingPeriod);
             if (modelState.HasErrors)
                 return modelState;
-            if (_unitOfWork.AccountingPeriodRepository.Find(p => p.Name.Equals(accountingPeriod.Name, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault() != null)
+            if (_unitOfWork.AccountingPeriodRepository.Exists(p => p.Name.Equals(accountingPeriod.Name, StringComparison.InvariantCultureIgnoreCase)))
             {
                 modelState.AddErrors("Name", $"Cannot Create Accounting Period {accountingPeriod.Name}.\n Another Accounting Period with the same Name exist.");
                 return modelState;

@@ -83,7 +83,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                 return 
                     _unitOfWork
                     .CompanyRepository
-                    .Find(predicate: c => c.Users.Select(u => u.UserId).Contains(Common.Session.CurrentUser.UserId), orderBy: q => q.OrderBy(c => c.Name))
+                    .Find(predicate: c => c.Users.Select(u => u.UserId).Contains(Common.Session.CurrentUser.UserId) && c.IsEnabled, orderBy: q => q.OrderBy(c => c.Name))
                     .Select(e=>new CompanySelectionViewModel(e))
                     .ToList();
             }

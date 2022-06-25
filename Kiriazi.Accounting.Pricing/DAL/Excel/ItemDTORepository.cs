@@ -26,6 +26,11 @@ namespace Kiriazi.Accounting.Pricing.DAL.Excel
             throw new NotImplementedException();
         }
 
+        public bool Exists(Expression<Func<ItemDTO, bool>> predicate)
+        {
+            throw new NotImplementedException();
+        }
+
         public ItemDTO Find(object Id)
         {
             throw new NotImplementedException();

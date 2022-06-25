@@ -21,10 +21,18 @@ namespace Kiriazi.Accounting.Pricing.DAL.Excel
         {
             mapper.Put<Group>(new List<Group>() { entity },0,false);
         }
-
+        public bool HasItemsAssigned(Guid groupId)
+        {
+            throw new NotImplementedException();
+        }
         public void Add(IEnumerable<Group> entities)
         {
             mapper.Put<Group>(entities, 0, false);
+        }
+
+        public bool Exists(Expression<Func<Group, bool>> predicate)
+        {
+            throw new NotImplementedException();
         }
 
         public Group Find(object Id)
