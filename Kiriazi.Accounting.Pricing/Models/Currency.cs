@@ -80,6 +80,8 @@ namespace Kiriazi.Accounting.Pricing.Models
             }
         }
 
+        public bool IsDefaultCompanyCurrency { get; set; } = false;
+
         public virtual ICollection<Company> Companies { get; set; } = new HashSet<Company>();
 
         public virtual ICollection<PriceListLine> PriceListLines { get; set; } = new HashSet<PriceListLine>();

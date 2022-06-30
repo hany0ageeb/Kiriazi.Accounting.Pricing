@@ -37,7 +37,6 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.btnNew = new System.Windows.Forms.Button();
-            this.btnPricingRules = new System.Windows.Forms.Button();
             this.flowLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -60,7 +59,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.49045F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 85.50955F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 128F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 129F));
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.txtName, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.btnSearch, 2, 0);
@@ -89,7 +88,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(723, 3);
+            this.btnSearch.Location = new System.Drawing.Point(722, 3);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(98, 27);
             this.btnSearch.TabIndex = 2;
@@ -111,7 +110,6 @@ namespace Kiriazi.Accounting.Pricing.Views
             // flowLayoutPanel2
             // 
             this.flowLayoutPanel2.Controls.Add(this.btnNew);
-            this.flowLayoutPanel2.Controls.Add(this.btnPricingRules);
             this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 482);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             this.flowLayoutPanel2.Size = new System.Drawing.Size(849, 42);
@@ -126,17 +124,6 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.btnNew.Text = "New Customer ...";
             this.btnNew.UseVisualStyleBackColor = true;
             this.btnNew.Click += new System.EventHandler(this.btnNew_Click);
-            // 
-            // btnPricingRules
-            // 
-            this.btnPricingRules.Enabled = false;
-            this.btnPricingRules.Location = new System.Drawing.Point(140, 3);
-            this.btnPricingRules.Name = "btnPricingRules";
-            this.btnPricingRules.Size = new System.Drawing.Size(130, 35);
-            this.btnPricingRules.TabIndex = 1;
-            this.btnPricingRules.Text = "Pricing Rules ...";
-            this.btnPricingRules.UseVisualStyleBackColor = true;
-            this.btnPricingRules.Click += new System.EventHandler(this.btnPricingRules_Click);
             // 
             // CustomersView
             // 
@@ -169,6 +156,5 @@ namespace Kiriazi.Accounting.Pricing.Views
         private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
         private System.Windows.Forms.Button btnNew;
-        private System.Windows.Forms.Button btnPricingRules;
     }
 }

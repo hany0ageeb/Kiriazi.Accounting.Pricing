@@ -20,7 +20,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
             string arabicName = "", 
             string englishName = "", 
             string nameAlias = "", 
-            Guid? companyId = null, 
+            Guid? companyId = null,
             Guid? itemTypeId = null,
             Func<IQueryable<Item>, IOrderedQueryable<Item>> orderBy = null,
             Func<IQueryable<Item>, IQueryable<Item>> include = null)

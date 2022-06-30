@@ -30,7 +30,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             txtCode.DataBindings.Add(new Binding(nameof(txtCode.Text), _model, nameof(_model.Code)));
             txtCode.Validating += (o, e) =>
             {
-                if (string.IsNullOrEmpty(txtCode.Text))
+                if (_hasChanged && string.IsNullOrEmpty(txtCode.Text))
                 {
                     errorProvider1.SetError(txtCode, $"Enter Item Code.");
                     e.Cancel = true;
@@ -41,7 +41,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             txtArabicName.DataBindings.Add(new Binding(nameof(txtArabicName.Text), _model, nameof(_model.ArabicName)));
             txtArabicName.Validating += (o, e) =>
             {
-                if (string.IsNullOrEmpty(txtArabicName.Text))
+                if (_hasChanged && string.IsNullOrEmpty(txtArabicName.Text))
                 {
                     e.Cancel = true;
                     errorProvider1.SetError(txtArabicName, "Enter Item Name.");
@@ -63,9 +63,10 @@ namespace Kiriazi.Accounting.Pricing.Views
             cboUoms.Validating += (o, e) =>
             {
                 Models.Uom uom = cboUoms.SelectedValue as Models.Uom;
-                if (uom == null)
+                if (_hasChanged && uom == null)
                 {
                     e.Cancel = true;
+                    System.Media.SystemSounds.Hand.Play();
                     errorProvider1.SetError(cboUoms, "Invalid Item Uom.");
                 }
             };
@@ -78,11 +79,44 @@ namespace Kiriazi.Accounting.Pricing.Views
             cboItemTypes.DataBindings.Add(new Binding(nameof(cboItemTypes.SelectedItem), _model, nameof(_model.ItemType)));
             cboItemTypes.DataBindings.Add(new Binding(nameof(cboItemTypes.Enabled), _model, nameof(_model.CanItemTypeChange)));
             //
-            cboTarrifs.DataBindings.Clear();
-            cboTarrifs.DataSource = _model.Tarrifs;
-            cboTarrifs.DisplayMember = nameof(_model.Tarrif.Code);
-            cboTarrifs.ValueMember = "Self";
-            cboTarrifs.DataBindings.Add(new Binding(nameof(cboTarrifs.SelectedItem), _model, nameof(_model.Tarrif)));
+            txtTarrifPercentage.Text = _model.TarrifPercentage?.ToString() ?? "";
+            txtTarrifPercentage.Validating += (o, e) =>
+            {
+                if (_hasChanged)
+                {
+                    if (!string.IsNullOrEmpty(txtTarrifPercentage.Text))
+                    {
+                        if(decimal.TryParse(txtTarrifPercentage.Text,out decimal percentarge))
+                        {
+                            if (percentarge < 0)
+                            {
+                                e.Cancel = true;
+                                System.Media.SystemSounds.Hand.Play();
+                                errorProvider1.SetError(txtTarrifPercentage, "Invalid Value. Enter Zero or Positive Value");
+                            }
+                        }
+                        else
+                        {
+                            e.Cancel = true;
+                            System.Media.SystemSounds.Hand.Play();
+                            errorProvider1.SetError(txtTarrifPercentage, "Invalid Number");
+                        }
+                    }
+                }
+            };
+            txtTarrifPercentage.Validated += (o, e) =>
+            {
+                if (string.IsNullOrEmpty(txtTarrifPercentage.Text))
+                {
+                    _model.TarrifPercentage = null;
+                }
+                else
+                {
+                    _model.TarrifPercentage = decimal.Parse(txtTarrifPercentage.Text);
+                }
+                errorProvider1.SetError(txtTarrifPercentage, "");
+            };
+            
             //
             _model.PropertyChanged += (o, e) =>
             {

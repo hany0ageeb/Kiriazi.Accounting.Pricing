@@ -111,11 +111,11 @@ namespace Kiriazi.Accounting.Pricing.Views
             }
             if (_customers.Count > 0)
             {
-                btnPricingRules.Enabled = true;
+                //btnPricingRules.Enabled = true;
             }
             else
             {
-                btnPricingRules.Enabled = false;
+                //btnPricingRules.Enabled = false;
             }
         }
 
@@ -133,7 +133,7 @@ namespace Kiriazi.Accounting.Pricing.Views
                     Search();
             }
         }
-
+        /*
         private void btnPricingRules_Click(object sender, EventArgs e)
         {
             int? index = dataGridView1.CurrentRow?.Index;
@@ -146,5 +146,6 @@ namespace Kiriazi.Accounting.Pricing.Views
                 }
             }
         }
+        */
     }
 }

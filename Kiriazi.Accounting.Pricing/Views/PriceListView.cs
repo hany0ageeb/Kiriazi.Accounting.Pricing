@@ -198,11 +198,12 @@ namespace Kiriazi.Accounting.Pricing.Views
                         _bindingSource.ResetBindings(false);
                     }
                 }
+                txtCount.Text = dataGridView1.Rows.Count.ToString();
             };
             //
             txtName.Text = _model.PriceListName;
             //
-            txtCompanyName.Text = _model.CompanyName;
+            
             //
             txtAccountingPeriodName.Text = _model.AccountingPeriodName;
             //
@@ -287,6 +288,7 @@ namespace Kiriazi.Accounting.Pricing.Views
                     Visible = true
                 });
             dataGridView1.DataSource = _bindingSource;
+            txtCount.Text = dataGridView1.Rows.Count.ToString();
             
         }
         private void btnClose_Click(object sender, EventArgs e)

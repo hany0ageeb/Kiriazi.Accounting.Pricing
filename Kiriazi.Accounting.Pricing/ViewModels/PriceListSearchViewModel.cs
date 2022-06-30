@@ -5,21 +5,10 @@ namespace Kiriazi.Accounting.Pricing.ViewModels
 {
     public class PriceListSearchViewModel : ViewModelBase
     {
-        private Company _company;
+        
         private AccountingPeriod _accountingPeriod;
-
-        public Company Company
-        {
-            get => _company;
-            set
-            {
-                if (_company != value)
-                {
-                    _company = value;
-                    OnPropertyChanged(nameof(Company));
-                }
-            }
-        }
+        private string _itemCode;
+        
         public AccountingPeriod AccountingPeriod
         {
             get => _accountingPeriod;
@@ -32,9 +21,20 @@ namespace Kiriazi.Accounting.Pricing.ViewModels
                 }
             }
         }
-        public List<Company> Companies { get; private set; } = new List<Company>();
+        public string ItemCode
+        {
+            get => _itemCode;
+            set
+            {
+                if (_itemCode != value)
+                {
+                    _itemCode = value;
+                    OnPropertyChanged(nameof(ItemCode));
+                }
+            }
+        }
         public List<AccountingPeriod> AccountingPeriods { get; private set; } = new List<AccountingPeriod>();
-
+        public IList<string> ItemsCodes { get; set; }
         
     }
 }

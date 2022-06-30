@@ -15,6 +15,7 @@ namespace Kiriazi.Accounting.Pricing.ViewModels
         public IList<Company> Companies { get; set; }
         public IList<ItemType> ItemTypes { get; set; }
         public IList<CustomerPricingRule> Rules { get; set; }
+        public IList<Customer> Customers { get; set; }
     }
    
 }

@@ -27,6 +27,8 @@ namespace Kiriazi.Accounting.Pricing.DAL
         public DbSet<UserReportAssignment> UserReportAssignments { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<CustomerPriceList> CustomerPriceLists{ get; set; }
+        public DbSet<PriceListLine> PriceListLines { get; set; }
+
         public PricingDBContext()
             : base("PricingDBLocalConnection")
         {
@@ -58,19 +60,20 @@ namespace Kiriazi.Accounting.Pricing.DAL
                 .WithMany(e => e.Lines)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<CompanyAccountingPeriod>()
+            modelBuilder
+                .Entity<CompanyAccountingPeriod>()
                 .HasIndex(e => new { e.AccountingPeriodId, e.CompanyId })
                 .IsUnique(true)
                 .HasName("IDX_COMP_PERIOD_ID_UNQ");
 
             modelBuilder
-               .Entity<CompanyAccountingPeriod>()
+               .Entity<AccountingPeriod>()
                .HasOptional(e => e.PriceList)
-               .WithRequired(e => e.CompanyAccountingPeriod);
+               .WithRequired(e => e.AccountingPeriod);
 
             modelBuilder
                 .Entity<PriceList>()
-                .HasRequired(e => e.CompanyAccountingPeriod)
+                .HasRequired(e => e.AccountingPeriod)
                 .WithOptional(e => e.PriceList);
 
             modelBuilder
@@ -83,13 +86,15 @@ namespace Kiriazi.Accounting.Pricing.DAL
                  .IsUnique(true)
                  .HasName("Idx_Parent_child_comp_Id_UNQ");
 
-            modelBuilder.Entity<ItemRelation>()
+            modelBuilder
+                .Entity<ItemRelation>()
                 .HasRequired(e => e.Child)
                 .WithMany(e => e.Parents)
                 .HasForeignKey(e => e.ChildId)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<ItemRelation>()
+            modelBuilder
+                 .Entity<ItemRelation>()
                  .HasRequired(e => e.Parent)
                  .WithMany(e => e.Children)
                  .HasForeignKey(e => e.ParentId)

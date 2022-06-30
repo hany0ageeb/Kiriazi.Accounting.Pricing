@@ -13,9 +13,9 @@ namespace Kiriazi.Accounting.Pricing.Validation
             {
                 modelState.AddErrors(nameof(entity.Name), "Invalid Price List Name");
             }
-            if (entity.CompanyAccountingPeriod == null)
+            if (entity.AccountingPeriod == null)
             {
-                modelState.AddErrors(nameof(entity.CompanyAccountingPeriod), "Invalid Company / Accounting Period");
+                modelState.AddErrors(nameof(entity.AccountingPeriod), "Invalid Company / Accounting Period");
             }
             if(entity.PriceListLines==null || entity.PriceListLines.Count == 0)
             {

@@ -10,13 +10,13 @@ using System.Windows.Forms;
 
 namespace Kiriazi.Accounting.Pricing.Views
 {
-    public partial class CompanySelectorView : Form
+    public partial class PeriodSelectorView : Form
     {
-        private readonly IList<Models.Company> _companies;
+        private readonly IList<Models.AccountingPeriod> _periods;
         private bool _OkClicked = false;
-        public CompanySelectorView(IList<Models.Company> companies)
+        public PeriodSelectorView(IList<Models.AccountingPeriod> periods)
         {
-            _companies = companies;
+            _periods = periods;
             InitializeComponent();
             Initialize();
         }
@@ -27,19 +27,20 @@ namespace Kiriazi.Accounting.Pricing.Views
             lstCompanies.FullRowSelect = true;
             lstCompanies.Columns.Clear();
             lstCompanies.Columns.Add("Name",100,HorizontalAlignment.Center);
-            lstCompanies.Columns.Add("Description",300,HorizontalAlignment.Center);
-            foreach(var company in _companies)
+            lstCompanies.Columns.Add("Description", 300,HorizontalAlignment.Center);
+            //lstCompanies.Columns.Add("FromDate", 300, HorizontalAlignment.Center);
+            foreach (var period in _periods)
             {
-                ListViewItem item = new ListViewItem(company.Name, company.Description);
+                ListViewItem item = new ListViewItem(period.Name, period.Description);
                 lstCompanies.Items.Add(item);
             }
             _ = lstCompanies.SelectedIndices.Add(0);
         }
-        public Models.Company SelectedCompany { get; set; }
+        public Models.AccountingPeriod SelectedPeriod { get; set; }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            SelectedCompany = null;
+            SelectedPeriod = null;
             DialogResult = DialogResult.Cancel;
             Close();
         }
@@ -49,7 +50,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             if (e.CloseReason == CloseReason.UserClosing && !_OkClicked)
             {
                 DialogResult = DialogResult.Cancel;
-                SelectedCompany = null;
+                SelectedPeriod = null;
             }
                 
         }
@@ -58,13 +59,13 @@ namespace Kiriazi.Accounting.Pricing.Views
         {
             if (lstCompanies.SelectedIndices.Count > 0)
             {
-                SelectedCompany = _companies[lstCompanies.SelectedIndices[0]];
+                SelectedPeriod = _periods[lstCompanies.SelectedIndices[0]];
                 _OkClicked = true;
                 this.DialogResult = DialogResult.OK;
             }
             else
             {
-                SelectedCompany = null;
+                SelectedPeriod = null;
                 _OkClicked = true;
                 this.DialogResult = DialogResult.Cancel;
             }

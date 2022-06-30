@@ -25,24 +25,16 @@ namespace Kiriazi.Accounting.Pricing.DAL
         }
         public PricingDBContext PricingDBContext => _context as PricingDBContext;
         public IEnumerable<PriceList> Find(
-           Guid? userId = null,
-           Guid? companyId = null,
            Guid? periodId = null,
            Func<IQueryable<PriceList>, IOrderedQueryable<PriceList>> orderBy = null,
            Func<IQueryable<PriceList>, IQueryable<PriceList>> include = null)
         {
             var query = PricingDBContext.PriceLists.AsQueryable();
-            if (userId != null)
-            {
-                query = query.Where(p => p.CompanyAccountingPeriod.Company.Users.Select(u => u.UserId).Contains(userId.Value));
-            }
-            if (companyId != null)
-            {
-                query = query.Where(p => p.CompanyAccountingPeriod.CompanyId == companyId);
-            }
+            
+           
             if (periodId != null)
             {
-                query = query.Where(p => p.CompanyAccountingPeriod.AccountingPeriodId == periodId);
+                query = query.Where(p => p.Id == periodId);
             }
             if (include != null)
             {
@@ -54,26 +46,30 @@ namespace Kiriazi.Accounting.Pricing.DAL
             }
             return query.AsEnumerable();
         }
-        public IEnumerable<PriceListLine> FindPriceListLines(Guid companyId, Guid itemId, AccountingPeriod period)
+        public IEnumerable<PriceListLine> FindPriceListLines(Guid itemId, AccountingPeriod period)
         {
             var query =
                 _context
                 .Set<PriceListLine>()
                 .Where(l => 
-                    l.PriceList.CompanyAccountingPeriod.CompanyId == companyId && 
-                    l.ItemId == itemId && l.PriceList.CompanyAccountingPeriod.AccountingPeriod.Id == period.Id)
+                    l.ItemId == itemId && l.PriceList.Id == period.Id)
                 .Include(nameof(PriceListLine.Currency));
             return query.AsEnumerable();
         }
-        public IEnumerable<PriceListLine> FindPriceListLines(Guid itemId, AccountingPeriod period)
+        public IEnumerable<PriceListLine> FindPriceListLines(
+             Guid? periodId = null,
+             string itemCode = "")
         {
-            var query =
-               _context
-               .Set<PriceListLine>()
-               .Where(l =>
-                   l.ItemId == itemId && l.PriceList.CompanyAccountingPeriod.AccountingPeriodId == period.Id)
-               .Include(nameof(PriceListLine.Currency));
-            return query.AsEnumerable();
+            var query = PricingDBContext.PriceListLines.AsQueryable();
+            if (periodId != null)
+            {
+                query = query.Where(p => p.PriceListId == periodId);
+            }
+            if (!string.IsNullOrEmpty(itemCode))
+            {
+                query = query.Where(p => p.Item.Code.Contains(itemCode));
+            }
+            return query.OrderBy(l => l.Item.Code).Include(l => l.Item).Include(l => l.Currency).Include(l => l.Item.Uom).AsEnumerable();
         }
     }
 }

@@ -11,7 +11,8 @@ namespace Kiriazi.Accounting.Pricing.ViewModels
         private string _alias = "";
         private Models.Uom _uom;
         private Models.ItemType _itemType;
-        private Models.Tarrif _tarrif;
+       
+        private decimal? _tarrifPerentage = null;
         public Guid Id { get; private set; } = Guid.NewGuid();
         public bool CanItemTypeChange { get; set; } = true;
         public ItemEditViewModel(Models.Item item)
@@ -23,7 +24,7 @@ namespace Kiriazi.Accounting.Pricing.ViewModels
             _alias = item.Alias;
             _uom = item.Uom;
             _itemType = item.ItemType;
-            _tarrif = item.Tarrif;
+            _tarrifPerentage = item.CustomsTarrifPercentage;
             CanItemTypeChange = item.Children.Count == 0;
         }
         public ItemEditViewModel()
@@ -39,7 +40,7 @@ namespace Kiriazi.Accounting.Pricing.ViewModels
                 Alias = _alias,
                 EnglishName = _englishName,
                 ItemType = _itemType,
-                Tarrif = _tarrif,
+                CustomsTarrifPercentage = _tarrifPerentage,
                 Uom = _uom
             };
         public string Code
@@ -114,20 +115,20 @@ namespace Kiriazi.Accounting.Pricing.ViewModels
                 }
             }
         }
-        public Models.Tarrif Tarrif
+        public decimal? TarrifPercentage
         {
-            get => _tarrif;
+            get => _tarrifPerentage;
             set
             {
-                if (_tarrif != value)
+                if (_tarrifPerentage != value)
                 {
-                    _tarrif = value;
-                    OnPropertyChanged(nameof(Tarrif));
+                    _tarrifPerentage = value;
+                    OnPropertyChanged(nameof(TarrifPercentage));
                 }
             }
         }
         public IList<Models.Uom> Uoms { get; set; }
         public IList<Models.ItemType> ItemTypes { get; set; }
-        public IList<Models.Tarrif> Tarrifs { get; set; }
+        
     }
 }

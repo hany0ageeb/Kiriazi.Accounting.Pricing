@@ -32,30 +32,45 @@ namespace Kiriazi.Accounting.Pricing.Views
             dataGridView1.Columns.AddRange(
                 new DataGridViewTextBoxColumn()
                 {
-                    Name = "Name",
-                    DataPropertyName = "Name",
+                    Name = nameof(Models.AccountingPeriod.Name),
+                    DataPropertyName = nameof(Models.AccountingPeriod.Name),
                     HeaderText = "Name",
                     ReadOnly = true
                 },
                 new DataGridViewTextBoxColumn()
                 {
-                    Name = "Description",
-                    DataPropertyName = "Description",
+                    Name = nameof(Models.AccountingPeriod.Description),
+                    DataPropertyName = nameof(Models.AccountingPeriod.Description),
                     HeaderText = "Description",
                     ReadOnly = true
                 },
                 new DataGridViewTextBoxColumn()
                 {
-                    Name = "FromDate",
-                    DataPropertyName = "FromDate",
+                    Name = nameof(Models.AccountingPeriod.FromDate),
+                    DataPropertyName = nameof(Models.AccountingPeriod.FromDate),
                     HeaderText = "From",
                     ReadOnly = true
                 },
                 new DataGridViewTextBoxColumn() 
                 { 
-                    Name = "ToDate",
-                    DataPropertyName = "ToDate",
+                    Name = nameof(Models.AccountingPeriod.ToDate),
+                    DataPropertyName = nameof(Models.AccountingPeriod.ToDate),
                     HeaderText = "To",
+                    ReadOnly = true
+                },
+                new DataGridViewTextBoxColumn()
+                {
+                    Name = nameof(Models.AccountingPeriod.State),
+                    DataPropertyName = nameof(Models.AccountingPeriod.State),
+                    HeaderText = "State",
+                    ReadOnly = true
+                },
+                new DataGridViewButtonColumn()
+                {
+                    Name = "ChangeState",
+                    Text = "Change State",
+                    UseColumnTextForButtonValue = true,
+                    HeaderText = "",
                     ReadOnly = true
                 },
                 new DataGridViewButtonColumn()
@@ -88,9 +103,17 @@ namespace Kiriazi.Accounting.Pricing.Views
                         Search();
                     }
                 }
+                else if(e.ColumnIndex == grid.Columns["ChangeState"].Index)
+                {
+                    if (e.RowIndex >= 0 && e.RowIndex < _accountingPeriods.Count)
+                    {
+                        _controller.ChangeState(_accountingPeriods[e.RowIndex].Id);
+                        Search();
+                    }
+                }
             };
-            dataGridView1.Columns["FromDate"].DefaultCellStyle.Format = "g";
-            dataGridView1.Columns["ToDate"].DefaultCellStyle.Format = "g";
+            dataGridView1.Columns[nameof(Models.AccountingPeriod.FromDate)].DefaultCellStyle.Format = "g";
+            dataGridView1.Columns[nameof(Models.AccountingPeriod.ToDate)].DefaultCellStyle.Format = "g";
             Search();
             dataGridView1.DataSource = _accountingPeriods;
 
@@ -115,6 +138,19 @@ namespace Kiriazi.Accounting.Pricing.Views
             {
                 accountingPeriodView.ShowDialog(this);
                 Search();
+            }
+        }
+
+        private void btnPricingRules_Click(object sender, EventArgs e)
+        {
+            int? index = dataGridView1.CurrentRow?.Index;
+            if (index != null && index >= 0 && index < _accountingPeriods.Count) 
+            {
+                var rules =_controller.EditCustomerPricingRules(_accountingPeriods[index.Value].Id);
+                using(CustomerPricingRuleEditView pricingRuleEditView = new CustomerPricingRuleEditView(_controller, rules,_accountingPeriods[index.Value]))
+                {
+                    pricingRuleEditView.ShowDialog(this);
+                }
             }
         }
     }

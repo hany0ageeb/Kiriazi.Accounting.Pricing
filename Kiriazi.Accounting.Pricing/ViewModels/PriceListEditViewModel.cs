@@ -7,11 +7,11 @@ namespace Kiriazi.Accounting.Pricing.ViewModels
     public class PriceListEditViewModel : ViewModelBase
     {
         private string _name="";
-        private Company _company;
+        
         private AccountingPeriod _accountingPeriod;
 
         public Guid Id { get; set; } = Guid.NewGuid();
-
+        public Currency DefaultLineCurrency { get; set; }
         public byte[] Timestamp { get; set; }
 
         public PriceList PriceList
@@ -21,7 +21,8 @@ namespace Kiriazi.Accounting.Pricing.ViewModels
                 Name = Name,
                 Id = Id,
                 Timestamp = Timestamp,
-                PriceListLines = new List<PriceListLine>(Lines)
+                PriceListLines = new List<PriceListLine>(Lines),
+                AccountingPeriod = _accountingPeriod
             };
         }
         public string Name
@@ -36,18 +37,7 @@ namespace Kiriazi.Accounting.Pricing.ViewModels
                 }
             }
         }
-        public Company Company
-        {
-            get => _company;
-            set
-            {
-                if (_company != value)
-                {
-                    _company = value;
-                    OnPropertyChanged(nameof(Company));
-                }
-            }
-        }
+        
         public AccountingPeriod AccountingPeriod
         {
             get => _accountingPeriod;
@@ -61,8 +51,6 @@ namespace Kiriazi.Accounting.Pricing.ViewModels
             }
         }
         public IList<PriceListLine> Lines { get; set; } = new List<PriceListLine>();
-
-        public IList<Company> Companies { get; set; } = new List<Company>();
 
         public IList<AccountingPeriod> AccountingPeriods { get; set; } = new List<AccountingPeriod>();
 

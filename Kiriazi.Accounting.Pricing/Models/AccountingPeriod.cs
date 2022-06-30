@@ -12,7 +12,7 @@ namespace Kiriazi.Accounting.Pricing.Models
         private string _description;
         private DateTime _fromDate = DateTime.Now;
         private DateTime? _toDate;
-        
+        private string _state = AccountingPeriodStates.Opened;
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid Id { get; set; } = Guid.NewGuid();
@@ -80,11 +80,31 @@ namespace Kiriazi.Accounting.Pricing.Models
                 }
             }
         }
+        [Required(AllowEmptyStrings = false),MaxLength(250)]
+        public string State
+        {
+            get => _state;
+            set
+            {
+                if (_state != value)
+                {
+                    _state = value;
+                    OnPropertyChanged(nameof(State));
+                }
+            }
+        }
         [NotMapped]
         public AccountingPeriod Self => this;
 
         public virtual ICollection<CurrencyExchangeRate> CurrencyExchangeRates { get; set; } = new HashSet<CurrencyExchangeRate>();
 
         public virtual ICollection<CustomerPriceList> CustomerPriceLists { get; set; } = new HashSet<CustomerPriceList>();
+
+        public virtual PriceList PriceList { get; set; }
+
+        public virtual ICollection<CustomerPricingRule> PricingRules { get; set; } = new HashSet<CustomerPricingRule>();
+
+        [ForeignKey(nameof(PriceList))]
+        public Guid? PriceListId { get; set; }
     }
 }

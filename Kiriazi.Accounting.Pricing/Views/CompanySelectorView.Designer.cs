@@ -1,7 +1,7 @@
 ﻿
 namespace Kiriazi.Accounting.Pricing.Views
 {
-    partial class CompanySelectorView
+    partial class PeriodSelectorView
     {
         /// <summary>
         /// Required designer variable.
@@ -42,9 +42,9 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(13, 13);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(202, 14);
+            this.label1.Size = new System.Drawing.Size(252, 14);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Select Company from the list below";
+            this.label1.Text = "Select Accounting Period from the list below";
             // 
             // lstCompanies
             // 
@@ -87,7 +87,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
-            // CompanySelectorView
+            // PeriodSelectorView
             // 
             this.AcceptButton = this.btnOk;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
@@ -101,9 +101,9 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "CompanySelectorView";
+            this.Name = "PeriodSelectorView";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Select A Company For Price List";
+            this.Text = "Select An Accounting Period For Price List";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CompanySelectorView_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();

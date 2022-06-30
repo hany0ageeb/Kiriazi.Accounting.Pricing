@@ -33,23 +33,25 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.txtAccountingPeriodName = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.txtName = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.cboItems = new System.Windows.Forms.ComboBox();
-            this.txtCompanyName = new System.Windows.Forms.TextBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.btnClose = new System.Windows.Forms.Button();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label5 = new System.Windows.Forms.Label();
+            this.txtCount = new System.Windows.Forms.TextBox();
             this.flowLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.flowLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
+            this.flowLayoutPanel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // flowLayoutPanel1
@@ -70,15 +72,13 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 22.32346F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 77.67654F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 131F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 307F));
-            this.tableLayoutPanel1.Controls.Add(this.txtAccountingPeriodName, 3, 1);
-            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.label2, 2, 1);
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 308F));
             this.tableLayoutPanel1.Controls.Add(this.label3, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.txtName, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.label4, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.cboItems, 3, 0);
-            this.tableLayoutPanel1.Controls.Add(this.txtCompanyName, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.label2, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.txtAccountingPeriodName, 1, 1);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
@@ -91,25 +91,16 @@ namespace Kiriazi.Accounting.Pricing.Views
             // txtAccountingPeriodName
             // 
             this.txtAccountingPeriodName.BackColor = System.Drawing.SystemColors.Control;
-            this.txtAccountingPeriodName.Location = new System.Drawing.Point(745, 37);
+            this.txtAccountingPeriodName.Location = new System.Drawing.Point(139, 37);
             this.txtAccountingPeriodName.Name = "txtAccountingPeriodName";
             this.txtAccountingPeriodName.ReadOnly = true;
-            this.txtAccountingPeriodName.Size = new System.Drawing.Size(290, 22);
+            this.txtAccountingPeriodName.Size = new System.Drawing.Size(368, 22);
             this.txtAccountingPeriodName.TabIndex = 8;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 34);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(57, 14);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Company";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(614, 34);
+            this.label2.Location = new System.Drawing.Point(3, 34);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(107, 14);
             this.label2.TabIndex = 2;
@@ -130,13 +121,13 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.txtName.Location = new System.Drawing.Point(139, 3);
             this.txtName.Name = "txtName";
             this.txtName.ReadOnly = true;
-            this.txtName.Size = new System.Drawing.Size(290, 22);
+            this.txtName.Size = new System.Drawing.Size(368, 22);
             this.txtName.TabIndex = 1;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(614, 0);
+            this.label4.Location = new System.Drawing.Point(613, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(33, 14);
             this.label4.TabIndex = 5;
@@ -147,19 +138,10 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.cboItems.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cboItems.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cboItems.FormattingEnabled = true;
-            this.cboItems.Location = new System.Drawing.Point(745, 3);
+            this.cboItems.Location = new System.Drawing.Point(744, 3);
             this.cboItems.Name = "cboItems";
             this.cboItems.Size = new System.Drawing.Size(288, 22);
             this.cboItems.TabIndex = 6;
-            // 
-            // txtCompanyName
-            // 
-            this.txtCompanyName.BackColor = System.Drawing.SystemColors.Control;
-            this.txtCompanyName.Location = new System.Drawing.Point(139, 37);
-            this.txtCompanyName.Name = "txtCompanyName";
-            this.txtCompanyName.ReadOnly = true;
-            this.txtCompanyName.Size = new System.Drawing.Size(290, 22);
-            this.txtCompanyName.TabIndex = 7;
             // 
             // dataGridView1
             // 
@@ -172,6 +154,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             // flowLayoutPanel2
             // 
             this.flowLayoutPanel2.Controls.Add(this.btnClose);
+            this.flowLayoutPanel2.Controls.Add(this.flowLayoutPanel3);
             this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
             this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 523);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
@@ -192,6 +175,32 @@ namespace Kiriazi.Accounting.Pricing.Views
             // 
             this.errorProvider1.ContainerControl = this;
             // 
+            // flowLayoutPanel3
+            // 
+            this.flowLayoutPanel3.Controls.Add(this.label5);
+            this.flowLayoutPanel3.Controls.Add(this.txtCount);
+            this.flowLayoutPanel3.Location = new System.Drawing.Point(6, 3);
+            this.flowLayoutPanel3.Name = "flowLayoutPanel3";
+            this.flowLayoutPanel3.Size = new System.Drawing.Size(933, 36);
+            this.flowLayoutPanel3.TabIndex = 9;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(3, 0);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(44, 14);
+            this.label5.TabIndex = 0;
+            this.label5.Text = "Count:";
+            // 
+            // txtCount
+            // 
+            this.txtCount.Location = new System.Drawing.Point(53, 3);
+            this.txtCount.Name = "txtCount";
+            this.txtCount.ReadOnly = true;
+            this.txtCount.Size = new System.Drawing.Size(100, 22);
+            this.txtCount.TabIndex = 1;
+            // 
             // PriceListView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
@@ -209,6 +218,8 @@ namespace Kiriazi.Accounting.Pricing.Views
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.flowLayoutPanel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
+            this.flowLayoutPanel3.ResumeLayout(false);
+            this.flowLayoutPanel3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -217,7 +228,6 @@ namespace Kiriazi.Accounting.Pricing.Views
 
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Label label3;
@@ -227,8 +237,10 @@ namespace Kiriazi.Accounting.Pricing.Views
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox cboItems;
-        private System.Windows.Forms.TextBox txtCompanyName;
         private System.Windows.Forms.TextBox txtAccountingPeriodName;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel3;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox txtCount;
     }
 }

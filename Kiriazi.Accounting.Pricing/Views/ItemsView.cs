@@ -16,6 +16,7 @@ namespace Kiriazi.Accounting.Pricing.Views
         private readonly Controllers.ItemController _itemController;
         private ViewModels.ItemSearchViewModel _model;
         private BindingList<Models.Item> _items = new BindingList<Models.Item>();
+        private AutoCompleteStringCollection _autoCompleteSource = new AutoCompleteStringCollection();
 
         public ItemsView(Controllers.ItemController itemController)
         {
@@ -34,57 +35,50 @@ namespace Kiriazi.Accounting.Pricing.Views
             itemsGrid.Columns.Clear();
             itemsGrid.Columns.AddRange(new DataGridViewTextBoxColumn()
             {
-                Name = "Code",
-                DataPropertyName = "Code",
+                Name = nameof(Models.Item.Code),
+                DataPropertyName = nameof(Models.Item.Code),
                 HeaderText = "Code",
                 ReadOnly = true
             },
             new DataGridViewTextBoxColumn()
             {
-                Name = "Arabic Name",
-                DataPropertyName = "ArabicName",
+                Name = nameof(Models.Item.ArabicName),
+                DataPropertyName = nameof(Models.Item.ArabicName),
                 HeaderText = "Arabic Name",
                 ReadOnly = true
             },
             new DataGridViewTextBoxColumn()
             {
-                Name = "English Name",
-                DataPropertyName = "English Name",
+                Name = nameof(Models.Item.EnglishName),
+                DataPropertyName = nameof(Models.Item.EnglishName),
                 HeaderText = "English Name",
                 ReadOnly = true
             },
             new DataGridViewTextBoxColumn()
             {
-                Name = "AliasName",
+                Name = nameof(Models.Item.Alias),
                 HeaderText = "Alias",
-                DataPropertyName = "Alias",
+                DataPropertyName = nameof(Models.Item.Alias),
                 ReadOnly = true
             },
             new DataGridViewTextBoxColumn()
             {
-                Name = "ItemTypeName",
+                Name = nameof(Models.Item.ItemTypeName),
                 HeaderText = "Item Type",
-                DataPropertyName = "ItemTypeName",
+                DataPropertyName = nameof(Models.Item.ItemTypeName),
                 ReadOnly = true
             },
             new DataGridViewTextBoxColumn()
             {
-                Name = "UomName",
+                Name = nameof(Models.Item.UomName),
                 HeaderText = "Uom",
-                DataPropertyName = "UomName",
+                DataPropertyName = nameof(Models.Item.UomName),
                 ReadOnly = true
             },
             new DataGridViewTextBoxColumn()
             {
-                Name = "TarrifCode",
-                DataPropertyName = "TarrifCode",
-                HeaderText = "Tarrif Code",
-                ReadOnly = true
-            },
-            new DataGridViewTextBoxColumn()
-            {
-                Name = "TarrifPercentage",
-                DataPropertyName = "TarrifPercentage",
+                Name = nameof(Models.Item.CustomsTarrifPercentage),
+                DataPropertyName = nameof(Models.Item.CustomsTarrifPercentage),
                 ReadOnly = true,
                 HeaderText = "Tarrif(%)"
             },
@@ -135,8 +129,16 @@ namespace Kiriazi.Accounting.Pricing.Views
             };
             itemsGrid.DataSource = _items;
             //
+            
+          
+            //
             txtCode.DataBindings.Clear();
             txtCode.DataBindings.Add(new Binding(nameof(txtCode.Text),_model,nameof(_model.Code)) { DataSourceUpdateMode = DataSourceUpdateMode.OnPropertyChanged });
+            txtCode.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            txtCode.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            _autoCompleteSource.Clear();
+            _autoCompleteSource.AddRange(_model.ItemsCodes.ToArray());
+            txtCode.AutoCompleteCustomSource = _autoCompleteSource;
             //
             txtArabicName.DataBindings.Clear();
             txtArabicName.DataBindings.Add(new Binding(nameof(txtArabicName.Text),_model,nameof(_model.ArabicName)) { DataSourceUpdateMode = DataSourceUpdateMode.OnPropertyChanged });
@@ -238,6 +240,7 @@ namespace Kiriazi.Accounting.Pricing.Views
                     mainView.IsExportMenuItemEnabled = false;
                 }
             }
+            txtItemCount.Text = _items.Count.ToString();
         }
 
         private void btnSearch_Click(object sender, EventArgs e)

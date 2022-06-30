@@ -25,6 +25,10 @@ namespace Kiriazi.Accounting.Pricing.Validation
             {
                 modelState.AddErrors(nameof(entity.ItemType), "Item Type is mandatory");
             }
+            if(entity.CustomsTarrifPercentage!=null && entity.CustomsTarrifPercentage < 0)
+            {
+                modelState.AddErrors(nameof(entity.CustomsTarrifPercentage), "Invalid Customs Tarrif.");
+            }
             return modelState;
         }
 

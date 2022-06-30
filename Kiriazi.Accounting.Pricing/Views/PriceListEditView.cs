@@ -41,14 +41,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             txtName.DataBindings.Clear();
             txtName.DataBindings.Add(new Binding(nameof(txtName.Text),_model,nameof(_model.Name)) { DataSourceUpdateMode = DataSourceUpdateMode.OnValidation });
             //
-            cboCompanies.DataBindings.Clear();
-            cboCompanies.DataSource = _model.Companies;
-            cboCompanies.DisplayMember = nameof(_model.Company.Name);
-            cboCompanies.ValueMember = nameof(_model.Company.Self);
-            cboCompanies.DataBindings.Add(new Binding(nameof(cboCompanies.SelectedItem), _model, nameof(_model.Company)) 
-            { 
-                DataSourceUpdateMode = DataSourceUpdateMode.OnPropertyChanged
-            });
+           
             
             //
             cboPeriods.DataBindings.Clear();
@@ -93,7 +86,7 @@ namespace Kiriazi.Accounting.Pricing.Views
 
         private void DataGridView1_DefaultValuesNeeded(object sender, DataGridViewRowEventArgs e)
         {
-            e.Row.Cells["Currency"].Value = _model.Company.Currency;
+            e.Row.Cells["Currency"].Value = _model.DefaultLineCurrency;
         }
 
         private void DataGridView1_RowValidated(object sender, DataGridViewCellEventArgs e)
@@ -145,7 +138,7 @@ namespace Kiriazi.Accounting.Pricing.Views
                     var errors = modelState.GetErrors("Name");
                     errorProvider1.SetError(txtName, errors.FirstOrDefault()??"");
                     errors = modelState.GetErrors("CompanyAccountingPeriod");
-                    errorProvider1.SetError(cboCompanies, errors.FirstOrDefault()??"");
+                    
                     errorProvider1.SetError(cboPeriods, errors.FirstOrDefault()??"");
                     errors = modelState.GetErrors("PriceListLines");
                     errorProvider1.SetError(txtName, errors.FirstOrDefault()??"");
@@ -162,7 +155,7 @@ namespace Kiriazi.Accounting.Pricing.Views
                 else
                 {
                     errorProvider1.SetError(txtName, "");
-                    errorProvider1.SetError(cboCompanies, "");
+                    
                     errorProvider1.SetError(cboPeriods, "");
                     foreach (DataGridViewRow row in dataGridView1.Rows)
                     {
@@ -186,7 +179,7 @@ namespace Kiriazi.Accounting.Pricing.Views
                     {
                         if (_lines[e.RowIndex].Currency != null)
                         {
-                            if (_lines[e.RowIndex].Currency.Id != _model.Company.Currency.Id)
+                            if (_lines[e.RowIndex].Currency.Id != _model.DefaultLineCurrency.Id)
                             {
                                 if(_lines[e.RowIndex].ExchangeRateType == ExchangeRateTypes.System)
                                 {
@@ -231,7 +224,7 @@ namespace Kiriazi.Accounting.Pricing.Views
                                     }
                                 }
                             }
-                            if (_lines[e.RowIndex].Item.Tarrif != null && _lines[e.RowIndex].Currency.Id != _model.Company.Currency.Id)
+                            if (_lines[e.RowIndex].Item.CustomsTarrifPercentage != null && _lines[e.RowIndex].Currency.Id != _model.DefaultLineCurrency.Id)
                             {
                                 if (!string.IsNullOrEmpty(_lines[e.RowIndex].TarrifType))
                                 {
@@ -322,19 +315,34 @@ namespace Kiriazi.Accounting.Pricing.Views
             {
                 if(e.RowIndex >=0 && e.RowIndex < _lines.Count)
                 {
-                    if(_lines[e.RowIndex].Currency != null && _lines[e.RowIndex].Currency.Id != _model.Company.CurrencyId)
+                    if(_lines[e.RowIndex].Currency != null && _lines[e.RowIndex].Currency.Id != _model.DefaultLineCurrency.Id)
                     {
                         
                         dataGridView1.Rows[e.RowIndex].Cells["ExchangeRateType"].ReadOnly = false;
                         _lines[e.RowIndex].ExchangeRateType = ExchangeRateTypes.System;
                         _lines[e.RowIndex].CurrencyExchangeRate = null;
                         dataGridView1.Rows[e.RowIndex].Cells["CurrencyExchangeRate"].ReadOnly = true;
+                        if(_lines[e.RowIndex].Item!=null && _lines[e.RowIndex].Item.CustomsTarrifPercentage != null)
+                        {
+                            dataGridView1.Rows[e.RowIndex].Cells["TarrifType"].ReadOnly = false;
+                            _lines[e.RowIndex].TarrrifPercentage = null;
+                            _lines[e.RowIndex].TarrifType = ExchangeRateTypes.System;
+                        }
+                        else
+                        {
+                            dataGridView1.Rows[e.RowIndex].Cells["TarrifType"].ReadOnly = true;
+                            _lines[e.RowIndex].TarrifType = null;
+                            _lines[e.RowIndex].TarrrifPercentage = null;
+                        }
                     }
                     else
                     {
                         dataGridView1.Rows[e.RowIndex].Cells["ExchangeRateType"].ReadOnly = true;
                         _lines[e.RowIndex].CurrencyExchangeRate = null;
                         _lines[e.RowIndex].ExchangeRateType = null;
+                        dataGridView1.Rows[e.RowIndex].Cells["TarrifType"].ReadOnly = true;
+                        _lines[e.RowIndex].TarrifType = null;
+                        _lines[e.RowIndex].TarrrifPercentage = null;
                     }
                 }
             }
@@ -353,7 +361,7 @@ namespace Kiriazi.Accounting.Pricing.Views
                         _lines[e.RowIndex].CurrencyExchangeRate = _priceListController.FindMaximumCurrencyExchangeRateInPeriod(
                             period: _model.AccountingPeriod,
                             fromCurrency: _lines[e.RowIndex].Currency,
-                            toCurrency: _model.Company.Currency);
+                            toCurrency: _model.DefaultLineCurrency);
                     }
                 }
             }
@@ -363,7 +371,7 @@ namespace Kiriazi.Accounting.Pricing.Views
                 {
                     if(_lines[e.RowIndex].TarrifType == ExchangeRateTypes.System)
                     {
-                        if(_lines[e.RowIndex].Item != null && _lines[e.RowIndex].Item.Tarrif != null)
+                        if(_lines[e.RowIndex].Item != null && _lines[e.RowIndex].Item.CustomsTarrifPercentage != null)
                         {
                             //_lines[e.RowIndex].TarrrifPercentage = _lines[e.RowIndex].Item.TarrifPercentage;
                             dataGridView1.Rows[e.RowIndex].Cells["TarrrifPercentage"].ReadOnly = true;
@@ -378,11 +386,11 @@ namespace Kiriazi.Accounting.Pricing.Views
                     }
                     else if(_lines[e.RowIndex].TarrifType == ExchangeRateTypes.Manual)
                     {
-                        if (_lines[e.RowIndex].Item != null && _lines[e.RowIndex].Item.Tarrif != null)
+                        if (_lines[e.RowIndex].Item != null && _lines[e.RowIndex].Item.CustomsTarrifPercentage != null)
                         {
                             //_lines[e.RowIndex].TarrrifPercentage = _lines[e.RowIndex].Item.TarrifPercentage;
                             dataGridView1.Rows[e.RowIndex].Cells["TarrrifPercentage"].ReadOnly = false;
-                            _lines[e.RowIndex].TarrrifPercentage = _lines[e.RowIndex].Item.TarrifPercentage;
+                            _lines[e.RowIndex].TarrrifPercentage = _lines[e.RowIndex].Item.CustomsTarrifPercentage;
                         }
                         else
                         {
@@ -409,7 +417,7 @@ namespace Kiriazi.Accounting.Pricing.Views
                         txtItemName.Text = item.ArabicName;
                         txtItemUom.Text = item.Uom.Name;
                         _lines[e.RowIndex].Item = item;
-                        if (_lines[e.RowIndex].Item.Tarrif != null)
+                        if (_lines[e.RowIndex].Item.CustomsTarrifPercentage != null)
                         {
                            
                             //_lines[e.RowIndex].TarrifType = ExchangeRateTypes.System;

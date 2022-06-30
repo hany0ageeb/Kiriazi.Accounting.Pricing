@@ -32,7 +32,6 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.components = new System.ComponentModel.Container();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.label5 = new System.Windows.Forms.Label();
             this.pickerToDate = new System.Windows.Forms.DateTimePicker();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -41,11 +40,12 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.label2 = new System.Windows.Forms.Label();
             this.txtName = new System.Windows.Forms.TextBox();
             this.pickerFromDate = new System.Windows.Forms.DateTimePicker();
-            this.chkAssignToAll = new System.Windows.Forms.CheckBox();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.label5 = new System.Windows.Forms.Label();
+            this.cboStates = new System.Windows.Forms.ComboBox();
             this.flowLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
@@ -77,7 +77,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.tableLayoutPanel1.Controls.Add(this.label2, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.txtName, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.pickerFromDate, 1, 2);
-            this.tableLayoutPanel1.Controls.Add(this.chkAssignToAll, 1, 4);
+            this.tableLayoutPanel1.Controls.Add(this.cboStates, 1, 4);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 5;
@@ -89,22 +89,13 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.tableLayoutPanel1.Size = new System.Drawing.Size(706, 248);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(3, 201);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(132, 15);
-            this.label5.TabIndex = 8;
-            this.label5.Text = "Assign to all companies";
-            // 
             // pickerToDate
             // 
             this.pickerToDate.Location = new System.Drawing.Point(147, 166);
             this.pickerToDate.Name = "pickerToDate";
             this.pickerToDate.ShowCheckBox = true;
             this.pickerToDate.Size = new System.Drawing.Size(535, 23);
-            this.pickerToDate.TabIndex = 7;
+            this.pickerToDate.TabIndex = 4;
             this.pickerToDate.ValueChanged += new System.EventHandler(this.pickerToDate_ValueChanged);
             // 
             // label4
@@ -132,7 +123,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.txtDescription.Multiline = true;
             this.txtDescription.Name = "txtDescription";
             this.txtDescription.Size = new System.Drawing.Size(535, 84);
-            this.txtDescription.TabIndex = 3;
+            this.txtDescription.TabIndex = 2;
             // 
             // label1
             // 
@@ -159,23 +150,14 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.txtName.Location = new System.Drawing.Point(147, 3);
             this.txtName.Name = "txtName";
             this.txtName.Size = new System.Drawing.Size(535, 25);
-            this.txtName.TabIndex = 2;
+            this.txtName.TabIndex = 1;
             // 
             // pickerFromDate
             // 
             this.pickerFromDate.Location = new System.Drawing.Point(147, 130);
             this.pickerFromDate.Name = "pickerFromDate";
             this.pickerFromDate.Size = new System.Drawing.Size(535, 23);
-            this.pickerFromDate.TabIndex = 4;
-            // 
-            // chkAssignToAll
-            // 
-            this.chkAssignToAll.AutoSize = true;
-            this.chkAssignToAll.Location = new System.Drawing.Point(147, 204);
-            this.chkAssignToAll.Name = "chkAssignToAll";
-            this.chkAssignToAll.Size = new System.Drawing.Size(15, 14);
-            this.chkAssignToAll.TabIndex = 9;
-            this.chkAssignToAll.UseVisualStyleBackColor = true;
+            this.pickerFromDate.TabIndex = 3;
             // 
             // flowLayoutPanel2
             // 
@@ -192,7 +174,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.btnClose.Location = new System.Drawing.Point(607, 3);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(96, 31);
-            this.btnClose.TabIndex = 1;
+            this.btnClose.TabIndex = 7;
             this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
@@ -202,7 +184,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.btnSave.Location = new System.Drawing.Point(505, 3);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(96, 31);
-            this.btnSave.TabIndex = 0;
+            this.btnSave.TabIndex = 6;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
@@ -210,6 +192,26 @@ namespace Kiriazi.Accounting.Pricing.Views
             // errorProvider1
             // 
             this.errorProvider1.ContainerControl = this;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(3, 201);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(34, 15);
+            this.label5.TabIndex = 8;
+            this.label5.Text = "State";
+            // 
+            // cboStates
+            // 
+            this.cboStates.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cboStates.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.cboStates.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.cboStates.FormattingEnabled = true;
+            this.cboStates.Location = new System.Drawing.Point(147, 204);
+            this.cboStates.Name = "cboStates";
+            this.cboStates.Size = new System.Drawing.Size(535, 23);
+            this.cboStates.TabIndex = 5;
             // 
             // AccountingPeriodView
             // 
@@ -246,11 +248,11 @@ namespace Kiriazi.Accounting.Pricing.Views
         private System.Windows.Forms.DateTimePicker pickerFromDate;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.DateTimePicker pickerToDate;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnClose;
-        private System.Windows.Forms.CheckBox chkAssignToAll;
         private System.Windows.Forms.ErrorProvider errorProvider1;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox cboStates;
     }
 }

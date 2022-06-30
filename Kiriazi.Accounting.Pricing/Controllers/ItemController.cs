@@ -32,8 +32,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                 .Map<Item>("Alias", nameof(Item.Alias))
                 .Map<Item>("English Name", nameof(Item.EnglishName))
                 .Map<Item>("Item Type", nameof(Item.ItemTypeName))
-                .Map<Item>("Customs Tarrif", nameof(Item.TarrifCode))
-                .Map<Item>("Customs Tarrif Percentage", nameof(Item.TarrifPercentage))
+                .Map<Item>("Customs Tarrif Percentage", nameof(Item.CustomsTarrifPercentage))
                 .Map<Item>("Uom", nameof(Item.UomName))
                 .Ignore<Item>(nameof(Item.Children),
                               nameof(Item.CompanyAssignments),
@@ -43,8 +42,6 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                               nameof(Item.Parents),
                               nameof(Item.PriceListLines),
                               nameof(Item.Self),
-                              nameof(Item.Tarrif),
-                              nameof(Item.TarrifId),
                               nameof(Item.Timestamp),
                               nameof(Item.Uom),
                               nameof(Item.UomId),
@@ -67,6 +64,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             model.Company = model.Companies[0];
             model.ItemTypes.Insert(0, new ItemType() { Name = " " });
             model.ItemType = model.ItemTypes[0];
+            model.ItemsCodes = _unitOfWork.ItemRepository.FindItemsCodes().ToList();
             return model;
         }
         public IList<Item> Find(ItemSearchViewModel searchModel)
@@ -87,7 +85,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                     companyId,
                     itemTypeId,
                     (q) => q.OrderBy(itm => itm.Code),
-                    (q)=>q.Include(itm => itm.ItemType).Include(itm=>itm.Uom).Include(itm=>itm.Tarrif))
+                    (q) => q.Include(itm => itm.ItemType).Include(itm => itm.Uom))
                 .ToList();
         }
         public ItemEditViewModel Add()
@@ -96,13 +94,10 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             model.Uoms = _unitOfWork.UomRepository.Find(q => q.OrderBy(u => u.Code)).ToList();
             if (model.Uoms.Count > 0)
                 model.Uom = model.Uoms[0];
-            
             model.ItemTypes = _unitOfWork.ItemTypeRepository.Find(q => q.OrderBy(it => it.Name)).ToList();
             if (model.ItemTypes.Count > 0)
                 model.ItemType = model.ItemTypes[0];
-            model.Tarrifs = _unitOfWork.TarrifRepository.Find(q => q.OrderBy(t => t.Code)).ToList();
-            model.Tarrifs.Insert(0, new Tarrif() { Code = "", Name = "" });
-            model.Tarrif = model.Tarrifs[0];
+            model.TarrifPercentage = null;
             return model;
         }
         public ModelState Add(ItemEditViewModel model)
@@ -116,7 +111,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                 modelState.AddErrors(nameof(item.Code), $"Item With Code: {item.Code} already exist.");
                 return modelState;
             }
-            item.Tarrif = _unitOfWork.TarrifRepository.Find(item.Tarrif.Id);
+            
             _unitOfWork.ItemRepository.Add(item);
             _unitOfWork.Complete();
             return modelState;
@@ -177,8 +172,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                 old.ArabicName = item.ArabicName;
                 old.EnglishName = item.EnglishName;
                 old.Uom = _unitOfWork.UomRepository.Find(item.Uom.Id);
-                if(item.Tarrif!=null)
-                    old.Tarrif = _unitOfWork.TarrifRepository.Find(item.Tarrif.Id);
+                old.CustomsTarrifPercentage = item.CustomsTarrifPercentage;
                 old.ItemType = _unitOfWork.ItemTypeRepository.Find(item.ItemType.Id);
                 _unitOfWork.Complete();
             }
@@ -203,8 +197,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             var model = new ItemEditViewModel(item);
             model.Uoms = _unitOfWork.UomRepository.Find(q => q.OrderBy(u => u.Code)).ToList();
             model.ItemTypes = _unitOfWork.ItemTypeRepository.Find(q => q.OrderBy(it => it.Name)).ToList();
-            model.Tarrifs = _unitOfWork.TarrifRepository.Find(q => q.OrderBy(t => t.Code)).ToList();
-            model.Tarrifs.Insert(0, new Tarrif() { Code = "", Name = "" });
+            
             //model.Tarrif = model.Tarrifs[0];
             if (item.Children.Count > 0)
                 model.CanItemTypeChange = false;
@@ -291,7 +284,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                           Alias = itemDto.Alias,
                           Uom = _unitOfWork.UomRepository.Find(u => u.Code.Equals(itemDto.UomCode, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault(),
                           ItemType = _unitOfWork.ItemTypeRepository.Find(it => it.Name.Equals(itemDto.ItemTypeName, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault(),
-                          Tarrif = _unitOfWork.TarrifRepository.Find(t => t.Code.Equals(itemDto.TarrifCode, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault()
+                          CustomsTarrifPercentage = itemDto.TarrifPercentag
                       });
                       count++;
                       newProgress = (int)((double)count / (double)itemsDto.Count() * 100.0);

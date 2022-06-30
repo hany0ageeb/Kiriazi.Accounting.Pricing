@@ -169,6 +169,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             // cboCurrencies
             // 
             this.cboCurrencies.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.cboCurrencies.Enabled = false;
             this.cboCurrencies.FormattingEnabled = true;
             this.cboCurrencies.Location = new System.Drawing.Point(156, 129);
             this.cboCurrencies.Name = "cboCurrencies";

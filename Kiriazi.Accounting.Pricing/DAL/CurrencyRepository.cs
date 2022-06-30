@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Kiriazi.Accounting.Pricing.Models;
 
@@ -27,6 +28,11 @@ namespace Kiriazi.Accounting.Pricing.DAL
         {
             return PricingDBContext.CustomerPriceLists.Count(pl => pl.Lines.Count(l => l.CurrencyId == currencyId) > 0) > 0;
         }
+        public IEnumerable<Currency> FindCompaniesCurrencies()
+        {
+            return PricingDBContext.Currencies.Where(c => c.Companies.Count() > 0);
+        }
+
         public PricingDBContext PricingDBContext => _context as PricingDBContext;
     }
 }

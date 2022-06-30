@@ -19,7 +19,6 @@ namespace Kiriazi.Accounting.Pricing.Models
         #endregion INotifyPropertyChanged
 
         [Timestamp]
-        
         public byte[] Timestamp { get; set; }
 
         [Required(AllowEmptyStrings = false), MaxLength(250)]
@@ -40,21 +39,13 @@ namespace Kiriazi.Accounting.Pricing.Models
         [ForeignKey(nameof(Uom))]
         public Guid UomId { get; set; }
 
-        
-        public virtual Tarrif Tarrif { get; set; }
-
         [Required]
-        
         public virtual ItemType ItemType { get; set; }
 
         [ForeignKey(nameof(ItemType))]
-        
         public Guid ItemTypeId { get; set; }
 
-        [ForeignKey(nameof(Tarrif))]
-        
-        public Guid? TarrifId { get; set; }
-        
+
         public virtual IList<PriceListLine> PriceListLines { get; set; } = new List<PriceListLine>();
         
         public virtual ICollection<ItemRelation> Children { get; set; } = new HashSet<ItemRelation>();
@@ -63,27 +54,17 @@ namespace Kiriazi.Accounting.Pricing.Models
         
         public virtual ICollection<CompanyItemAssignment> CompanyAssignments { get; set; } = new HashSet<CompanyItemAssignment>();
 
-        
         public virtual ICollection<CustomerItemAssignment> CustomerItemAssignments { get; set; } = new HashSet<CustomerItemAssignment>();
 
         [NotMapped]
-        
         public string UomName => Uom?.Name;
 
         [NotMapped]
-        
         public string ItemTypeName => ItemType?.Name;
 
-        [NotMapped]
-        
-        public string TarrifCode => Tarrif?.Code;
+        public decimal? CustomsTarrifPercentage { get; set; } = null;
 
         [NotMapped]
-        
-        public decimal? TarrifPercentage => Tarrif?.PercentageAmount;
-
-        [NotMapped]
-        
         public Item Self => this;
 
         public bool IsChild(Guid itemId,Guid companyId)

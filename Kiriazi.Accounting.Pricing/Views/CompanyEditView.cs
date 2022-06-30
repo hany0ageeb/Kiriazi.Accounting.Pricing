@@ -33,12 +33,12 @@ namespace Kiriazi.Accounting.Pricing.Views
             txtName.Validating += (o, e) =>
             {
                 TextBox control = o as TextBox;
-                if (string.IsNullOrEmpty(control.Text))
+                if (_hasChanged && string.IsNullOrEmpty(control.Text))
                 {
                     e.Cancel = true;
                     errorProvider1.SetError(control, "Please Enter Company Name(no more than 250 letters).");
                 }
-                else if (control.Text.Length > 250)
+                else if (_hasChanged &&  control.Text.Length > 250)
                 {
                     e.Cancel = true;
                     errorProvider1.SetError(control, "Pleas Enter Company name less than 250 letters.");
@@ -83,7 +83,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             cboCurrencies.DataBindings.Add(new Binding(nameof(cboCurrencies.SelectedItem),_model,nameof(_model.Currency)) { });
             cboCurrencies.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             cboCurrencies.AutoCompleteSource = AutoCompleteSource.ListItems;
-            cboCurrencies.DataBindings.Add(new Binding(nameof(cboCurrencies.Enabled), _model, nameof(_model.CanChangeCompanyCurrency)));
+            //cboCurrencies.DataBindings.Add(new Binding(nameof(cboCurrencies.Enabled), _model, nameof(_model.CanChangeCompanyCurrency)));
             //
             _model.PropertyChanged += (o, e) =>
             {

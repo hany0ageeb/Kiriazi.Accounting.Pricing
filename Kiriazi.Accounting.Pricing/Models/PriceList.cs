@@ -18,10 +18,10 @@ namespace Kiriazi.Accounting.Pricing.Models
         public string Name { get; set; }
 
         [Required]
-        public virtual CompanyAccountingPeriod CompanyAccountingPeriod { get; set; }
+        public virtual AccountingPeriod AccountingPeriod { get; set; }
 
         [Key]
-        [ForeignKey("CompanyAccountingPeriod")]
+        [ForeignKey(nameof(AccountingPeriod))]
         public Guid Id { get; set; }
 
         public virtual IList<PriceListLine> PriceListLines { get; set; } = new List<PriceListLine>();

@@ -59,8 +59,9 @@ namespace Kiriazi.Accounting.Pricing.Views
                 pickerToDate.Checked = false;
             }
             //
-            chkAssignToAll.DataBindings.Clear();
-            chkAssignToAll.DataBindings.Add(new Binding(nameof(chkAssignToAll.Checked),accountingPeriod,nameof(accountingPeriod.AssignToAllCompanies)) { DataSourceUpdateMode = DataSourceUpdateMode.OnPropertyChanged });
+            cboStates.DataSource = accountingPeriod.States;
+            cboStates.DataBindings.Clear();
+            cboStates.DataBindings.Add(new Binding(nameof(cboStates.SelectedItem),accountingPeriod,nameof(accountingPeriod.State)) { });
             //
             accountingPeriod.PropertyChanged += (o, e) =>
             {

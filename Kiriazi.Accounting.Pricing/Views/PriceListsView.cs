@@ -16,7 +16,8 @@ namespace Kiriazi.Accounting.Pricing.Views
         private readonly Controllers.PriceListController _priceListController;
         private PriceListSearchViewModel _searchModel;
         private BindingList<PriceListViewModel> _priceListsViews = new BindingList<PriceListViewModel>();
-
+        private BindingList<PriceListLineViewModel> _priceListLines = new BindingList<PriceListLineViewModel>();
+        private AutoCompleteStringCollection _autoCompleteSource = new AutoCompleteStringCollection();
         public PriceListsView(Controllers.PriceListController priceListController)
         {
             _priceListController = priceListController;
@@ -27,14 +28,15 @@ namespace Kiriazi.Accounting.Pricing.Views
         {
             _searchModel = _priceListController.Find();
             // ...
-            cboCompanies.DataBindings.Clear();
-            cboCompanies.DataSource = _searchModel.Companies;
-            cboCompanies.DisplayMember = "Name";
-            cboCompanies.ValueMember = "self";
-            cboCompanies.DataBindings.Add(new Binding(nameof(cboCompanies.SelectedItem),_searchModel,nameof(_searchModel.Company))
-            { 
+            _autoCompleteSource.AddRange(_searchModel.ItemsCodes.ToArray());
+            txtItemCode.DataBindings.Clear();
+            txtItemCode.DataBindings.Add(new Binding(nameof(txtItemCode.Text),_searchModel,nameof(_searchModel.ItemCode))
+            {
                 DataSourceUpdateMode = DataSourceUpdateMode.OnPropertyChanged
             });
+            txtItemCode.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            txtItemCode.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            txtItemCode.AutoCompleteCustomSource = _autoCompleteSource;
             // ...
             cboPeriods.DataBindings.Clear();
             cboPeriods.DataSource = _searchModel.AccountingPeriods;
@@ -60,48 +62,46 @@ namespace Kiriazi.Accounting.Pricing.Views
                     priceListView.Show();
                 }
             };
+            InitializeDataGridForHeaders();
+            
+            dataGridView1.SelectionChanged += DataGridView1_SelectionChanged;
+        }
+        private void InitializeDataGridForHeaders()
+        {
             dataGridView1.Columns.Clear();
             dataGridView1.Columns.AddRange(new DataGridViewTextBoxColumn()
             {
                 HeaderText = "Name",
-                DataPropertyName = "PriceListName",
-                Name = "PriceListName",
+                DataPropertyName = nameof(PriceListViewModel.PriceListName),
+                Name = nameof(PriceListViewModel.PriceListName),
                 ReadOnly = true
-            },
-            new DataGridViewTextBoxColumn()
-            {
-                HeaderText = "Company Name",
-                DataPropertyName = "CompanyName",
-                Name = "CompanyName",
-                ReadOnly = true
-
             },
             new DataGridViewTextBoxColumn()
             {
                 HeaderText = "Accounting Period Name",
-                DataPropertyName = "AccountingPeriodName",
-                Name = "AccountingPeriodName",
+                DataPropertyName = nameof(PriceListViewModel.AccountingPeriodName),
+                Name = nameof(PriceListViewModel.AccountingPeriodName),
                 ReadOnly = true
             },
             new DataGridViewTextBoxColumn()
             {
                 HeaderText = "From Date",
-                DataPropertyName = "FromDate",
-                Name = "FromDate",
+                DataPropertyName = nameof(PriceListViewModel.FromDate),
+                Name = nameof(PriceListViewModel.FromDate),
                 ReadOnly = true
             },
             new DataGridViewTextBoxColumn()
             {
                 HeaderText = "To Date",
-                DataPropertyName = "ToDate",
-                Name = "ToDate",
+                DataPropertyName = nameof(PriceListViewModel.ToDate),
+                Name = nameof(PriceListViewModel.ToDate),
                 ReadOnly = true
             },
             new DataGridViewTextBoxColumn()
             {
                 HeaderText = "State",
-                DataPropertyName = "State",
-                Name = "State",
+                DataPropertyName = nameof(PriceListViewModel.State),
+                Name = nameof(PriceListViewModel.State),
                 ReadOnly = true
             },
             new DataGridViewButtonColumn()
@@ -112,10 +112,50 @@ namespace Kiriazi.Accounting.Pricing.Views
                 ReadOnly = true,
                 HeaderText = ""
             });
-            dataGridView1.Columns["FromDate"].DefaultCellStyle.Format = "g";
-            dataGridView1.Columns["ToDate"].DefaultCellStyle.Format = "g";
+            dataGridView1.Columns[nameof(PriceListViewModel.FromDate)].DefaultCellStyle.Format = "g";
+            dataGridView1.Columns[nameof(PriceListViewModel.ToDate)].DefaultCellStyle.Format = "g";
             dataGridView1.DataSource = _priceListsViews;
-            dataGridView1.SelectionChanged += DataGridView1_SelectionChanged;
+        }
+        private void InitilizeDataGridForLines()
+        {
+            dataGridView1.Columns.Clear();
+            dataGridView1.Columns.AddRange(
+                new DataGridViewTextBoxColumn()
+                {
+                    HeaderText = "Item Code",
+                    Name = nameof(PriceListLineViewModel.ItemCode),
+                    DataPropertyName = nameof(PriceListLineViewModel.ItemCode),
+                    ReadOnly = true
+                },
+                new DataGridViewTextBoxColumn()
+                {
+                    HeaderText = "Item Name",
+                    Name = nameof(PriceListLineViewModel.ItemName),
+                    DataPropertyName = nameof(PriceListLineViewModel.ItemName),
+                    ReadOnly = true
+                },
+                new DataGridViewTextBoxColumn()
+                {
+                    HeaderText = "Item Uom",
+                    Name = nameof(PriceListLineViewModel.ItemUom),
+                    DataPropertyName = nameof(PriceListLineViewModel.ItemUom),
+                    ReadOnly = true
+                },
+                new DataGridViewTextBoxColumn()
+                {
+                    HeaderText = "Currency",
+                    Name = nameof(PriceListLineViewModel.CurrencyCode),
+                    DataPropertyName = nameof(PriceListLineViewModel.CurrencyCode),
+                    ReadOnly = true
+                },
+                new DataGridViewTextBoxColumn()
+                {
+                    HeaderText = "Exchange Rate",
+                    Name = nameof(PriceListLineViewModel.CurrencyExchangeRate),
+                    DataPropertyName = nameof(PriceListLineViewModel.CurrencyExchangeRate),
+                    ReadOnly = true
+                });
+            dataGridView1.DataSource = _priceListLines;
         }
         private void DataGridView1_SelectionChanged(object sender, EventArgs e)
         {
@@ -133,24 +173,63 @@ namespace Kiriazi.Accounting.Pricing.Views
                     btnEdit.Enabled = false;
                 }
             }
+            else if (currentRow != null && currentRow.Index >= 0 && currentRow.Index < _priceListLines.Count)
+            {
+                if (_priceListController.CanChangePriceList(_priceListLines[currentRow.Index].PriceListId))
+                {
+                    btnDelete.Enabled = false;
+                    btnEdit.Enabled = true;
+                }
+                else
+                {
+                    btnDelete.Enabled = false;
+                    btnEdit.Enabled = false;
+                }
+            }
         }
         private void Search()
         {
-            var priceLists = _priceListController.Find(_searchModel);
-            _priceListsViews.Clear();
-            foreach(var plist in priceLists)
+            if (rbtnHeader.Checked)
             {
-                _priceListsViews.Add(plist);
+                _priceListsViews.Clear();
+                _priceListLines.Clear();
+                InitializeDataGridForHeaders();
+                var priceLists = _priceListController.Find(_searchModel);
+                foreach (var plist in priceLists)
+                {
+                    _priceListsViews.Add(plist);
+                }
+                if (_priceListsViews.Count > 0)
+                {
+                    btnNewFromExisting.Enabled = true;
+                }
+                else
+                {
+                    btnNewFromExisting.Enabled = false;
+                    btnDelete.Enabled = false;
+                    btnEdit.Enabled = false;
+                }
             }
-            if(_priceListsViews.Count > 0)
+            else if (rbtnLine.Checked)
             {
-                btnNewFromExisting.Enabled = true;
-            }
-            else
-            {
-                btnNewFromExisting.Enabled = false;
-                btnDelete.Enabled = false;
-                btnEdit.Enabled = false;
+                _priceListsViews.Clear();
+                _priceListLines.Clear();
+                InitilizeDataGridForLines();
+                var priceListLines = _priceListController.FindLines(_searchModel);
+                foreach(var pline in priceListLines)
+                {
+                    _priceListLines.Add(pline);
+                }
+                if (_priceListLines.Count > 0)
+                {
+                    btnNewFromExisting.Enabled = false;
+                }
+                else
+                {
+                    btnNewFromExisting.Enabled = false;
+                    btnDelete.Enabled = false;
+                    btnEdit.Enabled = false;
+                }
             }
         }
 
@@ -166,21 +245,21 @@ namespace Kiriazi.Accounting.Pricing.Views
 
         private void btnNew_Click(object sender, EventArgs e)
         {
-            Models.Company selectedCompany = null;
-            var companies = _priceListController.FindCompanies();
-            if (companies.Count > 0)
+            Models.AccountingPeriod accountingPeriod = null;
+            var accountingPeriods = _priceListController.FindAccountingPeriods();
+            if (accountingPeriods.Count > 0)
             {
-                using (CompanySelectorView companySelector = new CompanySelectorView(companies))
+                using (PeriodSelectorView companySelector = new PeriodSelectorView(accountingPeriods))
                 {
                     companySelector.ShowDialog(this);
                     if (companySelector.DialogResult == DialogResult.OK)
                     {
-                        selectedCompany = companySelector.SelectedCompany;
+                        accountingPeriod = companySelector.SelectedPeriod;
                     }
                 }
-                if (selectedCompany != null)
+                if (accountingPeriod != null)
                 {
-                    using (PriceListEditView priceListEditor = new PriceListEditView(_priceListController, _priceListController.Add(selectedCompany)))
+                    using (PriceListEditView priceListEditor = new PriceListEditView(_priceListController, _priceListController.Add(accountingPeriod)))
                     {
                         priceListEditor.ShowDialog(this);
                         Search();
@@ -195,15 +274,15 @@ namespace Kiriazi.Accounting.Pricing.Views
 
         private void btnNewFromExisting_Click(object sender, EventArgs e)
         {
-            var companies = _priceListController.FindCompanies();
-            if (companies.Count > 0)
+            var periods = _priceListController.FindAccountingPeriods();
+            if (periods.Count > 0)
             {
-                using (CompanySelectorView companySelector = new CompanySelectorView(_priceListController.FindCompanies()))
+                using (PeriodSelectorView companySelector = new PeriodSelectorView(periods))
                 {
                     companySelector.ShowDialog(this);
-                    if(companySelector.DialogResult == DialogResult.OK && companySelector.SelectedCompany!=null)
+                    if(companySelector.DialogResult == DialogResult.OK && companySelector.SelectedPeriod!=null)
                     {
-                        using (PriceListEditView priceListEditor = new PriceListEditView(_priceListController, _priceListController.AddFromExisting(companySelector.SelectedCompany, _priceListsViews[dataGridView1.CurrentRow.Index].Id)))
+                        using (PriceListEditView priceListEditor = new PriceListEditView(_priceListController, _priceListController.AddFromExisting(companySelector.SelectedPeriod, _priceListsViews[dataGridView1.CurrentRow.Index].Id)))
                         {
                             priceListEditor.ShowDialog(this);
                             Search();
@@ -222,10 +301,30 @@ namespace Kiriazi.Accounting.Pricing.Views
             
             try
             {
-                using (PriceListEditView priceListEditor = new PriceListEditView(_priceListController, _priceListController.Edit(_priceListsViews[dataGridView1.CurrentRow.Index].Id)))
+                if (_priceListsViews.Count > 0)
                 {
-                    priceListEditor.ShowDialog(this);
-                    Search();
+                    var model = _priceListController.Edit(_priceListsViews[dataGridView1.CurrentRow.Index].Id);
+                   
+                    using (PriceListEditView priceListEditor = new PriceListEditView(_priceListController, model))
+                    {
+                        priceListEditor.ShowDialog(this);
+                        Search();
+                    }
+                }
+                else if (_priceListLines.Count > 0)
+                {
+                    var model = _priceListController.Edit(_priceListLines[dataGridView1.CurrentRow.Index].PriceListId);
+                    var line = model.Lines.Where(l => l.ItemCode == _priceListLines[dataGridView1.CurrentRow.Index].ItemCode).FirstOrDefault();
+                    if (line != null)
+                    {
+                        model.Lines.Remove(line);
+                        model.Lines.Insert(0, line);
+                    }
+                    using (PriceListEditView priceListEditor = new PriceListEditView(_priceListController, model))
+                    {
+                        priceListEditor.ShowDialog(this);
+                        Search();
+                    }
                 }
             }
             catch(ArgumentException ex)
@@ -236,17 +335,20 @@ namespace Kiriazi.Accounting.Pricing.Views
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            int? index = dataGridView1.CurrentRow?.Index;
-            if (index!=null && index>=0 && index < _priceListsViews.Count)
+            if (_priceListsViews.Count > 0)
             {
-                string message = _priceListController.Delete(_priceListsViews[dataGridView1.CurrentRow.Index].Id);
-                if (!string.IsNullOrEmpty(message))
+                int? index = dataGridView1.CurrentRow?.Index;
+                if (index != null && index >= 0 && index < _priceListsViews.Count)
                 {
-                    _ = MessageBox.Show(this, message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                else
-                {
-                    Search();
+                    string message = _priceListController.Delete(_priceListsViews[dataGridView1.CurrentRow.Index].Id);
+                    if (!string.IsNullOrEmpty(message))
+                    {
+                        _ = MessageBox.Show(this, message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    else
+                    {
+                        Search();
+                    }
                 }
             }
         }

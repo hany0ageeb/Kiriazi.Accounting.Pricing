@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Kiriazi.Accounting.Pricing.ViewModels
 {
@@ -8,7 +9,7 @@ namespace Kiriazi.Accounting.Pricing.ViewModels
         private DateTime? _toDate;
         private string _name;
         private string _description;
-        private bool _assignToAllCompanies;
+        private string _state = Models.AccountingPeriodStates.Opened;
 
         public string Name
         {
@@ -58,25 +59,27 @@ namespace Kiriazi.Accounting.Pricing.ViewModels
                 }
             }
         }
-        public bool AssignToAllCompanies
+        public string State
         {
-            get => _assignToAllCompanies;
+            get => _state;
             set
             {
-                if (_assignToAllCompanies != value)
+                if (_state != value)
                 {
-                    _assignToAllCompanies = value;
-                    OnPropertyChanged(nameof(AssignToAllCompanies));
+                    _state = value;
+                    OnPropertyChanged(nameof(State));
                 }
             }
         }
+        public List<string> States { get; set; }
         public Models.AccountingPeriod AccountingPeriod => 
             new Models.AccountingPeriod()
             {
                 Name = _name,
                 Description = _description,
                 FromDate = _fromDate,
-                ToDate = _toDate
+                ToDate = _toDate,
+                State = _state
             };
     }
 }

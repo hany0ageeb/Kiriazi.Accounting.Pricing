@@ -24,14 +24,11 @@ namespace Kiriazi.Accounting.Pricing.Validation
             {
                 modelState.AddErrors(nameof(entity.TarrrifPercentage), "Invalid Tarrif Percentage.");
             }
-            if(entity.Item.TarrifId == null && !string.IsNullOrEmpty(entity.TarrifType))
+            if(entity.Item.CustomsTarrifPercentage == null && !string.IsNullOrEmpty(entity.TarrifType))
             {
                 modelState.AddErrors(nameof(entity.TarrifType), $"Item {entity.Item.Code} has no Tarrif Assigned to it.");
             }
-            if(entity.Item.TarrifId!=null && string.IsNullOrEmpty(entity.TarrifType))
-            {
-                modelState.AddErrors(nameof(entity.TarrifType), $"Invalid Tarrif Type.");
-            }
+           
             return modelState;
         }
 

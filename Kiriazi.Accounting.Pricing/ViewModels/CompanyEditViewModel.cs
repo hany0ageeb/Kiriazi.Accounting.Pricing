@@ -17,6 +17,8 @@ namespace Kiriazi.Accounting.Pricing.ViewModels
         public CompanyEditViewModel(IList<Currency> currencies)
         {
             Currencies = new List<Currency>(currencies);
+            if (currencies.Count > 0)
+                _currency = currencies[0];
         }
         public CompanyEditViewModel(Company company, IList<Currency> currencies,bool canChangeCompanyCurrency = true)
         {

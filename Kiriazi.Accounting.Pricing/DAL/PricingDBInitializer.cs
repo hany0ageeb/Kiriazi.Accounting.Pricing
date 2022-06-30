@@ -71,21 +71,24 @@ namespace Kiriazi.Accounting.Pricing.DAL
                     Code = "EGP",
                     Name = "جنيه مصرى",
                     Description = "",
-                    IsEnabled = true
+                    IsEnabled = true,
+                    IsDefaultCompanyCurrency = true
                 },
                 new Currency()
                 {
                     Code = "USD",
                     Name = "دولار أمريكى",
                     Description = "United States Currency",
-                    IsEnabled = true
+                    IsEnabled = true,
+                    IsDefaultCompanyCurrency = false
                 },
                 new Currency()
                 {
                     Code = "EUR",
                     Name = "يورو",
                     Description = "Euro",
-                    IsEnabled = true
+                    IsEnabled = true,
+                    IsDefaultCompanyCurrency = false
                 }
            };
             UserCommand[] commands = new UserCommand[]
@@ -295,7 +298,21 @@ namespace Kiriazi.Accounting.Pricing.DAL
             {
                     new Company()
                     {
-                        Name = "شركة كريازى للصناعات الهندسية",
+                        Name = "شركة كريازى للصناعات الهندسية - البوتاجاز",
+                        Description = "",
+                        CurrencyId = currencies[0].Id,
+                        Currency = currencies[0]
+                    },
+                    new Company()
+                    {
+                        Name = "شركة كريازى للصناعات الهندسية - الثلاجة",
+                        Description = "",
+                        CurrencyId = currencies[0].Id,
+                        Currency = currencies[0]
+                    },
+                    new Company()
+                    {
+                        Name = "شركة كريازى للصناعات الهندسية - الغسالة",
                         Description = "",
                         CurrencyId = currencies[0].Id,
                         Currency = currencies[0]
@@ -316,7 +333,14 @@ namespace Kiriazi.Accounting.Pricing.DAL
                     },
                     new Company()
                     {
-                        Name = "شركة كريازى للصناعات المنزلية",
+                        Name = "شركة كريازى للصناعات المنزلية - الثلاجة",
+                        Description = "",
+                        CurrencyId = currencies[0].Id,
+                        Currency = currencies[0]
+                    },
+                    new Company()
+                    {
+                        Name = "شركة كريازى للصناعات المنزلية - التكييف",
                         Description = "",
                         CurrencyId = currencies[0].Id,
                         Currency = currencies[0]

@@ -12,15 +12,33 @@ namespace Kiriazi.Accounting.Pricing.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IValidator<AccountingPeriod> _validator;
+        private readonly IValidator<CustomerPricingRule> _pricingRuleValidator;
 
-        public AccountingPeriodController(IUnitOfWork unitOfWork, IValidator<AccountingPeriod> validator)
+        public AccountingPeriodController(IUnitOfWork unitOfWork, IValidator<AccountingPeriod> validator, IValidator<CustomerPricingRule> pricingRuleValidator)
         {
             _unitOfWork = unitOfWork;
             _validator = validator;
+            _pricingRuleValidator = pricingRuleValidator;
         }
         public IList<AccountingPeriod> Find()
         {
             return _unitOfWork.AccountingPeriodRepository.Find(q => q.OrderByDescending(p => p.FromDate)).ToList();
+        }
+        public void ChangeState(Guid id)
+        {
+            AccountingPeriod accountingPeriod = _unitOfWork.AccountingPeriodRepository.Find(Id: id);
+            if (accountingPeriod != null)
+            {
+                if(accountingPeriod.State == AccountingPeriodStates.Opened)
+                {
+                    accountingPeriod.State = AccountingPeriodStates.Closed;
+                }
+                else
+                {
+                    accountingPeriod.State = AccountingPeriodStates.Opened;
+                }
+                _ = _unitOfWork.Complete();
+            }
         }
         public string Delete(Guid id)
         {
@@ -57,8 +75,10 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                 Name = "",
                 Description = "",
                 ToDate = null,
-                AssignToAllCompanies = false
+                States = AccountingPeriodStates.AllAccountingPeriodStates.ToList()
             };
+            if (model.States.Count > 0)
+                model.State = model.States[0];
             return model;
         }
         public ModelState Add(AccountingPeriodEditViewModel model)
@@ -101,6 +121,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             }
 
             _unitOfWork.AccountingPeriodRepository.Add(accountingPeriod);
+            /*
             if (model.AssignToAllCompanies)
             {
                 var allComp = _unitOfWork.CompanyRepository.Find(predicate:c=>c.Users.Select(u=>u.UserId).Contains(Common.Session.CurrentUser.UserId));
@@ -114,6 +135,129 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                         Company = comp
                     });
                 }
+            }
+            */
+            _unitOfWork.Complete();
+            return modelState;
+        }
+        public CustomerPricingRulesEditViewModel EditCustomerPricingRules(Guid accountingPeriodId)
+        {
+
+            var model = new CustomerPricingRulesEditViewModel()
+            {
+                Currencies = _unitOfWork.CurrencyRepository.Find(predicate: c => c.IsEnabled, orderBy: q => q.OrderBy(c => c.Code)).ToList(),
+                Groups = _unitOfWork.GroupRepository.Find(orderBy: q => q.OrderBy(global => global.Name)).ToList(),
+                IncrementDecrement = IncrementDecrementTypes.All.ToList(),
+                ItemsCodes = _unitOfWork.ItemRepository.FindItemsCodes().ToList(),
+                PricingRuleTypes = CustomerPricingRuleTypes.AllCustomerPricingRuleTypes.ToList(),
+                RuleAmountTypes = RuleAmountTypes.All.ToList(),
+                Companies = _unitOfWork.CompanyRepository.Find(orderBy: q => q.OrderBy(c => c.Name)).ToList(),
+                ItemTypes = _unitOfWork.ItemTypeRepository.Find(orderBy: q => q.OrderBy(t => t.Name)).ToList(),
+                Customers = _unitOfWork.CustomerRepository.Find(orderBy:q=>q.OrderBy(c=>c.Name)).ToList()
+            };
+            model.Currencies.Insert(0, new Currency { Code = "", Id = Guid.Empty });
+            model.Groups.Insert(0, new Group { Name = "", Id = Guid.Empty });
+            model.Companies.Insert(0, new Company { Name = "", Id = Guid.Empty });
+            Customer emptyCustomer = new Customer() { Name = "--ALL--", Id = Guid.Empty };
+            model.Customers.Insert(0, emptyCustomer);
+            model.Rules = _unitOfWork.CustomerPricingRuleRepository.Find(predicate: rule => rule.AccountingPeriodId == accountingPeriodId).Select(rule => new CustomerPricingRule()
+            {
+                Id = Guid.NewGuid(),
+                AmountCurrencyId = rule.AmountCurrencyId,
+                AmountCurrency = rule.AmountCurrency,
+                Amount = rule.Amount,
+                Company = rule.Company,
+                CompanyId = rule.CompanyId,
+                Customer = rule.Customer ?? emptyCustomer,
+                CustomerId = rule.CustomerId,
+                Group = rule.Group,
+                GroupId = rule.GroupId,
+                IncrementDecrement = rule.IncrementDecrement,
+                Item = rule.Item,
+                ItemCode = rule.Item?.Code,
+                ItemId = rule.ItemId,
+                ItemType = rule.ItemType,
+                ItemTypeId = rule.ItemTypeId,
+                RuleAmountType = rule.RuleAmountType,
+                RuleType = rule.RuleType
+            }).ToList();
+            model.ItemTypes.Insert(0, new ItemType() { Id = Guid.Empty, Name = "" });
+            return model;
+        }
+        public ModelState SaveOrUpdatePricingRules(CustomerPricingRulesEditViewModel model, AccountingPeriod accountingPeriod)
+        {
+            ModelState modelState = new ModelState();
+            accountingPeriod = _unitOfWork.AccountingPeriodRepository.Find(Id: accountingPeriod.Id);
+            var oldRules = _unitOfWork.CustomerPricingRuleRepository.Find(predicate: rule => rule.AccountingPeriodId == accountingPeriod.Id).ToList();
+            foreach (var rule in model.Rules)
+            {
+                if (!string.IsNullOrEmpty(rule.ItemCode))
+                {
+                    rule.Item = _unitOfWork.ItemRepository.FindByItemCode(rule.ItemCode);
+                }
+                else
+                {
+                    rule.Item = null;
+                    rule.ItemId = null;
+                }
+                if (rule.Company == null || rule.Company.Id == Guid.Empty)
+                {
+                    rule.CompanyId = null;
+                    rule.Company = null;
+                }
+                else
+                {
+                    rule.CompanyId = rule.Company.Id;
+                }
+                if (rule.Group == null || rule.Group.Id == Guid.Empty)
+                {
+                    rule.Group = null;
+                    rule.GroupId = null;
+                }
+                else
+                {
+                    rule.GroupId = rule.Group.Id;
+                }
+                if (rule.ItemType == null || rule.ItemType.Id == Guid.Empty)
+                {
+                    rule.ItemType = null;
+                    rule.ItemTypeId = null;
+                }
+                else
+                {
+                    rule.ItemTypeId = rule.ItemType.Id;
+                }
+                if (rule.Customer == null || rule.Customer.Id == Guid.Empty)
+                {
+                    rule.Customer = null;
+                    rule.CustomerId = null;
+                }
+                else
+                {
+                    rule.CustomerId = rule.Customer.Id;
+                }
+                if (rule.RuleAmountType == RuleAmountTypes.Percentage)
+                {
+                    rule.AmountCurrency = null;
+                    rule.AmountCurrencyId = null;
+                }
+                else
+                {
+                    rule.AmountCurrencyId = rule.AmountCurrency.Id;
+                }
+                var temp = _pricingRuleValidator.Validate(rule);
+                modelState.AddModelState(temp);
+            }
+            if (modelState.HasErrors)
+                return modelState;
+            _unitOfWork.CustomerPricingRuleRepository.Remove(oldRules);
+            _unitOfWork.Complete();
+            foreach (var rule in model.Rules)
+            {
+                rule.AccountingPeriod = accountingPeriod;
+                rule.AccountingPeriodId = accountingPeriod.Id;
+                rule.Id = Guid.NewGuid();
+                _unitOfWork.CustomerPricingRuleRepository.Add(rule);
             }
             _unitOfWork.Complete();
             return modelState;

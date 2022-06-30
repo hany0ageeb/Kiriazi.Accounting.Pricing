@@ -32,16 +32,16 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             Tarrif tarrif = _unitOfWork.TarrifRepository.Find(id);
             if (tarrif != null)
             {
-                if (_unitOfWork.ItemRepository.Find(itm => itm.TarrifId == id).Count() > 0)
-                {
-                    return $"Tarrif {tarrif.Code} Cannot be deleted as it has relation with on or more item(s).";
-                }
-                else
-                {
+                //if (_unitOfWork.ItemRepository.Find(itm => itm.TarrifId == id).Count() > 0)
+                //{
+                //    return $"Tarrif {tarrif.Code} Cannot be deleted as it has relation with on or more item(s).";
+                //}
+                //else
+               // {
                     _unitOfWork.TarrifRepository.Remove(tarrif);
                     _unitOfWork.Complete();
                     return string.Empty;
-                }
+                //}
             }
             return string.Empty;
         }

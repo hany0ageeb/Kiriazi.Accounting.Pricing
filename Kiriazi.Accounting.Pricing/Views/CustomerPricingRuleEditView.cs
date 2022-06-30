@@ -15,19 +15,20 @@ namespace Kiriazi.Accounting.Pricing.Views
 {
     public partial class CustomerPricingRuleEditView : Form
     {
-        private readonly CustomerController _controller;
+        private readonly AccountingPeriodController _controller;
         private BindingList<CustomerPricingRule> _rules = new BindingList<CustomerPricingRule>();
         private CustomerPricingRulesEditViewModel _model;
-        private readonly Customer _customer;
+        private readonly AccountingPeriod _accountingPeriod;
         private bool _hasChanged = false;
         
         private readonly AutoCompleteStringCollection _autoCompleteSource = new AutoCompleteStringCollection();
         public CustomerPricingRuleEditView(
-            CustomerController controller,
-            CustomerPricingRulesEditViewModel model,Customer customer)
+            AccountingPeriodController controller,
+            CustomerPricingRulesEditViewModel model,
+            AccountingPeriod accountingPeriod)
         {
             _controller = controller;
-            _customer = customer;
+            _accountingPeriod = accountingPeriod;
             _model = model;
             foreach(var rule in _model.Rules)
             {
@@ -39,7 +40,7 @@ namespace Kiriazi.Accounting.Pricing.Views
         }
         private void Initialize()
         {
-            Text += _customer.Name;
+            Text += _accountingPeriod.Name;
             //
             dataGridView1.AllowUserToAddRows = true;
             dataGridView1.AllowUserToDeleteRows = true;
@@ -49,6 +50,17 @@ namespace Kiriazi.Accounting.Pricing.Views
             dataGridView1.EditMode = DataGridViewEditMode.EditOnKeystrokeOrF2;
             dataGridView1.Columns.Clear();
             dataGridView1.Columns.AddRange(
+                new DataGridViewComboBoxColumn()
+                {
+                    Name = nameof(CustomerPricingRule.Customer),
+                    DataPropertyName = nameof(CustomerPricingRule.Customer),
+                    HeaderText = "Customer",
+                    DataSource = _model.Customers,
+                    DisplayMember = nameof(Models.Customer.Name),
+                    ValueMember = nameof(Models.Customer.Self),
+                    Visible = true,
+                    ReadOnly = false
+                },
                 new DataGridViewComboBoxColumn()
                 {
                     Name = nameof(CustomerPricingRule.RuleType),
@@ -401,6 +413,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             e.Row.Cells[nameof(CustomerPricingRule.RuleAmountType)].Value = RuleAmountTypes.Percentage;
             e.Row.Cells[nameof(CustomerPricingRule.Amount)].Value = 0M;
             e.Row.Cells[nameof(CustomerPricingRule.AmountCurrency)].Value = _model.Currencies.Where(c => c.Id == Guid.Empty).FirstOrDefault();
+            e.Row.Cells[nameof(CustomerPricingRule.Customer)].Value = _model.Customers.Where(c => c.Id == Guid.Empty).FirstOrDefault();
         }
         private bool SaveChanges()
         {
@@ -408,7 +421,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             {
                // try
                // {
-                    var modelState = _controller.SaveOrUpdatePricingRules(_model,_customer);
+                    var modelState = _controller.SaveOrUpdatePricingRules(_model,_accountingPeriod);
                     if (modelState.HasErrors)
                     {
                         var errors = modelState.GetErrors("Customer");

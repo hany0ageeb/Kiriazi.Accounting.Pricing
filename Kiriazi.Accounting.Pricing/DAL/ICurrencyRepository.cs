@@ -1,5 +1,6 @@
 ﻿using Kiriazi.Accounting.Pricing.Models;
 using System;
+using System.Collections.Generic;
 
 namespace Kiriazi.Accounting.Pricing.DAL
 {
@@ -9,5 +10,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
         bool HasRelatedExchangeRates(Guid currencyId);
         bool HasRelatedPriceListLines(Guid currencyId);
         bool HasRelatedCustomerPriceListLines(Guid currencyId);
+
+        IEnumerable<Currency> FindCompaniesCurrencies();
     }
 }

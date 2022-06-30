@@ -127,7 +127,7 @@ namespace Kiriazi.Accounting.Pricing.Views
                 Search();
             }
         }
-
+        /*
         private void btnAccountingPeriods_Click(object sender, EventArgs e)
         {
             using(CompanyAccountingPeriodsView companyAccountingPeriodsView = new CompanyAccountingPeriodsView(_companies[companiesGrid.CurrentRow.Index], _controller))
@@ -135,5 +135,6 @@ namespace Kiriazi.Accounting.Pricing.Views
                 companyAccountingPeriodsView.ShowDialog(this);
             }
         }
+        */
     }
 }

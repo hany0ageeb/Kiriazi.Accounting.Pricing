@@ -18,15 +18,27 @@ namespace Kiriazi.Accounting.Pricing.Models
         private Currency _currency;
         private decimal _amount;
         private string _itemCode;
+        private AccountingPeriod _accountingPeriod;
+        private Customer _customer;
 
-        [Key]
+        [Key,DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid Id { get; set; } = Guid.NewGuid();
 
-        [Required]
-        public virtual Customer Customer { get; set; }
+        public virtual Customer Customer 
+        { 
+            get => _customer;
+            set
+            {
+                if (_customer != value)
+                {
+                    _customer = value;
+                    OnPropertyChanged(nameof(Customer));
+                }
+            }
+        }
 
         [ForeignKey("Customer")]
-        public Guid CustomerId { get; set; }
+        public Guid? CustomerId { get; set; }
 
         [Required, MaxLength(250)]
         public string RuleType 
@@ -41,7 +53,6 @@ namespace Kiriazi.Accounting.Pricing.Models
                 }
             }
         } 
-
         [Required, MaxLength(250)]
         public string IncrementDecrement 
         { 
@@ -54,8 +65,7 @@ namespace Kiriazi.Accounting.Pricing.Models
                     OnPropertyChanged(nameof(IncrementDecrement));
                 }
             }
-        } 
-
+        }
         [Required, MaxLength(250)]
         public string RuleAmountType 
         { 
@@ -69,7 +79,6 @@ namespace Kiriazi.Accounting.Pricing.Models
                 }
             }
         }
-
         public virtual Item Item 
         { 
             get=>_item;
@@ -168,7 +177,21 @@ namespace Kiriazi.Accounting.Pricing.Models
                 }
             }
         }
-        
+        [Required]
+        public AccountingPeriod AccountingPeriod
+        {
+            get => _accountingPeriod;
+            set
+            {
+                if (_accountingPeriod != value)
+                {
+                    _accountingPeriod = value;
+                    OnPropertyChanged(nameof(AccountingPeriod));
+                }
+            }
+        }
+        [ForeignKey(nameof(AccountingPeriod))]
+        public Guid AccountingPeriodId { get; set; }
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string propertyName = "")

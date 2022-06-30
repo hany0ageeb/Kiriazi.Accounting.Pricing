@@ -32,7 +32,6 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.components = new System.ComponentModel.Container();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.cboTarrifs = new System.Windows.Forms.ComboBox();
             this.cboItemTypes = new System.Windows.Forms.ComboBox();
             this.txtAlias = new System.Windows.Forms.TextBox();
             this.txtArabicName = new System.Windows.Forms.TextBox();
@@ -48,6 +47,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.cboUoms = new System.Windows.Forms.ComboBox();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
+            this.txtTarrifPercentage = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -61,7 +61,6 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 19.51548F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 80.48452F));
-            this.tableLayoutPanel1.Controls.Add(this.cboTarrifs, 1, 6);
             this.tableLayoutPanel1.Controls.Add(this.cboItemTypes, 1, 5);
             this.tableLayoutPanel1.Controls.Add(this.txtAlias, 1, 3);
             this.tableLayoutPanel1.Controls.Add(this.txtArabicName, 1, 1);
@@ -75,6 +74,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.tableLayoutPanel1.Controls.Add(this.txtCode, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.txtEnglishName, 1, 2);
             this.tableLayoutPanel1.Controls.Add(this.cboUoms, 1, 4);
+            this.tableLayoutPanel1.Controls.Add(this.txtTarrifPercentage, 1, 6);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 12);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 7;
@@ -87,15 +87,6 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 37F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(755, 290);
             this.tableLayoutPanel1.TabIndex = 1;
-            // 
-            // cboTarrifs
-            // 
-            this.cboTarrifs.BackColor = System.Drawing.SystemColors.Window;
-            this.cboTarrifs.FormattingEnabled = true;
-            this.cboTarrifs.Location = new System.Drawing.Point(150, 255);
-            this.cboTarrifs.Name = "cboTarrifs";
-            this.cboTarrifs.Size = new System.Drawing.Size(329, 23);
-            this.cboTarrifs.TabIndex = 6;
             // 
             // cboItemTypes
             // 
@@ -182,9 +173,9 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(3, 252);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(35, 15);
+            this.label7.Size = new System.Drawing.Size(53, 15);
             this.label7.TabIndex = 6;
-            this.label7.Text = "Tarrif";
+            this.label7.Text = "Tarrif(%)";
             // 
             // txtCode
             // 
@@ -233,6 +224,13 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
+            // txtTarrifPercentage
+            // 
+            this.txtTarrifPercentage.Location = new System.Drawing.Point(150, 255);
+            this.txtTarrifPercentage.Name = "txtTarrifPercentage";
+            this.txtTarrifPercentage.Size = new System.Drawing.Size(329, 23);
+            this.txtTarrifPercentage.TabIndex = 7;
+            // 
             // ItemEditView
             // 
             this.AcceptButton = this.btnSave;
@@ -258,7 +256,6 @@ namespace Kiriazi.Accounting.Pricing.Views
         #endregion
         private System.Windows.Forms.ErrorProvider errorProvider1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.ComboBox cboTarrifs;
         private System.Windows.Forms.ComboBox cboItemTypes;
         private System.Windows.Forms.TextBox txtAlias;
         private System.Windows.Forms.TextBox txtArabicName;
@@ -274,5 +271,6 @@ namespace Kiriazi.Accounting.Pricing.Views
         private System.Windows.Forms.ComboBox cboUoms;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.TextBox txtTarrifPercentage;
     }
 }

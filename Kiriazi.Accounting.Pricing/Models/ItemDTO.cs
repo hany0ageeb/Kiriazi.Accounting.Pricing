@@ -14,8 +14,8 @@ namespace Kiriazi.Accounting.Pricing.Models
         public string Alias { get; set; }
         [Column("كود الوحدة")]
         public string UomCode { get; set; }
-        [Column("كود البند الجمركى")]
-        public string TarrifCode { get; set; }
+        [Column("نسبة البند الجمركي")]
+        public decimal? TarrifPercentag { get; set; }
         [Column("نوع الصنف")]
         public string ItemTypeName { get; set; }
     }

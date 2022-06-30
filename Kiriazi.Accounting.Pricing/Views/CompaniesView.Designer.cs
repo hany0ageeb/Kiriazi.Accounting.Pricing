@@ -33,7 +33,6 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.companiesGrid = new System.Windows.Forms.DataGridView();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.btnNew = new System.Windows.Forms.Button();
-            this.btnAccountingPeriods = new System.Windows.Forms.Button();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.btnClose = new System.Windows.Forms.Button();
             this.flowLayoutPanel1.SuspendLayout();
@@ -64,7 +63,6 @@ namespace Kiriazi.Accounting.Pricing.Views
             // flowLayoutPanel2
             // 
             this.flowLayoutPanel2.Controls.Add(this.btnNew);
-            this.flowLayoutPanel2.Controls.Add(this.btnAccountingPeriods);
             this.flowLayoutPanel2.Controls.Add(this.flowLayoutPanel3);
             this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 349);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
@@ -82,30 +80,19 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.btnNew.UseVisualStyleBackColor = true;
             this.btnNew.Click += new System.EventHandler(this.btnNew_Click);
             // 
-            // btnAccountingPeriods
-            // 
-            this.btnAccountingPeriods.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAccountingPeriods.Location = new System.Drawing.Point(143, 3);
-            this.btnAccountingPeriods.Name = "btnAccountingPeriods";
-            this.btnAccountingPeriods.Size = new System.Drawing.Size(145, 37);
-            this.btnAccountingPeriods.TabIndex = 2;
-            this.btnAccountingPeriods.Text = "Accounting Periods...";
-            this.btnAccountingPeriods.UseVisualStyleBackColor = true;
-            this.btnAccountingPeriods.Click += new System.EventHandler(this.btnAccountingPeriods_Click);
-            // 
             // flowLayoutPanel3
             // 
             this.flowLayoutPanel3.Controls.Add(this.btnClose);
             this.flowLayoutPanel3.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.flowLayoutPanel3.Location = new System.Drawing.Point(294, 3);
+            this.flowLayoutPanel3.Location = new System.Drawing.Point(143, 3);
             this.flowLayoutPanel3.Name = "flowLayoutPanel3";
-            this.flowLayoutPanel3.Size = new System.Drawing.Size(535, 44);
+            this.flowLayoutPanel3.Size = new System.Drawing.Size(686, 44);
             this.flowLayoutPanel3.TabIndex = 3;
             // 
             // btnClose
             // 
             this.btnClose.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnClose.Location = new System.Drawing.Point(421, 3);
+            this.btnClose.Location = new System.Drawing.Point(572, 3);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(111, 34);
             this.btnClose.TabIndex = 0;
@@ -140,7 +127,6 @@ namespace Kiriazi.Accounting.Pricing.Views
         private System.Windows.Forms.DataGridView companiesGrid;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
         private System.Windows.Forms.Button btnNew;
-        private System.Windows.Forms.Button btnAccountingPeriods;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel3;
         private System.Windows.Forms.Button btnClose;
     }

@@ -27,15 +27,15 @@ namespace Kiriazi.Accounting.Pricing.Controllers
         }
         public CompanyEditViewModel Edit(Guid id)
         {
-            return new CompanyEditViewModel(_unitOfWork.CompanyRepository.Find(predicate:c=>c.Id == id && c.Users.Select(u=>u.UserId).Contains(Common.Session.CurrentUser.UserId)).FirstOrDefault(),_unitOfWork.CurrencyRepository.Find(c => c.IsEnabled).ToList(), CanChangeCompanyCurrency(id));
+            return new CompanyEditViewModel(_unitOfWork.CompanyRepository.Find(predicate:c=>c.Id == id && c.Users.Select(u=>u.UserId).Contains(Common.Session.CurrentUser.UserId)).FirstOrDefault(),_unitOfWork.CurrencyRepository.Find(c => c.IsEnabled && c.IsDefaultCompanyCurrency).ToList(),false);
         }
         public bool CanChangeCompanyCurrency(Guid companyId)
         {
-            return _unitOfWork.PriceListRepository.Find(predicate: pl => pl.CompanyAccountingPeriod.CompanyId == companyId).Count() == 0;
+            return _unitOfWork.CustomerPriceListRepository.Find(predicate: pl => pl.CompanyId == companyId).Count() == 0;
         }
         public CompanyEditViewModel Add()
         {
-            return new CompanyEditViewModel(_unitOfWork.CurrencyRepository.Find(c=>c.IsEnabled).ToList());
+            return new CompanyEditViewModel(_unitOfWork.CurrencyRepository.Find(c=>c.IsEnabled && c.IsDefaultCompanyCurrency).ToList());
         }
         public ModelState Add(CompanyEditViewModel model)
         {

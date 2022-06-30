@@ -86,5 +86,6 @@ namespace Kiriazi.Accounting.Pricing.ViewModels
         }
         public IList<Company> Companies { get; set; }
         public IList<ItemType> ItemTypes { get; set; }
+        public IList<string> ItemsCodes { get; set; }
     }
 }

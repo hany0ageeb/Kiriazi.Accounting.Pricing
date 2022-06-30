@@ -1,0 +1,20 @@
+USE [KiriaziPricingDB]
+GO
+ALTER TABLE dbo.ItemRelations
+ADD CONSTRAINT CHK_QUANTITY
+CHECK (Quantity > 0.0000);
+GO
+CREATE UNIQUE INDEX IDX_FROM_DATE ON dbo.AccountingPeriods(FromDate);
+GO
+ALTER TABLE dbo.CurrencyExchangeRates
+ADD CONSTRAINT CHK_RATE
+CHECK (Rate > 0.0);
+GO
+ALTER TABLE dbo.CustomerPriceListLines
+ADD CONSTRAINT CHK_UNITPRICE
+CHECK(UnitPrice >= 0);
+GO
+ALTER TABLE dbo.PriceListLines
+ADD CONSTRAINT CHK_UNITPRICE
+CHECK (UnitPrice >= 0)
+GO
