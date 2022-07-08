@@ -36,7 +36,8 @@ namespace Kiriazi.Accounting.Pricing.Models
                 }
             }
         }
-
+        [NotMapped]
+        public string CustomerName => _customer?.Name;
         [ForeignKey("Customer")]
         public Guid? CustomerId { get; set; }
 
@@ -121,8 +122,12 @@ namespace Kiriazi.Accounting.Pricing.Models
                 }
             }
         }
+        [NotMapped]
+        public string ItemTypeName => _itemType?.Name;
         [ForeignKey(nameof(Group))]
         public Guid? GroupId { get; set; }
+        [NotMapped]
+        public string GroupName => _group?.Name;
         public virtual Group Group 
         { 
             get=>_group;
@@ -137,6 +142,8 @@ namespace Kiriazi.Accounting.Pricing.Models
         }
         [ForeignKey(nameof(Company))]
         public Guid? CompanyId { get; set; }
+        [NotMapped]
+        public string CompanyName => _company?.Name;
         public virtual Company Company 
         { 
             get=>_company;
@@ -151,7 +158,8 @@ namespace Kiriazi.Accounting.Pricing.Models
         }
         [ForeignKey(nameof(AmountCurrency))]
         public Guid? AmountCurrencyId { get; set; }
-
+        [NotMapped]
+        public string AmountCurrencyCode => AmountCurrency?.Code;
         public virtual Currency AmountCurrency 
         { 
             get=>_currency;

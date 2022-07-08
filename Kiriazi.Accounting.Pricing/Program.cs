@@ -27,6 +27,7 @@ namespace Kiriazi.Accounting.Pricing
             Application.Run(new Views.MainView());
             
            
+          
         }
         static Program()
         {
@@ -69,8 +70,13 @@ namespace Kiriazi.Accounting.Pricing
             services.AddTransient(typeof(Views.UsersView));
             services.AddTransient(typeof(Views.LogInView));
             services.AddTransient(typeof(Views.UserChangeAccountView));
+            services.AddTransient(typeof(Views.ItemCostView));
 
             services.AddTransient(typeof(Reports.ParametersForms.CustomerPriceListReportParameterForm));
+            services.AddTransient(typeof(Reports.ParametersForms.ItemBillOfMaterialsReportParameterForm));
+            services.AddTransient(typeof(Reports.ParametersForms.ComparisonOfHistoricalCostReportParameterForm));
+            services.AddTransient(typeof(Reports.ParametersForms.ItemGroupReportParametersForm));
+            services.AddTransient(typeof(Reports.ParametersForms.SimulationReportParametersForm));
 
             services.AddTransient(typeof(Controllers.CurrencyController));
             services.AddTransient(typeof(Controllers.GroupController));

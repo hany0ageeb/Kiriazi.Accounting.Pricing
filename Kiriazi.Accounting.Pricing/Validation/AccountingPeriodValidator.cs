@@ -12,13 +12,12 @@ namespace Kiriazi.Accounting.Pricing.Validation
             {
                 modelState.AddErrors(nameof(entity.Name), "Name is a Mandatory Field.");
             }
-            if (entity.ToDate.HasValue)
-            {
+            
                 if(entity.ToDate < entity.FromDate)
                 {
                     modelState.AddErrors(nameof(entity.ToDate), "Period To Date less than from Date.");
                 }
-            }
+         
             return modelState;
         }
 

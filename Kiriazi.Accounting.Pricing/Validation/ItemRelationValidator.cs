@@ -31,6 +31,13 @@ namespace Kiriazi.Accounting.Pricing.Validation
             {
                 modelState.AddErrors(nameof(entity.Quantity), $"{entity.Quantity} Invalid Quantity.");
             }
+            if(entity.EffectiveAccountingPeriodFrom!=null && entity.EffectiveAccountingPeriodTo != null)
+            {
+                if(entity.EffectiveAccountingPeriodFrom > entity.EffectiveAccountingPeriodTo)
+                {
+                    modelState.AddErrors(nameof(entity.EffectiveAccountingPeriodFrom), "Invalid Accounting Periods.");
+                }
+            }
             return modelState;
         }
 

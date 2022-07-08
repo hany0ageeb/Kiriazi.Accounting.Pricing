@@ -95,6 +95,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
            {
                 new UserCommand()
                 {
+                    //0
                    DisplayName = "Currency",
                    Name = "Currency",
                    FormType = typeof(Views.CurrenciesView).FullName,
@@ -104,6 +105,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
                 },
                 new UserCommand()
                 {
+                    //1
                     DisplayName = "Company",
                     Name = "Company",
                     FormType = typeof(Views.CompaniesView).FullName,
@@ -113,6 +115,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
                 },
                 new UserCommand()
                 {
+                    //2
                     DisplayName = "Unit Of Measure",
                     Name = "Unit Of Measure",
                     FormType = typeof(Views.UomsView).FullName,
@@ -122,6 +125,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
                 },
                 new UserCommand()
                 {
+                    //3
                     DisplayName = "Item Groups",
                     Name = "Item Groups",
                     FormType = typeof(Views.GroupsView).FullName,
@@ -131,6 +135,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
                 },
                 new UserCommand()
                 {
+                    //4
                     DisplayName = "Customs Tarrif",
                     Name = "Customs Tarrif",
                     FormType = typeof(Views.TarrifsView).FullName,
@@ -140,6 +145,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
                 },
                 new UserCommand()
                 {
+                    //5
                     DisplayName = "Item",
                     Name = "Item",
                     FormType = typeof(Views.ItemsView).FullName,
@@ -149,6 +155,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
                 },
                 new UserCommand()
                 {
+                    //6
                     DisplayName = "Accounting Period",
                     Name = "Accounting Period",
                     FormType = typeof(Views.AccountingPeriodsView).FullName,
@@ -158,6 +165,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
                 },
                 new UserCommand()
                 {
+                    //7
                     DisplayName = "Raw Material Price List",
                     Name = "Raw Material Price List",
                     FormType = typeof(Views.PriceListsView).FullName,
@@ -167,6 +175,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
                 },
                 new UserCommand()
                 {
+                    //8
                     DisplayName = "Bill Of Material",
                     Name = "Products Trees",
                     FormType = typeof(Views.ItemTreesView).FullName,
@@ -176,8 +185,9 @@ namespace Kiriazi.Accounting.Pricing.DAL
                 },
                 new UserCommand()
                 {
-                    DisplayName = "Daily Currency Exchange Rates",
-                    Name = "Daily Currency Exchange Rates",
+                    //9
+                    DisplayName = "Currency Exchange Rates",
+                    Name = "Currency Exchange Rates",
                     FormType = typeof(Views.DailyCurrencyExchangeRatesView).FullName,
                     Sequence = 20,
                     CommandType = UserCommandType.NormalCommand,
@@ -185,6 +195,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
                 },
                 new UserCommand()
                 {
+                    //10
                     DisplayName = "Customers",
                     Name = "Customers",
                     FormType = typeof(Views.CustomersView).FullName,
@@ -194,6 +205,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
                 },
                 new UserCommand()
                 {
+                    //11
                     DisplayName = "Customer Price List",
                     Name = "Customer Price List",
                     FormType = typeof(Views.CustomerPriceListSearchView).FullName,
@@ -203,6 +215,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
                 },
                 new UserCommand()
                 {
+                    //12
                     DisplayName = "Users",
                     Name = "Users",
                     FormType = typeof(Views.UsersView).FullName,
@@ -212,7 +225,8 @@ namespace Kiriazi.Accounting.Pricing.DAL
                 },
                 new UserCommand()
                 {
-                    DisplayName = "Daily Currency Exchange Rate",
+                    //13
+                    DisplayName = "Currency Exchange Rate",
                     Name = "DailyCurrencyExchangeRate",
                     Sequence = 160,
                     CommandType = UserCommandType.ImportCommand,
@@ -220,6 +234,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
                 },
                 new UserCommand()
                 {
+                    //14
                     DisplayName = "Raw Material Price List",
                     Name = "PriceList",
                     Sequence = 170,
@@ -228,6 +243,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
                 },
                 new UserCommand()
                 {
+                    //15
                     DisplayName = "Bill Of Material",
                     Name ="BOM",
                     CommandType = UserCommandType.ImportCommand,
@@ -236,6 +252,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
                 },
                 new UserCommand()
                 {
+                    //16
                     DisplayName = "Items",
                     Name = "ImportItems",
                     CommandType = UserCommandType.ImportCommand,
@@ -244,6 +261,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
                 },
                 new UserCommand()
                 {
+                    //17
                     DisplayName = "Groups",
                     Name = "ImportGroups",
                     CommandType = UserCommandType.ImportCommand,
@@ -252,6 +270,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
                 },
                 new UserCommand()
                 {
+                    //18
                     DisplayName = "Customs Tarrif",
                     Name = "CustomsTarrif",
                     CommandType = UserCommandType.ImportCommand,
@@ -260,6 +279,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
                 },
                 new UserCommand()
                 {
+                    //19
                     DisplayName = "Item / Company",
                     Name = "ImportItemCompanyAssignment",
                     CommandType = UserCommandType.ImportCommand,
@@ -268,6 +288,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
                 },
                 new UserCommand()
                 {
+                    //20
                     DisplayName = "Item / Customer",
                     Name = "ImportItemCustomerAssigment",
                     CommandType = UserCommandType.ImportCommand,
@@ -276,6 +297,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
                 },
                 new UserCommand()
                 {
+                    //21
                     DisplayName = "Customer Price List",
                     Name = "ImportCustomerPriceList",
                     CommandType = UserCommandType.ImportCommand,
@@ -284,16 +306,25 @@ namespace Kiriazi.Accounting.Pricing.DAL
                 },
                 new UserCommand()
                 {
+                    //22
                     DisplayName = "My Account",
                     Name = "EditUserAccount",
                     CommandType = UserCommandType.NormalCommand,
                     FormType = typeof(Views.UserChangeAccountView).FullName,
                     Sequence = 250,
                     UserAccountType = UserAccountTypes.CustomerAccount
+                },
+                new UserCommand()
+                {
+                    //23
+                    DisplayName = "Items Costed",
+                    Name = "Items Costed",
+                    CommandType = UserCommandType.NormalCommand,
+                    FormType = typeof(Views.ItemCostView).FullName,
+                    Sequence = 260,
+                    UserAccountType = UserAccountTypes.CompanyAccount
                 }
            };
-           
-            
             Company[] companies = new Company[]
             {
                     new Company()
@@ -415,6 +446,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
                     DisplayName = commands[3].DisplayName,
                     Sequence = 40
                 },
+                /*
                 new UserCommandAssignment()
                 {
                     User = users[0],
@@ -422,6 +454,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
                     DisplayName = commands[4].DisplayName,
                     Sequence = 50
                 },
+                */
                 new UserCommandAssignment()
                 {
                     User = users[0],
@@ -547,6 +580,13 @@ namespace Kiriazi.Accounting.Pricing.DAL
                     Command = commands[22],
                     DisplayName = commands[22].DisplayName,
                     Sequence = 210
+                },
+                new UserCommandAssignment()
+                {
+                    User = users[0],
+                    Command = commands[23],
+                    DisplayName = commands[23].DisplayName,
+                    Sequence = 220
                 }
             };
             UserReport[] reports = new UserReport[]
@@ -557,6 +597,34 @@ namespace Kiriazi.Accounting.Pricing.DAL
                     Name = "Customer Price List Report",
                     ParameterFormTypeName = typeof(Reports.ParametersForms.CustomerPriceListReportParameterForm).FullName,
                     ReportFormTypeName = typeof(Reports.ReportsForms.CustomerPriceListReportForm).FullName
+                },
+                new UserReport()
+                {
+                    DisplayName = "Used of Raw Material",
+                    Name = "Item Bill Of Materials",
+                    ParameterFormTypeName = typeof(Reports.ParametersForms.ItemBillOfMaterialsReportParameterForm).FullName,
+                    ReportFormTypeName = typeof(Reports.ReportsForms.ItemBillOfMaterialsReportForm).FullName
+                },
+                new UserReport()
+                {
+                    DisplayName = "Comparison Of Historical Cost Report",
+                    Name = "Comparison Of Historical Cost",
+                    ParameterFormTypeName = typeof(Reports.ParametersForms.ComparisonOfHistoricalCostReportParameterForm).FullName,
+                    ReportFormTypeName = typeof(Reports.ReportsForms.ComparisonOfHistoricalCostReportForm).FullName
+                },
+                new UserReport()
+                {
+                    DisplayName = "Comparison of Items Group",
+                    Name = "Comparison of Items Group",
+                    ParameterFormTypeName = typeof(Reports.ParametersForms.ItemGroupReportParametersForm).FullName,
+                    ReportFormTypeName = typeof(Reports.ReportsForms.ItemGroupReportForm).FullName
+                },
+                new UserReport()
+                {
+                    DisplayName = "Simulation Report",
+                    Name = "Simulation Report",
+                    ParameterFormTypeName = typeof(Reports.ParametersForms.SimulationReportParametersForm).FullName,
+                    ReportFormTypeName = typeof(Reports.ReportsForms.SimulationReportForm).FullName
                 }
             };
             UserReportAssignment[] userReportAssignments = new UserReportAssignment[]
@@ -567,6 +635,34 @@ namespace Kiriazi.Accounting.Pricing.DAL
                     Report = reports[0],
                     DisplayName = "Customer Price List Report",
                     Sequence = 10
+                },
+                new UserReportAssignment()
+                {
+                    User = users[0],
+                    Report = reports[1],
+                    DisplayName = "Used Of Raw Material",
+                    Sequence = 20
+                },
+                new UserReportAssignment()
+                {
+                    User = users[0],
+                    Report = reports[2],
+                    DisplayName = "Comparison Of Historical Cost Report",
+                    Sequence = 30
+                },
+                new UserReportAssignment()
+                {
+                    User = users[0],
+                    Report = reports[3],
+                    DisplayName = "Comparison of Items Group",
+                    Sequence = 40
+                },
+                new UserReportAssignment()
+                {
+                    User = users[0],
+                    Report = reports[4],
+                    DisplayName = "Simulation By Report ...",
+                    Sequence = 40
                 }
             };
             context.Uoms.AddRange(uoms);

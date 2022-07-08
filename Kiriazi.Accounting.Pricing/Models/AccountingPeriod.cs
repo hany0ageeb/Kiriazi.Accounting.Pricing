@@ -11,7 +11,7 @@ namespace Kiriazi.Accounting.Pricing.Models
         private string _name;
         private string _description;
         private DateTime _fromDate = DateTime.Now;
-        private DateTime? _toDate;
+        private DateTime _toDate;
         private string _state = AccountingPeriodStates.Opened;
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
@@ -68,7 +68,7 @@ namespace Kiriazi.Accounting.Pricing.Models
             }
         }
 
-        public DateTime? ToDate 
+        public DateTime ToDate 
         { 
             get => _toDate;
             set
@@ -106,5 +106,22 @@ namespace Kiriazi.Accounting.Pricing.Models
 
         [ForeignKey(nameof(PriceList))]
         public Guid? PriceListId { get; set; }
+
+        public static bool operator > (AccountingPeriod p1,AccountingPeriod p2)
+        {
+            return p1.FromDate > p2.FromDate;
+        }
+        public static bool operator >=(AccountingPeriod p1, AccountingPeriod p2)
+        {
+            return p1.FromDate >= p2.FromDate;
+        }
+        public static bool operator <(AccountingPeriod p1, AccountingPeriod p2)
+        {
+            return p1.FromDate < p2.FromDate;
+        }
+        public static bool operator <=(AccountingPeriod p1, AccountingPeriod p2)
+        {
+            return p1.FromDate <= p2.FromDate;
+        }
     }
 }

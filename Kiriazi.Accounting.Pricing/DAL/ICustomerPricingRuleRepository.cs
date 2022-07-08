@@ -7,5 +7,9 @@ namespace Kiriazi.Accounting.Pricing.DAL
     public interface ICustomerPricingRuleRepository : IRepository<CustomerPricingRule>
     {
         IEnumerable<CustomerPricingRule> FindByCustomer(Guid customerId);
+
+        IEnumerable<CustomerPricingRule> Find(AccountingPeriod accountingPeriod,Customer customer=null);
+
+        
     }
 }

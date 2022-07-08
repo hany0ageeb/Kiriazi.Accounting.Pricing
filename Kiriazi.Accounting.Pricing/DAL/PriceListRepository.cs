@@ -53,8 +53,10 @@ namespace Kiriazi.Accounting.Pricing.DAL
                 .Set<PriceListLine>()
                 .Where(l => 
                     l.ItemId == itemId && l.PriceList.Id == period.Id)
-                .Include(nameof(PriceListLine.Currency));
-            return query.AsEnumerable();
+                .Include(nameof(PriceListLine.Currency)).Include(nameof(PriceListLine.Item)).AsEnumerable();
+            foreach (var entity in query)
+                _context.Entry(entity).Reload();
+            return query;
         }
         public IEnumerable<PriceListLine> FindPriceListLines(
              Guid? periodId = null,

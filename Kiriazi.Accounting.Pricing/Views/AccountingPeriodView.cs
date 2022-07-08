@@ -49,15 +49,11 @@ namespace Kiriazi.Accounting.Pricing.Views
             pickerFromDate.DataBindings.Clear();
             pickerFromDate.DataBindings.Add(new Binding(nameof(pickerFromDate.Value),accountingPeriod,nameof(accountingPeriod.FromDate)) { DataSourceUpdateMode = DataSourceUpdateMode.OnPropertyChanged});
             //
-            if (accountingPeriod.ToDate.HasValue)
+            pickerToDate.DataBindings.Clear();
+            pickerToDate.DataBindings.Add(new Binding(nameof(pickerToDate.Value),accountingPeriod,nameof(accountingPeriod.ToDate))
             {
-                pickerToDate.Checked = true;
-                pickerToDate.Value = accountingPeriod.ToDate.Value;
-            }
-            else
-            {
-                pickerToDate.Checked = false;
-            }
+                DataSourceUpdateMode = DataSourceUpdateMode.OnPropertyChanged
+            });
             //
             cboStates.DataSource = accountingPeriod.States;
             cboStates.DataBindings.Clear();
@@ -129,19 +125,6 @@ namespace Kiriazi.Accounting.Pricing.Views
                 _ = MessageBox.Show(this, ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-        private void pickerToDate_ValueChanged(object sender, EventArgs e)
-        {
-            if (pickerToDate.Checked)
-            {
-                accountingPeriod.ToDate = pickerToDate.Value;
-            }
-            else
-            {
-                accountingPeriod.ToDate = null;
-            }
-        }
-
         private void btnClose_Click(object sender, EventArgs e)
         {
             if (_hasChaned)

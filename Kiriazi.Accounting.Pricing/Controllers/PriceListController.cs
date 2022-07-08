@@ -90,9 +90,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             {
                 if(priceList.AccountingPeriod.State == AccountingPeriodStates.Opened)
                 {
-                    var compacc = _unitOfWork.CompanyAccountingPeriodRepository.Find(Id: priceList.Id);
-                    compacc.PriceListId = null;
-                    compacc.PriceList = null;
+                    
                     priceList.AccountingPeriod.PriceListId = null;
                     priceList.AccountingPeriod.PriceList = null;
                     _unitOfWork.PriceListRepository.Remove(priceList);
@@ -329,7 +327,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                         modelState.AddErrors("Accounting Period", $"Invalid Accounting Period {priceList.Key.AccountingPeriodName}");
                     if ( accountingPeriod != null)
                     {
-                        if (accountingPeriod.State == AccountingPeriodStates.Opened && accountingPeriod.PriceListId != null)
+                        if (accountingPeriod.State == AccountingPeriodStates.Opened && accountingPeriod.PriceListId == null)
                         {
                             plist.Name = priceList.Key.Name;
                             plist.AccountingPeriod = accountingPeriod;
@@ -457,7 +455,6 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                         lst.AccountingPeriod.PriceList = lst;
                         _unitOfWork.Complete();
                     }
-
                 }
                 return modelState;
             });
@@ -522,6 +519,25 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                 _unitOfWork
                 .CurrencyExchangeRateRepository
                 .FindMaximumExchangeRate(period, fromCurrency, toCurrency);
+        }
+        public PriceListLineViewModel Find(Item item,AccountingPeriod accountingPeriod)
+        {
+            PriceListLine line =  
+                _unitOfWork.
+                PriceListLineRepository.
+                Find(
+                    predicate: l => l.ItemId == item.Id && l.PriceList.AccountingPeriod.Id == accountingPeriod.Id,
+                    include:query=>query.Include(x=>x.Currency).Include(x=>x.Item))
+                .FirstOrDefault();
+            Currency currency = _unitOfWork.CurrencyRepository.Find(predicate: c => c.IsDefaultCompanyCurrency).FirstOrDefault();
+            PriceListLineViewModel priceListLineViewModel = new PriceListLineViewModel(line);
+            if (priceListLineViewModel.TarrifPercentage == null)
+                priceListLineViewModel.TarrifPercentage = line.Item.CustomsTarrifPercentage;
+            else
+                priceListLineViewModel.TarrifPercentage = line.TarrrifPercentage;
+            if (priceListLineViewModel.CurrencyExchangeRate == null && priceListLineViewModel.CurrencyExchangeRateType == ExchangeRateTypes.System && currency.Id != line.CurrencyId)
+                priceListLineViewModel.CurrencyExchangeRate = _unitOfWork.CurrencyExchangeRateRepository.FindCurrencyExchangeRate(line.CurrencyId, currency.Id, accountingPeriod)?.Rate;
+            return priceListLineViewModel;
         }
     }
 }

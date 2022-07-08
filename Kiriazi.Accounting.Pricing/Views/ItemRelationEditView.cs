@@ -68,7 +68,35 @@ namespace Kiriazi.Accounting.Pricing.Views
                     DataPropertyName = nameof(ViewModels.ComponentViewModel.Quantity),
                     ReadOnly = false,
                     HeaderText = "Quantity"
+                },
+                new DataGridViewComboBoxColumn()
+                {
+                    Name = nameof(ViewModels.ComponentViewModel.EffectiveAccountingPeriodFrom),
+                    DataPropertyName = nameof(ViewModels.ComponentViewModel.EffectiveAccountingPeriodFrom),
+                    HeaderText = "Effective Accounting Period From",
+                    DataSource = _model.AccountingPeriods,
+                    DisplayMember = nameof(ViewModels.ComponentViewModel.EffectiveAccountingPeriodTo.Name),
+                    ValueMember = nameof(ViewModels.ComponentViewModel.EffectiveAccountingPeriodTo.Self)
+                },
+                new DataGridViewComboBoxColumn()
+                {
+                    Name = nameof(ViewModels.ComponentViewModel.EffectiveAccountingPeriodTo),
+                    DataPropertyName = nameof(ViewModels.ComponentViewModel.EffectiveAccountingPeriodTo),
+                    HeaderText = "Effective Accounting Period To",
+                    DataSource = _model.AccountingPeriods,
+                    DisplayMember = nameof(ViewModels.ComponentViewModel.EffectiveAccountingPeriodTo.Name),
+                    ValueMember = nameof(ViewModels.ComponentViewModel.EffectiveAccountingPeriodTo.Self)
                 });
+            dataGridView1.EditingControlShowing += (o, e) =>
+            {
+                ComboBox editControl = e.Control as ComboBox;
+                if (editControl != null)
+                {
+                    editControl.DropDownStyle = ComboBoxStyle.DropDown;
+                    editControl.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+                    editControl.AutoCompleteSource = AutoCompleteSource.ListItems;
+                }
+            };
             _lines = new BindingList<ViewModels.ComponentViewModel>(_model.Components);
             dataGridView1.DataSource = _lines;
             _autoCompleteSource.AddRange(_model.ItemCodes.ToArray());
@@ -212,7 +240,7 @@ namespace Kiriazi.Accounting.Pricing.Views
         {
             if (_hasChanged)
             {
-                var modelState = _controller.Add(_model);
+                var modelState = _controller.AddOrEdit(_model);
                 if (modelState.HasErrors)
                 {
                     StringBuilder sb = new StringBuilder();

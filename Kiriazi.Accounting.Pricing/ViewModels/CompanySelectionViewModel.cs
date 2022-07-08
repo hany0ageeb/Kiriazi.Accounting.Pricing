@@ -74,12 +74,15 @@ namespace Kiriazi.Accounting.Pricing.ViewModels
         public IList<ComponentViewModel> Components { get; private set; } = new List<ComponentViewModel>();
 
         public IList<Company> Companies { get; set; } = new List<Company>();
+
+        public IList<AccountingPeriod> AccountingPeriods { get; set; }
     }
     public class ComponentViewModel : ViewModelBase
     {
         private string _itemCode;
         private decimal _quantity;
-
+        private AccountingPeriod _effectiveAccountingPeriodFrom;
+        private AccountingPeriod _effectiveAccountingPeriodTo;
         public string ItemCode
         {
             get => _itemCode;
@@ -104,10 +107,35 @@ namespace Kiriazi.Accounting.Pricing.ViewModels
                 }
             }
         }
+        public AccountingPeriod EffectiveAccountingPeriodFrom
+        {
+            get => _effectiveAccountingPeriodFrom;
+            set
+            {
+                if (_effectiveAccountingPeriodFrom != value)
+                {
+                    _effectiveAccountingPeriodFrom = value;
+                    OnPropertyChanged(nameof(EffectiveAccountingPeriodFrom));
+                }
+            }
+        }
+        public AccountingPeriod EffectiveAccountingPeriodTo
+        {
+            get => _effectiveAccountingPeriodTo;
+            set
+            {
+                if (_effectiveAccountingPeriodTo != value)
+                {
+                    _effectiveAccountingPeriodTo = value;
+                    OnPropertyChanged(nameof(EffectiveAccountingPeriodTo));
+                }
+            }
+        }
         public Item ChildItem
         {
             get;
             set;
         }
+        public Guid Id { get; set; } = Guid.Empty;
     }
 }

@@ -6,7 +6,7 @@ namespace Kiriazi.Accounting.Pricing.ViewModels
     public class AccountingPeriodEditViewModel : ViewModelBase
     {
         private DateTime _fromDate;
-        private DateTime? _toDate;
+        private DateTime _toDate;
         private string _name;
         private string _description;
         private string _state = Models.AccountingPeriodStates.Opened;
@@ -47,7 +47,7 @@ namespace Kiriazi.Accounting.Pricing.ViewModels
                 }
             }
         }
-        public DateTime? ToDate
+        public DateTime ToDate
         {
             get => _toDate;
             set

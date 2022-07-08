@@ -58,6 +58,20 @@ namespace Kiriazi.Accounting.Pricing.Views
                     DataPropertyName = nameof(ViewModels.ItemRelationViewModel.ComponentQuantity),
                     HeaderText = "Quantity",
                     ReadOnly = true
+                },
+                new DataGridViewTextBoxColumn()
+                {
+                    Name = nameof(ViewModels.ItemRelationViewModel.EffectiveAccountingPeriodFromName),
+                    DataPropertyName = nameof(ViewModels.ItemRelationViewModel.EffectiveAccountingPeriodFromName),
+                    HeaderText = "From Accounting Period",
+                    ReadOnly = true
+                },
+                new DataGridViewTextBoxColumn()
+                {
+                    Name = nameof(ViewModels.ItemRelationViewModel.EffectiveAccountingPeriodToName),
+                    DataPropertyName = nameof(ViewModels.ItemRelationViewModel.EffectiveAccountingPeriodToName),
+                    HeaderText = "To Accounting Period",
+                    ReadOnly = true
                 });
         }
         private void Initialize()

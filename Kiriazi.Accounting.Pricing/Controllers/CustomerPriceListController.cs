@@ -44,6 +44,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             }
             return model;
         }
+       
         public IList<CustomerPriceListViewModel> FindPreviousCustomerPriceList(CustomerPriceListSeachViewModel searchModel)
         {
             IList<CustomerPriceListViewModel> lines = new List<CustomerPriceListViewModel>();
@@ -181,6 +182,8 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             }
             return lines;
         }
+       
+
         public IList<CustomerPriceListViewModel> FindCustomerPriceList(CustomerPriceListSeachViewModel searchModel)
         {
             IList<CustomerPriceListViewModel> lines = new List<CustomerPriceListViewModel>();
@@ -337,13 +340,14 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             }
             return lines;
         }
-        private void ApplyCustomerPricingRules(
+        public IList<CustomerPricingRule> ApplyCustomerPricingRules(
             IList<CustomerPricingRule> rules,
             Item item,
             Company company,
             UnitValue unitValue,
             AccountingPeriod atPeriod)
         {
+            List<CustomerPricingRule> appliesRules = new List<CustomerPricingRule>();
             foreach (var rule in rules)
             {
                 CurrencyExchangeRate exchangeRate = null;
@@ -367,6 +371,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                     case CustomerPricingRuleTypes.ItemInCompany:
                         if (rule.CompanyId == company.Id && rule.ItemId == item.Id)
                         {
+                            appliesRules.Add(rule);
                             if (rule.RuleAmountType == RuleAmountTypes.Percentage)
                             {
                                 if (rule.IncrementDecrement == IncrementDecrementTypes.Increment)
@@ -398,6 +403,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                         }
                         break;
                     case CustomerPricingRuleTypes.AllItems:
+                        appliesRules.Add(rule);
                         if (rule.RuleAmountType == RuleAmountTypes.Percentage)
                         {
                             if (rule.IncrementDecrement == IncrementDecrementTypes.Increment)
@@ -430,6 +436,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                     case CustomerPricingRuleTypes.Company:
                         if (rule.CompanyId == company.Id)
                         {
+                            appliesRules.Add(rule);
                             if (rule.RuleAmountType == RuleAmountTypes.Percentage)
                             {
                                 if (rule.IncrementDecrement == IncrementDecrementTypes.Increment)
@@ -463,6 +470,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                     case CustomerPricingRuleTypes.Item:
                         if (rule.ItemId == item.Id)
                         {
+                            appliesRules.Add(rule);
                             if (rule.RuleAmountType == RuleAmountTypes.Percentage)
                             {
                                 if (rule.IncrementDecrement == IncrementDecrementTypes.Increment)
@@ -496,6 +504,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                     case CustomerPricingRuleTypes.ItemGroup:
                         if (rule.GroupId == item.CompanyAssignments.Where(ass => ass.CompanyId == company.Id).Select(ass => ass.GroupId).FirstOrDefault())
                         {
+                            appliesRules.Add(rule);
                             if (rule.RuleAmountType == RuleAmountTypes.Percentage)
                             {
                                 if (rule.IncrementDecrement == IncrementDecrementTypes.Increment)
@@ -529,6 +538,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                     case CustomerPricingRuleTypes.ItemType:
                         if (rule.ItemTypeId == item.ItemTypeId)
                         {
+                            appliesRules.Add(rule);
                             if (rule.RuleAmountType == RuleAmountTypes.Percentage)
                             {
                                 if (rule.IncrementDecrement == IncrementDecrementTypes.Increment)
@@ -561,18 +571,27 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                         break;
                 }
             }
+            return appliesRules;
         }
-        public UnitValue GetItemUnitValue(IList<CustomerPricingRule> customerPricingRules, Company company, Item item, AccountingPeriod period, decimal quantity)
+        public UnitValue GetItemUnitValue(IList<CustomerPricingRule> customerPricingRules, Company company, Item item, AccountingPeriod period, decimal quantity,PriceListLine propsedLine = null)
         {
             UnitValue unitValue = null;
             if (item.ItemType == _unitOfWork.ItemTypeRepository.RawItemType)
             {
-                var lines = _unitOfWork.PriceListRepository.FindPriceListLines(item.Id, period);
+                IList<PriceListLine> lines = null;
+                if (propsedLine!=null && propsedLine.Item.Id == item.Id)
+                {
+                    lines = new List<PriceListLine>() { propsedLine };
+                }
+                else
+                {
+                    lines = _unitOfWork.PriceListRepository.FindPriceListLines(item.Id, period).ToList();
+                }
+                
                 foreach (var l in lines)
                 {
                     if (l.CurrencyId != company.CurrencyId)
                     {
-
                         if (l.ExchangeRateType == ExchangeRateTypes.System)
                         {
                             var exchangeRate =
@@ -659,7 +678,8 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                                 if (string.IsNullOrEmpty(line.TarrifType))
                                 {
                                     unitValue = new UnitValue() { Currency = company.Currency, UnitPrice = (line.UnitPrice + (company.ShippingFeesPercentage / 100M * line.UnitPrice)) * exchangeRate.Rate * quantity };
-                                    ApplyCustomerPricingRules(customerPricingRules, item, company, unitValue, period);
+                                     ApplyCustomerPricingRules(customerPricingRules, item, company, unitValue, period);
+                                    
                                     return unitValue;
                                 }
                                 else if (line.TarrifType == ExchangeRateTypes.System)
@@ -688,7 +708,8 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                             if (string.IsNullOrEmpty(line.TarrifType))
                             {
                                 unitValue = new UnitValue() { Currency = line.Currency, UnitPrice = (line.UnitPrice) * quantity };
-                                ApplyCustomerPricingRules(customerPricingRules, item, company, unitValue, period);
+                                 ApplyCustomerPricingRules(customerPricingRules, item, company, unitValue, period);
+                                
                                 return unitValue;
                             }
                             else if (line.TarrifType == ExchangeRateTypes.System)
@@ -798,14 +819,21 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             else
             {
                 UnitValue totalUnitValue = new UnitValue() { Currency = company.Currency, UnitPrice = 0M };
-                foreach (var child in item.Children.Where(c => c.CompanyId == company.Id))
+                var children = _unitOfWork.ItemRelationRepository.Find(item, company, period);
+                foreach (var child in item.Children.Where(c => (c.CompanyId == company.Id && c.EffectiveAccountingPeriodFrom == null && c.EffectiveAccountingPeriodTo == null) || (c.CompanyId == company.Id && c.EffectiveAccountingPeriodFrom != null && c.EffectiveAccountingPeriodFrom.FromDate >= period.FromDate && c.EffectiveAccountingPeriodTo == null) || (c.CompanyId==company.Id && c.EffectiveAccountingPeriodFrom == null && c.EffectiveAccountingPeriodTo != null && c.EffectiveAccountingPeriodTo.ToDate >= period.ToDate)))
                 {
-                    unitValue = GetItemUnitValue(customerPricingRules, company, child.Child, period, child.Quantity);
+                    unitValue = GetItemUnitValue(customerPricingRules, company, child.Child, period, child.Quantity, propsedLine);
                     totalUnitValue.UnitPrice += unitValue.UnitPrice;
                 }
                 //
-                ApplyCustomerPricingRules(customerPricingRules, item, company, totalUnitValue, period);
-
+                var appliedRules = ApplyCustomerPricingRules(customerPricingRules, item, company, totalUnitValue, period);
+                foreach (var rule in appliedRules)
+                {
+                    if (!totalUnitValue.AppliedRules.Contains(rule))
+                    {
+                        totalUnitValue.AppliedRules.Add(rule);
+                    }
+                }
                 return totalUnitValue;
             }
         }

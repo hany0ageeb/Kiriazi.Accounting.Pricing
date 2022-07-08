@@ -29,6 +29,8 @@ namespace Kiriazi.Accounting.Pricing.DAL
         public DbSet<CustomerPriceList> CustomerPriceLists{ get; set; }
         public DbSet<PriceListLine> PriceListLines { get; set; }
 
+        public DbSet<CustomerPricingRule> CustomerPricingRules { get; set; }
+
         public PricingDBContext()
             : base("PricingDBLocalConnection")
         {
@@ -44,6 +46,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
             : base(nameOrConnectionString)
         {
             Database.SetInitializer(new PricingDBInitializer());
+            Database.Log = LogToFile;
         }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -80,12 +83,12 @@ namespace Kiriazi.Accounting.Pricing.DAL
                .Entity<ItemRelation>()
                .Property(e => e.Quantity)
                .HasPrecision(18, 4);
-
+            /*
             modelBuilder.Entity<ItemRelation>()
                  .HasIndex(e => new { e.ParentId, e.ChildId, e.CompanyId })
                  .IsUnique(true)
                  .HasName("Idx_Parent_child_comp_Id_UNQ");
-
+            */
             modelBuilder
                 .Entity<ItemRelation>()
                 .HasRequired(e => e.Child)
@@ -168,11 +171,12 @@ namespace Kiriazi.Accounting.Pricing.DAL
                 .HasIndex(e => new { e.CustomerId, e.ItemId })
                 .IsUnique(true)
                 .HasName("Idx_Cust_Item_Id_UNQ");
-
+            /*
             modelBuilder.Entity<ItemRelation>()
                 .HasIndex(e => new { e.ParentId, e.ChildId, e.CompanyId })
                 .IsUnique(true)
                 .HasName("Idx_Parent_child_comp_Id_UNQ");
+            */
 
             modelBuilder.Entity<Tarrif>()
                .HasIndex(e => e.Code)

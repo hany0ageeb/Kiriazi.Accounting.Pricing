@@ -62,6 +62,10 @@ namespace Kiriazi.Accounting.Pricing.ViewModels
             TarrifPercentage = line.TarrrifPercentage;
             PriceListId = line.PriceListId;
         }
+        public PriceListLineViewModel()
+        {
+
+        }
         [Column("Item Code")]
         public string ItemCode { get; set; }
         [Column("Item Name")]

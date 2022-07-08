@@ -1,6 +1,5 @@
 ﻿using Kiriazi.Accounting.Pricing.Models;
 using Npoi.Mapper.Attributes;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -18,167 +17,198 @@ namespace Kiriazi.Accounting.Pricing.ViewModels
         }
         #endregion INotifyPropertyChanged
     }
-    public class UserAccountEditViewModel : ViewModelBase
+    public class SimulationByReportDataViewModel
     {
-        private string _userName;
-        private string _oldPassWord;
-        private string _newPassword;
-        private string _confirmPassword;
-        public Guid UserId { get; private set; }
-        public string UserName
-        {
-            get => _userName;
-            set
-            {
-                if (_userName != value)
-                {
-                    _userName = value;
-                    OnPropertyChanged(nameof(UserName));
-                }
-            }
-        }
-        public string OldPassword
-        {
-            get => _oldPassWord;
-            set
-            {
-                if (_oldPassWord != value)
-                {
-                    _oldPassWord = value;
-                    OnPropertyChanged(nameof(OldPassword));
-                }
-            }
-        }
-        public string NewPassword
-        {
-            get => _newPassword;
-            set
-            {
-                if (_newPassword != value)
-                {
-                    _newPassword = value;
-                    OnPropertyChanged(nameof(NewPassword));
-                }
-            }
-        }
-        public string ConfirmPassword
-        {
-            get => _confirmPassword;
-            set
-            {
-                if (_confirmPassword != value)
-                {
-                    _confirmPassword = value;
-                    OnPropertyChanged(nameof(ConfirmPassword));
-                }
-            }
-        }
-        public UserAccountEditViewModel(User user)
-        {
-            UserId = user.UserId;
-            UserName = user.UserName;
-        }
-    }
-    public class ItemRelationViewModel
-    {
-        public Guid RootId { get; set; }
-        public string RootCode { get; set; }
-        public string RootArabicName { get; set; }
-        public string RootUomCode { get; set; }
-
-        public Guid ComponentId { get; set; }
-        public string ComponentCode { get; set; }
-        public string ComponentArabicName { get; set; }
-        public string ComponentUomCode { get; set; }
-        public decimal ComponentQuantity { get; set; }
-
-        public Guid CompanyId { get; set; }
+        public string RawItemCode { get; set; }
+        public string RawItemDescription { get; set; }
+        public string RawItemUomCode { get; set; }
+        public string CustomerName { get; set; }
         public string CompanyName { get; set; }
-
+        public string AccountingPeriodName { get; set; }
+        public decimal? RawItemPeriodUnitPrice { get; set; }
+        public string RawItemPeriodCurrencyCode { get; set; }
+        public decimal? RawItemPeriodExchangeRate { get; set; }
+        public decimal? RawItemPeriodTarrif { get; set; }
+        public decimal? ProposedRawItemUnitPrice { get; set; }
+        public string ProposedRawItemCurrencyCode { get; set; }
+        public decimal? ProposedRawItemExchangeRate { get; set; }
+        public decimal? ProposedRawItemTarrif { get; set; }
+        public string ManufacturedItemCode { get; set; }
+        public string ManufacturedItemDescription { get; set; }
+        public string ManufacturedItemUomCode { get; set; }
+        public decimal? ManufacturedItemPeriodUnitPrice { get; set; }
+        public string CompanyCurrencyCode { get; set; }
+        public decimal ProposedManufacturedItemUnitPrice { get; set; }
     }
-    public class UserEditViewModel : ViewModelBase
+    public class SimulationReportParameterViewModel : ViewModelBase
     {
-        private string _userName;
-        private string _password;
-        private string _confirmPassword;
-        private string _employeeName;
-        private string _state = UserStates.Active;
-        private string _accountType = UserAccountTypes.CompanyAccount;
+        private Item _item;
+        private AccountingPeriod _accountingPeriod;
+        private Customer _customer;
+        private Currency _proposedCurrency;
+        private decimal _propsedUnitPrice;
+        private decimal? _propsedRate;
+        private decimal? _propsedTarrif;
+        private Company _company;
+        private decimal? _untiPrice;
+        private decimal? _exchangeRate;
+        private decimal? _tarrif;
+        private string _currencyCode;
+        public SimulationReportParameterViewModel(Currency currency)
+        {
+            CompanyCurrency = currency;
+        }
+        public Item Item
+        {
+            get => _item;
+            set
+            {
+                if (_item != value)
+                {
+                    _item = value;
+                    OnPropertyChanged(nameof(Item));
+                }
+            }
+        }
+        public AccountingPeriod AccountingPeriod
+        {
+            get => _accountingPeriod;
+            set
+            {
+                if (_accountingPeriod != value)
+                {
+                    _accountingPeriod = value;
+                    OnPropertyChanged(nameof(AccountingPeriod));
+                }
+            }
+        }
+        public Customer Customer
+        {
+            get => _customer;
+            set
+            {
+                if (_customer != value)
+                {
+                    _customer = value;
+                }
+            }
+        }
+        public Currency ProposedCurrency
+        {
+            get => _proposedCurrency;
+            set
+            {
+                if (_proposedCurrency != value)
+                {
+                    _proposedCurrency = value;
+                    OnPropertyChanged(nameof(ProposedCurrency));
+                }
+            }
+        }
+        public decimal ProposedUnitPrice
+        {
+            get => _propsedUnitPrice;
+            set
+            {
+                if (_propsedUnitPrice != value)
+                {
+                    _propsedUnitPrice = value;
+                    OnPropertyChanged(nameof(ProposedUnitPrice));
+                }
+            }
+        }
+        public decimal? ProposedRate
+        {
+            get => _propsedRate;
+            set
+            {
+                if (_propsedRate != value)
+                {
+                    _propsedRate = value;
+                    OnPropertyChanged(nameof(ProposedRate));
+                }
+            }
+        }
+        public decimal? PropsedTarrif
+        {
+            get => _propsedTarrif;
+            set
+            {
+                if (_propsedTarrif != value)
+                {
+                    _propsedTarrif = value;
+                    OnPropertyChanged(nameof(PropsedTarrif));
+                }
+            }
+        }
+        public Company Company
+        {
+            get => _company;
+            set
+            {
+                if (_company != value)
+                {
+                    _company = value;
+                    OnPropertyChanged(nameof(Company));
+                }
+            }
+        }
+        public string CurrentCurrencyCode
+        {
+            get => _currencyCode;
+            set
+            {
+                if (_currencyCode != value)
+                {
+                    _currencyCode = value;
+                    OnPropertyChanged(nameof(CurrentCurrencyCode));
+                }
+            }
+        }
+        public decimal? CurrentUnitPrice
+        {
+            get => _untiPrice;
+            set
+            {
+                if (_untiPrice != value)
+                {
+                    _untiPrice = value;
+                    OnPropertyChanged(nameof(CurrentUnitPrice));
+                }
+            }
+        }
+        public decimal? CurrentExchangeRate
+        {
+            get => _exchangeRate;
+            set
+            {
+                if (_exchangeRate != value)
+                {
+                    _exchangeRate = value;
+                    OnPropertyChanged(nameof(CurrentExchangeRate));
+                }
+            }
+        }
+        public decimal? CurrentTarrif
+        {
+            get => _tarrif;
+            set
+            {
+                if (_tarrif != value)
+                {
+                    _tarrif = value;
+                    OnPropertyChanged(nameof(CurrentTarrif));
+                }
+            }
+        }
+        public Currency CompanyCurrency { get; private set; }
+        public List<Item> Items { get; set; }
+        public List<AccountingPeriod> AccountingPeriods { get; set; }
+        public List<Customer> Customers { get; set; }
+        public List<Currency> Currencies { get; set; }
 
-        public Guid Id { get; set; } = Guid.Empty;
-        public string UserName
-        {
-            get => _userName;
-            set
-            {
-                if (_userName != value)
-                {
-                    _userName = value;
-                    OnPropertyChanged(nameof(UserName));
-                }
-            }
-        }
-        public string Password
-        {
-            get => _password;
-            set
-            {
-                if (_password != value)
-                {
-                    _password = value;
-                    OnPropertyChanged(nameof(Password));
-                }
-            }
-        }
-        public string ConfirmPassword
-        {
-            get => _confirmPassword;
-            set
-            {
-                if (_confirmPassword != value)
-                {
-                    _confirmPassword = value;
-                    OnPropertyChanged(nameof(ConfirmPassword));
-                }
-            }
-        }
-        public string EmployeeName
-        {
-            get => _employeeName;
-            set
-            {
-                if (_employeeName != value)
-                {
-                    _employeeName = value;
-                    OnPropertyChanged(nameof(EmployeeName));
-                }
-            }
-        }
-        public string State
-        {
-            get => _state;
-            set
-            {
-                if (_state != value)
-                {
-                    _state = value;
-                    OnPropertyChanged(nameof(State));
-                }
-            }
-        }
-        public string AccountType
-        {
-            get => _accountType;
-            set
-            {
-                if (_accountType != value)
-                {
-                    _accountType = value;
-                    OnPropertyChanged(nameof(AccountType));
-                }
-            }
-        }
-        public List<string> States { get; set; }
-        public List<string> AccountTypes { get; set; }
+        public List<Company> Companies { get; set; }
+        public CustomerPricingRulesEditViewModel CustomerPricingRulesEditViewModel { get; set; }
+        public BindingList<CustomerPricingRule> PropsedPricingRules { get; set; } = new BindingList<CustomerPricingRule>();
     }
 }

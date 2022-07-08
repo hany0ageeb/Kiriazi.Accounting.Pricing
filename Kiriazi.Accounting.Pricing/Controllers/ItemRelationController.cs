@@ -68,7 +68,9 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                         ComponentId = r.ChildId,
                         ComponentQuantity = r.Quantity,
                         ComponentUomCode = r.Child.Uom.Code,
-                        RootUomCode = r.Parent.Uom.Code
+                        RootUomCode = r.Parent.Uom.Code,
+                        EffectiveAccountingPeriodFromName = r.EffectiveAccountingPeriodFrom != null ? r.EffectiveAccountingPeriodFrom.Name : "",
+                        EffectiveAccountingPeriodToName = r.EffectiveAccountingPeriodTo != null ? r.EffectiveAccountingPeriodTo.Name: ""
                     },
                     orderBy:q=>
                         q.OrderBy(r=>r.ComponentCode))
@@ -129,6 +131,8 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                         predicate: itm => itm.ItemTypeId == _unitOfWork.ItemTypeRepository.ManufacturedItemType.Id,
                         orderBy: q => q.OrderBy(s => s.Code))
                     .ToList();
+                model.AccountingPeriods = _unitOfWork.AccountingPeriodRepository.Find(query=>query.OrderBy(acc=>acc.FromDate)).ToList();
+                model.AccountingPeriods.Insert(0, new AccountingPeriod() { Name = "_", Id = Guid.Empty });
                 if (model.Items.Count > 0)
                     model.ParentItem = model.Items[0];
                 if (model.ParentItem != null)
@@ -159,6 +163,8 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                     model.ParentItem = model.Items[0];
                 model.ItemCodes =
                     FindItemsCodes(selectedCompanies, model.ParentItem.Id);
+                model.AccountingPeriods = _unitOfWork.AccountingPeriodRepository.Find(query => query.OrderBy(acc => acc.FromDate)).ToList();
+                model.AccountingPeriods.Insert(0, new AccountingPeriod() { Name = "_", Id = Guid.Empty });
                 var relations = _unitOfWork.ItemRelationRepository.Find(predicate: r => r.ParentId == existingTree.RootId && r.CompanyId == existingTree.CompanyId,orderBy:q=>q.OrderBy(r=>r.Child.Code));
                 foreach(var r in relations)
                 {
@@ -166,7 +172,9 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                     {
                         ChildItem = r.Child,
                         ItemCode = r.Child.Code,
-                        Quantity = r.Quantity
+                        Quantity = r.Quantity,
+                        EffectiveAccountingPeriodFrom = model.AccountingPeriods[0],
+                        EffectiveAccountingPeriodTo = model.AccountingPeriods[0]
                     });
                 }
                 return model;
@@ -189,13 +197,19 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                     model.ParentItem = model.Items[0];
                 model.ItemCodes =
                     FindItemsCodes(model.CompaniesIds, model.ParentItem.Id);
+                model.AccountingPeriods = _unitOfWork.AccountingPeriodRepository.Find(orderBy: query => query.OrderBy(acc => acc.FromDate)).ToList();
+                model.AccountingPeriods.Insert(0, new AccountingPeriod() { Name = "_", Id = Guid.Empty });
+                
                 foreach (var r in relations)
                 {
                     model.Components.Add(new ComponentViewModel()
                     {
                         ChildItem = r.Child,
                         ItemCode = r.Child.Code,
-                        Quantity = r.Quantity
+                        Quantity = r.Quantity,
+                        Id = r.Id,
+                        EffectiveAccountingPeriodFrom = r.EffectiveAccountingPeriodFrom ?? model.AccountingPeriods[0],
+                        EffectiveAccountingPeriodTo = r.EffectiveAccountingPeriodTo ?? model.AccountingPeriods[0]
                     });
                 }
                 return model;
@@ -205,7 +219,8 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                 throw new ArgumentException("Invalid Parent Id / Company Id");
             }
         }
-        public ModelState Add(ItemRelationEditViewModel model)
+        
+        public ModelState AddOrEdit(ItemRelationEditViewModel model)
         {
             ModelState modelState = Validate(model);
             if (modelState.HasErrors)
@@ -213,21 +228,52 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             foreach(Guid companyId in model.CompaniesIds)
             {
                 var Company = _unitOfWork.CompanyRepository.Find(Id: companyId);
+                var ids = model.Components.Where(c => c.Id != Guid.Empty).Select(c => c.Id).ToList();
+                var toDelete = _unitOfWork.ItemRelationRepository.Find(predicate: r => r.CompanyId == companyId && !ids.Contains(r.Id));
+                _unitOfWork.ItemRelationRepository.Remove(toDelete);
                 foreach (var component in model.Components)
                 {
-                    _unitOfWork.ItemRelationRepository.Add(
-                    new ItemRelation()
+                    if (component.Id == Guid.Empty)
                     {
-                        Parent = model.ParentItem,
-                        Child = component.ChildItem,
-                        Quantity = component.Quantity,
-                        Company = Company
-                    });
+                        var r = new ItemRelation()
+                        {
+                            Parent = model.ParentItem,
+                            Child = component.ChildItem,
+                            Quantity = component.Quantity,
+                            Company = Company
+                        };
+                        if (component.EffectiveAccountingPeriodFrom?.Id == Guid.Empty)
+                            r.EffectiveAccountingPeriodFrom = null;
+                        else
+                            r.EffectiveAccountingPeriodFrom = component.EffectiveAccountingPeriodFrom;
+                        if (component.EffectiveAccountingPeriodTo?.Id == Guid.Empty)
+                            r.EffectiveAccountingPeriodTo = null;
+                        else
+                            r.EffectiveAccountingPeriodTo = component.EffectiveAccountingPeriodTo;
+                        _unitOfWork.ItemRelationRepository.Add(r);
+                    }
+                    else
+                    {
+                        var old = _unitOfWork.ItemRelationRepository.Find(Id: component.Id);
+                        old.Parent = model.ParentItem;
+                        old.Child = component.ChildItem;
+                        old.Quantity = component.Quantity;
+                        old.Company = Company;
+                        if (component?.EffectiveAccountingPeriodFrom?.Id == Guid.Empty)
+                            old.EffectiveAccountingPeriodFrom = null;
+                        else
+                            old.EffectiveAccountingPeriodFrom = component.EffectiveAccountingPeriodFrom;
+                        if (component.EffectiveAccountingPeriodTo?.Id == Guid.Empty)
+                            old.EffectiveAccountingPeriodTo = null;
+                        else
+                            old.EffectiveAccountingPeriodTo = component.EffectiveAccountingPeriodTo;
+                    }
                 }
             }
             _unitOfWork.Complete();
             return modelState;
         }
+       
         public void Remove(Guid rootItemId,Guid companyId)
         {
             var children = 
@@ -264,17 +310,29 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                 {
                     foreach (Guid companyId in model.CompaniesIds)
                     {
-                        if(_unitOfWork.ItemRelationRepository.Find(predicate: r => r.ParentId == model.ParentItem.Id && r.ChildId == component.ChildItem.Id && r.CompanyId == companyId).FirstOrDefault() != null)
+                        if (component.Id == Guid.Empty)
                         {
-                            temp.AddErrors("Paremt/Child/Company", $"{model.ParentItem.Code}/{component.ChildItem.Code} already exists");
+                            //if (_unitOfWork.ItemRelationRepository.Find(predicate: r => r.ParentId == model.ParentItem.Id && r.ChildId == component.ChildItem.Id && r.CompanyId == companyId).FirstOrDefault() != null)
+                            //{
+                            //    temp.AddErrors("Assembly / Component / Company", $"{model.ParentItem.Code}/{component.ChildItem.Code} already exists");
+                            //}
+                            if (component.ChildItem.IsChild(model.ParentItem.Id, companyId))
+                            {
+                                temp.AddErrors("ChildItem", "Invalid Component / Cyclic Relation");
+                                modelState.AddModelState(temp);
+                                return modelState;
+                            }
                         }
-                        if (component.ChildItem.IsChild(model.ParentItem.Id, companyId))
+                        else
                         {
-                            temp.AddErrors("ChildItem", "Invalid Component / Cyclic Relation");
-                            modelState.AddModelState(temp);
-                            return modelState;
+                            if (_unitOfWork.ItemRelationRepository.Find(predicate: r => r.ParentId == model.ParentItem.Id && r.ChildId == component.ChildItem.Id && r.CompanyId == companyId && r.Id != component.Id).FirstOrDefault() != null)
+                            {
+                                temp.AddErrors("Assembly / Component / Company", $"{model.ParentItem.Code}/{component.ChildItem.Code} already exists");
+                            }
                         }
+                        
                     }
+                   
                 }
                 if (component.Quantity <= 0)
                 {
@@ -298,6 +356,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                 List<ItemRelation> parentChilds = new List<ItemRelation>();
                 var companies = _unitOfWork.CompanyRepository.Find(c=>c.Users.Select(u=>u.UserId).Contains(Common.Session.CurrentUser.UserId)).ToList();
                 var allItems = _unitOfWork.ItemRepository.Find().ToList();
+                var allAccountingPeriods = _unitOfWork.AccountingPeriodRepository.Find().ToList();
                 int count = 0;
                 int oldProgress = 0;
                 foreach (var parentChildDTO in parentChildDTOs)
@@ -314,6 +373,10 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                             Quantity = parentChildDTO.Quantity,
                             Company = companies.Where(c => c.Name.Equals(parentChildDTO.CompanyName, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault()
                         };
+                        if (!string.IsNullOrEmpty(parentChildDTO.AccountingPeriodFromName))
+                            temp.EffectiveAccountingPeriodFrom = allAccountingPeriods.Where(e => e.Name.Equals(parentChildDTO.AccountingPeriodFromName,StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+                        if (!string.IsNullOrEmpty(parentChildDTO.AccountingPeriodToName))
+                            temp.EffectiveAccountingPeriodTo = allAccountingPeriods.Where(e => e.Name.Equals(parentChildDTO.AccountingPeriodFromName, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
                         if (temp.Parent != null)
                             temp.ParentId = temp.Parent.Id;
                         if (temp.Child != null)
@@ -372,7 +435,12 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                         modelState.AddModelState(temp);
                         if (!temp.HasErrors)
                         {
-                            if (_unitOfWork.ItemRelationRepository.Find(predicate: r => r.ChildId == relation.ChildId && r.ParentId == relation.ParentId && r.CompanyId == relation.CompanyId).FirstOrDefault() != null)
+                            if (_unitOfWork.ItemRelationRepository.Exists(
+                                predicate: 
+                                r => (r.ChildId == relation.ChildId && r.ParentId == relation.ParentId && r.CompanyId == relation.CompanyId && r.EffectiveAccountingPeriodFrom == null && r.EffectiveAccountingPeriodTo == null) ||
+                                (relation.EffectiveAccountingPeriodFrom == null && relation.EffectiveAccountingPeriodTo == null && r.ChildId == relation.ChildId && r.ParentId == relation.ParentId && r.CompanyId == relation.CompanyId)
+                                )
+                            )
                             {
                                 temp.AddErrors("Assembly/Component/Company", $"{relation.Parent.Code}/{relation.Child.Code}/{relation.Company.Name} Already exist.");
                             }
@@ -417,6 +485,47 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                 .ItemRepository
                 .Find(predicate: itm => itm.Code == code, include: q => q.Include(i => i.Uom))
                 .FirstOrDefault();
+        }
+        public BillOfMaterials FindBillOfMaterials(Item item,Company company,decimal quantity = 1,AccountingPeriod atPeriod = null)
+        {
+            if (item.ItemTypeId == _unitOfWork.ItemTypeRepository.RawItemType.Id)
+                return null;
+           
+            BillOfMaterials billOfMaterials = new BillOfMaterials()
+            {
+                Assembly = item,
+                Company = company,
+                Quantity = quantity
+            };
+            IList<ItemRelation> components;
+            if (atPeriod == null)
+                components = _unitOfWork.ItemRelationRepository.Find(predicate: r => r.ParentId == item.Id && r.CompanyId == company.Id).ToList();
+            else
+                components = _unitOfWork.ItemRelationRepository.Find(item, company, atPeriod).ToList();
+            foreach(var comp in components)
+            {
+                if(comp.Child.ItemTypeId == _unitOfWork.ItemTypeRepository.RawItemType.Id)
+                {
+                    billOfMaterials.Lines.Add(new BillOfMaterialLine()
+                    {
+                        Component = comp.Child,
+                        Quantity = quantity * comp.Quantity
+                    });
+                }
+                else
+                {
+                    var temp = FindBillOfMaterials(comp.Child, company, quantity * comp.Quantity,atPeriod);
+                    foreach(var x in temp.Lines)
+                    {
+                        billOfMaterials.Lines.Add(new BillOfMaterialLine()
+                        {
+                            Component = x.Component,
+                            Quantity = x.Quantity
+                        });
+                    }
+                }
+            }
+            return billOfMaterials;
         }
     }
 }

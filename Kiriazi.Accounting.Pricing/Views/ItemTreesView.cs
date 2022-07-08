@@ -231,5 +231,10 @@ namespace Kiriazi.Accounting.Pricing.Views
                 }
             }
         }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
     }
 }

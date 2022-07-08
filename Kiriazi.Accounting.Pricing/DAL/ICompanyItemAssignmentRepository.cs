@@ -1,19 +1,18 @@
-﻿namespace Kiriazi.Accounting.Pricing.DAL
+﻿using Kiriazi.Accounting.Pricing.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+
+namespace Kiriazi.Accounting.Pricing.DAL
 {
     public interface ICompanyItemAssignmentRepository : IRepository<Models.CompanyItemAssignment>
     {
-
-    }
-    public interface ICustomerItemAssignmentRepository : IRepository<Models.CustomerItemAssignment>
-    {
-
-    }
-    public class CustomerItemAssignmentRepository : Repository<Models.CustomerItemAssignment>, ICustomerItemAssignmentRepository
-    {
-        public CustomerItemAssignmentRepository(PricingDBContext context)
-            : base(context)
-        {
-
-        }
+        IEnumerable<TResult> Find<TResult>(
+            Expression<Func<Models.CompanyItemAssignment,TResult>> selector,
+            Guid? groupId = null,
+            Guid? itemTypeId = null,
+            Guid? companyId = null,
+            Func<IQueryable<TResult>, IOrderedQueryable<TResult>> orderBy = null);
     }
 }

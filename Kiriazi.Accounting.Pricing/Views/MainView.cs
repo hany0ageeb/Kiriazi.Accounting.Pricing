@@ -559,13 +559,13 @@ namespace Kiriazi.Accounting.Pricing.Views
                     if (!string.IsNullOrEmpty(report.ParameterFormTypeName))
                     {
                         Form parameterFrom = (Form)Program.ServiceProvider.GetService(Type.GetType(report.ParameterFormTypeName));
-                        parameterFrom.MdiParent = this.MdiParent;
+                        parameterFrom.MdiParent = this;
                         parameterFrom.Show();
                     }
                     else if (!string.IsNullOrEmpty(report.ReportFormTypeName))
                     {
                         Form parameterFrom = (Form)Program.ServiceProvider.GetService(Type.GetType(report.ReportFormTypeName));
-                        parameterFrom.MdiParent = this.MdiParent;
+                        parameterFrom.MdiParent = this;
                         parameterFrom.Show();
                     }
                 }

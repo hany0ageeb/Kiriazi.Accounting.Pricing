@@ -231,6 +231,7 @@
     <Compile Include="DAL\CompanyRepository.cs" />
     <Compile Include="DAL\CurrencyExchangeRateRepository.cs" />
     <Compile Include="DAL\CurrencyRepository.cs" />
+    <Compile Include="DAL\CustomerItemAssignmentRepository.cs" />
     <Compile Include="DAL\CustomerPriceListRepository.cs" />
     <Compile Include="DAL\CustomerPricingRuleRepository.cs" />
     <Compile Include="DAL\CustomerRepository.cs" />
@@ -250,6 +251,7 @@
     <Compile Include="DAL\ICompanyRepository.cs" />
     <Compile Include="DAL\ICurrencyExchangeRateRepository.cs" />
     <Compile Include="DAL\ICurrencyRepository.cs" />
+    <Compile Include="DAL\ICustomerItemAssignmentRepository.cs" />
     <Compile Include="DAL\ICustomerPriceListRepository.cs" />
     <Compile Include="DAL\ICustomerPricingRuleRepository.cs" />
     <Compile Include="DAL\ICustomerRepository.cs" />
@@ -317,17 +319,65 @@
     <Compile Include="Models\UserReportAssignment.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reports\ParametersForms\ComparisonOfHistoricalCostReportParameterForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\ParametersForms\ComparisonOfHistoricalCostReportParameterForm.Designer.cs">
+      <DependentUpon>ComparisonOfHistoricalCostReportParameterForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Reports\ParametersForms\CustomerPriceListReportParameterForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Reports\ParametersForms\CustomerPriceListReportParameterForm.Designer.cs">
       <DependentUpon>CustomerPriceListReportParameterForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Reports\ParametersForms\ItemBillOfMaterialsReportParameterForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\ParametersForms\ItemBillOfMaterialsReportParameterForm.Designer.cs">
+      <DependentUpon>ItemBillOfMaterialsReportParameterForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ParametersForms\ItemGroupReportParametersForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\ParametersForms\ItemGroupReportParametersForm.Designer.cs">
+      <DependentUpon>ItemGroupReportParametersForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ParametersForms\SimulationReportParametersForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\ParametersForms\SimulationReportParametersForm.Designer.cs">
+      <DependentUpon>SimulationReportParametersForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportsForms\ComparisonOfHistoricalCostReportForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportsForms\ComparisonOfHistoricalCostReportForm.Designer.cs">
+      <DependentUpon>ComparisonOfHistoricalCostReportForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Reports\ReportsForms\CustomerPriceListReportForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Reports\ReportsForms\CustomerPriceListReportForm.Designer.cs">
       <DependentUpon>CustomerPriceListReportForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportsForms\ItemBillOfMaterialsReportForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportsForms\ItemBillOfMaterialsReportForm.Designer.cs">
+      <DependentUpon>ItemBillOfMaterialsReportForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportsForms\ItemGroupReportForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportsForms\ItemGroupReportForm.Designer.cs">
+      <DependentUpon>ItemGroupReportForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportsForms\SimulationReportForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportsForms\SimulationReportForm.Designer.cs">
+      <DependentUpon>SimulationReportForm.cs</DependentUpon>
     </Compile>
     <Compile Include="SqlServerTypes\Loader.cs" />
     <Compile Include="Validation\AccountingPeriodValidator.cs" />
@@ -345,22 +395,36 @@
     <Compile Include="Validation\TarrifValidator.cs" />
     <Compile Include="Validation\UomValidaor.cs" />
     <Compile Include="ViewModels\AccountingPeriodEditViewModel.cs" />
+    <Compile Include="ViewModels\AccountingPeriodSelectViewModel.cs" />
+    <Compile Include="ViewModels\BillOfMaterialSearchViewModel.cs" />
     <Compile Include="ViewModels\CompanyAccountingPeriodEditViewModel.cs" />
     <Compile Include="ViewModels\CompanyEditViewModel.cs" />
     <Compile Include="ViewModels\CompanySelectionViewModel.cs" />
     <Compile Include="ViewModels\CurrencyEditViewModel.cs" />
+    <Compile Include="ViewModels\CustomerItemUnitPriceSearchViewModel.cs" />
     <Compile Include="ViewModels\CustomerPriceListSeachViewModel.cs" />
     <Compile Include="ViewModels\CustomerPriceListViewModel.cs" />
     <Compile Include="ViewModels\CustomerPricingRulesEditViewModel.cs" />
     <Compile Include="ViewModels\DailyCurrencyExchangeRateViewModel.cs" />
+    <Compile Include="ViewModels\GroupSearchResultViewModel.cs" />
+    <Compile Include="ViewModels\GroupSearchViewModel.cs" />
+    <Compile Include="ViewModels\ItemBillOfMaterialSearchViewModel.cs" />
     <Compile Include="ViewModels\ItemCompanyAssignmentViewModel.cs" />
+    <Compile Include="ViewModels\ItemCostedBillOfMaterialsLineViewModel.cs" />
+    <Compile Include="ViewModels\ItemCostedBillOfMaterialsViewModel.cs" />
+    <Compile Include="ViewModels\ItemCostedSearchResultViewModel.cs" />
+    <Compile Include="ViewModels\ItemCostedSearchViewModel.cs" />
     <Compile Include="ViewModels\ItemEditViewModel.cs" />
+    <Compile Include="ViewModels\ItemRelationViewModel.cs" />
     <Compile Include="ViewModels\ItemSearchViewModel.cs" />
     <Compile Include="ViewModels\ItemTreeSearchViewModel.cs" />
+    <Compile Include="ViewModels\ItemTreeViewModel.cs" />
     <Compile Include="ViewModels\PriceListEditViewModel.cs" />
     <Compile Include="ViewModels\PriceListSearchViewModel.cs" />
     <Compile Include="ViewModels\PriceListViewModel.cs" />
+    <Compile Include="ViewModels\UserAccountEditViewModel.cs" />
     <Compile Include="ViewModels\UserCommandAssignmentEditViewModel.cs" />
+    <Compile Include="ViewModels\UserEditViewModel.cs" />
     <Compile Include="ViewModels\UserReportAssignmentEditViewMdel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\AccountingPeriodsView.cs">
@@ -441,6 +505,12 @@
     <Compile Include="Views\CustomerPriceListView.Designer.cs">
       <DependentUpon>CustomerPriceListView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\CustomerPriceRuleView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\CustomerPriceRuleView.Designer.cs">
+      <DependentUpon>CustomerPriceRuleView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\CustomerPricingRuleEditView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -488,6 +558,18 @@
     </Compile>
     <Compile Include="Views\ItemCompaniesAssignmentView.Designer.cs">
       <DependentUpon>ItemCompaniesAssignmentView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ItemComponentsCostedView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ItemComponentsCostedView.Designer.cs">
+      <DependentUpon>ItemComponentsCostedView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ItemCostView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ItemCostView.Designer.cs">
+      <DependentUpon>ItemCostView.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\ItemCustomersAssignmentView.cs">
       <SubType>Form</SubType>
@@ -637,13 +719,41 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Reports\ComparisonOfHistoricalCostReport.rdlc" />
+    <EmbeddedResource Include="Reports\ItemBillOfMaterialsReport.rdlc" />
     <EmbeddedResource Include="Reports\CustomerPriceListReport.rdlc" />
+    <EmbeddedResource Include="Reports\ParametersForms\ComparisonOfHistoricalCostReportParameterForm.resx">
+      <DependentUpon>ComparisonOfHistoricalCostReportParameterForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\ParametersForms\CustomerPriceListReportParameterForm.resx">
       <DependentUpon>CustomerPriceListReportParameterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\ParametersForms\ItemBillOfMaterialsReportParameterForm.resx">
+      <DependentUpon>ItemBillOfMaterialsReportParameterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\ParametersForms\ItemGroupReportParametersForm.resx">
+      <DependentUpon>ItemGroupReportParametersForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\ItemGroupReport.rdlc" />
+    <EmbeddedResource Include="Reports\ParametersForms\SimulationReportParametersForm.resx">
+      <DependentUpon>SimulationReportParametersForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\ReportsForms\ComparisonOfHistoricalCostReportForm.resx">
+      <DependentUpon>ComparisonOfHistoricalCostReportForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\ReportsForms\CustomerPriceListReportForm.resx">
       <DependentUpon>CustomerPriceListReportForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reports\ReportsForms\ItemBillOfMaterialsReportForm.resx">
+      <DependentUpon>ItemBillOfMaterialsReportForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\ReportsForms\ItemGroupReportForm.resx">
+      <DependentUpon>ItemGroupReportForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\ReportsForms\SimulationReportForm.resx">
+      <DependentUpon>SimulationReportForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\SimulationReport.rdlc" />
     <EmbeddedResource Include="Views\AccountingPeriodsView.resx">
       <DependentUpon>AccountingPeriodsView.cs</DependentUpon>
     </EmbeddedResource>
@@ -686,6 +796,9 @@
     <EmbeddedResource Include="Views\CustomerPriceListView.resx">
       <DependentUpon>CustomerPriceListView.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\CustomerPriceRuleView.resx">
+      <DependentUpon>CustomerPriceRuleView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\CustomerPricingRuleEditView.resx">
       <DependentUpon>CustomerPricingRuleEditView.cs</DependentUpon>
     </EmbeddedResource>
@@ -709,6 +822,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\ItemCompaniesAssignmentView.resx">
       <DependentUpon>ItemCompaniesAssignmentView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ItemComponentsCostedView.resx">
+      <DependentUpon>ItemComponentsCostedView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ItemCostView.resx">
+      <DependentUpon>ItemCostView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\ItemCustomersAssignmentView.resx">
       <DependentUpon>ItemCustomersAssignmentView.cs</DependentUpon>
@@ -780,7 +899,15 @@
       <DependentUpon>UsersView.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\Kiriazi.Accounting.Pricing.Controllers.ItemCostedBillOfMaterialsLineViewModel.datasource" />
+    <None Include="Properties\DataSources\Kiriazi.Accounting.Pricing.Controllers.ItemCostedBillOfMaterialsViewModel.datasource" />
     <None Include="Properties\DataSources\Kiriazi.Accounting.Pricing.ViewModels.CustomerPriceListViewModel.datasource" />
+    <None Include="Properties\DataSources\Kiriazi.Accounting.Pricing.ViewModels.CustomerPricingRuleViewModel.datasource" />
+    <None Include="Properties\DataSources\Kiriazi.Accounting.Pricing.ViewModels.GroupSearchResultViewModel.datasource" />
+    <None Include="Properties\DataSources\Kiriazi.Accounting.Pricing.ViewModels.ItemCostedBillOfMaterialsLineViewModel.datasource" />
+    <None Include="Properties\DataSources\Kiriazi.Accounting.Pricing.ViewModels.ItemCostedBillOfMaterialsViewModel.datasource" />
+    <None Include="Properties\DataSources\Kiriazi.Accounting.Pricing.ViewModels.PeriodHistoricalCostSearchResultViewModel.datasource" />
+    <None Include="Properties\DataSources\Kiriazi.Accounting.Pricing.ViewModels.SimulationByReportDataViewModel.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

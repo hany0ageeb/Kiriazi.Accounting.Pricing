@@ -32,6 +32,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.components = new System.ComponentModel.Container();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.label5 = new System.Windows.Forms.Label();
             this.pickerToDate = new System.Windows.Forms.DateTimePicker();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -40,12 +41,11 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.label2 = new System.Windows.Forms.Label();
             this.txtName = new System.Windows.Forms.TextBox();
             this.pickerFromDate = new System.Windows.Forms.DateTimePicker();
+            this.cboStates = new System.Windows.Forms.ComboBox();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.label5 = new System.Windows.Forms.Label();
-            this.cboStates = new System.Windows.Forms.ComboBox();
             this.flowLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
@@ -89,14 +89,21 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.tableLayoutPanel1.Size = new System.Drawing.Size(706, 248);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(3, 201);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(34, 15);
+            this.label5.TabIndex = 8;
+            this.label5.Text = "State";
+            // 
             // pickerToDate
             // 
             this.pickerToDate.Location = new System.Drawing.Point(147, 166);
             this.pickerToDate.Name = "pickerToDate";
-            this.pickerToDate.ShowCheckBox = true;
             this.pickerToDate.Size = new System.Drawing.Size(535, 23);
             this.pickerToDate.TabIndex = 4;
-            this.pickerToDate.ValueChanged += new System.EventHandler(this.pickerToDate_ValueChanged);
             // 
             // label4
             // 
@@ -159,6 +166,17 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.pickerFromDate.Size = new System.Drawing.Size(535, 23);
             this.pickerFromDate.TabIndex = 3;
             // 
+            // cboStates
+            // 
+            this.cboStates.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cboStates.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.cboStates.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.cboStates.FormattingEnabled = true;
+            this.cboStates.Location = new System.Drawing.Point(147, 204);
+            this.cboStates.Name = "cboStates";
+            this.cboStates.Size = new System.Drawing.Size(535, 23);
+            this.cboStates.TabIndex = 5;
+            // 
             // flowLayoutPanel2
             // 
             this.flowLayoutPanel2.Controls.Add(this.btnClose);
@@ -192,26 +210,6 @@ namespace Kiriazi.Accounting.Pricing.Views
             // errorProvider1
             // 
             this.errorProvider1.ContainerControl = this;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(3, 201);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(34, 15);
-            this.label5.TabIndex = 8;
-            this.label5.Text = "State";
-            // 
-            // cboStates
-            // 
-            this.cboStates.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.cboStates.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.cboStates.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.cboStates.FormattingEnabled = true;
-            this.cboStates.Location = new System.Drawing.Point(147, 204);
-            this.cboStates.Name = "cboStates";
-            this.cboStates.Size = new System.Drawing.Size(535, 23);
-            this.cboStates.TabIndex = 5;
             // 
             // AccountingPeriodView
             // 
