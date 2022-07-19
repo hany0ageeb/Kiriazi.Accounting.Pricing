@@ -523,6 +523,8 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             model.AccountingPeriods.Insert(0, new AccountingPeriod() { Id = Guid.Empty, Name = "--ALL--" });
             model.Companies.Insert(0, new Company() { Id = Guid.Empty, Name = "--ALL--" });
             model.Items.Insert(0,new Item() { Id = Guid.Empty, Code = "--ALL--"});
+            model.Groups = _unitOfWork.GroupRepository.Find(orderBy: query => query.OrderBy(e => e.Name)).ToList();
+            model.Groups.Insert(0, new Group() { Id = Guid.Empty, Name = "--ALL--" });
             if (model.Customers.Count > 0)
             {
                 model.Customer = model.Customers[0];
@@ -538,6 +540,10 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             if (model.AccountingPeriods.Count > 0)
             {
                 model.AccountingPeriod = model.AccountingPeriods[0];
+            }
+            if (model.Groups.Count > 0)
+            {
+                model.Group = model.Groups[0];
             }
             return model;
         }
@@ -576,11 +582,29 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             }
             if (model.Item.Id == Guid.Empty)
             {
-                items.AddRange(_unitOfWork.ItemRepository.Find(orderBy: query => query.OrderBy(itm => itm.Code)).ToList());
+                if (model.Group.Id == Guid.Empty)
+                {
+                    items.AddRange(_unitOfWork.ItemRepository.Find(orderBy: query => query.OrderBy(itm => itm.Code)).ToList());
+                }
+                else
+                {
+                    items.AddRange(_unitOfWork.ItemRepository.Find(predicate: itm => itm.CompanyAssignments.Select(ass => ass.GroupId).Contains(model.Group.Id)).ToList());
+                }
             }
             else
             {
-                items.Add(model.Item);
+                if (model.Group.Id == Guid.Empty)
+                {
+                    items.Add(model.Item);
+                }
+                else
+                {
+                    if(_unitOfWork.CompanyItemAssignmentRepository.Exists(predicate:ass=>ass.GroupId == model.Group.Id && ass.ItemId == model.Item.Id))
+                    {
+                        items.Add(model.Item);
+                    }
+                }
+                    
             }
             foreach(var accountingPeriod in accountingPeriods)
             {
@@ -696,6 +720,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                                     model1.Company = Company;
                                     model1.Customer = customer;
                                     model1.Item = l.Component;
+                                    model1.Group = model.Group;
                                     model1.Quantity = l.Quantity;
                                     result.Components.AddRange(FindItemCosted(model1));
                                 }

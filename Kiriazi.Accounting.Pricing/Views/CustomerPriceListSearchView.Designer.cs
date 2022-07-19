@@ -30,6 +30,7 @@ namespace Kiriazi.Accounting.Pricing.Views
         private void InitializeComponent()
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.cboAccountingPeriods = new System.Windows.Forms.ComboBox();
             this.cboCustomers = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -37,7 +38,6 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.cboCompanies = new System.Windows.Forms.ComboBox();
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.cboAccountingPeriods = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -61,6 +61,16 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(693, 102);
             this.tableLayoutPanel1.TabIndex = 0;
+            // 
+            // cboAccountingPeriods
+            // 
+            this.cboAccountingPeriods.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cboAccountingPeriods.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.cboAccountingPeriods.FormattingEnabled = true;
+            this.cboAccountingPeriods.Location = new System.Drawing.Point(131, 3);
+            this.cboAccountingPeriods.Name = "cboAccountingPeriods";
+            this.cboAccountingPeriods.Size = new System.Drawing.Size(544, 23);
+            this.cboAccountingPeriods.TabIndex = 5;
             // 
             // cboCustomers
             // 
@@ -129,16 +139,6 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
-            // cboAccountingPeriods
-            // 
-            this.cboAccountingPeriods.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.cboAccountingPeriods.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.cboAccountingPeriods.FormattingEnabled = true;
-            this.cboAccountingPeriods.Location = new System.Drawing.Point(131, 3);
-            this.cboAccountingPeriods.Name = "cboAccountingPeriods";
-            this.cboAccountingPeriods.Size = new System.Drawing.Size(544, 23);
-            this.cboAccountingPeriods.TabIndex = 5;
-            // 
             // CustomerPriceListSearchView
             // 
             this.AcceptButton = this.btnOk;
@@ -152,6 +152,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "CustomerPriceListSearchView";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Customer Price List";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();

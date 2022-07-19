@@ -384,29 +384,47 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                                                 }
                                                 if (item.CustomsTarrifPercentage != null)
                                                 {
-                                                    if (!line.TarrifType.Equals(ExchangeRateTypes.System,StringComparison.InvariantCultureIgnoreCase) && !line.TarrifType.Equals(ExchangeRateTypes.Manual, StringComparison.InvariantCultureIgnoreCase))
+                                                    if (string.IsNullOrEmpty(line.TarrifType))
                                                     {
-                                                        modelState.AddErrors("TarrifType", $"Invalid Tarrif Type {line.TarrifType}");
-                                                    }
-                                                    else
-                                                    {
-                                                        if(line.TarrifType.Equals(ExchangeRateTypes.System, StringComparison.InvariantCultureIgnoreCase))
+                                                        if (line.TarrifPercentage == null)
                                                         {
                                                             pline.TarrifType = ExchangeRateTypes.System;
-                                                            pline.TarrrifPercentage = null;
                                                         }
                                                         else
                                                         {
-                                                            if(line.TarrifPercentage==null || line.TarrifPercentage < 0)
+                                                            pline.TarrifType = ExchangeRateTypes.Manual;
+                                                            pline.TarrrifPercentage = line.TarrifPercentage;
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        if (!line.TarrifType.Equals(ExchangeRateTypes.System, StringComparison.InvariantCultureIgnoreCase) && !line.TarrifType.Equals(ExchangeRateTypes.Manual, StringComparison.InvariantCultureIgnoreCase))
+                                                        {
+                                                            modelState.AddErrors("TarrifType", $"Invalid Tarrif Type {line.TarrifType}");
+                                                        }
+                                                        else
+                                                        {
+                                                            if (line.TarrifType.Equals(ExchangeRateTypes.System, StringComparison.InvariantCultureIgnoreCase))
                                                             {
-                                                                modelState.AddErrors("TarrifPercentage", $"Invalid Tarrrif Percentage {line.TarrifPercentage}");
+                                                                pline.TarrifType = ExchangeRateTypes.System;
+                                                                pline.TarrrifPercentage = null;
                                                             }
                                                             else
                                                             {
-                                                                pline.TarrrifPercentage = line.TarrifPercentage;
+                                                                if (line.TarrifPercentage == null || line.TarrifPercentage < 0)
+                                                                {
+                                                                    modelState.AddErrors("TarrifPercentage", $"Invalid Tarrrif Percentage {line.TarrifPercentage}");
+                                                                }
+                                                                else
+                                                                {
+                                                                    pline.TarrrifPercentage = line.TarrifPercentage;
+                                                                    if (pline.TarrrifPercentage != null)
+                                                                        pline.TarrifType = ExchangeRateTypes.Manual;
+                                                                }
                                                             }
                                                         }
                                                     }
+                                                    
                                                 }
                                             }
                                             else
@@ -529,10 +547,12 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                     predicate: l => l.ItemId == item.Id && l.PriceList.AccountingPeriod.Id == accountingPeriod.Id,
                     include:query=>query.Include(x=>x.Currency).Include(x=>x.Item))
                 .FirstOrDefault();
+            if (line == null)
+                return null;
             Currency currency = _unitOfWork.CurrencyRepository.Find(predicate: c => c.IsDefaultCompanyCurrency).FirstOrDefault();
             PriceListLineViewModel priceListLineViewModel = new PriceListLineViewModel(line);
             if (priceListLineViewModel.TarrifPercentage == null)
-                priceListLineViewModel.TarrifPercentage = line.Item.CustomsTarrifPercentage;
+                priceListLineViewModel.TarrifPercentage = line?.Item?.CustomsTarrifPercentage;
             else
                 priceListLineViewModel.TarrifPercentage = line.TarrrifPercentage;
             if (priceListLineViewModel.CurrencyExchangeRate == null && priceListLineViewModel.CurrencyExchangeRateType == ExchangeRateTypes.System && currency.Id != line.CurrencyId)

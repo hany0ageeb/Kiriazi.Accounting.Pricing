@@ -31,14 +31,14 @@ namespace Kiriazi.Accounting.Pricing.Views
         {
             this.components = new System.ComponentModel.Container();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.label6 = new System.Windows.Forms.Label();
-            this.txtEmployeeName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
             this.txtUserName = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.txtEmployeeName = new System.Windows.Forms.TextBox();
             this.cboUserStates = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.cboAccountTypes = new System.Windows.Forms.ComboBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
@@ -69,23 +69,6 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.tableLayoutPanel1.Size = new System.Drawing.Size(862, 162);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(3, 120);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(107, 15);
-            this.label6.TabIndex = 10;
-            this.label6.Text = "User Account Type";
-            // 
-            // txtEmployeeName
-            // 
-            this.txtEmployeeName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.txtEmployeeName.Location = new System.Drawing.Point(167, 43);
-            this.txtEmployeeName.Name = "txtEmployeeName";
-            this.txtEmployeeName.Size = new System.Drawing.Size(641, 23);
-            this.txtEmployeeName.TabIndex = 8;
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -94,6 +77,14 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.label1.Size = new System.Drawing.Size(70, 15);
             this.label1.TabIndex = 0;
             this.label1.Text = "User Name*";
+            // 
+            // txtUserName
+            // 
+            this.txtUserName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.txtUserName.Location = new System.Drawing.Point(167, 3);
+            this.txtUserName.Name = "txtUserName";
+            this.txtUserName.Size = new System.Drawing.Size(641, 23);
+            this.txtUserName.TabIndex = 5;
             // 
             // label4
             // 
@@ -104,22 +95,13 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.label4.TabIndex = 3;
             this.label4.Text = "Employee Name*";
             // 
-            // label5
+            // txtEmployeeName
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(3, 80);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(65, 15);
-            this.label5.TabIndex = 4;
-            this.label5.Text = "User State*";
-            // 
-            // txtUserName
-            // 
-            this.txtUserName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.txtUserName.Location = new System.Drawing.Point(167, 3);
-            this.txtUserName.Name = "txtUserName";
-            this.txtUserName.Size = new System.Drawing.Size(641, 23);
-            this.txtUserName.TabIndex = 5;
+            this.txtEmployeeName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.txtEmployeeName.Location = new System.Drawing.Point(167, 43);
+            this.txtEmployeeName.Name = "txtEmployeeName";
+            this.txtEmployeeName.Size = new System.Drawing.Size(641, 23);
+            this.txtEmployeeName.TabIndex = 8;
             // 
             // cboUserStates
             // 
@@ -132,6 +114,15 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.cboUserStates.Size = new System.Drawing.Size(641, 23);
             this.cboUserStates.TabIndex = 9;
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(3, 80);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(65, 15);
+            this.label5.TabIndex = 4;
+            this.label5.Text = "User State*";
+            // 
             // cboAccountTypes
             // 
             this.cboAccountTypes.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
@@ -142,6 +133,15 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.cboAccountTypes.Name = "cboAccountTypes";
             this.cboAccountTypes.Size = new System.Drawing.Size(641, 23);
             this.cboAccountTypes.TabIndex = 11;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(3, 120);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(107, 15);
+            this.label6.TabIndex = 10;
+            this.label6.Text = "User Account Type";
             // 
             // btnClose
             // 
@@ -181,6 +181,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "UserEditView";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Edit User";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.UserEditView_FormClosing);
             this.tableLayoutPanel1.ResumeLayout(false);

@@ -46,7 +46,6 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(824, 463);
             this.dataGridView1.TabIndex = 0;
-            
             // 
             // btnSave
             // 
@@ -79,7 +78,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             // deleteRowToolStripMenuItem
             // 
             this.deleteRowToolStripMenuItem.Name = "deleteRowToolStripMenuItem";
-            this.deleteRowToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.deleteRowToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
             this.deleteRowToolStripMenuItem.Text = "Delete Row";
             // 
             // CustomerPricingRuleEditView
@@ -94,6 +93,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "CustomerPricingRuleEditView";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Pricing Rules - ";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CustomerPricingRuleEditView_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();

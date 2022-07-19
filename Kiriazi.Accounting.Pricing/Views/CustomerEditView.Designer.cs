@@ -31,9 +31,9 @@ namespace Kiriazi.Accounting.Pricing.Views
         {
             this.components = new System.ComponentModel.Container();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.txtName = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.txtDescription = new System.Windows.Forms.TextBox();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
@@ -59,6 +59,15 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.tableLayoutPanel1.Size = new System.Drawing.Size(709, 181);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(3, 37);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(68, 15);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "Description";
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -76,15 +85,6 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.txtName.Name = "txtName";
             this.txtName.Size = new System.Drawing.Size(535, 25);
             this.txtName.TabIndex = 3;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 37);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(68, 15);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "Description";
             // 
             // txtDescription
             // 
@@ -133,6 +133,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "CustomerEditView";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Customer";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CustomerEditView_FormClosing);
             this.tableLayoutPanel1.ResumeLayout(false);

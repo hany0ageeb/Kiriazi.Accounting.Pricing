@@ -79,7 +79,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.57604F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 74.42397F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 121F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 371F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 372F));
             this.tableLayoutPanel1.Controls.Add(this.btnSearch, 3, 2);
             this.tableLayoutPanel1.Controls.Add(this.label5, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.txtAlias, 3, 1);
@@ -122,7 +122,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             // 
             // txtAlias
             // 
-            this.txtAlias.Location = new System.Drawing.Point(692, 35);
+            this.txtAlias.Location = new System.Drawing.Point(691, 35);
             this.txtAlias.Name = "txtAlias";
             this.txtAlias.Size = new System.Drawing.Size(326, 23);
             this.txtAlias.TabIndex = 7;
@@ -130,7 +130,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(571, 32);
+            this.label4.Location = new System.Drawing.Point(570, 32);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(67, 15);
             this.label4.TabIndex = 6;
@@ -138,7 +138,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             // 
             // txtEnglishName
             // 
-            this.txtEnglishName.Location = new System.Drawing.Point(692, 3);
+            this.txtEnglishName.Location = new System.Drawing.Point(691, 3);
             this.txtEnglishName.Name = "txtEnglishName";
             this.txtEnglishName.Size = new System.Drawing.Size(326, 23);
             this.txtEnglishName.TabIndex = 5;
@@ -146,7 +146,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(571, 0);
+            this.label3.Location = new System.Drawing.Point(570, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(80, 15);
             this.label3.TabIndex = 4;

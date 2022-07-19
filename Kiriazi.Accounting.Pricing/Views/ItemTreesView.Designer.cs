@@ -67,7 +67,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 77.08895F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 47F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 312F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 122F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 123F));
             this.tableLayoutPanel1.Controls.Add(this.cboItems, 3, 0);
             this.tableLayoutPanel1.Controls.Add(this.label2, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
@@ -85,7 +85,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.cboItems.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cboItems.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cboItems.FormattingEnabled = true;
-            this.cboItems.Location = new System.Drawing.Point(424, 3);
+            this.cboItems.Location = new System.Drawing.Point(423, 3);
             this.cboItems.Name = "cboItems";
             this.cboItems.Size = new System.Drawing.Size(292, 23);
             this.cboItems.TabIndex = 3;
@@ -93,7 +93,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(377, 0);
+            this.label2.Location = new System.Drawing.Point(376, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(31, 15);
             this.label2.TabIndex = 2;
@@ -115,12 +115,12 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.cboCompanies.FormattingEnabled = true;
             this.cboCompanies.Location = new System.Drawing.Point(88, 3);
             this.cboCompanies.Name = "cboCompanies";
-            this.cboCompanies.Size = new System.Drawing.Size(283, 23);
+            this.cboCompanies.Size = new System.Drawing.Size(282, 23);
             this.cboCompanies.TabIndex = 1;
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(736, 3);
+            this.btnSearch.Location = new System.Drawing.Point(735, 3);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(109, 34);
             this.btnSearch.TabIndex = 4;
@@ -200,6 +200,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "ItemTreesView";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Trees";
             this.flowLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);

@@ -175,7 +175,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             }
             else if (currentRow != null && currentRow.Index >= 0 && currentRow.Index < _priceListLines.Count)
             {
-                if (_priceListController.CanChangePriceList(_priceListLines[currentRow.Index].PriceListId))
+                if (_priceListController.CanChangePriceList(_priceListLines[currentRow.Index].PriceListId.Value))
                 {
                     btnDelete.Enabled = false;
                     btnEdit.Enabled = true;
@@ -313,7 +313,7 @@ namespace Kiriazi.Accounting.Pricing.Views
                 }
                 else if (_priceListLines.Count > 0)
                 {
-                    var model = _priceListController.Edit(_priceListLines[dataGridView1.CurrentRow.Index].PriceListId);
+                    var model = _priceListController.Edit(_priceListLines[dataGridView1.CurrentRow.Index].PriceListId.Value);
                     var line = model.Lines.Where(l => l.ItemCode == _priceListLines[dataGridView1.CurrentRow.Index].ItemCode).FirstOrDefault();
                     if (line != null)
                     {

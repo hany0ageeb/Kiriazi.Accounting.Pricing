@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Kiriazi.Accounting.Pricing.Views
@@ -57,6 +51,15 @@ namespace Kiriazi.Accounting.Pricing.Views
             cboCustomers.ValueMember = nameof(_model.Customer.Self);
             cboCustomers.DataBindings.Add(new Binding(nameof(cboCustomers.SelectedItem), _model, nameof(_model.Customer))
             {
+                DataSourceUpdateMode = DataSourceUpdateMode.OnPropertyChanged
+            });
+            //
+            cboGroups.DataBindings.Clear();
+            cboGroups.DataSource = _model.Groups;
+            cboGroups.DisplayMember = nameof(_model.Group.Name);
+            cboGroups.ValueMember = nameof(_model.Group.Self);
+            cboGroups.DataBindings.Add(new Binding(nameof(cboGroups.SelectedItem),_model,nameof(_model.Group)) 
+            { 
                 DataSourceUpdateMode = DataSourceUpdateMode.OnPropertyChanged
             });
             //
@@ -189,12 +192,22 @@ namespace Kiriazi.Accounting.Pricing.Views
                 btnShowPricingRules.Enabled = true;
             }
         }
-
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            Search();
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+                Search();
+            }
+            catch(Common.NoAvailableCurrencyExchangeRateException ex)
+            {
+                _ = MessageBox.Show(this, ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
         }
-
         private void btnShowPricingRules_Click(object sender, EventArgs e)
         {
             int? index = dataGridView1.CurrentRow?.Index;
@@ -206,7 +219,6 @@ namespace Kiriazi.Accounting.Pricing.Views
                 }
             }
         }
-
         private void btnShowComponents_Click(object sender, EventArgs e)
         {
             int? index = dataGridView1.CurrentRow?.Index;

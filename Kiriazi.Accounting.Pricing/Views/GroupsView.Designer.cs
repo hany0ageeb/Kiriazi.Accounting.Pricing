@@ -33,8 +33,8 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.btnClose = new System.Windows.Forms.Button();
-            this.btnNew = new System.Windows.Forms.Button();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
+            this.btnNew = new System.Windows.Forms.Button();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.flowLayoutPanel2.SuspendLayout();
@@ -84,6 +84,14 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.button1_Click);
             // 
+            // flowLayoutPanel3
+            // 
+            this.flowLayoutPanel3.Controls.Add(this.btnNew);
+            this.flowLayoutPanel3.Location = new System.Drawing.Point(9, 3);
+            this.flowLayoutPanel3.Name = "flowLayoutPanel3";
+            this.flowLayoutPanel3.Size = new System.Drawing.Size(630, 41);
+            this.flowLayoutPanel3.TabIndex = 2;
+            // 
             // btnNew
             // 
             this.btnNew.Location = new System.Drawing.Point(3, 3);
@@ -93,14 +101,6 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.btnNew.Text = "New Group...";
             this.btnNew.UseVisualStyleBackColor = true;
             this.btnNew.Click += new System.EventHandler(this.btnNew_Click);
-            // 
-            // flowLayoutPanel3
-            // 
-            this.flowLayoutPanel3.Controls.Add(this.btnNew);
-            this.flowLayoutPanel3.Location = new System.Drawing.Point(9, 3);
-            this.flowLayoutPanel3.Name = "flowLayoutPanel3";
-            this.flowLayoutPanel3.Size = new System.Drawing.Size(630, 41);
-            this.flowLayoutPanel3.TabIndex = 2;
             // 
             // GroupsView
             // 
@@ -112,6 +112,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MaximizeBox = false;
             this.Name = "GroupsView";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Groups";
             this.flowLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();

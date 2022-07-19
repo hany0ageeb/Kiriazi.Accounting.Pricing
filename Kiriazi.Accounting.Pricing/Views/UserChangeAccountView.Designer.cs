@@ -31,14 +31,14 @@ namespace Kiriazi.Accounting.Pricing.Views
         {
             this.components = new System.ComponentModel.Container();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.txtConfirmPassword = new System.Windows.Forms.TextBox();
+            this.txtNewPassword = new System.Windows.Forms.TextBox();
+            this.txtOldPassword = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.txtUserName = new System.Windows.Forms.TextBox();
-            this.txtOldPassword = new System.Windows.Forms.TextBox();
-            this.txtNewPassword = new System.Windows.Forms.TextBox();
-            this.txtConfirmPassword = new System.Windows.Forms.TextBox();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.btnSave = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
@@ -68,6 +68,33 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(713, 163);
             this.tableLayoutPanel1.TabIndex = 0;
+            // 
+            // txtConfirmPassword
+            // 
+            this.txtConfirmPassword.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.txtConfirmPassword.Location = new System.Drawing.Point(140, 123);
+            this.txtConfirmPassword.Name = "txtConfirmPassword";
+            this.txtConfirmPassword.PasswordChar = '*';
+            this.txtConfirmPassword.Size = new System.Drawing.Size(537, 23);
+            this.txtConfirmPassword.TabIndex = 7;
+            // 
+            // txtNewPassword
+            // 
+            this.txtNewPassword.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.txtNewPassword.Location = new System.Drawing.Point(140, 83);
+            this.txtNewPassword.Name = "txtNewPassword";
+            this.txtNewPassword.PasswordChar = '*';
+            this.txtNewPassword.Size = new System.Drawing.Size(537, 23);
+            this.txtNewPassword.TabIndex = 6;
+            // 
+            // txtOldPassword
+            // 
+            this.txtOldPassword.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.txtOldPassword.Location = new System.Drawing.Point(140, 43);
+            this.txtOldPassword.Name = "txtOldPassword";
+            this.txtOldPassword.PasswordChar = '*';
+            this.txtOldPassword.Size = new System.Drawing.Size(537, 23);
+            this.txtOldPassword.TabIndex = 5;
             // 
             // label1
             // 
@@ -113,33 +140,6 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.txtUserName.Size = new System.Drawing.Size(537, 23);
             this.txtUserName.TabIndex = 4;
             // 
-            // txtOldPassword
-            // 
-            this.txtOldPassword.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.txtOldPassword.Location = new System.Drawing.Point(140, 43);
-            this.txtOldPassword.Name = "txtOldPassword";
-            this.txtOldPassword.PasswordChar = '*';
-            this.txtOldPassword.Size = new System.Drawing.Size(537, 23);
-            this.txtOldPassword.TabIndex = 5;
-            // 
-            // txtNewPassword
-            // 
-            this.txtNewPassword.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.txtNewPassword.Location = new System.Drawing.Point(140, 83);
-            this.txtNewPassword.Name = "txtNewPassword";
-            this.txtNewPassword.PasswordChar = '*';
-            this.txtNewPassword.Size = new System.Drawing.Size(537, 23);
-            this.txtNewPassword.TabIndex = 6;
-            // 
-            // txtConfirmPassword
-            // 
-            this.txtConfirmPassword.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.txtConfirmPassword.Location = new System.Drawing.Point(140, 123);
-            this.txtConfirmPassword.Name = "txtConfirmPassword";
-            this.txtConfirmPassword.PasswordChar = '*';
-            this.txtConfirmPassword.Size = new System.Drawing.Size(537, 23);
-            this.txtConfirmPassword.TabIndex = 7;
-            // 
             // errorProvider1
             // 
             this.errorProvider1.ContainerControl = this;
@@ -177,6 +177,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "UserChangeAccountView";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "My Account";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.UserChangeAccountView_FormClosing);
             this.tableLayoutPanel1.ResumeLayout(false);

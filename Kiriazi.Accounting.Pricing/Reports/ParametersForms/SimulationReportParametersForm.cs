@@ -18,7 +18,7 @@ namespace Kiriazi.Accounting.Pricing.Reports.ParametersForms
         private readonly Controllers.AccountingPeriodController _accountingPeriodController;
         private readonly Controllers.PriceListController _priceListController;
         private readonly Controllers.CurrencyExchangeRateController _currencyExchangeRateController;
-        private BindingList<Models.CustomerPricingRule> _periodRules = new BindingList<Models.CustomerPricingRule>();
+        private BindingList<CustomerPricingRule> _periodRules = new BindingList<CustomerPricingRule>();
         
         private readonly AutoCompleteStringCollection _autoCompleteSource = new AutoCompleteStringCollection();
         public SimulationReportParametersForm(Controllers.AccountingPeriodController accountingPeriodController, 
@@ -80,11 +80,7 @@ namespace Kiriazi.Accounting.Pricing.Reports.ParametersForms
                 DataSourceUpdateMode = DataSourceUpdateMode.OnValidation
             });
             //
-            txtCurencyCode.DataBindings.Clear();
-            txtCurencyCode.DataBindings.Add(new Binding(nameof(txtCurencyCode.Text),_model,nameof(_model.CurrentCurrencyCode))
-            {
-                DataSourceUpdateMode = DataSourceUpdateMode.OnPropertyChanged
-            });
+           
             //
             dataGridViewCurrentRules.AllowUserToAddRows = false;
             dataGridViewCurrentRules.AllowUserToDeleteRows = false;
@@ -581,7 +577,7 @@ namespace Kiriazi.Accounting.Pricing.Reports.ParametersForms
                     _periodRules.Add(rule);
                 }
             }
-            
+
         }
         private void SelectedItemChanged(int idx,int prdIdx)
         {
@@ -590,9 +586,9 @@ namespace Kiriazi.Accounting.Pricing.Reports.ParametersForms
                 var line = _priceListController.Find(_model.Items[idx], _model.AccountingPeriods[prdIdx]);
                 if (line != null)
                 {
-                    
+                    txtCurencyCode.Text = line.CurrencyCode;
                     _model.CurrentCurrencyCode = line.CurrencyCode;
-                    txtUnitPrice.Text = line.UnitPrice.ToString("#0.##");
+                    txtUnitPrice.Text = line.UnitPrice.Value.ToString("#0.##");
                     _model.CurrentUnitPrice = line.UnitPrice;
                     txtRate.Text = line.CurrencyExchangeRate?.ToString("#0.##") ?? "";
                     _model.CurrentExchangeRate = line.CurrencyExchangeRate;
@@ -601,7 +597,8 @@ namespace Kiriazi.Accounting.Pricing.Reports.ParametersForms
                 }
                 else
                 {
-                    _model.CurrentCurrencyCode = "";
+                    txtCurencyCode.Text = "";
+                   _model.CurrentCurrencyCode = "";
                     txtUnitPrice.Text = "";
                     _model.CurrentUnitPrice = null;
                     txtRate.Text = "";
@@ -747,11 +744,27 @@ namespace Kiriazi.Accounting.Pricing.Reports.ParametersForms
                 _ = MessageBox.Show(this, "Invalid Proposed Unit Price","Error");
                 return;
             }
-            var data = _accountingPeriodController.GenerateSimulationReportData(_model);
-            var currentRules = _periodRules.Select(
-                r => new ViewModels.CustomerPricingRuleViewModel()
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+                var data = _accountingPeriodController.GenerateSimulationReportData(_model);
+                var currentRules = _periodRules.Select(
+                    r => new ViewModels.CustomerPricingRuleViewModel()
+                    {
+                        AccountingPeriodName = r.AccountingPeriod.Name,
+                        Amount = r.Amount,
+                        AmountType = r.RuleAmountType,
+                        CompanyName = r.Company?.Name,
+                        GroupName = r.Group?.Name,
+                        CustomerName = r.Customer?.Name,
+                        IncrementDecrement = r.IncrementDecrement,
+                        ItemCode = r.Item?.Code,
+                        ItemTypeName = r.ItemType?.Name,
+                        RuleType = r.RuleType
+                    }).ToList();
+                var proposedRules = _model.PropsedPricingRules.Select(r => new ViewModels.CustomerPricingRuleViewModel()
                 {
-                    AccountingPeriodName  = r.AccountingPeriod.Name,
+                    AccountingPeriodName = r.AccountingPeriod?.Name,
                     Amount = r.Amount,
                     AmountType = r.RuleAmountType,
                     CompanyName = r.Company?.Name,
@@ -762,23 +775,19 @@ namespace Kiriazi.Accounting.Pricing.Reports.ParametersForms
                     ItemTypeName = r.ItemType?.Name,
                     RuleType = r.RuleType
                 }).ToList();
-            var proposedRules = _model.PropsedPricingRules.Select(r => new ViewModels.CustomerPricingRuleViewModel()
+                ReportsForms.SimulationReportForm simulationReportForm = new ReportsForms.SimulationReportForm(data, currentRules, proposedRules);
+                simulationReportForm.MdiParent = this.MdiParent;
+                simulationReportForm.Show();
+                Close();
+            }
+            catch(Exception ex)
             {
-                AccountingPeriodName = r.AccountingPeriod?.Name,
-                Amount = r.Amount,
-                AmountType = r.RuleAmountType,
-                CompanyName = r.Company?.Name,
-                GroupName = r.Group?.Name,
-                CustomerName = r.Customer?.Name,
-                IncrementDecrement = r.IncrementDecrement,
-                ItemCode = r.Item?.Code,
-                ItemTypeName = r.ItemType?.Name,
-                RuleType = r.RuleType
-            }).ToList();
-            ReportsForms.SimulationReportForm simulationReportForm = new ReportsForms.SimulationReportForm(data, currentRules, proposedRules);
-            simulationReportForm.MdiParent = this.MdiParent;
-            simulationReportForm.Show();
-            Close();
+                _ = MessageBox.Show(this, ex.Message, "Error");
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
         }
     }
 }

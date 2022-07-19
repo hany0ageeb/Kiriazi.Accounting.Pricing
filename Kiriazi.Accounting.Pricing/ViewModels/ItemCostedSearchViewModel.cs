@@ -9,6 +9,7 @@ namespace Kiriazi.Accounting.Pricing.ViewModels
         private Customer _customer;
         private AccountingPeriod _accountingPeriod;
         private Item _item;
+        private Group _group;
         private decimal _quantity = 1;
         public Company Company
         {
@@ -58,11 +59,24 @@ namespace Kiriazi.Accounting.Pricing.ViewModels
                 }
             }
         }
+        public Group Group
+        {
+            get => _group;
+            set
+            {
+                if (_group != value)
+                {
+                    _group = value;
+                    OnPropertyChanged(nameof(Group));
+                }
+            }
+        }
         public List<Customer> Customers { get; set; }
         public List<AccountingPeriod> AccountingPeriods { get; set; }
         public List<Company> Companies { get; set; }
         public List<Item> Items { get; set; }
 
+        public List<Group> Groups { get; set; }
         public decimal Quantity
         {
             get => _quantity;
