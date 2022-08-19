@@ -18,7 +18,7 @@ namespace Kiriazi.Accounting.Pricing.Reports.ParametersForms
         private readonly Controllers.AccountingPeriodController _accountingPeriodController;
         private readonly Controllers.PriceListController _priceListController;
         private readonly Controllers.CurrencyExchangeRateController _currencyExchangeRateController;
-        private BindingList<Models.CustomerPricingRule> _periodRules = new BindingList<Models.CustomerPricingRule>();
+        private BindingList<CustomerPricingRule> _periodRules = new BindingList<CustomerPricingRule>();
         
         private readonly AutoCompleteStringCollection _autoCompleteSource = new AutoCompleteStringCollection();
         public SimulationReportParametersForm(Controllers.AccountingPeriodController accountingPeriodController, 
@@ -80,11 +80,7 @@ namespace Kiriazi.Accounting.Pricing.Reports.ParametersForms
                 DataSourceUpdateMode = DataSourceUpdateMode.OnValidation
             });
             //
-            txtCurencyCode.DataBindings.Clear();
-            txtCurencyCode.DataBindings.Add(new Binding(nameof(txtCurencyCode.Text),_model,nameof(_model.CurrentCurrencyCode))
-            {
-                DataSourceUpdateMode = DataSourceUpdateMode.OnPropertyChanged
-            });
+           
             //
             dataGridViewCurrentRules.AllowUserToAddRows = false;
             dataGridViewCurrentRules.AllowUserToDeleteRows = false;
@@ -581,7 +577,7 @@ namespace Kiriazi.Accounting.Pricing.Reports.ParametersForms
                     _periodRules.Add(rule);
                 }
             }
-            
+
         }
         private void SelectedItemChanged(int idx,int prdIdx)
         {

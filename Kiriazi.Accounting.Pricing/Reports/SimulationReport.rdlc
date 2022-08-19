@@ -6,7 +6,7 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>2.5cm</Width>
+              <Width>2.56584cm</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>2.5cm</Width>
@@ -15,13 +15,13 @@
               <Width>3.18792cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>4.76187cm</Width>
+              <Width>4.47681cm</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>1.40354cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.60042cm</Width>
+              <Width>1.8502cm</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>2.5cm</Width>
@@ -44,10 +44,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>Company </Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox1</rd:DefaultName>
@@ -56,6 +60,7 @@
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
+                        <BackgroundColor>LightGrey</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -74,10 +79,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>Customer</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox3</rd:DefaultName>
@@ -86,6 +95,7 @@
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
+                        <BackgroundColor>LightGrey</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -104,10 +114,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value> Item Code</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox5</rd:DefaultName>
@@ -116,6 +130,7 @@
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
+                        <BackgroundColor>LightGrey</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -134,10 +149,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>Item Description</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox7</rd:DefaultName>
@@ -146,6 +165,7 @@
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
+                        <BackgroundColor>LightGrey</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -164,10 +184,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>Uom</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox9</rd:DefaultName>
@@ -176,6 +200,7 @@
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
+                        <BackgroundColor>LightGrey</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -194,10 +219,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>Currency</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox12</rd:DefaultName>
@@ -206,6 +235,7 @@
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
+                        <BackgroundColor>LightGrey</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -224,10 +254,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>Cost Period</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox14</rd:DefaultName>
@@ -236,6 +270,7 @@
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
+                        <BackgroundColor>LightGrey</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -254,10 +289,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>Simulation Cost</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox16</rd:DefaultName>
@@ -266,6 +305,7 @@
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
+                        <BackgroundColor>LightGrey</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -289,10 +329,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!CompanyName.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>CompanyName</rd:DefaultName>
@@ -319,10 +363,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!CustomerName.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>CustomerName</rd:DefaultName>
@@ -349,10 +397,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!ManufacturedItemCode.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>ManufacturedItemCode</rd:DefaultName>
@@ -379,10 +431,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!ManufacturedItemDescription.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>ManufacturedItemDescription</rd:DefaultName>
@@ -409,10 +465,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!ManufacturedItemUomCode.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>ManufacturedItemUomCode</rd:DefaultName>
@@ -439,10 +499,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!CompanyCurrencyCode.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>CompanyCurrencyCode</rd:DefaultName>
@@ -469,10 +533,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!ManufacturedItemPeriodUnitPrice.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>ManufacturedItemPeriodUnitPrice</rd:DefaultName>
@@ -499,10 +567,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!ProposedManufacturedItemUnitPrice.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>ProposedManufacturedItemUnitPrice</rd:DefaultName>
@@ -546,10 +618,10 @@
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>SimulationReportDataViewModel</DataSetName>
-        <Top>7.72266cm</Top>
+        <Top>10.7571cm</Top>
         <Left>0.44662cm</Left>
         <Height>1.835cm</Height>
-        <Width>20.95375cm</Width>
+        <Width>20.98431cm</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -564,17 +636,19 @@
             <TextRuns>
               <TextRun>
                 <Value>=First(Fields!RawItemCode.Value, "SimulationReportDataViewModel")</Value>
-                <Style />
+                <Style>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
               </TextRun>
             </TextRuns>
             <Style />
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>RawItemCode</rd:DefaultName>
-        <Top>0.72382cm</Top>
+        <Top>0.56507cm</Top>
         <Left>3.43356cm</Left>
         <Height>0.6cm</Height>
-        <Width>5.20098cm</Width>
+        <Width>4.27494cm</Width>
         <ZIndex>1</ZIndex>
         <Style>
           <Border>
@@ -594,17 +668,19 @@
             <TextRuns>
               <TextRun>
                 <Value>=First(Fields!RawItemDescription.Value, "SimulationReportDataViewModel")</Value>
-                <Style />
+                <Style>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
               </TextRun>
             </TextRuns>
             <Style />
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>RawItemDescription</rd:DefaultName>
-        <Top>1.37823cm</Top>
+        <Top>1.21948cm</Top>
         <Left>3.43356cm</Left>
         <Height>0.6cm</Height>
-        <Width>5.20098cm</Width>
+        <Width>4.27494cm</Width>
         <ZIndex>2</ZIndex>
         <Style>
           <Border>
@@ -624,17 +700,19 @@
             <TextRuns>
               <TextRun>
                 <Value>=First(Fields!RawItemPeriodCurrencyCode.Value, "SimulationReportDataViewModel")</Value>
-                <Style />
+                <Style>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
               </TextRun>
             </TextRuns>
             <Style />
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>RawItemPeriodCurrencyCode</rd:DefaultName>
-        <Top>0.76412cm</Top>
-        <Left>12.6063cm</Left>
+        <Top>0.60537cm</Top>
+        <Left>12.2253cm</Left>
         <Height>0.6cm</Height>
-        <Width>3.42542cm</Width>
+        <Width>3.48891cm</Width>
         <ZIndex>3</ZIndex>
         <Style>
           <Border>
@@ -654,15 +732,17 @@
             <TextRuns>
               <TextRun>
                 <Value>=First(Fields!RawItemPeriodUnitPrice.Value, "SimulationReportDataViewModel")</Value>
-                <Style />
+                <Style>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
               </TextRun>
             </TextRuns>
             <Style />
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>RawItemPeriodUnitPrice</rd:DefaultName>
-        <Top>1.43114cm</Top>
-        <Left>12.53574cm</Left>
+        <Top>1.27239cm</Top>
+        <Left>12.21824cm</Left>
         <Height>0.6cm</Height>
         <Width>3.49597cm</Width>
         <ZIndex>4</ZIndex>
@@ -684,17 +764,19 @@
             <TextRuns>
               <TextRun>
                 <Value>=First(Fields!RawItemUomCode.Value, "SimulationReportDataViewModel")</Value>
-                <Style />
+                <Style>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
               </TextRun>
             </TextRuns>
             <Style />
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>RawItemUomCode</rd:DefaultName>
-        <Top>2.02762cm</Top>
+        <Top>1.86887cm</Top>
         <Left>3.43356cm</Left>
         <Height>0.6cm</Height>
-        <Width>5.20098cm</Width>
+        <Width>4.27494cm</Width>
         <ZIndex>5</ZIndex>
         <Style>
           <Border>
@@ -714,17 +796,19 @@
             <TextRuns>
               <TextRun>
                 <Value>=First(Fields!RawItemPeriodExchangeRate.Value, "SimulationReportDataViewModel")</Value>
-                <Style />
+                <Style>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
               </TextRun>
             </TextRuns>
             <Style />
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>RawItemPeriodExchangeRate</rd:DefaultName>
-        <Top>1.99939cm</Top>
-        <Left>12.60277cm</Left>
+        <Top>1.87239cm</Top>
+        <Left>12.22177cm</Left>
         <Height>0.6cm</Height>
-        <Width>3.39014cm</Width>
+        <Width>3.49244cm</Width>
         <ZIndex>6</ZIndex>
         <Style>
           <Border>
@@ -744,15 +828,17 @@
             <TextRuns>
               <TextRun>
                 <Value>=First(Fields!RawItemPeriodTarrif.Value, "SimulationReportDataViewModel")</Value>
-                <Style />
+                <Style>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
               </TextRun>
             </TextRuns>
             <Style />
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>RawItemPeriodTarrif</rd:DefaultName>
-        <Top>0.69003cm</Top>
-        <Left>19.24085cm</Left>
+        <Top>0.62653cm</Top>
+        <Left>18.92335cm</Left>
         <Height>0.6cm</Height>
         <Width>2.12424cm</Width>
         <ZIndex>7</ZIndex>
@@ -776,7 +862,7 @@
               <Width>2.15604cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.7475cm</Width>
+              <Width>2.16343cm</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>2.31354cm</Width>
@@ -799,7 +885,7 @@
           </TablixColumns>
           <TablixRows>
             <TablixRow>
-              <Height>0.81167cm</Height>
+              <Height>1.0498cm</Height>
               <TablixCells>
                 <TablixCell>
                   <CellContents>
@@ -811,10 +897,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>Rule Type</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox25</rd:DefaultName>
@@ -823,6 +913,7 @@
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
+                        <BackgroundColor>LightGrey</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -841,10 +932,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>Customer Name</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox27</rd:DefaultName>
@@ -853,6 +948,7 @@
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
+                        <BackgroundColor>LightGrey</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -871,10 +967,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>Company Name</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox29</rd:DefaultName>
@@ -883,6 +983,7 @@
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
+                        <BackgroundColor>LightGrey</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -901,10 +1002,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>Group Name</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox37</rd:DefaultName>
@@ -913,6 +1018,7 @@
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
+                        <BackgroundColor>LightGrey</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -931,10 +1037,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>Item Type Name</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox39</rd:DefaultName>
@@ -943,6 +1053,7 @@
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
+                        <BackgroundColor>LightGrey</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -961,10 +1072,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>Item Code</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox41</rd:DefaultName>
@@ -973,6 +1088,7 @@
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
+                        <BackgroundColor>LightGrey</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -991,10 +1107,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>Increment Decrement</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox43</rd:DefaultName>
@@ -1003,6 +1123,7 @@
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
+                        <BackgroundColor>LightGrey</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -1021,10 +1142,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>Amount Type</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox45</rd:DefaultName>
@@ -1033,6 +1158,7 @@
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
+                        <BackgroundColor>LightGrey</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -1051,10 +1177,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>Amount</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox47</rd:DefaultName>
@@ -1063,6 +1193,7 @@
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
+                        <BackgroundColor>LightGrey</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -1086,10 +1217,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!RuleType.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>RuleType</rd:DefaultName>
@@ -1116,10 +1251,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!CustomerName.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>CustomerName1</rd:DefaultName>
@@ -1146,10 +1285,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!CompanyName.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>CompanyName1</rd:DefaultName>
@@ -1176,10 +1319,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!GroupName.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>GroupName</rd:DefaultName>
@@ -1206,10 +1353,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!ItemTypeName.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>ItemTypeName</rd:DefaultName>
@@ -1236,10 +1387,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!ItemCode.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>ItemCode</rd:DefaultName>
@@ -1266,10 +1421,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!IncrementDecrement.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>IncrementDecrement</rd:DefaultName>
@@ -1296,10 +1455,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!AmountType.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>AmountType</rd:DefaultName>
@@ -1326,10 +1489,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!Amount.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Amount</rd:DefaultName>
@@ -1376,8 +1543,8 @@
         <DataSetName>AccountingPeriodCustomePricingRules</DataSetName>
         <Top>3.85974cm</Top>
         <Left>0.44662cm</Left>
-        <Height>1.41167cm</Height>
-        <Width>19.57541cm</Width>
+        <Height>1.6498cm</Height>
+        <Width>19.99134cm</Width>
         <ZIndex>8</ZIndex>
         <Style>
           <Border>
@@ -1395,7 +1562,7 @@
               <Width>2.15604cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.7475cm</Width>
+              <Width>2.33665cm</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>2.31354cm</Width>
@@ -1430,10 +1597,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>Rule Type</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox25</rd:DefaultName>
@@ -1442,6 +1613,7 @@
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
+                        <BackgroundColor>LightGrey</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -1460,10 +1632,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>Customer Name</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox27</rd:DefaultName>
@@ -1472,6 +1648,7 @@
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
+                        <BackgroundColor>LightGrey</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -1490,10 +1667,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>Company Name</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox29</rd:DefaultName>
@@ -1502,6 +1683,7 @@
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
+                        <BackgroundColor>LightGrey</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -1520,10 +1702,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>Group Name</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox49</rd:DefaultName>
@@ -1532,6 +1718,7 @@
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
+                        <BackgroundColor>LightGrey</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -1550,10 +1737,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>Item Type Name</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox51</rd:DefaultName>
@@ -1562,6 +1753,7 @@
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
+                        <BackgroundColor>LightGrey</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -1580,10 +1772,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>Item Code</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox53</rd:DefaultName>
@@ -1592,6 +1788,7 @@
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
+                        <BackgroundColor>LightGrey</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -1610,10 +1807,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>Increment Decrement</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox55</rd:DefaultName>
@@ -1622,6 +1823,7 @@
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
+                        <BackgroundColor>LightGrey</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -1640,10 +1842,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>Amount Type</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox57</rd:DefaultName>
@@ -1652,6 +1858,7 @@
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
+                        <BackgroundColor>LightGrey</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -1670,10 +1877,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>Amount</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox61</rd:DefaultName>
@@ -1682,6 +1893,7 @@
                           <Color>LightGrey</Color>
                           <Style>Solid</Style>
                         </Border>
+                        <BackgroundColor>LightGrey</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -1705,10 +1917,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!RuleType.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox26</rd:DefaultName>
@@ -1735,10 +1951,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!CustomerName.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox28</rd:DefaultName>
@@ -1765,10 +1985,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!CompanyName.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox30</rd:DefaultName>
@@ -1795,10 +2019,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!GroupName.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>GroupName1</rd:DefaultName>
@@ -1825,10 +2053,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!ItemTypeName.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>ItemTypeName1</rd:DefaultName>
@@ -1855,10 +2087,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!ItemCode.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>ItemCode1</rd:DefaultName>
@@ -1885,10 +2121,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!IncrementDecrement.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>IncrementDecrement1</rd:DefaultName>
@@ -1915,10 +2155,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!AmountType.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>AmountType1</rd:DefaultName>
@@ -1945,10 +2189,14 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!Amount.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Amount1</rd:DefaultName>
@@ -1993,10 +2241,10 @@
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>ProposedPricingRules</DataSetName>
-        <Top>6.1601cm</Top>
+        <Top>9.29447cm</Top>
         <Left>0.44662cm</Left>
         <Height>1.2cm</Height>
-        <Width>19.57542cm</Width>
+        <Width>20.16456cm</Width>
         <ZIndex>9</ZIndex>
         <Style>
           <Border>
@@ -2012,7 +2260,9 @@
             <TextRuns>
               <TextRun>
                 <Value>Accounting Period Pricing Rules</Value>
-                <Style />
+                <Style>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
               </TextRun>
             </TextRuns>
             <Style />
@@ -2042,14 +2292,18 @@
             <TextRuns>
               <TextRun>
                 <Value>Proposed Pricing Rules</Value>
-                <Style />
+                <Style>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
               </TextRun>
             </TextRuns>
-            <Style />
+            <Style>
+              <TextAlign>Center</TextAlign>
+            </Style>
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox63</rd:DefaultName>
-        <Top>5.52483cm</Top>
+        <Top>8.55336cm</Top>
         <Left>0.44662cm</Left>
         <Height>0.6cm</Height>
         <Width>6.00542cm</Width>
@@ -2072,15 +2326,17 @@
             <TextRuns>
               <TextRun>
                 <Value>Item</Value>
-                <Style />
+                <Style>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
               </TextRun>
             </TextRuns>
             <Style />
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox63</rd:DefaultName>
-        <Top>0.76412cm</Top>
-        <Left>0.72661cm</Left>
+        <Top>0.57362cm</Top>
+        <Left>0.79011cm</Left>
         <Height>0.6cm</Height>
         <Width>2.56584cm</Width>
         <ZIndex>12</ZIndex>
@@ -2088,6 +2344,7 @@
           <Border>
             <Style>None</Style>
           </Border>
+          <BackgroundColor>LightGrey</BackgroundColor>
           <PaddingLeft>2pt</PaddingLeft>
           <PaddingRight>2pt</PaddingRight>
           <PaddingTop>2pt</PaddingTop>
@@ -2102,15 +2359,17 @@
             <TextRuns>
               <TextRun>
                 <Value>Description</Value>
-                <Style />
+                <Style>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
               </TextRun>
             </TextRuns>
             <Style />
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox63</rd:DefaultName>
-        <Top>1.36412cm</Top>
-        <Left>0.72661cm</Left>
+        <Top>1.20537cm</Top>
+        <Left>0.79011cm</Left>
         <Height>0.6cm</Height>
         <Width>2.56584cm</Width>
         <ZIndex>13</ZIndex>
@@ -2118,6 +2377,7 @@
           <Border>
             <Style>None</Style>
           </Border>
+          <BackgroundColor>LightGrey</BackgroundColor>
           <PaddingLeft>2pt</PaddingLeft>
           <PaddingRight>2pt</PaddingRight>
           <PaddingTop>2pt</PaddingTop>
@@ -2132,15 +2392,17 @@
             <TextRuns>
               <TextRun>
                 <Value>Uom</Value>
-                <Style />
+                <Style>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
               </TextRun>
             </TextRuns>
             <Style />
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox63</rd:DefaultName>
-        <Top>2.01351cm</Top>
-        <Left>0.73013cm</Left>
+        <Top>1.85476cm</Top>
+        <Left>0.79363cm</Left>
         <Height>0.6cm</Height>
         <Width>2.56584cm</Width>
         <ZIndex>14</ZIndex>
@@ -2148,6 +2410,7 @@
           <Border>
             <Style>None</Style>
           </Border>
+          <BackgroundColor>LightGrey</BackgroundColor>
           <PaddingLeft>2pt</PaddingLeft>
           <PaddingRight>2pt</PaddingRight>
           <PaddingTop>2pt</PaddingTop>
@@ -2162,15 +2425,19 @@
             <TextRuns>
               <TextRun>
                 <Value>Currency</Value>
-                <Style />
+                <Style>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
               </TextRun>
             </TextRuns>
-            <Style />
+            <Style>
+              <TextAlign>Center</TextAlign>
+            </Style>
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox63</rd:DefaultName>
-        <Top>0.73237cm</Top>
-        <Left>9.89935cm</Left>
+        <Top>0.57362cm</Top>
+        <Left>9.6136cm</Left>
         <Height>0.6cm</Height>
         <Width>2.56584cm</Width>
         <ZIndex>15</ZIndex>
@@ -2178,6 +2445,7 @@
           <Border>
             <Style>None</Style>
           </Border>
+          <BackgroundColor>LightGrey</BackgroundColor>
           <PaddingLeft>2pt</PaddingLeft>
           <PaddingRight>2pt</PaddingRight>
           <PaddingTop>2pt</PaddingTop>
@@ -2192,15 +2460,19 @@
             <TextRuns>
               <TextRun>
                 <Value>Unit Price</Value>
-                <Style />
+                <Style>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
               </TextRun>
             </TextRuns>
-            <Style />
+            <Style>
+              <TextAlign>Center</TextAlign>
+            </Style>
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox63</rd:DefaultName>
-        <Top>1.40292cm</Top>
-        <Left>9.89935cm</Left>
+        <Top>1.24417cm</Top>
+        <Left>9.6136cm</Left>
         <Height>0.6cm</Height>
         <Width>2.56584cm</Width>
         <ZIndex>16</ZIndex>
@@ -2208,6 +2480,7 @@
           <Border>
             <Style>None</Style>
           </Border>
+          <BackgroundColor>LightGrey</BackgroundColor>
           <PaddingLeft>2pt</PaddingLeft>
           <PaddingRight>2pt</PaddingRight>
           <PaddingTop>2pt</PaddingTop>
@@ -2222,15 +2495,19 @@
             <TextRuns>
               <TextRun>
                 <Value>Exchange Rate</Value>
-                <Style />
+                <Style>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
               </TextRun>
             </TextRuns>
-            <Style />
+            <Style>
+              <TextAlign>Center</TextAlign>
+            </Style>
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox63</rd:DefaultName>
-        <Top>2.07348cm</Top>
-        <Left>9.89935cm</Left>
+        <Top>1.91473cm</Top>
+        <Left>9.6136cm</Left>
         <Height>0.6cm</Height>
         <Width>2.56584cm</Width>
         <ZIndex>17</ZIndex>
@@ -2238,6 +2515,7 @@
           <Border>
             <Style>None</Style>
           </Border>
+          <BackgroundColor>LightGrey</BackgroundColor>
           <PaddingLeft>2pt</PaddingLeft>
           <PaddingRight>2pt</PaddingRight>
           <PaddingTop>2pt</PaddingTop>
@@ -2252,18 +2530,55 @@
             <TextRuns>
               <TextRun>
                 <Value>Tarrif</Value>
-                <Style />
+                <Style>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
               </TextRun>
             </TextRuns>
             <Style />
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox63</rd:DefaultName>
-        <Top>0.69003cm</Top>
-        <Left>16.63974cm</Left>
+        <Top>0.62653cm</Top>
+        <Left>16.32224cm</Left>
         <Height>0.6cm</Height>
         <Width>2.56584cm</Width>
         <ZIndex>18</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <BackgroundColor>LightGrey</BackgroundColor>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox72">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>Proposed Item Values</Value>
+                <Style>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style>
+              <TextAlign>Center</TextAlign>
+            </Style>
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox63</rd:DefaultName>
+        <Top>5.79cm</Top>
+        <Left>0.44662cm</Left>
+        <Height>0.6cm</Height>
+        <Width>6.00542cm</Width>
+        <ZIndex>19</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -2274,8 +2589,270 @@
           <PaddingBottom>2pt</PaddingBottom>
         </Style>
       </Textbox>
+      <Textbox Name="RawItemPeriodCurrencyCode2">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>=First(Fields!ProposedRawItemCurrencyCode.Value, "SimulationReportDataViewModel")</Value>
+                <Style>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>RawItemPeriodCurrencyCode</rd:DefaultName>
+        <Top>6.50289cm</Top>
+        <Left>3.09007cm</Left>
+        <Height>0.6cm</Height>
+        <Width>3.42542cm</Width>
+        <ZIndex>20</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="RawItemPeriodUnitPrice2">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>=First(Fields!ProposedRawItemUnitPrice.Value, "SimulationReportDataViewModel")</Value>
+                <Style>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>RawItemPeriodUnitPrice</rd:DefaultName>
+        <Top>7.16991cm</Top>
+        <Left>3.08301cm</Left>
+        <Height>0.6cm</Height>
+        <Width>3.43248cm</Width>
+        <ZIndex>21</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="RawItemPeriodExchangeRate2">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>=First(Fields!ProposedRawItemExchangeRate.Value, "SimulationReportDataViewModel")</Value>
+                <Style>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>RawItemPeriodExchangeRate</rd:DefaultName>
+        <Top>7.76991cm</Top>
+        <Left>3.08654cm</Left>
+        <Height>0.6cm</Height>
+        <Width>3.42895cm</Width>
+        <ZIndex>22</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="RawItemPeriodTarrif2">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>=First(Fields!RawItemPeriodTarrif.Value, "SimulationReportDataViewModel")</Value>
+                <Style>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>RawItemPeriodTarrif</rd:DefaultName>
+        <Top>6.51699cm</Top>
+        <Left>9.78812cm</Left>
+        <Height>0.6cm</Height>
+        <Width>2.12424cm</Width>
+        <ZIndex>23</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox73">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>Currency</Value>
+                <Style>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox63</rd:DefaultName>
+        <Top>6.47114cm</Top>
+        <Left>0.44662cm</Left>
+        <Height>0.6cm</Height>
+        <Width>2.56584cm</Width>
+        <ZIndex>24</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <BackgroundColor>LightGrey</BackgroundColor>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox74">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>Unit Price</Value>
+                <Style>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox63</rd:DefaultName>
+        <Top>7.14169cm</Top>
+        <Left>0.44662cm</Left>
+        <Height>0.6cm</Height>
+        <Width>2.56584cm</Width>
+        <ZIndex>25</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <BackgroundColor>LightGrey</BackgroundColor>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox75">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>Exchange Rate</Value>
+                <Style>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox63</rd:DefaultName>
+        <Top>7.81225cm</Top>
+        <Left>0.44662cm</Left>
+        <Height>0.6cm</Height>
+        <Width>2.56584cm</Width>
+        <ZIndex>26</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <BackgroundColor>LightGrey</BackgroundColor>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox76">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>Tarrif</Value>
+                <Style>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style>
+              <TextAlign>Center</TextAlign>
+            </Style>
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox63</rd:DefaultName>
+        <Top>6.52405cm</Top>
+        <Left>7.18701cm</Left>
+        <Height>0.6cm</Height>
+        <Width>2.56584cm</Width>
+        <ZIndex>27</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <BackgroundColor>LightGrey</BackgroundColor>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
     </ReportItems>
-    <Height>4.61458in</Height>
+    <Height>5.32291in</Height>
     <Style />
   </Body>
   <Width>8.52368in</Width>
