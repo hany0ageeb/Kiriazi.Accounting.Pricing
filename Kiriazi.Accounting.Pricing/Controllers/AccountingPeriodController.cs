@@ -512,17 +512,121 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             }
             return result;
         }
+        public ComparisonOfItemCostReportSearchViewModel GenerateComparisonOfItemCostReport()
+        {
+            ComparisonOfItemCostReportSearchViewModel model = new ComparisonOfItemCostReportSearchViewModel();
+            var allPeriods = _unitOfWork.AccountingPeriodRepository.Find(orderBy: q => q.OrderByDescending(acc => acc.FromDate));
+            if (allPeriods.Count() > 1)
+                model.AccountingPeriods.AddRange(allPeriods.Except(new List<AccountingPeriod>() { allPeriods.LastOrDefault() }));
+            else
+                model.AccountingPeriods.AddRange(allPeriods);
+            if (model.AccountingPeriods.Count > 0)
+                model.AccountingPeriod = model.AccountingPeriods[0];
+            if (Common.Session.CurrentUser.AccountType == UserAccountTypes.CompanyAccount)
+            {
+                model.Companies.AddRange(_unitOfWork.CompanyRepository.Find(predicate: c => c.Users.Select(u => u.UserId).Contains(Common.Session.CurrentUser.UserId), orderBy: q => q.OrderBy(c => c.Name)));
+                model.Customers.AddRange(_unitOfWork.CustomerRepository.Find(orderBy: q => q.OrderBy(c => c.Name)));
+            }
+            else
+            {
+                model.Companies.AddRange(_unitOfWork.CompanyRepository.Find(orderBy: q => q.OrderBy(c => c.Name)));
+                model.Customers.AddRange(_unitOfWork.CustomerRepository.Find(predicate:c=>c.Users.Select(u=>u.UserId).Contains(Common.Session.CurrentUser.UserId),orderBy: q => q.OrderBy(c => c.Name)));
+            }
+            model.Customers.Insert(0, new Customer() { Id = Guid.Empty, Name = "--ALL--" });
+            model.Companies.Insert(0, new Company() { Id = Guid.Empty, Name = "--ALL--" });
+            model.Customer = model.Customers[0];
+            model.Company = model.Companies[0];
+            model.Items.AddRange(_unitOfWork.ItemRepository.Find(orderBy:q=>q.OrderBy(e=>e.Code)));
+            model.Items.Insert(0, new Item() { Id = Guid.Empty, Code = "--ALL--" });
+            model.Item = model.Items[0];
+            return model;
+        }
+        public IList<ComparisonOfItemCostReportSearchResultViewModel> GenerateComparisonOfItemCostReport(ComparisonOfItemCostReportSearchViewModel searchModel)
+        {
+            List<ComparisonOfItemCostReportSearchResultViewModel> results = new List<ComparisonOfItemCostReportSearchResultViewModel>();
+            List<Company> selectedCompanies = new List<Company>();
+            List<Customer> selectedCustomers = new List<Customer>();
+            List<Item> selectedItems = new List<Item>();
+            AccountingPeriod previous = _unitOfWork.AccountingPeriodRepository.FindPreviousAccountingPeriod(searchModel.AccountingPeriod);
+            CustomerPriceListController customerPriceListController = new CustomerPriceListController(_unitOfWork);
+            if(searchModel.Company == null || searchModel.Company.Id == Guid.Empty)
+            {
+                selectedCompanies.AddRange(searchModel.Companies.Where(c => c.Id != Guid.Empty));
+            }
+            else
+            {
+                selectedCompanies.Add(searchModel.Company);
+            }
+            if(searchModel.Customer == null || searchModel.Customer.Id == Guid.Empty)
+            {
+                selectedCustomers.AddRange(searchModel.Customers.Where(c => c.Id != Guid.Empty));
+            }
+            else
+            {
+                selectedCustomers.Add(searchModel.Customer);
+            }
+            if(searchModel.Item == null || searchModel.Item.Id == Guid.Empty)
+            {
+                selectedItems.AddRange(searchModel.Items.Where(e => e.Id != Guid.Empty));
+            }
+            else
+            {
+                selectedItems.Add(searchModel.Item);
+            }
+            foreach(var company in selectedCompanies)
+            {
+                var companyItems = _unitOfWork.CompanyItemAssignmentRepository.Find(predicate: ass => ass.CompanyId == company.Id).Select(ass=>ass.Item);
+                var items = companyItems.Where(e => selectedItems.Contains(e));
+                foreach (var customer in selectedCustomers)
+                {
+                    foreach (var item in items)
+                    {
+                        var pricingRules = _unitOfWork.CustomerPricingRuleRepository.Find(predicate: r => (r.CustomerId == null || r.CustomerId == customer.Id) && r.AccountingPeriodId == searchModel.AccountingPeriod.Id).ToList();
+                        List<CustomerPricingRule> previousRules = null;
+                        if(previous!=null)
+                            previousRules = _unitOfWork.CustomerPricingRuleRepository.Find(predicate: r => (r.CustomerId == null || r.CustomerId == customer.Id) && r.AccountingPeriodId == searchModel.AccountingPeriod.Id).ToList();
+                        var currentUnitValue = customerPriceListController.GetItemUnitValue(pricingRules, company, item, searchModel.AccountingPeriod, 1);
+                        var previousUnitValue = currentUnitValue;
+                        if (previous != null)
+                        {
+                            previousUnitValue = customerPriceListController.GetItemUnitValue(pricingRules, company, item, previous, 1);
+                        }
+                        results.Add(new ComparisonOfItemCostReportSearchResultViewModel()
+                        {
+                            CompanyName = company.Name,
+                            CurrencyCode = currentUnitValue.Currency.Code,
+                            CurrentPeriodCost = currentUnitValue.UnitPrice,
+                            CurrentPeriodName = searchModel.AccountingPeriod.Name,
+                            CustomerName = customer.Name,
+                            ItemCode = item.Code,
+                            ItemName = item.ArabicName,
+                            ItemUomCode = item.Uom?.Code,
+                            PreviousPeriodCost = previousUnitValue.UnitPrice,
+                            PreviousPeriodName = previous?.Name ?? searchModel.AccountingPeriod.Name
+                        });
+                    }
+                }
+                    
+            }
+            return results;
+        }
         public ItemCostedSearchViewModel FindItemCosted()
         {
             ItemCostedSearchViewModel model = new ItemCostedSearchViewModel();
-            model.Customers = _unitOfWork.CustomerRepository.Find(orderBy:query=>query.OrderBy(c=>c.Name)).ToList();
+            if (Common.Session.CurrentUser != null && Common.Session.CurrentUser.AccountType == UserAccountTypes.CompanyAccount)
+                model.Customers = _unitOfWork.CustomerRepository.Find(orderBy: query => query.OrderBy(c => c.Name)).ToList();
+            else
+                model.Customers = _unitOfWork.CustomerRepository.Find(predicate:e=>e.Users.Select(u=>u.UserId).Contains(Common.Session.CurrentUser.UserId),orderBy: query => query.OrderBy(c => c.Name)).ToList();
             model.AccountingPeriods = _unitOfWork.AccountingPeriodRepository.Find(orderBy: query => query.OrderBy(AccountingPeriodRepository => AccountingPeriodRepository.FromDate)).ToList();
-            model.Companies = _unitOfWork.CompanyRepository.Find(orderBy: query => query.OrderBy(c => c.Name)).ToList();
+            
+            model.Companies = _unitOfWork.CompanyRepository.Find(predicate:e=>e.Users.Select(u=>u.UserId).Contains(Common.Session.CurrentUser.UserId),orderBy: query => query.OrderBy(c => c.Name)).ToList();
             model.Items = _unitOfWork.ItemRepository.Find(orderBy: query => query.OrderBy(itm => itm.Code)).ToList();
             model.Customers.Insert(0, new Customer() { Id = Guid.Empty, Name = "--ALL--" });
             model.AccountingPeriods.Insert(0, new AccountingPeriod() { Id = Guid.Empty, Name = "--ALL--" });
             model.Companies.Insert(0, new Company() { Id = Guid.Empty, Name = "--ALL--" });
             model.Items.Insert(0,new Item() { Id = Guid.Empty, Code = "--ALL--"});
+            model.Groups = _unitOfWork.GroupRepository.Find(orderBy: query => query.OrderBy(e => e.Name)).ToList();
+            model.Groups.Insert(0, new Group() { Id = Guid.Empty, Name = "--ALL--" });
             if (model.Customers.Count > 0)
             {
                 model.Customer = model.Customers[0];
@@ -538,6 +642,10 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             if (model.AccountingPeriods.Count > 0)
             {
                 model.AccountingPeriod = model.AccountingPeriods[0];
+            }
+            if (model.Groups.Count > 0)
+            {
+                model.Group = model.Groups[0];
             }
             return model;
         }
@@ -576,11 +684,29 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             }
             if (model.Item.Id == Guid.Empty)
             {
-                items.AddRange(_unitOfWork.ItemRepository.Find(orderBy: query => query.OrderBy(itm => itm.Code)).ToList());
+                if (model.Group.Id == Guid.Empty)
+                {
+                    items.AddRange(_unitOfWork.ItemRepository.Find(orderBy: query => query.OrderBy(itm => itm.Code)).ToList());
+                }
+                else
+                {
+                    items.AddRange(_unitOfWork.ItemRepository.Find(predicate: itm => itm.CompanyAssignments.Select(ass => ass.GroupId).Contains(model.Group.Id)).ToList());
+                }
             }
             else
             {
-                items.Add(model.Item);
+                if (model.Group.Id == Guid.Empty)
+                {
+                    items.Add(model.Item);
+                }
+                else
+                {
+                    if(_unitOfWork.CompanyItemAssignmentRepository.Exists(predicate:ass=>ass.GroupId == model.Group.Id && ass.ItemId == model.Item.Id))
+                    {
+                        items.Add(model.Item);
+                    }
+                }
+                    
             }
             foreach(var accountingPeriod in accountingPeriods)
             {
@@ -591,6 +717,8 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                         var rules = _unitOfWork.CustomerPricingRuleRepository.Find(accountingPeriod, customer).ToList();
                         foreach (var item in items)
                         {
+                            if (!_unitOfWork.CompanyItemAssignmentRepository.Exists(predicate:ass=>ass.ItemId==item.Id && ass.CompanyId==Company.Id))
+                                continue;
                             ItemCostedSearchResultViewModel result = new ItemCostedSearchResultViewModel();
                             result.AccountingPeriodName = accountingPeriod.Name;
                             result.CompanyName = Company.Name;
@@ -696,6 +824,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                                     model1.Company = Company;
                                     model1.Customer = customer;
                                     model1.Item = l.Component;
+                                    model1.Group = model.Group;
                                     model1.Quantity = l.Quantity;
                                     result.Components.AddRange(FindItemCosted(model1));
                                 }

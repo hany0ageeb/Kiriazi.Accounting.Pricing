@@ -22,20 +22,27 @@ namespace Kiriazi.Accounting.Pricing.Views
 
         private void btnOk_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(txtUserName.Text))
+            try
             {
-                _ = MessageBox.Show(this, "Invalid User Name");
-                return;
+                if (string.IsNullOrEmpty(txtUserName.Text))
+                {
+                    _ = MessageBox.Show(this, "Invalid User Name");
+                    return;
+                }
+                Common.Session.CurrentUser = _userController.LogIn(txtUserName.Text, txtPassword.Text);
+                if (Common.Session.CurrentUser != null)
+                {
+                    Close();
+                }
+                else
+                {
+                    _ = MessageBox.Show(this, "Invalid User Name / Password");
+                    return;
+                }
             }
-            Common.Session.CurrentUser = _userController.LogIn(txtUserName.Text,txtPassword.Text);
-            if (Common.Session.CurrentUser != null)
+            catch(Exception ex)
             {
-                Close();
-            }
-            else
-            {
-                _ = MessageBox.Show(this, "Invalid User Name / Password");
-                return;
+                _ = MessageBox.Show(this, ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

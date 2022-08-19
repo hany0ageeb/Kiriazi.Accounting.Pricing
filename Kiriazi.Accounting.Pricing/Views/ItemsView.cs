@@ -30,6 +30,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             itemsGrid.AllowUserToAddRows = false;
             itemsGrid.AutoGenerateColumns = false;
             itemsGrid.AllowUserToDeleteRows = false;
+            itemsGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             itemsGrid.ReadOnly = true;
             itemsGrid.MultiSelect = false;
             itemsGrid.Columns.Clear();

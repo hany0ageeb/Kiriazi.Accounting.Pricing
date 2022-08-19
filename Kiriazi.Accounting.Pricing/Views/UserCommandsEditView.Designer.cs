@@ -79,6 +79,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "UserCommandsEditView";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "User Functions";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.UserCommandsEditView_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();

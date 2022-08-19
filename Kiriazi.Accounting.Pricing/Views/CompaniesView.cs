@@ -29,6 +29,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             companiesGrid.AllowUserToDeleteRows = false;
             companiesGrid.MultiSelect = false;
             companiesGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            companiesGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             companiesGrid.Columns.Clear();
             companiesGrid.Columns.AddRange(
                 new DataGridViewTextBoxColumn()

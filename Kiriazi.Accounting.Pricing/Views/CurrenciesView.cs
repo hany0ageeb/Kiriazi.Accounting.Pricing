@@ -36,6 +36,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             currencyGrid.MultiSelect = false;
             currencyGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             currencyGrid.ReadOnly = true;
+            currencyGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             currencyGrid.Columns.Clear();
             currencyGrid.Columns.AddRange(new DataGridViewTextBoxColumn()
             {

@@ -205,6 +205,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.MaximizeBox = false;
             this.Name = "CurrencyEditView";
             this.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Currency";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CurrencyEditView_FormClosing);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CurrencyEditView_KeyDown);

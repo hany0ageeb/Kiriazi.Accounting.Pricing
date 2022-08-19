@@ -182,8 +182,6 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             }
             return lines;
         }
-       
-
         public IList<CustomerPriceListViewModel> FindCustomerPriceList(CustomerPriceListSeachViewModel searchModel)
         {
             IList<CustomerPriceListViewModel> lines = new List<CustomerPriceListViewModel>();
@@ -240,6 +238,8 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                     {
                         foreach (var line in customerPriceList.Lines)
                         {
+                            if (!_unitOfWork.CompanyItemAssignmentRepository.Exists(ass => ass.CompanyId == company.Id && ass.ItemId == line.ItemId))
+                                continue;
                             if (line.CurrencyId != company.CurrencyId)
                             {
                                 var exchangeRate = _unitOfWork.CurrencyExchangeRateRepository.FindCurrencyExchangeRate(line.CurrencyId, company.CurrencyId, searchModel.AccountingPeriod);
@@ -287,53 +287,57 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                                     });
                             }
                         }
-                        return lines;
                     }
-                    IList<Item> items =
-                    _unitOfWork.CustomerItemAssignmentRepository
-                    .Find(
-                        predicate: ass => ass.CustomerId == customer.Id,
-                        selector: ass => ass.Item, orderBy: q => q.OrderBy(c => c.Code))
-                    .ToList();
-                    foreach (Item item in items)
+                    else 
                     {
-                        var unitValue = GetItemUnitValue(pricingRules, company, item, searchModel.AccountingPeriod, 1);
-                        var pLine = previousLines.Where(l => l.CompanyName == company.Name && l.ItemCode == item.Code && l.CustomerName == customer.Name).FirstOrDefault();
-                        if (pLine == null || (pLine != null && pLine.UnitPrice < Math.Ceiling(unitValue.UnitPrice)))
+                        IList<Item> items =
+                                _unitOfWork.CustomerItemAssignmentRepository
+                                .Find(
+                                        predicate: ass => ass.CustomerId == customer.Id,
+                                        selector: ass => ass.Item, orderBy: q => q.OrderBy(c => c.Code))
+                                .ToList();
+                        foreach (Item item in items)
                         {
-                            lines.Add(new CustomerPriceListViewModel()
+                            if (!_unitOfWork.CompanyItemAssignmentRepository.Exists(ass => ass.CompanyId == company.Id && ass.ItemId == item.Id))
+                                continue;
+                            var unitValue = GetItemUnitValue(pricingRules, company, item, searchModel.AccountingPeriod, 1);
+                            var pLine = previousLines.Where(l => l.CompanyName == company.Name && l.ItemCode == item.Code && l.CustomerName == customer.Name).FirstOrDefault();
+                            if (pLine == null || (pLine != null && pLine.UnitPrice < Math.Ceiling(unitValue.UnitPrice)))
                             {
-                                CompanyName = company.Name,
-                                CustomerName = customer.Name,
-                                CurrencyCode = unitValue.Currency.Code,
-                                ItemAlias = item.Alias,
-                                ItemArabicName = item.ArabicName,
-                                FromDate = searchModel.AccountingPeriod.FromDate,
-                                ToDate = searchModel.AccountingPeriod.ToDate,
-                                AccountingPeriodName = searchModel.AccountingPeriod.Name,
-                                ItemCode = item.Code,
-                                ItemEnglishName = item.EnglishName,
-                                UnitPrice = Math.Ceiling(unitValue.UnitPrice),
-                                UomCode = item.Uom.Code
-                            });
-                        }
-                        else
-                        {
-                            lines.Add(new CustomerPriceListViewModel()
+                                lines.Add(new CustomerPriceListViewModel()
+                                {
+                                    CompanyName = company.Name,
+                                    CustomerName = customer.Name,
+                                    CurrencyCode = unitValue.Currency.Code,
+                                    ItemAlias = item.Alias,
+                                    ItemArabicName = item.ArabicName,
+                                    FromDate = searchModel.AccountingPeriod.FromDate,
+                                    ToDate = searchModel.AccountingPeriod.ToDate,
+                                    AccountingPeriodName = searchModel.AccountingPeriod.Name,
+                                    ItemCode = item.Code,
+                                    ItemEnglishName = item.EnglishName,
+                                    UnitPrice = Math.Ceiling(unitValue.UnitPrice),
+                                    UomCode = item.Uom.Code
+                                });
+                            }
+                            else
                             {
-                                CompanyName = company.Name,
-                                CustomerName = customer.Name,
-                                CurrencyCode = unitValue.Currency.Code,
-                                ItemAlias = item.Alias,
-                                ItemArabicName = item.ArabicName,
-                                FromDate = searchModel.AccountingPeriod.FromDate,
-                                ToDate = searchModel.AccountingPeriod.ToDate,
-                                AccountingPeriodName = searchModel.AccountingPeriod.Name,
-                                ItemCode = item.Code,
-                                ItemEnglishName = item.EnglishName,
-                                UnitPrice = pLine.UnitPrice,
-                                UomCode = item.Uom.Code
-                            });
+                                lines.Add(new CustomerPriceListViewModel()
+                                {
+                                    CompanyName = company.Name,
+                                    CustomerName = customer.Name,
+                                    CurrencyCode = unitValue.Currency.Code,
+                                    ItemAlias = item.Alias,
+                                    ItemArabicName = item.ArabicName,
+                                    FromDate = searchModel.AccountingPeriod.FromDate,
+                                    ToDate = searchModel.AccountingPeriod.ToDate,
+                                    AccountingPeriodName = searchModel.AccountingPeriod.Name,
+                                    ItemCode = item.Code,
+                                    ItemEnglishName = item.EnglishName,
+                                    UnitPrice = pLine.UnitPrice,
+                                    UomCode = item.Uom.Code
+                                });
+                            }
                         }
                     }
                 }

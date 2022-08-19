@@ -45,7 +45,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             dataGridView1.AllowUserToAddRows = true;
             dataGridView1.AllowUserToDeleteRows = true;
             dataGridView1.AutoGenerateColumns = false;
-            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
             dataGridView1.EditMode = DataGridViewEditMode.EditOnKeystrokeOrF2;
             dataGridView1.Columns.Clear();

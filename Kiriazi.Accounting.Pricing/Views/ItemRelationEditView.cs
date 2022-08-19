@@ -53,6 +53,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             dataGridView1.AllowUserToAddRows = true;
             dataGridView1.AllowUserToDeleteRows = true;
             dataGridView1.AutoGenerateColumns = false;
+            
             dataGridView1.Columns.Clear();
             dataGridView1.Columns.AddRange(
                 new DataGridViewTextBoxColumn()

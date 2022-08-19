@@ -44,6 +44,8 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.btnShowComponents = new System.Windows.Forms.Button();
             this.btnShowPricingRules = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
+            this.cboGroups = new System.Windows.Forms.ComboBox();
             this.flowLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -59,7 +61,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(1076, 659);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(1136, 691);
             this.flowLayoutPanel1.TabIndex = 0;
             // 
             // tableLayoutPanel1
@@ -69,7 +71,9 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 72.66355F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 95F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 358F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 136F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 137F));
+            this.tableLayoutPanel1.Controls.Add(this.cboGroups, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.label5, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.label3, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.cboAccountingPeriods, 1, 0);
@@ -78,19 +82,20 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.tableLayoutPanel1.Controls.Add(this.cboCompanies, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.label2, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.cboItems, 3, 1);
-            this.tableLayoutPanel1.Controls.Add(this.btnSearch, 4, 1);
+            this.tableLayoutPanel1.Controls.Add(this.btnSearch, 4, 2);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowCount = 3;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1073, 75);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1133, 100);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(486, 0);
+            this.label3.Location = new System.Drawing.Point(545, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(58, 15);
             this.label3.TabIndex = 4;
@@ -110,7 +115,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.cboAccountingPeriods.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cboAccountingPeriods.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cboAccountingPeriods.FormattingEnabled = true;
-            this.cboAccountingPeriods.Location = new System.Drawing.Point(135, 3);
+            this.cboAccountingPeriods.Location = new System.Drawing.Point(151, 3);
             this.cboAccountingPeriods.Name = "cboAccountingPeriods";
             this.cboAccountingPeriods.Size = new System.Drawing.Size(321, 23);
             this.cboAccountingPeriods.TabIndex = 2;
@@ -118,7 +123,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(486, 37);
+            this.label4.Location = new System.Drawing.Point(545, 32);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(31, 15);
             this.label4.TabIndex = 5;
@@ -129,7 +134,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.cboCustomers.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cboCustomers.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cboCustomers.FormattingEnabled = true;
-            this.cboCustomers.Location = new System.Drawing.Point(581, 3);
+            this.cboCustomers.Location = new System.Drawing.Point(640, 3);
             this.cboCustomers.Name = "cboCustomers";
             this.cboCustomers.Size = new System.Drawing.Size(335, 23);
             this.cboCustomers.TabIndex = 3;
@@ -139,7 +144,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.cboCompanies.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cboCompanies.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cboCompanies.FormattingEnabled = true;
-            this.cboCompanies.Location = new System.Drawing.Point(135, 40);
+            this.cboCompanies.Location = new System.Drawing.Point(151, 35);
             this.cboCompanies.Name = "cboCompanies";
             this.cboCompanies.Size = new System.Drawing.Size(321, 23);
             this.cboCompanies.TabIndex = 6;
@@ -147,7 +152,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 37);
+            this.label2.Location = new System.Drawing.Point(3, 32);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(58, 15);
             this.label2.TabIndex = 1;
@@ -158,16 +163,16 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.cboItems.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cboItems.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cboItems.FormattingEnabled = true;
-            this.cboItems.Location = new System.Drawing.Point(581, 40);
+            this.cboItems.Location = new System.Drawing.Point(640, 35);
             this.cboItems.Name = "cboItems";
             this.cboItems.Size = new System.Drawing.Size(335, 23);
             this.cboItems.TabIndex = 7;
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(939, 40);
+            this.btnSearch.Location = new System.Drawing.Point(998, 67);
             this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(121, 32);
+            this.btnSearch.Size = new System.Drawing.Size(121, 30);
             this.btnSearch.TabIndex = 8;
             this.btnSearch.Text = "Search";
             this.btnSearch.UseVisualStyleBackColor = true;
@@ -178,19 +183,19 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(3, 84);
+            this.dataGridView1.Location = new System.Drawing.Point(3, 109);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(1073, 531);
+            this.dataGridView1.Size = new System.Drawing.Size(1133, 528);
             this.dataGridView1.TabIndex = 1;
             // 
             // flowLayoutPanel2
             // 
             this.flowLayoutPanel2.Controls.Add(this.btnShowComponents);
             this.flowLayoutPanel2.Controls.Add(this.btnShowPricingRules);
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 621);
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 643);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(1073, 34);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(1133, 34);
             this.flowLayoutPanel2.TabIndex = 2;
             // 
             // btnShowComponents
@@ -215,16 +220,36 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.btnShowPricingRules.UseVisualStyleBackColor = true;
             this.btnShowPricingRules.Click += new System.EventHandler(this.btnShowPricingRules_Click);
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(3, 64);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(40, 15);
+            this.label5.TabIndex = 9;
+            this.label5.Text = "Group";
+            // 
+            // cboGroups
+            // 
+            this.cboGroups.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cboGroups.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.cboGroups.FormattingEnabled = true;
+            this.cboGroups.Location = new System.Drawing.Point(151, 67);
+            this.cboGroups.Name = "cboGroups";
+            this.cboGroups.Size = new System.Drawing.Size(321, 23);
+            this.cboGroups.TabIndex = 10;
+            // 
             // ItemCostView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1076, 659);
+            this.ClientSize = new System.Drawing.Size(1136, 691);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "ItemCostView";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Items Costed";
             this.flowLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
@@ -252,5 +277,7 @@ namespace Kiriazi.Accounting.Pricing.Views
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
         private System.Windows.Forms.Button btnShowComponents;
         private System.Windows.Forms.Button btnShowPricingRules;
+        private System.Windows.Forms.ComboBox cboGroups;
+        private System.Windows.Forms.Label label5;
     }
 }

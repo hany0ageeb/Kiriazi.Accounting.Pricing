@@ -654,5 +654,13 @@ namespace Kiriazi.Accounting.Pricing.Views
 
             }
         }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using(AboutView aboutView = new AboutView())
+            {
+                aboutView.ShowDialog(this);
+            }
+        }
     }
 }

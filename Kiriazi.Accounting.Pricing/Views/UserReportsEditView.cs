@@ -30,7 +30,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             Text = $"User {_user.UserName} Reports";
 
             btnSave.Enabled = false;
-
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dataGridView1.AllowUserToAddRows = false;
             dataGridView1.AllowUserToDeleteRows = false;
             dataGridView1.AutoGenerateColumns = false;

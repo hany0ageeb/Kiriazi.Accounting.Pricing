@@ -30,7 +30,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             dataGridView1.AutoGenerateColumns = false;
             dataGridView1.AllowUserToAddRows = false;
             dataGridView1.AllowUserToDeleteRows = false;
-
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dataGridView1.Columns.Clear();
             dataGridView1.Columns.AddRange(
                 new DataGridViewTextBoxColumn()

@@ -26,6 +26,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             uomsGrid.AllowUserToDeleteRows = false;
             uomsGrid.AutoGenerateColumns = false;
             uomsGrid.MultiSelect = false;
+            uomsGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             uomsGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             //
             uomsGrid.Columns.Clear();

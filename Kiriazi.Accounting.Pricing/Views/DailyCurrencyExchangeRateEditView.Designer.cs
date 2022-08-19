@@ -100,6 +100,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "DailyCurrencyExchangeRateEditView";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Daily Currency Exchange Rate";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DailyCurrencyExchangeRateEditView_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();

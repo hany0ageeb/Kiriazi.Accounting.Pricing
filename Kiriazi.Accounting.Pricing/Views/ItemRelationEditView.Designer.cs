@@ -67,7 +67,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.63748F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 83.36252F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 486F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 487F));
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.cboItems, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.txtItemName, 2, 0);
@@ -93,14 +93,14 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.cboItems.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cboItems.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.cboItems.FormattingEnabled = true;
-            this.cboItems.Location = new System.Drawing.Point(59, 3);
+            this.cboItems.Location = new System.Drawing.Point(58, 3);
             this.cboItems.Name = "cboItems";
             this.cboItems.Size = new System.Drawing.Size(274, 23);
             this.cboItems.TabIndex = 1;
             // 
             // txtItemName
             // 
-            this.txtItemName.Location = new System.Drawing.Point(339, 3);
+            this.txtItemName.Location = new System.Drawing.Point(338, 3);
             this.txtItemName.Name = "txtItemName";
             this.txtItemName.ReadOnly = true;
             this.txtItemName.Size = new System.Drawing.Size(472, 23);
@@ -195,6 +195,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MinimizeBox = false;
             this.Name = "ItemRelationEditView";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Item Tree";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ItemRelationEditView_FormClosing);
             this.flowLayoutPanel1.ResumeLayout(false);

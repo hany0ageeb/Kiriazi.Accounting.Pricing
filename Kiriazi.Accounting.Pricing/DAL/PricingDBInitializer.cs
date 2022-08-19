@@ -625,6 +625,13 @@ namespace Kiriazi.Accounting.Pricing.DAL
                     Name = "Simulation Report",
                     ParameterFormTypeName = typeof(Reports.ParametersForms.SimulationReportParametersForm).FullName,
                     ReportFormTypeName = typeof(Reports.ReportsForms.SimulationReportForm).FullName
+                },
+                new UserReport()
+                {
+                    DisplayName = "Comparison Of Item Cost",
+                    Name = "Comparison Of Item Cost",
+                    ParameterFormTypeName = typeof(Reports.ParametersForms.ComparisonOfItemCostParameterForm).FullName,
+                    ReportFormTypeName = typeof(Reports.ReportsForms.ComparisonOfItemCostReportForm).FullName
                 }
             };
             UserReportAssignment[] userReportAssignments = new UserReportAssignment[]
@@ -662,7 +669,14 @@ namespace Kiriazi.Accounting.Pricing.DAL
                     User = users[0],
                     Report = reports[4],
                     DisplayName = "Simulation By Report ...",
-                    Sequence = 40
+                    Sequence = 50
+                },
+                new UserReportAssignment()
+                {
+                    User = users[0],
+                    Report = reports[5],
+                    DisplayName = "Comparison Of Item Cost",
+                    Sequence = 60
                 }
             };
             context.Uoms.AddRange(uoms);

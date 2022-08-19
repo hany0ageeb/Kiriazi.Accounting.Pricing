@@ -24,8 +24,8 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             var model = new ItemTreeSearchViewModel();
             model.Companies = _unitOfWork.CompanyRepository.Find(predicate:c=>c.Users.Select(u=>u.UserId).Contains(Common.Session.CurrentUser.UserId)).ToList();
             model.Items = _unitOfWork.ItemRepository.Find(predicate:itm=>itm.ItemTypeId == _unitOfWork.ItemTypeRepository.ManufacturedItemType.Id).ToList();
-            model.Companies.Insert(0, new Company { Name = "" });
-            model.Items.Insert(0, new Item() { Code = "" });
+            model.Companies.Insert(0, new Company { Name = "--ALL--" , Id = Guid.Empty });
+            model.Items.Insert(0, new Item() { Code = "--ALL--", Id = Guid.Empty });
             model.Company = model.Companies[0];
             model.Item = model.Items[0];
             return model;
@@ -34,9 +34,9 @@ namespace Kiriazi.Accounting.Pricing.Controllers
         {
             Guid? itemId = null;
             Guid? companyId = null;
-            if (!string.IsNullOrEmpty(model.Item.Code))
+            if (model.Item.Id != Guid.Empty)
                 itemId = model.Item.Id;
-            if (!string.IsNullOrEmpty(model.Company.Name))
+            if (model.Company.Id != Guid.Empty)
                 companyId = model.Company.Id;
             return 
                 _unitOfWork
@@ -229,7 +229,7 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             {
                 var Company = _unitOfWork.CompanyRepository.Find(Id: companyId);
                 var ids = model.Components.Where(c => c.Id != Guid.Empty).Select(c => c.Id).ToList();
-                var toDelete = _unitOfWork.ItemRelationRepository.Find(predicate: r => r.CompanyId == companyId && !ids.Contains(r.Id));
+                var toDelete = _unitOfWork.ItemRelationRepository.Find(predicate: r => r.CompanyId == companyId && ids.Contains(r.Id)).ToList();
                 _unitOfWork.ItemRelationRepository.Remove(toDelete);
                 foreach (var component in model.Components)
                 {

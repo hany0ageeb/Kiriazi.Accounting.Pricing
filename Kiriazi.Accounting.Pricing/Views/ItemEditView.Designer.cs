@@ -45,9 +45,9 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.txtCode = new System.Windows.Forms.TextBox();
             this.txtEnglishName = new System.Windows.Forms.TextBox();
             this.cboUoms = new System.Windows.Forms.ComboBox();
+            this.txtTarrifPercentage = new System.Windows.Forms.TextBox();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
-            this.txtTarrifPercentage = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -203,6 +203,13 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.cboUoms.Size = new System.Drawing.Size(329, 23);
             this.cboUoms.TabIndex = 4;
             // 
+            // txtTarrifPercentage
+            // 
+            this.txtTarrifPercentage.Location = new System.Drawing.Point(150, 255);
+            this.txtTarrifPercentage.Name = "txtTarrifPercentage";
+            this.txtTarrifPercentage.Size = new System.Drawing.Size(329, 23);
+            this.txtTarrifPercentage.TabIndex = 7;
+            // 
             // btnClose
             // 
             this.btnClose.Location = new System.Drawing.Point(656, 308);
@@ -224,13 +231,6 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
-            // txtTarrifPercentage
-            // 
-            this.txtTarrifPercentage.Location = new System.Drawing.Point(150, 255);
-            this.txtTarrifPercentage.Name = "txtTarrifPercentage";
-            this.txtTarrifPercentage.Size = new System.Drawing.Size(329, 23);
-            this.txtTarrifPercentage.TabIndex = 7;
-            // 
             // ItemEditView
             // 
             this.AcceptButton = this.btnSave;
@@ -244,6 +244,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "ItemEditView";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Item";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ItemEditView_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();

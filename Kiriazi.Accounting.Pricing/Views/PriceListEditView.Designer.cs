@@ -32,10 +32,10 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.components = new System.ComponentModel.Container();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.label2 = new System.Windows.Forms.Label();
-            this.cboPeriods = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.txtName = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.cboPeriods = new System.Windows.Forms.ComboBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.txtItemName = new System.Windows.Forms.TextBox();
@@ -71,7 +71,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 22.32346F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 77.67654F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 131F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 303F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 304F));
             this.tableLayoutPanel1.Controls.Add(this.label3, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.txtName, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.label2, 2, 0);
@@ -85,24 +85,6 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.tableLayoutPanel1.Size = new System.Drawing.Size(829, 72);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(397, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(107, 14);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Accounting Period";
-            // 
-            // cboPeriods
-            // 
-            this.cboPeriods.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.cboPeriods.FormattingEnabled = true;
-            this.cboPeriods.Location = new System.Drawing.Point(528, 3);
-            this.cboPeriods.Name = "cboPeriods";
-            this.cboPeriods.Size = new System.Drawing.Size(290, 22);
-            this.cboPeriods.TabIndex = 3;
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -115,12 +97,30 @@ namespace Kiriazi.Accounting.Pricing.Views
             // txtName
             // 
             this.txtName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.txtName.Location = new System.Drawing.Point(91, 3);
+            this.txtName.Location = new System.Drawing.Point(90, 3);
             this.txtName.Name = "txtName";
             this.txtName.Size = new System.Drawing.Size(290, 22);
             this.txtName.TabIndex = 1;
             this.txtName.Validating += new System.ComponentModel.CancelEventHandler(this.txtName_Validating);
             this.txtName.Validated += new System.EventHandler(this.txtName_Validated);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(396, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(107, 14);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "Accounting Period";
+            // 
+            // cboPeriods
+            // 
+            this.cboPeriods.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.cboPeriods.FormattingEnabled = true;
+            this.cboPeriods.Location = new System.Drawing.Point(527, 3);
+            this.cboPeriods.Name = "cboPeriods";
+            this.cboPeriods.Size = new System.Drawing.Size(290, 22);
+            this.cboPeriods.TabIndex = 3;
             // 
             // dataGridView1
             // 
@@ -208,6 +208,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "PriceListEditView";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Raw Material Price List";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PriceListEditView_FormClosing);
             this.flowLayoutPanel1.ResumeLayout(false);

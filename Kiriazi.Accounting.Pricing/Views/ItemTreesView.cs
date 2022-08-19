@@ -46,7 +46,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             dataGridView1.ReadOnly = false;
             dataGridView1.MultiSelect = false;
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dataGridView1.Columns.Clear();
 
             dataGridView1.Columns.AddRange(

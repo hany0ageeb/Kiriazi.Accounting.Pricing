@@ -31,10 +31,15 @@ namespace Kiriazi.Accounting.Pricing.Views
         {
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.cboPeriods = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.cboPeriods = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.txtItemCode = new System.Windows.Forms.TextBox();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.btnSearch = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.rbtnLine = new System.Windows.Forms.RadioButton();
+            this.rbtnHeader = new System.Windows.Forms.RadioButton();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.btnNew = new System.Windows.Forms.Button();
@@ -43,18 +48,13 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.btnDelete = new System.Windows.Forms.Button();
             this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
             this.button1 = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.txtItemCode = new System.Windows.Forms.TextBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.rbtnHeader = new System.Windows.Forms.RadioButton();
-            this.rbtnLine = new System.Windows.Forms.RadioButton();
             this.flowLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.flowLayoutPanel3.SuspendLayout();
             this.flowLayoutPanel4.SuspendLayout();
-            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // flowLayoutPanel1
@@ -76,7 +76,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 21.00657F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 78.99344F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 67F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 387F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 388F));
             this.tableLayoutPanel1.Controls.Add(this.label2, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.cboPeriods, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.label1, 2, 0);
@@ -88,14 +88,6 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.tableLayoutPanel1.Size = new System.Drawing.Size(893, 35);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
-            // cboPeriods
-            // 
-            this.cboPeriods.FormattingEnabled = true;
-            this.cboPeriods.Location = new System.Drawing.Point(95, 3);
-            this.cboPeriods.Name = "cboPeriods";
-            this.cboPeriods.Size = new System.Drawing.Size(332, 23);
-            this.cboPeriods.TabIndex = 3;
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -104,6 +96,30 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.label2.Size = new System.Drawing.Size(41, 15);
             this.label2.TabIndex = 2;
             this.label2.Text = "Period";
+            // 
+            // cboPeriods
+            // 
+            this.cboPeriods.FormattingEnabled = true;
+            this.cboPeriods.Location = new System.Drawing.Point(95, 3);
+            this.cboPeriods.Name = "cboPeriods";
+            this.cboPeriods.Size = new System.Drawing.Size(332, 23);
+            this.cboPeriods.TabIndex = 3;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(440, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(31, 15);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Item";
+            // 
+            // txtItemCode
+            // 
+            this.txtItemCode.Location = new System.Drawing.Point(507, 3);
+            this.txtItemCode.Name = "txtItemCode";
+            this.txtItemCode.Size = new System.Drawing.Size(350, 23);
+            this.txtItemCode.TabIndex = 5;
             // 
             // flowLayoutPanel2
             // 
@@ -124,6 +140,39 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.btnSearch.Text = "Search";
             this.btnSearch.UseVisualStyleBackColor = true;
             this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.rbtnLine);
+            this.groupBox1.Controls.Add(this.rbtnHeader);
+            this.groupBox1.Location = new System.Drawing.Point(9, 3);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(772, 35);
+            this.groupBox1.TabIndex = 7;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Result";
+            // 
+            // rbtnLine
+            // 
+            this.rbtnLine.AutoSize = true;
+            this.rbtnLine.Location = new System.Drawing.Point(234, 10);
+            this.rbtnLine.Name = "rbtnLine";
+            this.rbtnLine.Size = new System.Drawing.Size(47, 19);
+            this.rbtnLine.TabIndex = 1;
+            this.rbtnLine.Text = "Line";
+            this.rbtnLine.UseVisualStyleBackColor = true;
+            // 
+            // rbtnHeader
+            // 
+            this.rbtnHeader.AutoSize = true;
+            this.rbtnHeader.Checked = true;
+            this.rbtnHeader.Location = new System.Drawing.Point(86, 10);
+            this.rbtnHeader.Name = "rbtnHeader";
+            this.rbtnHeader.Size = new System.Drawing.Size(63, 19);
+            this.rbtnHeader.TabIndex = 0;
+            this.rbtnHeader.TabStop = true;
+            this.rbtnHeader.Text = "Header";
+            this.rbtnHeader.UseVisualStyleBackColor = true;
             // 
             // dataGridView1
             // 
@@ -211,55 +260,6 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(441, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(31, 15);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "Item";
-            // 
-            // txtItemCode
-            // 
-            this.txtItemCode.Location = new System.Drawing.Point(508, 3);
-            this.txtItemCode.Name = "txtItemCode";
-            this.txtItemCode.Size = new System.Drawing.Size(350, 23);
-            this.txtItemCode.TabIndex = 5;
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.rbtnLine);
-            this.groupBox1.Controls.Add(this.rbtnHeader);
-            this.groupBox1.Location = new System.Drawing.Point(9, 3);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(772, 35);
-            this.groupBox1.TabIndex = 7;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Result";
-            // 
-            // rbtnHeader
-            // 
-            this.rbtnHeader.AutoSize = true;
-            this.rbtnHeader.Checked = true;
-            this.rbtnHeader.Location = new System.Drawing.Point(86, 10);
-            this.rbtnHeader.Name = "rbtnHeader";
-            this.rbtnHeader.Size = new System.Drawing.Size(63, 19);
-            this.rbtnHeader.TabIndex = 0;
-            this.rbtnHeader.TabStop = true;
-            this.rbtnHeader.Text = "Header";
-            this.rbtnHeader.UseVisualStyleBackColor = true;
-            // 
-            // rbtnLine
-            // 
-            this.rbtnLine.AutoSize = true;
-            this.rbtnLine.Location = new System.Drawing.Point(234, 10);
-            this.rbtnLine.Name = "rbtnLine";
-            this.rbtnLine.Size = new System.Drawing.Size(47, 19);
-            this.rbtnLine.TabIndex = 1;
-            this.rbtnLine.Text = "Line";
-            this.rbtnLine.UseVisualStyleBackColor = true;
-            // 
             // PriceListsView
             // 
             this.AcceptButton = this.btnSearch;
@@ -271,16 +271,17 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "PriceListsView";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Raw Material Price Lists";
             this.flowLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.flowLayoutPanel2.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.flowLayoutPanel3.ResumeLayout(false);
             this.flowLayoutPanel4.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
 
         }

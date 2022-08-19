@@ -45,7 +45,7 @@ namespace Kiriazi.Accounting.Pricing
         {
             // ...
             
-            services.AddTransient(typeof(DAL.PricingDBContext),(sp)=> { return new DAL.PricingDBContext(Configuration.GetConnectionString("PricingDBLocalConnection")); });
+            services.AddTransient(typeof(DAL.PricingDBContext),(sp)=> { return new DAL.PricingDBContext(Configuration.GetConnectionString("PricingDBLocalConnectionDevelopment")); });
             services.AddTransient<DAL.IUnitOfWork, DAL.UnitOfWork>();
             
             services.AddTransient(typeof(ViewModels.CurrencyEditViewModel));
@@ -77,6 +77,9 @@ namespace Kiriazi.Accounting.Pricing
             services.AddTransient(typeof(Reports.ParametersForms.ComparisonOfHistoricalCostReportParameterForm));
             services.AddTransient(typeof(Reports.ParametersForms.ItemGroupReportParametersForm));
             services.AddTransient(typeof(Reports.ParametersForms.SimulationReportParametersForm));
+            services.AddTransient(typeof(Reports.ParametersForms.ComparisonOfItemCostParameterForm));
+
+            
 
             services.AddTransient(typeof(Controllers.CurrencyController));
             services.AddTransient(typeof(Controllers.GroupController));

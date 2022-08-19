@@ -39,8 +39,8 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.label1 = new System.Windows.Forms.Label();
             this.txtCode = new System.Windows.Forms.TextBox();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
-            this.btnSave = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
+            this.btnSave = new System.Windows.Forms.Button();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.flowLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -144,16 +144,6 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.flowLayoutPanel2.Size = new System.Drawing.Size(675, 43);
             this.flowLayoutPanel2.TabIndex = 1;
             // 
-            // btnSave
-            // 
-            this.btnSave.Location = new System.Drawing.Point(478, 3);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(94, 35);
-            this.btnSave.TabIndex = 7;
-            this.btnSave.Text = "Save";
-            this.btnSave.UseVisualStyleBackColor = true;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-            // 
             // btnClose
             // 
             this.btnClose.Location = new System.Drawing.Point(578, 3);
@@ -163,6 +153,16 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            // 
+            // btnSave
+            // 
+            this.btnSave.Location = new System.Drawing.Point(478, 3);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(94, 35);
+            this.btnSave.TabIndex = 7;
+            this.btnSave.Text = "Save";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // errorProvider1
             // 
@@ -178,6 +178,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MinimizeBox = false;
             this.Name = "TarrifEditView";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Tarrif";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.TarrifEditView_FormClosing);
             this.flowLayoutPanel1.ResumeLayout(false);

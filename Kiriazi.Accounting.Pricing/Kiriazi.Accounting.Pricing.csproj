@@ -325,6 +325,12 @@
     <Compile Include="Reports\ParametersForms\ComparisonOfHistoricalCostReportParameterForm.Designer.cs">
       <DependentUpon>ComparisonOfHistoricalCostReportParameterForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Reports\ParametersForms\ComparisonOfItemCostParameterForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\ParametersForms\ComparisonOfItemCostParameterForm.Designer.cs">
+      <DependentUpon>ComparisonOfItemCostParameterForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Reports\ParametersForms\CustomerPriceListReportParameterForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -354,6 +360,12 @@
     </Compile>
     <Compile Include="Reports\ReportsForms\ComparisonOfHistoricalCostReportForm.Designer.cs">
       <DependentUpon>ComparisonOfHistoricalCostReportForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportsForms\ComparisonOfItemCostReportForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportsForms\ComparisonOfItemCostReportForm.Designer.cs">
+      <DependentUpon>ComparisonOfItemCostReportForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Reports\ReportsForms\CustomerPriceListReportForm.cs">
       <SubType>Form</SubType>
@@ -400,6 +412,7 @@
     <Compile Include="ViewModels\CompanyAccountingPeriodEditViewModel.cs" />
     <Compile Include="ViewModels\CompanyEditViewModel.cs" />
     <Compile Include="ViewModels\CompanySelectionViewModel.cs" />
+    <Compile Include="ViewModels\ComparisonOfItemCostReportSearchViewModel.cs" />
     <Compile Include="ViewModels\CurrencyEditViewModel.cs" />
     <Compile Include="ViewModels\CustomerItemUnitPriceSearchViewModel.cs" />
     <Compile Include="ViewModels\CustomerPriceListSeachViewModel.cs" />
@@ -427,6 +440,12 @@
     <Compile Include="ViewModels\UserEditViewModel.cs" />
     <Compile Include="ViewModels\UserReportAssignmentEditViewMdel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="Views\AboutView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\AboutView.Designer.cs">
+      <DependentUpon>AboutView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\AccountingPeriodsView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -720,10 +739,14 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="Reports\ComparisonOfHistoricalCostReport.rdlc" />
+    <EmbeddedResource Include="Reports\ComparisonOfItemCostReport.rdlc" />
     <EmbeddedResource Include="Reports\ItemBillOfMaterialsReport.rdlc" />
     <EmbeddedResource Include="Reports\CustomerPriceListReport.rdlc" />
     <EmbeddedResource Include="Reports\ParametersForms\ComparisonOfHistoricalCostReportParameterForm.resx">
       <DependentUpon>ComparisonOfHistoricalCostReportParameterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\ParametersForms\ComparisonOfItemCostParameterForm.resx">
+      <DependentUpon>ComparisonOfItemCostParameterForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\ParametersForms\CustomerPriceListReportParameterForm.resx">
       <DependentUpon>CustomerPriceListReportParameterForm.cs</DependentUpon>
@@ -741,6 +764,9 @@
     <EmbeddedResource Include="Reports\ReportsForms\ComparisonOfHistoricalCostReportForm.resx">
       <DependentUpon>ComparisonOfHistoricalCostReportForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reports\ReportsForms\ComparisonOfItemCostReportForm.resx">
+      <DependentUpon>ComparisonOfItemCostReportForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\ReportsForms\CustomerPriceListReportForm.resx">
       <DependentUpon>CustomerPriceListReportForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -754,6 +780,9 @@
       <DependentUpon>SimulationReportForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\SimulationReport.rdlc" />
+    <EmbeddedResource Include="Views\AboutView.resx">
+      <DependentUpon>AboutView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\AccountingPeriodsView.resx">
       <DependentUpon>AccountingPeriodsView.cs</DependentUpon>
     </EmbeddedResource>
@@ -901,6 +930,7 @@
     <None Include="packages.config" />
     <None Include="Properties\DataSources\Kiriazi.Accounting.Pricing.Controllers.ItemCostedBillOfMaterialsLineViewModel.datasource" />
     <None Include="Properties\DataSources\Kiriazi.Accounting.Pricing.Controllers.ItemCostedBillOfMaterialsViewModel.datasource" />
+    <None Include="Properties\DataSources\Kiriazi.Accounting.Pricing.ViewModels.ComparisonOfItemCostReportSearchResultViewModel.datasource" />
     <None Include="Properties\DataSources\Kiriazi.Accounting.Pricing.ViewModels.CustomerPriceListViewModel.datasource" />
     <None Include="Properties\DataSources\Kiriazi.Accounting.Pricing.ViewModels.CustomerPricingRuleViewModel.datasource" />
     <None Include="Properties\DataSources\Kiriazi.Accounting.Pricing.ViewModels.GroupSearchResultViewModel.datasource" />

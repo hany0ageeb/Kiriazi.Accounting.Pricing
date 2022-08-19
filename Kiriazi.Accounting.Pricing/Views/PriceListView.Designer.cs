@@ -32,26 +32,26 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.components = new System.ComponentModel.Container();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.txtAccountingPeriodName = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.txtName = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.cboItems = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txtAccountingPeriodName = new System.Windows.Forms.TextBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.btnClose = new System.Windows.Forms.Button();
-            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.label5 = new System.Windows.Forms.Label();
             this.txtCount = new System.Windows.Forms.TextBox();
+            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.flowLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.flowLayoutPanel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.flowLayoutPanel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
             // 
             // flowLayoutPanel1
@@ -72,7 +72,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 22.32346F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 77.67654F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 131F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 308F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 309F));
             this.tableLayoutPanel1.Controls.Add(this.label3, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.txtName, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.label4, 2, 0);
@@ -87,24 +87,6 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1050, 72);
             this.tableLayoutPanel1.TabIndex = 0;
-            // 
-            // txtAccountingPeriodName
-            // 
-            this.txtAccountingPeriodName.BackColor = System.Drawing.SystemColors.Control;
-            this.txtAccountingPeriodName.Location = new System.Drawing.Point(139, 37);
-            this.txtAccountingPeriodName.Name = "txtAccountingPeriodName";
-            this.txtAccountingPeriodName.ReadOnly = true;
-            this.txtAccountingPeriodName.Size = new System.Drawing.Size(368, 22);
-            this.txtAccountingPeriodName.TabIndex = 8;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 34);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(107, 14);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Accounting Period";
             // 
             // label3
             // 
@@ -127,7 +109,7 @@ namespace Kiriazi.Accounting.Pricing.Views
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(613, 0);
+            this.label4.Location = new System.Drawing.Point(612, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(33, 14);
             this.label4.TabIndex = 5;
@@ -138,10 +120,28 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.cboItems.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cboItems.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cboItems.FormattingEnabled = true;
-            this.cboItems.Location = new System.Drawing.Point(744, 3);
+            this.cboItems.Location = new System.Drawing.Point(743, 3);
             this.cboItems.Name = "cboItems";
             this.cboItems.Size = new System.Drawing.Size(288, 22);
             this.cboItems.TabIndex = 6;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(3, 34);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(107, 14);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "Accounting Period";
+            // 
+            // txtAccountingPeriodName
+            // 
+            this.txtAccountingPeriodName.BackColor = System.Drawing.SystemColors.Control;
+            this.txtAccountingPeriodName.Location = new System.Drawing.Point(139, 37);
+            this.txtAccountingPeriodName.Name = "txtAccountingPeriodName";
+            this.txtAccountingPeriodName.ReadOnly = true;
+            this.txtAccountingPeriodName.Size = new System.Drawing.Size(368, 22);
+            this.txtAccountingPeriodName.TabIndex = 8;
             // 
             // dataGridView1
             // 
@@ -171,10 +171,6 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
-            // errorProvider1
-            // 
-            this.errorProvider1.ContainerControl = this;
-            // 
             // flowLayoutPanel3
             // 
             this.flowLayoutPanel3.Controls.Add(this.label5);
@@ -201,6 +197,10 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.txtCount.Size = new System.Drawing.Size(100, 22);
             this.txtCount.TabIndex = 1;
             // 
+            // errorProvider1
+            // 
+            this.errorProvider1.ContainerControl = this;
+            // 
             // PriceListView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
@@ -211,15 +211,16 @@ namespace Kiriazi.Accounting.Pricing.Views
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "PriceListView";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Raw Material Price List";
             this.flowLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.flowLayoutPanel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.flowLayoutPanel3.ResumeLayout(false);
             this.flowLayoutPanel3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.ResumeLayout(false);
 
         }

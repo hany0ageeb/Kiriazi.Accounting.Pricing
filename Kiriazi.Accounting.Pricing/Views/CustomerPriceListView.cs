@@ -122,7 +122,7 @@ namespace Kiriazi.Accounting.Pricing.Views
                 main.ClearExportMenuItemClickEventHandlers();
                 main.IsExportMenuItemEnabled = false;
             };
-            IList<string> itemCodes = _allLines.Select(l => l.ItemCode).ToList();
+            IList<string> itemCodes = _allLines.Select(l => l.ItemCode).Distinct().ToList();
             itemCodes.Insert(0, "");
             cboItems.DataSource = itemCodes;
             cboItems.SelectedIndexChanged += (o, e) =>

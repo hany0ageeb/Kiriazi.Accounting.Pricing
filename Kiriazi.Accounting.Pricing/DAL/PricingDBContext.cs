@@ -35,7 +35,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
             : base("PricingDBLocalConnection")
         {
             Database.SetInitializer(new PricingDBInitializer());
-            Database.Log = LogToFile;
+            //Database.Log = LogToFile;
             
         }
         private static void LogToFile(string messsage)
@@ -46,7 +46,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
             : base(nameOrConnectionString)
         {
             Database.SetInitializer(new PricingDBInitializer());
-            Database.Log = LogToFile;
+            //Database.Log = LogToFile;
         }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
