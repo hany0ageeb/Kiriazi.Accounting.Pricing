@@ -134,7 +134,10 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             searchModel.Customers = _unitOfWork.CustomerRepository.Find(query=>query.OrderBy(c=>c.Name)).ToList();
             searchModel.Customers.Insert(0, new Customer() { Id = Guid.Empty, Name = "--ALL--" });
             searchModel.Customer = searchModel.Customers[0];
-            searchModel.Companies = _unitOfWork.CompanyRepository.Find(query => query.OrderBy(c => c.Name)).ToList();
+            if(Common.Session.CurrentUser.AccountType == UserAccountTypes.CompanyAccount)
+                searchModel.Companies = _unitOfWork.CompanyRepository.Find(e=>e.Users.Select(u=>u.UserId).Contains(Common.Session.CurrentUser.UserId),query => query.OrderBy(c => c.Name)).ToList();
+            else
+                searchModel.Companies = _unitOfWork.CompanyRepository.Find(query => query.OrderBy(c => c.Name)).ToList();
             searchModel.Companies.Insert(0, new Company() { Id = Guid.Empty, Name = "--ALL--" });
             searchModel.Company = searchModel.Companies[0];
             return searchModel;

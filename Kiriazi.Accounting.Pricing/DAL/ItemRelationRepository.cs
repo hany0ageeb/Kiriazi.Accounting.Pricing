@@ -15,12 +15,17 @@ namespace Kiriazi.Accounting.Pricing.DAL
         }
         public PricingDBContext PricingDBContext => _context as PricingDBContext;
         public IEnumerable<ItemRelation> Find(
+            Guid? currentUserId = null,
             Guid? parentId = null,
             Guid? companyId = null,
             Func<IQueryable<ItemRelation>, IOrderedQueryable<ItemRelation>> orderBy = null,
             params string[] includeProperties)
         {
             var query = _context.Set<ItemRelation>().AsQueryable();
+            if (currentUserId != null)
+            {
+                query = query.Where(e => e.Company.Users.Select(u => u.UserId).Contains(currentUserId.Value));
+            }
             if (companyId != null)
                 query = query.Where(r => r.CompanyId == companyId);
             if (parentId != null)

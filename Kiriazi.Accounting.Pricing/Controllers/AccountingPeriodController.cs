@@ -30,9 +30,16 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             List<Company> selectedCompanies = null;
             List<SimulationByReportDataViewModel> data = new List<SimulationByReportDataViewModel>();
             if (searchModel.Company.Id == Guid.Empty)
-                selectedCompanies = _unitOfWork.CompanyRepository.Find(orderBy: query => query.OrderBy(e => e.Name)).ToList();
+            {
+                if(Common.Session.CurrentUser.AccountType == UserAccountTypes.CompanyAccount)
+                    selectedCompanies = _unitOfWork.CompanyRepository.Find(predicate: e=>e.Users.Select(u=>u.UserId).Contains(Common.Session.CurrentUser.UserId),orderBy: query => query.OrderBy(e => e.Name)).ToList();
+                else
+                    selectedCompanies = _unitOfWork.CompanyRepository.Find(orderBy: query => query.OrderBy(e => e.Name)).ToList();
+            }
             else
+            {
                 selectedCompanies = new List<Company>() { searchModel.Company };
+            }
             List<Customer> customers = null;
             if (searchModel.Customer.Id == Guid.Empty)
             {
@@ -147,8 +154,12 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                 _unitOfWork.CustomerRepository.Find(orderBy:query=>query.OrderBy(e=>e.Name)).ToList();
             simulationReportParameterViewModel.Customers.Insert(0, new Customer() { Id = Guid.Empty, Name = "--ALL--" });
             simulationReportParameterViewModel.Customer = simulationReportParameterViewModel.Customers[0];
-            simulationReportParameterViewModel.Companies = 
-                _unitOfWork.CompanyRepository.Find(orderBy:query=>query.OrderBy(e=>e.Name)).ToList();
+            if(Common.Session.CurrentUser.AccountType == UserAccountTypes.CompanyAccount)
+                simulationReportParameterViewModel.Companies =
+                    _unitOfWork.CompanyRepository.Find(predicate:e=>e.Users.Select(u=>u.UserId).Contains(Common.Session.CurrentUser.UserId),orderBy: query => query.OrderBy(e => e.Name)).ToList();
+            else
+                simulationReportParameterViewModel.Companies = 
+                    _unitOfWork.CompanyRepository.Find(orderBy:query=>query.OrderBy(e=>e.Name)).ToList();
             simulationReportParameterViewModel.Companies.Insert(0, new Company() { Id = Guid.Empty, Name = "--ALL--"});
             simulationReportParameterViewModel.Company = simulationReportParameterViewModel.Companies[0];
             simulationReportParameterViewModel.Currencies =
@@ -428,7 +439,10 @@ namespace Kiriazi.Accounting.Pricing.Controllers
                 ItemRepository.
                 Find(predicate: itm => itm.ItemTypeId == _unitOfWork.ItemTypeRepository.ManufacturedItemType.Id, orderBy: query => query.OrderBy(itm => itm.Code)).
                 ToList();
-            searchViewModel.Companies = _unitOfWork.CompanyRepository.Find(orderBy:query=>query.OrderBy(c=>c.Name)).ToList();
+            if(Common.Session.CurrentUser.AccountType == UserAccountTypes.CompanyAccount)
+                searchViewModel.Companies = _unitOfWork.CompanyRepository.Find(predicate:e=>e.Users.Select(u=>u.UserId).Contains(Common.Session.CurrentUser.UserId),orderBy:query=>query.OrderBy(c=>c.Name)).ToList();
+            else
+                searchViewModel.Companies = _unitOfWork.CompanyRepository.Find(orderBy: query => query.OrderBy(c => c.Name)).ToList();
             searchViewModel.Companies.Insert(0, new Company() { Id = Guid.Empty, Name = "--ALL--" });
             if(searchViewModel.Companies.Count > 0)
                 searchViewModel.Company = searchViewModel.Companies[0];

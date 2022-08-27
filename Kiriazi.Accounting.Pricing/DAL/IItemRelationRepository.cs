@@ -9,6 +9,7 @@ namespace Kiriazi.Accounting.Pricing.DAL
     public interface IItemRelationRepository : IRepository<Models.ItemRelation>
     {
         IEnumerable<Models.ItemRelation> Find(
+            Guid? currentUserId = null,
             Guid? parentId = null,
             Guid? companyId = null,
             Func<IQueryable<Models.ItemRelation>,IOrderedQueryable<Models.ItemRelation>> orderBy = null,

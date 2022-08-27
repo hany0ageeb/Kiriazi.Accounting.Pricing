@@ -41,7 +41,8 @@ namespace Kiriazi.Accounting.Pricing.Controllers
             return 
                 _unitOfWork
                 .ItemRelationRepository
-                .Find(parentId: itemId,
+                .Find(currentUserId:Common.Session.CurrentUser?.UserId,
+                      parentId: itemId,
                       companyId: companyId,
                       orderBy: q => q.OrderBy(r => r.Parent.Code).ThenBy(r => r.Company.Name),
                 "Parent", "Company", "Parent.Uom")
